@@ -2,7 +2,6 @@ plugins {
     id("com.android.application")
     id("com.google.devtools.ksp") version "1.7.20-1.0.8"
     kotlin("android")
-    kotlin("kapt")
 }
 
 android {

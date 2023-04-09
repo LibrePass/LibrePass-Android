@@ -6,10 +6,15 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.ui.screens.DashboardScreen
+import dev.medzik.librepass.android.ui.screens.LoginScreen
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,12 +23,11 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             LibrePassTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    Greeting("Android")
+                    LibrePassApp()
                 }
             }
         }
@@ -31,17 +35,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+fun LibrePassApp() {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LibrePassTheme {
-        Greeting("Android")
+    val repository = Repository(context = LocalContext.current)
+
+    NavHost(navController = navController, startDestination = repository.get()?.let { "dashboard" } ?: "login") {
+        composable("login") {
+            LoginScreen(navController = navController)
+        }
+
+        composable("dashboard") {
+            DashboardScreen()
+        }
     }
 }

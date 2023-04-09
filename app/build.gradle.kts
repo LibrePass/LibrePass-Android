@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
+    id("com.google.devtools.ksp") version "1.7.20-1.0.8"
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -22,11 +24,16 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+//            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
         }
     }
     compileOptions {
@@ -45,7 +52,7 @@ android {
     }
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/*"
         }
     }
 }
@@ -54,6 +61,7 @@ dependencies {
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
+
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
@@ -66,6 +74,21 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.client)
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.androidx.material.icons.extended)
+
+    implementation(libs.kotlinx.coroutines.android)
+
+    // room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    // navigation
+    implementation(libs.androidx.navigation.compose)
+//    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

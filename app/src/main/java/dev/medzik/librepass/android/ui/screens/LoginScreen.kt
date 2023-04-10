@@ -22,6 +22,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import dev.medzik.libcrypto.AesCbc
+import dev.medzik.libcrypto.Pbkdf2
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.Repository
@@ -31,6 +33,7 @@ import dev.medzik.librepass.android.ui.composable.TextInputField
 import dev.medzik.librepass.android.ui.composable.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.client.api.v1.AuthClient
+import dev.medzik.librepass.client.api.v1.PasswordIterations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -71,11 +74,25 @@ fun LoginScreen(navController: NavController) {
                         email = email,
                         accessToken = credentials.accessToken,
                         refreshToken = credentials.refreshToken,
+                        encryptionKey = credentials.encryptionKey,
                     )
                 )
 
+                // TODO: use basePassword computed by authClient.login
+                val basePassword = Pbkdf2(PasswordIterations).sha256(password, email.encodeToByteArray())
+
+                val encryptionKey = AesCbc.decrypt(
+                    credentials.encryptionKey,
+                    basePassword,
+                )
+
                 // navigate to dashboard
-                scope.launch(Dispatchers.Main) { navController.navigate(Screen.Dashboard.name) }
+                scope.launch(Dispatchers.Main) {
+                    navController.navigate(Screen.Dashboard(encryptionKey)) {
+                        // disable back navigation
+                        popUpTo(Screen.Login.get) { inclusive = true }
+                    }
+                }
             } catch (e: Throwable) {
                 // TODO: handle error for invalid credentials and network error
 //                scope.launch { snackbarHostState.showSnackbar("Invalid credentials") }

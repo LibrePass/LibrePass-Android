@@ -20,6 +20,8 @@ import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 
 @Composable
 fun DashboardScreen(navController: NavController) {
+    val encryptionKey = navController.currentBackStackEntry?.arguments?.getString("encryptionKey")
+
     Scaffold(
         topBar = {
             TopBar(title = stringResource(id = R.string.dashboard))
@@ -33,7 +35,8 @@ fun DashboardScreen(navController: NavController) {
                 .padding(top = 20.dp)
                 .padding(horizontal = 16.dp),
         ) {
-            Text(text = "Column")
+            // get encryption key from navController
+            Text(text = encryptionKey ?: "null")
         }
     }
 }

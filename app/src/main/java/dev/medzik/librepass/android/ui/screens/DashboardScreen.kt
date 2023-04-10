@@ -8,13 +8,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import dev.medzik.librepass.android.ui.composable.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(title = "Dashboard")
@@ -37,6 +40,6 @@ fun DashboardScreen() {
 @Composable
 fun DashboardScreenPreview() {
     LibrePassTheme {
-        DashboardScreen()
+        DashboardScreen(NavHostController(LocalContext.current))
     }
 }

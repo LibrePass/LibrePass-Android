@@ -21,11 +21,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import dev.medzik.librepass.android.data.Credentials
+import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composable.LoadingIndicator
 import dev.medzik.librepass.android.ui.composable.TextInputField
 import dev.medzik.librepass.android.ui.composable.TopBar
-import dev.medzik.librepass.android.data.Credentials
-import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.client.api.v1.AuthClient
 import kotlinx.coroutines.Dispatchers
@@ -71,16 +72,12 @@ fun LoginScreen(navController: NavController) {
                     )
                 )
 
-                // run navController.navigate("dashboard") on main thread
-                scope.launch(Dispatchers.Main) {
-                    navController.navigate("dashboard")
-                }
+                // navigate to dashboard
+                scope.launch(Dispatchers.Main) { navController.navigate(Screen.Dashboard.name) }
             } catch (e: Throwable) {
                 // TODO: handle error for invalid credentials and network error
 //                scope.launch { snackbarHostState.showSnackbar("Invalid credentials") }
                 scope.launch { snackbarHostState.showSnackbar(e.toString()) }
-
-                println(e)
             }
 
             loading.value = false
@@ -118,7 +115,6 @@ fun LoginScreen(navController: NavController) {
                 keyboardType = KeyboardType.Password,
             )
 
-            // Login button
             Button(
                 onClick = { onLogin(email.value, password.value) },
                 enabled =

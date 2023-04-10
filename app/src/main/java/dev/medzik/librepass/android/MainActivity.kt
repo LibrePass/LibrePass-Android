@@ -16,6 +16,7 @@ import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.screens.DashboardScreen
 import dev.medzik.librepass.android.ui.screens.LoginScreen
+import dev.medzik.librepass.android.ui.screens.UnlockScreen
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,12 +42,16 @@ fun LibrePassApp() {
 
     val repository = Repository(context = LocalContext.current)
 
-    NavHost(navController = navController, startDestination = repository.get()?.let { Screen.Dashboard.name } ?: Screen.Login.name) {
-        composable(Screen.Login.name) {
+    NavHost(navController = navController, startDestination = repository.get()?.let { Screen.Unlock.get } ?: Screen.Login.get) {
+        composable(Screen.Login.get) {
             LoginScreen(navController = navController)
         }
 
-        composable(Screen.Dashboard.name) {
+        composable(Screen.Unlock.get) {
+            UnlockScreen(navController = navController)
+        }
+
+        composable(Screen.Dashboard.get) {
             DashboardScreen(navController = navController)
         }
     }

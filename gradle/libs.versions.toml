@@ -1,6 +1,6 @@
 [versions]
 accompanist-systemuicontroller = "0.31.0-alpha"
-client = "0.1.0-alpha2"
+client = "0.1.0-alpha3"
 com-android-application = "8.1.0-alpha11"
 kotlinx-coroutines-android = "1.6.4"
 material-icons-extended = "1.5.0-alpha02"

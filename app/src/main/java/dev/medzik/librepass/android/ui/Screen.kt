@@ -1,13 +1,15 @@
 package dev.medzik.librepass.android.ui
 
-enum class Screen {
+enum class Screen(route: String? = null) {
     Login,
-    Dashboard
-}
+    Unlock,
+    Dashboard("dashboard/{encryptionKey}")
 
-//class Screen {
-//    companion object {
-//        const val Login = "login"
-//        const val Dashboard = "dashboard"
-//    }
-//}
+    ; // <- semicolon is required
+
+    val get = route ?: name
+
+    companion object {
+        fun Dashboard(encryptionKey: String) = Dashboard.get.replace("{encryptionKey}", encryptionKey)
+    }
+}

@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.screens.DashboardScreen
 import dev.medzik.librepass.android.ui.screens.LoginScreen
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
@@ -40,13 +41,13 @@ fun LibrePassApp() {
 
     val repository = Repository(context = LocalContext.current)
 
-    NavHost(navController = navController, startDestination = repository.get()?.let { "dashboard" } ?: "login") {
-        composable("login") {
+    NavHost(navController = navController, startDestination = repository.get()?.let { Screen.Dashboard.name } ?: Screen.Login.name) {
+        composable(Screen.Login.name) {
             LoginScreen(navController = navController)
         }
 
-        composable("dashboard") {
-            DashboardScreen()
+        composable(Screen.Dashboard.name) {
+            DashboardScreen(navController = navController)
         }
     }
 }

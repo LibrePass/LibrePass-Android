@@ -16,11 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Screen
@@ -86,7 +88,7 @@ fun LoginScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            TopBar(title = "Log in")
+            TopBar(title = stringResource(id = R.string.login))
         },
         modifier = Modifier.navigationBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -99,35 +101,35 @@ fun LoginScreen(navController: NavController) {
                 .padding(horizontal = 16.dp),
         ) {
             TextInputField(
-                label = "Email",
+                label = stringResource(id = R.string.email),
                 state = email,
                 isError = isEmailError,
-                errorMessage = "Invalid email",
+                errorMessage = stringResource(id = R.string.invalid_email),
                 keyboardType = KeyboardType.Email,
             )
 
             TextInputField(
-                label = "Password",
+                label = stringResource(id = R.string.password),
                 state = password,
                 hidden = true,
                 isError = isPasswordError,
-                errorMessage = "Password is too short",
+                errorMessage = stringResource(id = R.string.invalid_password_too_short),
                 keyboardType = KeyboardType.Password,
             )
 
             Button(
                 onClick = { onLogin(email.value, password.value) },
                 enabled =
-                !isEmailError && !isPasswordError
-                        && email.value.isNotEmpty() && password.value.isNotEmpty()
-                        && !loading.value,
+                    !isEmailError && !isPasswordError
+                    && email.value.isNotEmpty() && password.value.isNotEmpty()
+                    && !loading.value,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
                 if (loading.value) LoadingIndicator(animating = true)
-                else Text("Log in")
+                else Text(text = stringResource(id = R.string.login_button))
             }
         }
     }

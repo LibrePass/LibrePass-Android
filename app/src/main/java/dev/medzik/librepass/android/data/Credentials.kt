@@ -11,4 +11,6 @@ data class Credentials(
 
     var accessToken: String,
     var refreshToken: String,
+
+    var encryptionKey: String,
 )

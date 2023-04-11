@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name">LibrePass</string>
 
+    <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="password_hint">Password hint</string>
+    <string name="optional">optional</string>
     <string name="login_button">Log in</string>
+    <string name="register_button">Register</string>
     <string name="invalid_email">Invalid email</string>
     <string name="invalid_password_too_short">Password is too short</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="invalid_credentials">Invalid credentials</string>
 
     <string name="dashboard">Dashboard</string>

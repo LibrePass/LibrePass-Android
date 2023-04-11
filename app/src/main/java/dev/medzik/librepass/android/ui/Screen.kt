@@ -1,6 +1,8 @@
 package dev.medzik.librepass.android.ui
 
 enum class Screen(route: String? = null) {
+    Welcome,
+    Register,
     Login,
     Unlock,
     Dashboard("dashboard/{encryptionKey}")

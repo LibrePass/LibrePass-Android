@@ -88,6 +88,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 //    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
+    implementation("com.google.accompanist:accompanist-drawablepainter:0.31.0-alpha")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

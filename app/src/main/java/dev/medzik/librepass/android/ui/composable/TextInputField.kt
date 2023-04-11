@@ -34,9 +34,10 @@ fun TextInputField(
         value = state.value,
         onValueChange = { state.value = it },
         label = { Text(label) },
+        maxLines = 1,
         visualTransformation =
-        if (hidden && hiddenState.value) PasswordVisualTransformation()
-        else VisualTransformation.None,
+            if (hidden && hiddenState.value) PasswordVisualTransformation()
+            else VisualTransformation.None,
         trailingIcon = {
             if (hidden) {
                 // add icon

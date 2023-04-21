@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">LibrePass</string>
 
+    <!-- TopBar -->
+    <string name="back">Back</string>
+
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="email">Email</string>

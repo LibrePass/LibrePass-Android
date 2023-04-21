@@ -51,7 +51,9 @@ fun UnlockScreen(navController: NavController) {
 
         scope.launch(Dispatchers.IO) {
             try {
-                val dbCredentials = repository.get()!!
+                loading.value = true
+
+                val dbCredentials = repository.credentials.get()!!
 
                 val encryptedEncryptionKey = dbCredentials.encryptionKey
 
@@ -62,7 +64,12 @@ fun UnlockScreen(navController: NavController) {
                     basePassword,
                 )
 
-                scope.launch(Dispatchers.Main) { navController.navigate(Screen.Dashboard(encryptionKey)) }
+                scope.launch(Dispatchers.Main) {
+                    navController.navigate(Screen.Dashboard(encryptionKey)) {
+                        // disable back navigation
+                        popUpTo(Screen.Unlock.get) { inclusive = true }
+                    }
+                }
             } catch (e: Exception) {
                 loading.value = false
 
@@ -94,7 +101,7 @@ fun UnlockScreen(navController: NavController) {
 
             Button(
                 onClick = { onUnlock(password.value) },
-                enabled = password.value.isNotEmpty(),
+                enabled = password.value.isNotEmpty() && !loading.value,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)

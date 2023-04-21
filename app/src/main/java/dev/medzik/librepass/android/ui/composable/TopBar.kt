@@ -9,14 +9,18 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(title: String) {
+fun TopBar(
+    title: String,
+    navigationIcon: @Composable (() -> Unit)? = null,
+) {
     TopAppBar(
         title = {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleLarge
             )
-        }
+        },
+        navigationIcon = navigationIcon ?: {}
     )
 }
 
@@ -28,7 +32,6 @@ fun TopBarTwoColor(text1: String, text2: String) {
             Row {
                 Text(
                     text = text1,
-                    color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.titleLarge,
                 )
 

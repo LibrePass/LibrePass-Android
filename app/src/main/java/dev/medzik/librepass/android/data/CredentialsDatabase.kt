@@ -5,20 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Credentials::class], version = 1, exportSchema = false)
-abstract class CredentialsDatabase : RoomDatabase() {
+@Database(entities = [Credentials::class, CipherTable::class], version = 1, exportSchema = false)
+abstract class LibrePassDatabase : RoomDatabase() {
     abstract fun credentialsDao(): CredentialsDao
+    abstract fun cipherDao(): CipherDao
 }
 
-object CredentialsDatabaseProvider {
-    private var database: CredentialsDatabase? = null
+object LibrePassDatabaseProvider {
+    private var database: LibrePassDatabase? = null
 
-    fun getInstance(context: Context): CredentialsDatabase {
+    fun getInstance(context: Context): LibrePassDatabase {
         if (database == null) {
             database = Room.databaseBuilder(
                 context,
-                CredentialsDatabase::class.java,
-                "credentials.db"
+                LibrePassDatabase::class.java,
+                "librepass.db"
             )
                 .allowMainThreadQueries()
                 .build()

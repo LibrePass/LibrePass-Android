@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -68,7 +72,7 @@ fun LoginScreen(navController: NavController) {
 
                 val repository = Repository(context = context)
 
-                repository.insert(
+                repository.credentials.insert(
                     Credentials(
                         userId = credentials.userId,
                         email = email,
@@ -105,7 +109,17 @@ fun LoginScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            TopBar(title = stringResource(id = R.string.login))
+            TopBar(
+                title = stringResource(id = R.string.login),
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = stringResource(id = R.string.back)
+                        )
+                    }
+                }
+            )
         },
         modifier = Modifier.navigationBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) },

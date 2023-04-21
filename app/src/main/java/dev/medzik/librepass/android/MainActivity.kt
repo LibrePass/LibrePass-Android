@@ -14,6 +14,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.screens.CipherAddView
+import dev.medzik.librepass.android.ui.screens.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.DashboardScreen
 import dev.medzik.librepass.android.ui.screens.LoginScreen
 import dev.medzik.librepass.android.ui.screens.RegisterScreen
@@ -44,7 +46,7 @@ fun LibrePassApp() {
 
     val repository = Repository(context = LocalContext.current)
 
-    NavHost(navController = navController, startDestination = repository.get()?.let { Screen.Unlock.get } ?: Screen.Welcome.get) {
+    NavHost(navController = navController, startDestination = repository.credentials.get()?.let { Screen.Unlock.get } ?: Screen.Welcome.get) {
         composable(Screen.Welcome.get) {
             WelcomeScreen(navController = navController)
         }
@@ -63,6 +65,14 @@ fun LibrePassApp() {
 
         composable(Screen.Dashboard.get) {
             DashboardScreen(navController = navController)
+        }
+
+        composable(Screen.CipherViewScreen.get) {
+            CipherViewScreen(navController = navController)
+        }
+
+        composable(Screen.CipherAdd.get) {
+            CipherAddView(navController = navController)
         }
     }
 }

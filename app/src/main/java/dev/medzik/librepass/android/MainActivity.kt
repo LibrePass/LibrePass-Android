@@ -67,7 +67,7 @@ fun LibrePassApp() {
             DashboardScreen(navController = navController)
         }
 
-        composable(Screen.CipherViewScreen.get) {
+        composable(Screen.CipherView.get) {
             CipherViewScreen(navController = navController)
         }
 

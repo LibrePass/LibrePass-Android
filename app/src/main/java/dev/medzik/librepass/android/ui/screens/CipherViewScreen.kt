@@ -26,14 +26,15 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.librepass.android.data.Repository
-import dev.medzik.librepass.android.ui.composable.TopBar
+import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.composable.common.TopBar
 import java.util.UUID
 
 @Composable
 fun CipherViewScreen(navController: NavController) {
-    val encryptionKey = navController.currentBackStackEntry?.arguments?.getString("encryptionKey")
+    val encryptionKey = navController.currentBackStackEntry?.arguments?.getString(Argument.EncryptionKey.get)
         ?: return
-    val cipherId = navController.currentBackStackEntry?.arguments?.getString("cipherId")
+    val cipherId = navController.currentBackStackEntry?.arguments?.getString(Argument.CipherId.get)
         ?: return
 
     val repository = Repository(context = LocalContext.current)

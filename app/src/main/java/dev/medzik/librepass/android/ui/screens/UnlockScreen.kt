@@ -24,10 +24,11 @@ import dev.medzik.libcrypto.AesCbc
 import dev.medzik.libcrypto.Pbkdf2
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.ui.composable.LoadingIndicator
-import dev.medzik.librepass.android.ui.composable.TextInputField
-import dev.medzik.librepass.android.ui.composable.TopBar
+import dev.medzik.librepass.android.ui.composable.common.LoadingIndicator
+import dev.medzik.librepass.android.ui.composable.common.TextInputField
+import dev.medzik.librepass.android.ui.composable.common.TopBar
 import dev.medzik.librepass.client.api.v1.PasswordIterations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -65,7 +66,10 @@ fun UnlockScreen(navController: NavController) {
                 )
 
                 scope.launch(Dispatchers.Main) {
-                    navController.navigate(Screen.Dashboard(encryptionKey)) {
+                    println(Screen.Dashboard.fill(Argument.EncryptionKey to encryptionKey))
+                    navController.navigate(
+                        Screen.Dashboard.fill(Argument.EncryptionKey to encryptionKey)
+                    ) {
                         // disable back navigation
                         popUpTo(Screen.Unlock.get) { inclusive = true }
                     }

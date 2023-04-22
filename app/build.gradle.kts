@@ -2,6 +2,12 @@ plugins {
     id("com.android.application")
     id("com.google.devtools.ksp") version "1.7.20-1.0.8"
     kotlin("android")
+
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.4.32"
+}
+
+allOpen {
+    annotation("kotlin.Throws")
 }
 
 android {

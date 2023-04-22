@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.composable
+package dev.medzik.librepass.android.ui.composable.common
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.StartOffset

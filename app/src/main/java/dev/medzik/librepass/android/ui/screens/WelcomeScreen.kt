@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.drawablepainter.DrawablePainter
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.ui.composable.TopBarTwoColor
+import dev.medzik.librepass.android.ui.composable.common.TopBarTwoColor
 
 @Composable
 fun WelcomeScreen(navController: NavController) {

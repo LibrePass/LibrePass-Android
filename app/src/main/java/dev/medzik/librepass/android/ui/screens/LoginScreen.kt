@@ -31,10 +31,11 @@ import dev.medzik.libcrypto.Pbkdf2
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.ui.composable.LoadingIndicator
-import dev.medzik.librepass.android.ui.composable.TextInputField
-import dev.medzik.librepass.android.ui.composable.TopBar
+import dev.medzik.librepass.android.ui.composable.common.LoadingIndicator
+import dev.medzik.librepass.android.ui.composable.common.TextInputField
+import dev.medzik.librepass.android.ui.composable.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.client.api.v1.AuthClient
 import dev.medzik.librepass.client.api.v1.PasswordIterations
@@ -92,7 +93,9 @@ fun LoginScreen(navController: NavController) {
 
                 // navigate to dashboard
                 scope.launch(Dispatchers.Main) {
-                    navController.navigate(Screen.Dashboard(encryptionKey)) {
+                    navController.navigate(
+                        Screen.Dashboard.fill(Argument.EncryptionKey to encryptionKey)
+                    ) {
                         // disable back navigation
                         popUpTo(Screen.Login.get) { inclusive = true }
                     }

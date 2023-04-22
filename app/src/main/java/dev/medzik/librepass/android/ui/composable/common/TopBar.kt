@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.composable
+package dev.medzik.librepass.android.ui.composable.common
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.ExperimentalMaterial3Api

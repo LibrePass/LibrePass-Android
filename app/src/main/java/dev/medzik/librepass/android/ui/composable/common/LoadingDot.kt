@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.composable
+package dev.medzik.librepass.android.ui.composable.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

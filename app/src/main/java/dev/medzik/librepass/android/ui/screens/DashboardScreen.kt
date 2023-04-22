@@ -36,10 +36,11 @@ import androidx.navigation.NavHostController
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composable.CipherListItem
-import dev.medzik.librepass.android.ui.composable.LoadingIndicator
-import dev.medzik.librepass.android.ui.composable.TopBar
+import dev.medzik.librepass.android.ui.composable.common.LoadingIndicator
+import dev.medzik.librepass.android.ui.composable.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.types.api.Cipher
@@ -51,7 +52,7 @@ import kotlinx.coroutines.runBlocking
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(navController: NavController) {
-    val encryptionKey = navController.currentBackStackEntry?.arguments?.getString("encryptionKey")
+    val encryptionKey = navController.currentBackStackEntry?.arguments?.getString(Argument.EncryptionKey.get)
         ?: return
 
     // database
@@ -154,7 +155,11 @@ fun DashboardScreen(navController: NavController) {
                 LazyColumn {
                     items(ciphers.value.size) { index ->
                         CipherListItem(ciphers.value[index], sheetState = sheetState, sheetContent = sheetContent) { cipher ->
-                            navController.navigate(Screen.CipherViewScreen(cipher.id.toString(), encryptionKey)) {
+                            navController.navigate(
+                                Screen.CipherView.fill(
+                                    Argument.CipherId to cipher.id.toString(),
+                                    Argument.EncryptionKey to encryptionKey
+                                )) {
                                 // TODO: restore state of dashboard screen after navigating back
                                 popUpTo(Screen.Dashboard.get) { saveState = true }
                             }

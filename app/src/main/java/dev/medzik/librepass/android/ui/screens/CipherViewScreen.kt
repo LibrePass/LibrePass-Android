@@ -56,11 +56,11 @@ fun CipherViewScreen(navController: NavController) {
                 }
             )
         }
-    ) {
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 60.dp) // TopBar padding
+                .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
             Text(

@@ -32,6 +32,7 @@ import dev.medzik.librepass.android.ui.composable.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composable.common.TextInputField
 import dev.medzik.librepass.android.ui.composable.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
+import dev.medzik.librepass.android.utils.TopBarModifier
 import dev.medzik.librepass.client.api.v1.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -99,12 +100,11 @@ fun RegisterScreen(navController: NavController) {
         },
         modifier = Modifier.navigationBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) {
+    ) { innerPadding ->
         Column(
-            modifier = Modifier
+            modifier = TopBarModifier
                 .fillMaxSize()
-                .padding(top = 56.dp) // TopBar padding
-                .padding(top = 20.dp)
+                .padding(innerPadding)
                 .padding(horizontal = 16.dp),
         ) {
             TextInputField(

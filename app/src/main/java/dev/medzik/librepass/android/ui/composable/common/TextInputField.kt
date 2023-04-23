@@ -1,5 +1,6 @@
 package dev.medzik.librepass.android.ui.composable.common
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -74,6 +75,60 @@ fun TextInputField(
             }
         },
         isError = isError,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType,
+        ),
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+fun TextInputFieldBase(
+    label: String,
+    hidden: Boolean = false,
+    state: MutableState<String>,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    trailingIcon: @Composable () -> Unit = {},
+) {
+    val hiddenState = remember { mutableStateOf(hidden) }
+
+    OutlinedTextField(
+        value = state.value,
+        onValueChange = { state.value = it },
+        label = { Text(label) },
+        maxLines = 1,
+        visualTransformation =
+            if (hidden && hiddenState.value) PasswordVisualTransformation()
+            else VisualTransformation.None,
+        trailingIcon = {
+            Row {
+                if (hidden) {
+                    // add icon
+                    val icon = if (hiddenState.value) {
+                        Icons.Filled.Visibility
+                    } else {
+                        Icons.Filled.VisibilityOff
+                    }
+
+                    // localize description for accessibility
+                    val description = if (hiddenState.value) {
+                        "Show password"
+                    } else {
+                        "Hide password"
+                    }
+
+                    // add icon button
+                    IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = description,
+                        )
+                    }
+                }
+
+                trailingIcon()
+            }
+        },
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
         ),

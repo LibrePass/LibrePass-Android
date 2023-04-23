@@ -1,6 +1,6 @@
 plugins {
     id("com.android.application")
-    id("com.google.devtools.ksp") version "1.7.20-1.0.8"
+    id("com.google.devtools.ksp")
     kotlin("android")
 }
 
@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         release {
-//            isMinifyEnabled = false
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -47,7 +47,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.2"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     packaging {
         resources {
@@ -57,10 +57,8 @@ android {
 }
 
 dependencies {
-
+    // androidx
     implementation(libs.core.ktx)
-    implementation(libs.lifecycle.runtime.ktx)
-
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
@@ -68,16 +66,18 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.appcompat)
-    implementation(libs.material)
     implementation(libs.annotation)
-//    implementation(libs.constraintlayout)
-//    implementation(libs.lifecycle.livedata.ktx)
-//    implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.client)
-    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.material.icons.extended)
 
+    // google accompanist
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.drawablepainter)
+
+    // kotlin
     implementation(libs.kotlinx.coroutines.android)
+
+    // librepass client
+    implementation(libs.librepass.client)
 
     // room
     implementation(libs.androidx.room.runtime)
@@ -86,9 +86,6 @@ dependencies {
 
     // navigation
     implementation(libs.androidx.navigation.compose)
-//    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
-
-    implementation(libs.accompanist.drawablepainter)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

@@ -96,8 +96,7 @@ fun LoginScreen(navController: NavController) {
                     navController.navigate(
                         Screen.Dashboard.fill(Argument.EncryptionKey to encryptionKey)
                     ) {
-                        // disable back navigation
-                        popUpTo(Screen.Login.get) { inclusive = true }
+                        popUpTo(0) { inclusive = true }
                     }
                 }
             } catch (e: Throwable) {
@@ -126,12 +125,11 @@ fun LoginScreen(navController: NavController) {
         },
         modifier = Modifier.navigationBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) {
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 56.dp) // TopBar padding
-                .padding(top = 20.dp)
+                .padding(innerPadding)
                 .padding(horizontal = 16.dp),
         ) {
             TextInputField(

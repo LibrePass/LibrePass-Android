@@ -32,9 +32,11 @@ fun WelcomeScreen(navController: NavController) {
         topBar = {
             TopBarTwoColor("Libre", "Pass")
         },
-    ) {
+    ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

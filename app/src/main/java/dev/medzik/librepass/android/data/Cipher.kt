@@ -13,7 +13,7 @@ class CipherTable(
     @PrimaryKey
     val id: UUID,
     val owner: UUID,
-    @TypeConverters(EncryptedCipherConverter::class)
+    @field:TypeConverters(EncryptedCipherConverter::class)
     var encryptedCipher: EncryptedCipher,
 )
 

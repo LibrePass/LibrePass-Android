@@ -29,7 +29,6 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composable.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composable.common.TextInputField
 import dev.medzik.librepass.android.ui.composable.common.TopBar
-import dev.medzik.librepass.android.utils.TopBarModifier
 import dev.medzik.librepass.client.api.v1.PasswordIterations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -90,7 +89,7 @@ fun UnlockScreen(navController: NavController) {
         snackbarHost = { SnackbarHost(snackbarHostState) },
     ) { innerPadding ->
         Column(
-            modifier = TopBarModifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp),

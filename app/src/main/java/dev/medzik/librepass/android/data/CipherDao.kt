@@ -15,6 +15,9 @@ interface CipherDao {
     @Query("SELECT * FROM cipherTable WHERE owner = :owner")
     fun getAll(owner: UUID): List<CipherTable>
 
+    @Query("DELETE FROM cipherTable WHERE id = :id")
+    fun delete(id: UUID)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(cipherTable: CipherTable)
 

@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import com.google.gson.Gson
 import dev.medzik.librepass.types.api.EncryptedCipher
+import kotlinx.serialization.json.Json
 import java.util.UUID
 
 @Entity
@@ -25,6 +25,6 @@ class EncryptedCipherConverter {
 
     @TypeConverter
     fun toEncryptedCipher(json: String): EncryptedCipher {
-        return Gson().fromJson(json, EncryptedCipher::class.java)
+        return Json.decodeFromString(EncryptedCipher.serializer(), json)
     }
 }

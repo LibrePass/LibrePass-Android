@@ -33,6 +33,7 @@ fun CipherListItem(
     sheetState: SheetState,
     sheetContent: MutableState<@Composable () -> Unit>,
     onItemClick: (Cipher) -> Unit,
+    onItemDelete: (Cipher) -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
@@ -67,7 +68,7 @@ fun CipherListItem(
             onClick = {
                 scope.launch {
                     sheetContent.value = {
-                        CipherListItemSheetContent(cipher, sheetState, onItemClick)
+                        CipherListItemSheetContent(cipher, sheetState, onItemClick, onItemDelete)
                     }
 
                     sheetState.show()
@@ -81,7 +82,7 @@ fun CipherListItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CipherListItemSheetContent(cipher: Cipher, sheetState: SheetState, onItemClick: (Cipher) -> Unit) {
+fun CipherListItemSheetContent(cipher: Cipher, sheetState: SheetState, onItemClick: (Cipher) -> Unit, onItemDelete: (Cipher) -> Unit) {
     val scope = rememberCoroutineScope()
 
     Column {
@@ -100,7 +101,10 @@ fun CipherListItemSheetContent(cipher: Cipher, sheetState: SheetState, onItemCli
         }
 
         TextButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                onItemDelete(cipher)
+                scope.launch { sheetState.hide() }
+            },
             colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -110,39 +114,4 @@ fun CipherListItemSheetContent(cipher: Cipher, sheetState: SheetState, onItemCli
             )
         }
     }
-
-//    Row(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(top = 60.dp) // TopBar padding
-//            .padding(horizontal = 16.dp),
-//        horizontalArrangement = Arrangement.SpaceAround
-//    ) {
-//        CenterAlignedTopAppBar(
-//            navigationIcon = {
-//                IconButton(onClick = {
-//                    scope.launch {
-//                        sheetState.hide()
-//                    }
-//                }) {
-//                    Icon(Icons.Rounded.Close, contentDescription = "Cancel")
-//                }
-//            },
-//            title = { Text("Content") },
-//            actions = {
-//                Column {
-//                    Text(
-//                        text = "Item details",
-//                        style = MaterialTheme.typography.titleSmall,
-//                        color = MaterialTheme.colorScheme.primary,
-//                        modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
-//                    )
-//
-//                    CipherField(title = "Name", value = cipher.data.name)
-//                    CipherField(title = "Username", value = cipher.data.username)
-//                    CipherField(title = "Password", value = cipher.data.password, hidden = true)
-//                }
-//            }
-//        )
-//    }
 }

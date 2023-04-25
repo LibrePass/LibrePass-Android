@@ -71,8 +71,19 @@ fun CipherViewScreen(navController: NavController) {
             )
 
             CipherField(title = "Name", value = cipherData.name)
-            CipherField(title = "Username", value = cipherData.username, copy = true)
-            CipherField(title = "Password", value = cipherData.password, copy = true, hidden = true)
+
+            Group(name = "Login") {
+                CipherField(title = "Username", value = cipherData.username, copy = true)
+                CipherField(title = "Password", value = cipherData.password, copy = true, hidden = true)
+            }
+
+            Group(name = "Website") {
+                CipherField(title = "URL", value = cipherData.uris?.get(0), copy = true)
+            }
+
+            Group(name = "Other") {
+                CipherField(title = "Notes", value = cipherData.notes, copy = true)
+            }
         }
     }
 }
@@ -91,9 +102,7 @@ fun CipherField(
     val hiddenState = remember { mutableStateOf(hidden) }
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 8.dp),
+        modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(

@@ -85,16 +85,23 @@ fun TextInputField(
 @Composable
 fun TextInputFieldBase(
     label: String,
+    modifier: Modifier = Modifier,
     hidden: Boolean = false,
-    state: MutableState<String>,
+    state: MutableState<String>? = null,
+    value: String? = null,
+    onValueChange: ((String) -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     trailingIcon: @Composable () -> Unit = {},
 ) {
     val hiddenState = remember { mutableStateOf(hidden) }
 
+    if (state == null && onValueChange == null) {
+        throw IllegalArgumentException("Either state or onValueChange must be provided")
+    }
+
     OutlinedTextField(
-        value = state.value,
-        onValueChange = { state.value = it },
+        value = value ?: state?.value ?: "",
+        onValueChange = onValueChange ?: { state!!.value = it },
         label = { Text(label) },
         maxLines = 1,
         visualTransformation =
@@ -132,6 +139,6 @@ fun TextInputFieldBase(
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
         ),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     )
 }

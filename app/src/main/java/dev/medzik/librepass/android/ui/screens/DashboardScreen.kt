@@ -155,16 +155,29 @@ fun DashboardScreen(navController: NavController) {
             ) {
                 LazyColumn {
                     items(ciphers.value.size) { index ->
-                        CipherListItem(ciphers.value[index], sheetState = sheetState, sheetContent = sheetContent) { cipher ->
-                            navController.navigate(
-                                Screen.CipherView.fill(
-                                    Argument.CipherId to cipher.id.toString(),
-                                    Argument.EncryptionKey to encryptionKey
-                                )) {
-                                // TODO: restore state of dashboard screen after navigating back
-                                popUpTo(Screen.Dashboard.get) { saveState = true }
+                        CipherListItem(
+                            ciphers.value[index],
+                            sheetState = sheetState,
+                            sheetContent = sheetContent,
+                            onItemClick = { cipher ->
+                                navController.navigate(
+                                    Screen.CipherView.fill(
+                                        Argument.CipherId to cipher.id.toString(),
+                                        Argument.EncryptionKey to encryptionKey
+                                    )) {
+                                    // TODO: restore state of dashboard screen after navigating back
+                                    popUpTo(Screen.Dashboard.get) { saveState = true }
+                                }
+                            },
+                            onItemDelete = { cipher ->
+                                scope.launch(Dispatchers.IO) {
+                                    cipherClient.delete(cipher.id)
+                                    repository.cipher.delete(cipher.id)
+
+                                    ciphers.value = ciphers.value.filter { it.id != cipher.id }
+                                }
                             }
-                        }
+                        )
                     }
                 }
 

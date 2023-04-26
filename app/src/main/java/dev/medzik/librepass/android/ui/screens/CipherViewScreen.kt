@@ -6,10 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composable.common.TopBar
+import dev.medzik.librepass.android.ui.composable.common.TopBarBackIcon
 import java.util.UUID
 
 @Composable
@@ -47,14 +50,24 @@ fun CipherViewScreen(navController: NavController) {
             TopBar(
                 title = cipherData.name,
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null // stringResource(id = R.string.back)
-                        )
-                    }
+                    TopBarBackIcon(navController = navController)
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                navController.navigate(
+                    Screen.CipherEdit.fill(
+                        Argument.EncryptionKey to encryptionKey,
+                        Argument.CipherId to cipherId
+                    )
+                )
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = null
+                )
+            }
         }
     ) { innerPadding ->
         Column(

@@ -42,7 +42,10 @@ import kotlinx.coroutines.runBlocking
 import java.util.UUID
 
 @Composable
-fun CipherAddView(navController: NavController) {
+fun CipherAddEditView(
+    navController: NavController,
+    baseCipher: Cipher? = null
+) {
     // get encryption key from navController
     val encryptionKey = navController.currentBackStackEntry?.arguments?.getString(Argument.EncryptionKey.get)
         ?: return
@@ -53,7 +56,7 @@ fun CipherAddView(navController: NavController) {
 
     val cipherClient = CipherClient(credentials.accessToken)
 
-    var cipherData by remember { mutableStateOf(CipherData(name = "")) }
+    var cipherData by remember { mutableStateOf(baseCipher?.data ?: CipherData(name = "")) }
 
     val loading = remember { mutableStateOf(false) }
 
@@ -63,18 +66,23 @@ fun CipherAddView(navController: NavController) {
     fun submit() {
         loading.value = true
 
-        val cipher = Cipher(
-            id = UUID.randomUUID(),
-            owner = credentials.userId,
-            type = CipherType.Login.type,
-            data = cipherData,
-        )
+        val cipher = baseCipher?.copy(data = cipherData)
+            ?: Cipher(
+                id = UUID.randomUUID(),
+                owner = credentials.userId,
+                type = CipherType.Login.type,
+                data = cipherData,
+            )
 
         scope.launch(Dispatchers.IO) {
             val encryptedCipher = cipher.toEncryptedCipher(encryptionKey)
 
             try {
-                cipherClient.insert(encryptedCipher)
+                if (baseCipher == null) {
+                    cipherClient.insert(encryptedCipher)
+                } else {
+                    cipherClient.update(encryptedCipher)
+                }
             } catch (e: ApiException) {
                 // TODO: handle api error
                 loading.value = false
@@ -83,13 +91,17 @@ fun CipherAddView(navController: NavController) {
                 loading.value = false
             } finally {
                 runBlocking {
-                    repository.cipher.insert(
-                        CipherTable(
+                    val cipherTable = CipherTable(
                         id = encryptedCipher.id,
                         owner = encryptedCipher.owner,
                         encryptedCipher = encryptedCipher,
                     )
-                    )
+
+                    if (baseCipher == null) {
+                        repository.cipher.insert(cipherTable)
+                    } else {
+                        repository.cipher.update(cipherTable)
+                    }
                 }
 
                 scope.launch(Dispatchers.Main) { navController.popBackStack() }
@@ -102,7 +114,7 @@ fun CipherAddView(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = "Add Cipher",
+                title = baseCipher?.data?.name ?: "Add new cipher",
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         },
@@ -177,7 +189,7 @@ fun CipherAddView(navController: NavController) {
                     .padding(horizontal = 40.dp)
             ) {
                 if (loading.value) LoadingIndicator(animating = true)
-                else Text(text = "Add")
+                else Text(text = baseCipher?.let { "Save" } ?: "Add")
             }
         }
     }

@@ -18,6 +18,7 @@ sealed class Screen(private val route: String, private val arguments: List<Strin
     object Dashboard : Screen("dashboard", listOf(Argument.EncryptionKey.key))
     object CipherView : Screen("cipher-view", listOf(Argument.EncryptionKey.key, Argument.CipherId.key))
     object CipherAdd : Screen("cipher-add", listOf(Argument.EncryptionKey.key))
+    object CipherEdit : Screen("cipher-edit", listOf(Argument.EncryptionKey.key, Argument.CipherId.key))
 
     val get get() = if (arguments != null) "$route/${arguments.joinToString("/")}" else route
 

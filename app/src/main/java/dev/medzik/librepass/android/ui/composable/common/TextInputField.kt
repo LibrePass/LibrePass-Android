@@ -36,6 +36,7 @@ fun TextInputField(
         onValueChange = { state.value = it },
         label = { Text(label) },
         maxLines = 1,
+        singleLine = true,
         visualTransformation =
             if (hidden && hiddenState.value) PasswordVisualTransformation()
             else VisualTransformation.None,
@@ -104,6 +105,7 @@ fun TextInputFieldBase(
         onValueChange = onValueChange ?: { state!!.value = it },
         label = { Text(label) },
         maxLines = 1,
+        singleLine = true,
         visualTransformation =
             if (hidden && hiddenState.value) PasswordVisualTransformation()
             else VisualTransformation.None,

@@ -33,7 +33,10 @@ fun TopBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarTwoColor(text1: String, text2: String) {
+fun TopBarTwoColor(
+    text1: String,
+    text2: String
+) {
     TopAppBar(
         title = {
             Row {

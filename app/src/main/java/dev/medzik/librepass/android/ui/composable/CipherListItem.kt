@@ -82,7 +82,12 @@ fun CipherListItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CipherListItemSheetContent(cipher: Cipher, sheetState: SheetState, onItemClick: (Cipher) -> Unit, onItemDelete: (Cipher) -> Unit) {
+fun CipherListItemSheetContent(
+    cipher: Cipher,
+    sheetState: SheetState,
+    onItemClick: (Cipher) -> Unit,
+    onItemDelete: (Cipher) -> Unit
+) {
     val scope = rememberCoroutineScope()
 
     Column {

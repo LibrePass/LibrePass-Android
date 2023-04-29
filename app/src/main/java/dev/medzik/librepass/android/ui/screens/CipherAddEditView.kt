@@ -196,7 +196,10 @@ fun CipherAddEditView(
 }
 
 @Composable
-fun Group(name: String, content: @Composable () -> Unit = {}) {
+fun Group(
+    name: String,
+    content: @Composable () -> Unit = {}
+) {
     Text(
         text = name,
         style = MaterialTheme.typography.titleSmall,

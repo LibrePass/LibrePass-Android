@@ -96,11 +96,13 @@ fun DashboardScreen(navController: NavController) {
 
             // update ciphers in local database
             for (cipher in syncResponse.ciphers) {
-                repository.cipher.insert(CipherTable(
-                    id = cipher.id,
-                    owner = cipher.owner,
-                    encryptedCipher = cipher
-                ))
+                repository.cipher.insert(
+                    CipherTable(
+                        id = cipher.id,
+                        owner = cipher.owner,
+                        encryptedCipher = cipher
+                    )
+                )
             }
         } else {
             // update last sync date
@@ -111,11 +113,13 @@ fun DashboardScreen(navController: NavController) {
 
             // insert ciphers into local database
             for (cipher in ciphersResponse) {
-                repository.cipher.insert(CipherTable(
-                    id = cipher.id,
-                    owner = cipher.owner,
-                    encryptedCipher = cipher
-                ))
+                repository.cipher.insert(
+                    CipherTable(
+                        id = cipher.id,
+                        owner = cipher.owner,
+                        encryptedCipher = cipher
+                    )
+                )
             }
         }
 
@@ -190,7 +194,8 @@ fun DashboardScreen(navController: NavController) {
                                     Screen.CipherView.fill(
                                         Argument.CipherId to cipher.id.toString(),
                                         Argument.EncryptionKey to encryptionKey
-                                    )) {
+                                    )
+                                ) {
                                     // TODO: restore state of dashboard screen after navigating back
                                     popUpTo(Screen.Dashboard.get) { saveState = true }
                                 }
@@ -223,7 +228,7 @@ fun DashboardScreen(navController: NavController) {
                     scope.launch {
                         sheetState.hide()
                     }
-                },
+                }
             ) {
                 sheetContent.value()
             }

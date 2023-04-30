@@ -40,7 +40,7 @@ jobs:
       - name: Prepare release
         run: |
           mkdir release
-          cp ${{ steps.sign_aab.outputs.signedReleaseFile }} release/
+          cp ${{ steps.sign_apk.outputs.signedReleaseFile }} release/LibrePass-signed.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
@@ -53,7 +53,7 @@ jobs:
     needs: build
 
     steps:
-      - name: Download AAB from build
+      - name: Download APK from build
         uses: actions/download-artifact@v1
         with:
           name: apk
@@ -79,4 +79,4 @@ jobs:
           tag_name: "nightly"
           draft: false
           fail_on_unmatched_files: true
-          files: ./release/*
+          files: apk/*

@@ -9,8 +9,10 @@ data class Credentials(
     @PrimaryKey val userId: UUID,
     val email: String,
 
-    var accessToken: String,
-    var refreshToken: String,
+    val accessToken: String,
+    val refreshToken: String,
 
-    var encryptionKey: String,
+    val encryptionKey: String,
+
+    val lastSync: Long? = null,
 )

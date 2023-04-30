@@ -44,9 +44,8 @@ import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.types.api.Cipher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,20 +76,47 @@ fun DashboardScreen(navController: NavController) {
         // set loading state to true
         state.value = true
 
-        // TODO: add caching
-        val cipherIds = cipherClient.getAll()
+        // caching
+        val cachedCiphers = repository.cipher.getAllIDs(credentials.userId)
+        val lastSync = repository.credentials.get()!!.lastSync
 
-        // get ciphers from API and insert them into local database
-        val tasks = cipherIds.map { id ->
-            scope.launch(Dispatchers.IO) {
-                val cipher = cipherClient.get(id)
-                repository.cipher.insert(CipherTable(id = cipher.id, owner = cipher.owner, encryptedCipher = cipher))
+        if (lastSync != null) {
+            // update last sync date
+            repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
+
+            // get ciphers from API
+            val syncResponse = cipherClient.sync(Date(lastSync * 1000))
+
+            // delete ciphers from local database that are not in API response
+            for (cipher in cachedCiphers) {
+                if (cipher !in syncResponse.ids) {
+                    repository.cipher.delete(cipher)
+                }
             }
-        }
 
-        // wait for all tasks to finish
-        runBlocking {
-            tasks.joinAll()
+            // update ciphers in local database
+            for (cipher in syncResponse.ciphers) {
+                repository.cipher.insert(CipherTable(
+                    id = cipher.id,
+                    owner = cipher.owner,
+                    encryptedCipher = cipher
+                ))
+            }
+        } else {
+            // update last sync date
+            repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
+
+            // get all ciphers from API
+            val ciphersResponse = cipherClient.getAll()
+
+            // insert ciphers into local database
+            for (cipher in ciphersResponse) {
+                repository.cipher.insert(CipherTable(
+                    id = cipher.id,
+                    owner = cipher.owner,
+                    encryptedCipher = cipher
+                ))
+            }
         }
 
         // get ciphers from local database

@@ -46,8 +46,16 @@ class CipherCredentials(private val cipherDao: CipherDao) : CipherDao {
         return cipherDao.getAll(owner)
     }
 
+    override fun getAllIDs(owner: UUID): List<UUID> {
+        return cipherDao.getAllIDs(owner)
+    }
+
     override fun delete(id: UUID) {
         cipherDao.delete(id)
+    }
+
+    override fun delete(ids: List<UUID>) {
+        cipherDao.delete(ids)
     }
 
     override suspend fun update(cipherTable: CipherTable) {

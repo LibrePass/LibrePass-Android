@@ -106,7 +106,7 @@ fun CipherField(
     title: String,
     value: String?,
     hidden: Boolean = false,
-    copy: Boolean = false,
+    copy: Boolean = false
 ) {
     if (value.isNullOrEmpty()) return
 
@@ -130,12 +130,12 @@ fun CipherField(
             if (hiddenState.value) {
                 Text(
                     text = "•".repeat(value.length),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium
                 )
             } else {
                 Text(
                     text = value,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium
                 )
             }
         }
@@ -145,7 +145,7 @@ fun CipherField(
                 IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                     Icon(
                         imageVector = if (hiddenState.value) { Icons.Filled.Visibility } else { Icons.Filled.VisibilityOff },
-                        contentDescription = if (hiddenState.value) { "Show password" } else { "Hide password" },
+                        contentDescription = if (hiddenState.value) { "Show password" } else { "Hide password" }
                     )
                 }
             }
@@ -154,7 +154,7 @@ fun CipherField(
                 IconButton(onClick = { clipboardManager.setText(AnnotatedString(value)) }) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = "Copy to clipboard",
+                        contentDescription = "Copy to clipboard"
                     )
                 }
             }

@@ -17,7 +17,7 @@ import java.util.UUID
 
 enum class Argument {
     EncryptionKey,
-    CipherId,
+    CipherId
 
     ;
 

@@ -14,5 +14,5 @@ data class Credentials(
 
     val encryptionKey: String,
 
-    val lastSync: Long? = null,
+    val lastSync: Long? = null
 )

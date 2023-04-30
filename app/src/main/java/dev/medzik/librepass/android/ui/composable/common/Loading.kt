@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LoadingDot(
     color: Color,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
@@ -44,7 +44,7 @@ fun LoadingIndicator(
     animating: Boolean,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
-    indicatorSpacing: Dp = 4.dp,
+    indicatorSpacing: Dp = 4.dp
 ) {
     val animatedValues = List(3) { index ->
         var animatedValue by remember(key1 = animating) { mutableStateOf(0f) }
@@ -56,8 +56,8 @@ fun LoadingIndicator(
                     animationSpec = infiniteRepeatable(
                         animation = tween(durationMillis = 300),
                         repeatMode = RepeatMode.Reverse,
-                        initialStartOffset = StartOffset(300 / 3 * index),
-                    ),
+                        initialStartOffset = StartOffset(300 / 3 * index)
+                    )
                 ) { value, _ -> animatedValue = value }
             }
         }
@@ -71,7 +71,7 @@ fun LoadingIndicator(
                     .width(8.dp)
                     .aspectRatio(1f)
                     .offset(y = animatedValue.dp),
-                color = color,
+                color = color
             )
         }
     }

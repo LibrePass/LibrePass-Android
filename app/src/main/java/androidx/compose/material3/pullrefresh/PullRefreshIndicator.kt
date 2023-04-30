@@ -65,16 +65,16 @@ import kotlin.math.pow
  * @param contentColor The color of the indicator's arc and arrow.
  * @param scale A boolean controlling whether the indicator's size scales with pull progress or not.
  */
-@Composable
 // TODO(b/244423199): Consider whether the state parameter should be replaced with lambdas to
 //  enable people to use this indicator with custom pull-to-refresh components.
+@Composable
 fun PullRefreshIndicator(
     refreshing: Boolean,
     state: PullRefreshState,
     modifier: Modifier = Modifier,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(backgroundColor),
-    scale: Boolean = false,
+    scale: Boolean = false
 ) {
     val showElevation by remember(refreshing, state) {
         derivedStateOf { refreshing || state.position > 0.5f }
@@ -86,7 +86,7 @@ fun PullRefreshIndicator(
             .pullRefreshIndicatorTransform(state, scale),
         shape = SpinnerShape,
         color = backgroundColor,
-        shadowElevation = if (showElevation) Elevation else 0.dp,
+        shadowElevation = if (showElevation) Elevation else 0.dp
     ) {
         Crossfade(
             targetState = refreshing,
@@ -102,7 +102,7 @@ fun PullRefreshIndicator(
                     CircularProgressIndicator(
                         color = contentColor,
                         strokeWidth = StrokeWidth,
-                        modifier = Modifier.size(spinnerSize),
+                        modifier = Modifier.size(spinnerSize)
                     )
                 } else {
                     CircularArrowIndicator(state, contentColor, Modifier.size(spinnerSize))
@@ -119,7 +119,7 @@ fun PullRefreshIndicator(
 private fun CircularArrowIndicator(
     state: PullRefreshState,
     color: Color,
-    modifier: Modifier,
+    modifier: Modifier
 ) {
     val path = remember { Path().apply { fillType = PathFillType.EvenOdd } }
 
@@ -167,7 +167,7 @@ private class ArrowValues(
     val rotation: Float,
     val startAngle: Float,
     val endAngle: Float,
-    val scale: Float,
+    val scale: Float
 )
 
 private fun ArrowValues(progress: Float): ArrowValues {
@@ -195,7 +195,7 @@ private fun DrawScope.drawArrow(
     bounds: Rect,
     color: Color,
     alpha: Float,
-    values: ArrowValues,
+    values: ArrowValues
 ) {
     arrow.reset()
     arrow.moveTo(0f, 0f) // Move to left corner

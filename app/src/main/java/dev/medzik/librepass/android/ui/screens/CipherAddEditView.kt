@@ -71,7 +71,7 @@ fun CipherAddEditView(
                 id = UUID.randomUUID(),
                 owner = credentials.userId,
                 type = CipherType.Login.type,
-                data = cipherData,
+                data = cipherData
             )
 
         scope.launch(Dispatchers.IO) {
@@ -94,7 +94,7 @@ fun CipherAddEditView(
                     val cipherTable = CipherTable(
                         id = encryptedCipher.id,
                         owner = encryptedCipher.owner,
-                        encryptedCipher = encryptedCipher,
+                        encryptedCipher = encryptedCipher
                     )
 
                     if (baseCipher == null) {
@@ -117,7 +117,7 @@ fun CipherAddEditView(
                 title = baseCipher?.data?.name ?: "Add new cipher",
                 navigationIcon = { TopBarBackIcon(navController) }
             )
-        },
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -188,8 +188,11 @@ fun CipherAddEditView(
                     .padding(top = 16.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading.value) LoadingIndicator(animating = true)
-                else Text(text = baseCipher?.let { "Save" } ?: "Add")
+                if (loading.value) {
+                    LoadingIndicator(animating = true)
+                } else {
+                    Text(text = baseCipher?.let { "Save" } ?: "Add")
+                }
             }
         }
     }

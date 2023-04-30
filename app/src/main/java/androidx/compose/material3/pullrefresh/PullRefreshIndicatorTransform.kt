@@ -36,12 +36,14 @@ import androidx.compose.ui.platform.inspectable
 // TODO: Consider whether the state parameter should be replaced with lambdas.
 fun Modifier.pullRefreshIndicatorTransform(
     state: PullRefreshState,
-    scale: Boolean = false,
-) = inspectable(inspectorInfo = debugInspectorInfo {
-    name = "pullRefreshIndicatorTransform"
-    properties["state"] = state
-    properties["scale"] = scale
-}) {
+    scale: Boolean = false
+) = inspectable(
+    inspectorInfo = debugInspectorInfo {
+        name = "pullRefreshIndicatorTransform"
+        properties["state"] = state
+        properties["scale"] = scale
+    }
+) {
     Modifier
         // Essentially we only want to clip the at the top, so the indicator will not appear when
         // the position is 0. It is preferable to clip the indicator as opposed to the layout that

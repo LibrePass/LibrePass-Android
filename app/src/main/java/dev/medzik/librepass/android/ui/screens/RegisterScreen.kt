@@ -98,20 +98,20 @@ fun RegisterScreen(navController: NavController) {
             )
         },
         modifier = Modifier.navigationBarsPadding(),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
         ) {
             TextInputField(
                 label = stringResource(id = R.string.email),
                 state = email,
                 isError = isEmailError,
                 errorMessage = stringResource(id = R.string.invalid_email),
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Email
             )
 
             TextInputField(
@@ -120,7 +120,7 @@ fun RegisterScreen(navController: NavController) {
                 hidden = true,
                 isError = isPasswordError,
                 errorMessage = stringResource(id = R.string.invalid_password_too_short),
-                keyboardType = KeyboardType.Password,
+                keyboardType = KeyboardType.Password
             )
 
             TextInputField(
@@ -129,29 +129,32 @@ fun RegisterScreen(navController: NavController) {
                 hidden = true,
                 isError = configPassword.value.isNotEmpty() && configPassword.value != password.value,
                 errorMessage = stringResource(id = R.string.passwords_do_not_match),
-                keyboardType = KeyboardType.Password,
+                keyboardType = KeyboardType.Password
             )
 
             TextInputField(
                 label = "${stringResource(id = R.string.password_hint)} (${stringResource(id = R.string.optional)})",
                 state = passwordHint,
-                keyboardType = KeyboardType.Text,
+                keyboardType = KeyboardType.Text
             )
 
             Button(
                 onClick = { onLogin(email.value, password.value) },
                 enabled =
-                    !isEmailError && !isPasswordError
-                    && email.value.isNotEmpty() && password.value.isNotEmpty()
-                    && !loading.value
-                    && configPassword.value == password.value,
+                !isEmailError && !isPasswordError &&
+                    email.value.isNotEmpty() && password.value.isNotEmpty() &&
+                    !loading.value &&
+                    configPassword.value == password.value,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading.value) LoadingIndicator(animating = true)
-                else Text(text = stringResource(id = R.string.register_button))
+                if (loading.value) {
+                    LoadingIndicator(animating = true)
+                } else {
+                    Text(text = stringResource(id = R.string.register_button))
+                }
             }
         }
     }

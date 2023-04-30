@@ -27,7 +27,7 @@ fun TextInputField(
     state: MutableState<String>,
     isError: Boolean = false,
     errorMessage: String = "",
-    keyboardType: KeyboardType = KeyboardType.Text,
+    keyboardType: KeyboardType = KeyboardType.Text
 ) {
     val hiddenState = remember { mutableStateOf(hidden) }
 
@@ -38,8 +38,11 @@ fun TextInputField(
         maxLines = 1,
         singleLine = true,
         visualTransformation =
-            if (hidden && hiddenState.value) PasswordVisualTransformation()
-            else VisualTransformation.None,
+        if (hidden && hiddenState.value) {
+            PasswordVisualTransformation()
+        } else {
+            VisualTransformation.None
+        },
         trailingIcon = {
             if (hidden) {
                 // add icon
@@ -60,7 +63,7 @@ fun TextInputField(
                 IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                     Icon(
                         imageVector = icon,
-                        contentDescription = description,
+                        contentDescription = description
                     )
                 }
             }
@@ -69,7 +72,7 @@ fun TextInputField(
             if (isError) {
                 Text(
                     text = errorMessage,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.error
                 )
             } else {
                 Text(text = "")
@@ -77,7 +80,7 @@ fun TextInputField(
         },
         isError = isError,
         keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType,
+            keyboardType = keyboardType
         ),
         modifier = Modifier.fillMaxWidth()
     )
@@ -92,7 +95,7 @@ fun TextInputFieldBase(
     value: String? = null,
     onValueChange: ((String) -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
-    trailingIcon: @Composable () -> Unit = {},
+    trailingIcon: @Composable () -> Unit = {}
 ) {
     val hiddenState = remember { mutableStateOf(hidden) }
 
@@ -107,8 +110,11 @@ fun TextInputFieldBase(
         maxLines = 1,
         singleLine = true,
         visualTransformation =
-            if (hidden && hiddenState.value) PasswordVisualTransformation()
-            else VisualTransformation.None,
+        if (hidden && hiddenState.value) {
+            PasswordVisualTransformation()
+        } else {
+            VisualTransformation.None
+        },
         trailingIcon = {
             Row {
                 if (hidden) {
@@ -130,7 +136,7 @@ fun TextInputFieldBase(
                     IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                         Icon(
                             imageVector = icon,
-                            contentDescription = description,
+                            contentDescription = description
                         )
                     }
                 }
@@ -139,7 +145,7 @@ fun TextInputFieldBase(
             }
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType,
+            keyboardType = keyboardType
         ),
         modifier = modifier
     )

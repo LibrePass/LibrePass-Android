@@ -18,7 +18,7 @@ import dev.medzik.librepass.android.R
 @Composable
 fun TopBar(
     title: String,
-    navigationIcon: @Composable (() -> Unit)? = null,
+    navigationIcon: @Composable (() -> Unit)? = null
 ) {
     TopAppBar(
         title = {
@@ -42,13 +42,13 @@ fun TopBarTwoColor(
             Row {
                 Text(
                     text = text1,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge
                 )
 
                 Text(
                     text = text2,
                     color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleLarge
                 )
             }
         }

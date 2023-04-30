@@ -79,7 +79,7 @@ fun LoginScreen(navController: NavController) {
                         email = email,
                         accessToken = credentials.accessToken,
                         refreshToken = credentials.refreshToken,
-                        encryptionKey = credentials.encryptionKey,
+                        encryptionKey = credentials.encryptionKey
                     )
                 )
 
@@ -88,7 +88,7 @@ fun LoginScreen(navController: NavController) {
 
                 val encryptionKey = AesCbc.decrypt(
                     credentials.encryptionKey,
-                    basePassword,
+                    basePassword
                 )
 
                 // navigate to dashboard
@@ -124,20 +124,20 @@ fun LoginScreen(navController: NavController) {
             )
         },
         modifier = Modifier.navigationBarsPadding(),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
         ) {
             TextInputField(
                 label = stringResource(id = R.string.email),
                 state = email,
                 isError = isEmailError,
                 errorMessage = stringResource(id = R.string.invalid_email),
-                keyboardType = KeyboardType.Email,
+                keyboardType = KeyboardType.Email
             )
 
             TextInputField(
@@ -146,22 +146,25 @@ fun LoginScreen(navController: NavController) {
                 hidden = true,
                 isError = isPasswordError,
                 errorMessage = stringResource(id = R.string.invalid_password_too_short),
-                keyboardType = KeyboardType.Password,
+                keyboardType = KeyboardType.Password
             )
 
             Button(
                 onClick = { onLogin(email.value, password.value) },
                 enabled =
-                    !isEmailError && !isPasswordError
-                    && email.value.isNotEmpty() && password.value.isNotEmpty()
-                    && !loading.value,
+                !isEmailError && !isPasswordError &&
+                    email.value.isNotEmpty() && password.value.isNotEmpty() &&
+                    !loading.value,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading.value) LoadingIndicator(animating = true)
-                else Text(text = stringResource(id = R.string.login_button))
+                if (loading.value) {
+                    LoadingIndicator(animating = true)
+                } else {
+                    Text(text = stringResource(id = R.string.login_button))
+                }
             }
         }
     }

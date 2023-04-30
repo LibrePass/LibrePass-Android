@@ -1,6 +1,5 @@
 package dev.medzik.librepass.android.ui.screens
 
-import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,14 +24,14 @@ import dev.medzik.librepass.android.ui.composable.common.TopBarTwoColor
 @Composable
 fun WelcomeScreen(navController: NavController) {
     // get app icon
-    val icon: Drawable = LocalContext.current.packageManager.getApplicationIcon(
+    val icon = LocalContext.current.packageManager.getApplicationIcon(
         LocalContext.current.packageName
     )
 
     Scaffold(
         topBar = {
             TopBarTwoColor("Libre", "Pass")
-        },
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -72,14 +71,6 @@ fun WelcomeScreen(navController: NavController) {
             ) {
                 Text(text = "Login")
             }
-         }
+        }
     }
 }
-
-//@Preview
-//@Composable
-//fun WelcomePreview() {
-//    LibrePassTheme {
-//        WelcomeScreen(NavHostController(LocalContext.current))
-//    }
-//}

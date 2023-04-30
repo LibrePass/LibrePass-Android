@@ -63,17 +63,19 @@ fun UnlockScreen(navController: NavController) {
 
                 val encryptionKey = AesCbc.decrypt(
                     encryptedEncryptionKey,
-                    basePassword,
+                    basePassword
                 )
 
                 // refresh access token
                 val credentials = AuthClient().refresh(refreshToken = dbCredentials.refreshToken)
 
                 // save new credentials
-                repository.credentials.update(dbCredentials.copy(
-                    accessToken = credentials.accessToken,
-                    refreshToken = credentials.refreshToken,
-                ))
+                repository.credentials.update(
+                    dbCredentials.copy(
+                        accessToken = credentials.accessToken,
+                        refreshToken = credentials.refreshToken
+                    )
+                )
 
                 scope.launch(Dispatchers.Main) {
                     navController.navigate(
@@ -96,19 +98,19 @@ fun UnlockScreen(navController: NavController) {
             TopBar(title = stringResource(id = R.string.login))
         },
         modifier = Modifier.navigationBarsPadding(),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp)
         ) {
             TextInputField(
                 label = stringResource(id = R.string.password),
                 state = password,
                 hidden = true,
-                keyboardType = KeyboardType.Password,
+                keyboardType = KeyboardType.Password
             )
 
             Button(
@@ -119,8 +121,11 @@ fun UnlockScreen(navController: NavController) {
                     .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading.value) LoadingIndicator(animating = true)
-                else Text(text = stringResource(id = R.string.login_button))
+                if (loading.value) {
+                    LoadingIndicator(animating = true)
+                } else {
+                    Text(text = stringResource(id = R.string.login_button))
+                }
             }
         }
     }

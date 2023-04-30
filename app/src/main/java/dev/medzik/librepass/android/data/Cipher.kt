@@ -14,7 +14,7 @@ class CipherTable(
     val id: UUID,
     val owner: UUID,
     @field:TypeConverters(EncryptedCipherConverter::class)
-    var encryptedCipher: EncryptedCipher,
+    var encryptedCipher: EncryptedCipher
 )
 
 class EncryptedCipherConverter {

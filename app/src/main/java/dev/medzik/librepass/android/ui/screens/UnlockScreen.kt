@@ -21,7 +21,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.libcrypto.AesCbc
-import dev.medzik.libcrypto.Pbkdf2
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
@@ -30,7 +29,6 @@ import dev.medzik.librepass.android.ui.composable.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composable.common.TextInputField
 import dev.medzik.librepass.android.ui.composable.common.TopBar
 import dev.medzik.librepass.client.api.v1.AuthClient
-import dev.medzik.librepass.client.api.v1.PasswordIterations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -59,7 +57,7 @@ fun UnlockScreen(navController: NavController) {
 
                 val encryptedEncryptionKey = dbCredentials.encryptionKey
 
-                val basePassword = Pbkdf2(PasswordIterations).sha256(password, dbCredentials.email.encodeToByteArray())
+                val basePassword = AuthClient.computeBasePasswordHash(password, dbCredentials.email)
 
                 val encryptionKey = AesCbc.decrypt(
                     encryptedEncryptionKey,

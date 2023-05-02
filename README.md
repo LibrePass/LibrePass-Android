@@ -1,4 +1,4 @@
-# LibrePass
+# LibrePass Android
 
 LibrePass is an open-source and secure password manager.
 

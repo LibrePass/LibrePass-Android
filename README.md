@@ -11,9 +11,10 @@ It will be also available in Google Play Store and F-Droid soon.
 
 ## Features
 
-- Password Manager
-- Password and Username Generator
-- Material You Themes
-- App is made in native Kotlin 
+- Password advanced encryption
+- Password manager
+- Password and username generator
+- Material You theme
+- Written in native Kotlin 
 - Various settings options
 - And more with incoming updates!

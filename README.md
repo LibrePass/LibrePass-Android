@@ -2,7 +2,7 @@
 
 LibrePass is an open-source and secure password manager.
 
-<img src="https://user-images.githubusercontent.com/87065584/235640721-e6d57d01-32b6-41f2-8d64-75425f40bc8d.png" width="360" />
+<img src="https://i.imgur.com/xJfzNR9.jpg"/>
 
 ## Install
 

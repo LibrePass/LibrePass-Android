@@ -16,9 +16,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import dev.medzik.librepass.android.R
 
 @Composable
 fun TextInputField(
@@ -37,33 +39,25 @@ fun TextInputField(
         label = { Text(label) },
         maxLines = 1,
         singleLine = true,
-        visualTransformation =
-        if (hidden && hiddenState.value) {
+        visualTransformation = if (hidden && hiddenState.value) {
             PasswordVisualTransformation()
         } else {
             VisualTransformation.None
         },
         trailingIcon = {
             if (hidden) {
-                // add icon
-                val icon = if (hiddenState.value) {
-                    Icons.Filled.Visibility
-                } else {
-                    Icons.Filled.VisibilityOff
-                }
-
-                // localize description for accessibility
-                val description = if (hiddenState.value) {
-                    "Show password"
-                } else {
-                    "Hide password"
-                }
-
-                // add icon button
                 IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                     Icon(
-                        imageVector = icon,
-                        contentDescription = description
+                        imageVector = if (hiddenState.value) {
+                            Icons.Filled.Visibility
+                        } else {
+                            Icons.Filled.VisibilityOff
+                        },
+                        contentDescription = if (hiddenState.value) {
+                            stringResource(id = R.string.show_password)
+                        } else {
+                            stringResource(id = R.string.show_password)
+                        }
                     )
                 }
             }
@@ -109,8 +103,7 @@ fun TextInputFieldBase(
         label = { Text(label) },
         maxLines = 1,
         singleLine = true,
-        visualTransformation =
-        if (hidden && hiddenState.value) {
+        visualTransformation = if (hidden && hiddenState.value) {
             PasswordVisualTransformation()
         } else {
             VisualTransformation.None
@@ -118,25 +111,18 @@ fun TextInputFieldBase(
         trailingIcon = {
             Row {
                 if (hidden) {
-                    // add icon
-                    val icon = if (hiddenState.value) {
-                        Icons.Filled.Visibility
-                    } else {
-                        Icons.Filled.VisibilityOff
-                    }
-
-                    // localize description for accessibility
-                    val description = if (hiddenState.value) {
-                        "Show password"
-                    } else {
-                        "Hide password"
-                    }
-
-                    // add icon button
                     IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                         Icon(
-                            imageVector = icon,
-                            contentDescription = description
+                            imageVector = if (hiddenState.value) {
+                                Icons.Filled.Visibility
+                            } else {
+                                Icons.Filled.VisibilityOff
+                            },
+                            contentDescription = if (hiddenState.value) {
+                                stringResource(id = R.string.show_password)
+                            } else {
+                                stringResource(id = R.string.show_password)
+                            }
                         )
                     }
                 }

@@ -40,7 +40,6 @@ import dev.medzik.librepass.client.api.v1.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
@@ -75,7 +74,7 @@ fun LoginScreen(navController: NavController) {
 
                 val credentials = authClient.login(
                     email = email,
-                    password = password,
+                    password = password
 //                    passwordIsBaseHash = true
                 )
 
@@ -159,8 +158,8 @@ fun LoginScreen(navController: NavController) {
                 onClick = { onLogin(email.value, password.value) },
                 enabled =
                 !isEmailError && !isPasswordError &&
-                        email.value.isNotEmpty() && password.value.isNotEmpty() &&
-                        !loading.value,
+                    email.value.isNotEmpty() && password.value.isNotEmpty() &&
+                    !loading.value,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)

@@ -24,10 +24,15 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
 
+      - name: Setup app version
+        run: |
+          echo "LIBREPASS_APP_VERSION_CODE=$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
+          echo "LIBREPASS_APP_VERSION_NAME=0.0.0-nightly+git-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Sign Apk
+      - name: Sign APK
         id: sign_apk
         uses: r0adkll/sign-android-release@v1
         with:

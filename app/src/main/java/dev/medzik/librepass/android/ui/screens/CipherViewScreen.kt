@@ -23,9 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
@@ -77,25 +79,44 @@ fun CipherViewScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             Text(
-                text = "Item details",
+                text = stringResource(id = R.string.item_details),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
 
-            CipherField(title = "Name", value = cipherData.name)
+            CipherField(title = stringResource(id = R.string.cipher_field_name), value = cipherData.name)
 
-            Group(name = "Login") {
-                CipherField(title = "Username", value = cipherData.username, copy = true)
-                CipherField(title = "Password", value = cipherData.password, copy = true, hidden = true)
+            Group(stringResource(id = R.string.cipher_group_login)) {
+                CipherField(
+                    title = stringResource(id = R.string.cipher_field_username),
+                    value = cipherData.username,
+                    copy = true
+                )
+                CipherField(
+                    title = stringResource(id = R.string.cipher_field_password),
+                    value = cipherData.password,
+                    copy = true,
+                    hidden = true
+                )
             }
 
-            Group(name = "Website") {
-                CipherField(title = "URL", value = cipherData.uris?.get(0), copy = true)
+            Group(stringResource(id = R.string.cipher_group_website)) {
+                cipherData.uris?.forEachIndexed { index, it ->
+                    CipherField(
+                        title = stringResource(id = R.string.cipher_field_url) + " (${index + 1})",
+                        value = it,
+                        copy = true
+                    )
+                }
             }
 
-            Group(name = "Other") {
-                CipherField(title = "Notes", value = cipherData.notes, copy = true)
+            Group(stringResource(id = R.string.cipher_group_other)) {
+                CipherField(
+                    title = stringResource(id = R.string.cipher_field_notes),
+                    value = cipherData.notes,
+                    copy = true
+                )
             }
         }
     }
@@ -145,7 +166,11 @@ fun CipherField(
                 IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                     Icon(
                         imageVector = if (hiddenState.value) { Icons.Filled.Visibility } else { Icons.Filled.VisibilityOff },
-                        contentDescription = if (hiddenState.value) { "Show password" } else { "Hide password" }
+                        contentDescription = if (hiddenState.value) {
+                            stringResource(id = R.string.show_password)
+                        } else {
+                            stringResource(id = R.string.show_password)
+                        }
                     )
                 }
             }
@@ -154,7 +179,7 @@ fun CipherField(
                 IconButton(onClick = { clipboardManager.setText(AnnotatedString(value)) }) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = "Copy to clipboard"
+                        contentDescription = stringResource(id = R.string.copy_to_clipboard)
                     )
                 }
             }

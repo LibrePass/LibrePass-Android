@@ -57,7 +57,9 @@ fun UnlockScreen(navController: NavController) {
 
                 val encryptedEncryptionKey = dbCredentials.encryptionKey
 
-                val basePassword = AuthClient.computeBasePasswordHash(password, dbCredentials.email)
+                val basePassword = AuthClient
+                    .computeBasePasswordHash(password, dbCredentials.email)
+                    .toHexHash()
 
                 val encryptionKey = AesCbc.decrypt(
                     encryptedEncryptionKey,

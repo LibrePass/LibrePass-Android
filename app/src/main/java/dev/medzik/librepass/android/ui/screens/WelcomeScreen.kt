@@ -15,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.drawablepainter.DrawablePainter
+import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composable.common.TopBarTwoColor
 
@@ -48,7 +50,7 @@ fun WelcomeScreen(navController: NavController) {
             )
 
             Text(
-                text = "Welcome to LibrePass",
+                text = stringResource(id = R.string.welcome),
                 modifier = Modifier.padding(top = 20.dp)
             )
 
@@ -59,7 +61,7 @@ fun WelcomeScreen(navController: NavController) {
                     .padding(horizontal = 90.dp)
                     .padding(top = 20.dp)
             ) {
-                Text(text = "Register")
+                Text(text = stringResource(id = R.string.register))
             }
 
             OutlinedButton(
@@ -69,7 +71,7 @@ fun WelcomeScreen(navController: NavController) {
                     .padding(horizontal = 90.dp)
                     .padding(top = 8.dp)
             ) {
-                Text(text = "Login")
+                Text(text = stringResource(id = R.string.login))
             }
         }
     }

@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">LibrePass</string>
 
+    <string name="welcome">Welcome to LibrePass</string>
+
     <!-- TopBar -->
     <string name="back">Back</string>
 
@@ -19,4 +21,21 @@
     <string name="invalid_credentials">Invalid credentials</string>
 
     <string name="dashboard">Dashboard</string>
+    <string name="add_new_cipher">Add new cipher</string>
+    <string name="item_details">Item details</string>
+    <string name="cipher_field_name">Name</string>
+    <string name="cipher_group_login">Login</string>
+    <string name="cipher_field_username">Username</string>
+    <string name="cipher_field_password">Password</string>
+    <string name="cipher_group_website">Website</string>
+    <string name="cipher_field_url">URL</string>
+    <string name="cipher_group_other">Other</string>
+    <string name="cipher_field_notes">Notes</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_add">Add</string>
+
+    <!-- Icon descriptions -->
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
 </resources>

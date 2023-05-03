@@ -40,6 +40,7 @@ import dev.medzik.librepass.client.api.v1.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
@@ -67,8 +68,16 @@ fun LoginScreen(navController: NavController) {
 
         scope.launch(Dispatchers.IO) {
             try {
-                val basePassword = AuthClient.computeBasePasswordHash(password, email)
-                val credentials = authClient.login(email, basePassword, true)
+                val basePassword = AuthClient.computeBasePasswordHash(
+                    password = password,
+                    email = email
+                ).toHexHash()
+
+                val credentials = authClient.login(
+                    email = email,
+                    password = password,
+//                    passwordIsBaseHash = true
+                )
 
                 val repository = Repository(context = context)
 
@@ -95,7 +104,8 @@ fun LoginScreen(navController: NavController) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
+                println(e)
                 // TODO: handle error for invalid credentials and network error
 //                scope.launch { snackbarHostState.showSnackbar("Invalid credentials") }
                 scope.launch { snackbarHostState.showSnackbar(e.toString()) }
@@ -149,8 +159,8 @@ fun LoginScreen(navController: NavController) {
                 onClick = { onLogin(email.value, password.value) },
                 enabled =
                 !isEmailError && !isPasswordError &&
-                    email.value.isNotEmpty() && password.value.isNotEmpty() &&
-                    !loading.value,
+                        email.value.isNotEmpty() && password.value.isNotEmpty() &&
+                        !loading.value,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)

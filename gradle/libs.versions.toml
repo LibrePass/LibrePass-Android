@@ -8,7 +8,7 @@ annotation = "1.6.0"
 librepass-client = "0.1.0-alpha8"
 accompanist = "0.31.0-alpha"
 material-icons-extended = "1.5.0-alpha03"
-kotlinx-coroutines-android = "1.6.4"
+kotlinx-coroutines-android = "1.7.0-RC"
 navigation-compose = "2.5.3"
 compose-bom = "2023.04.01"
 room = "2.5.1"
@@ -17,6 +17,12 @@ compose-compiler = "1.4.6"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
+
+# plugins
+com-android-application = "8.2.0-alpha01"
+org-jetbrains-kotlin-android = "1.8.21"
+google-ksp = "1.8.21-1.0.11"
+gradle-ktlint = "11.3.2"
 
 [libraries]
 # androidx
@@ -57,5 +63,10 @@ ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 
 [plugins]
+com-android-application = { id = "com.android.application", version.ref = "com-android-application" }
+com-android-library = { id = "com.android.library", version.ref = "com-android-application" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
+org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
 
 [bundles]

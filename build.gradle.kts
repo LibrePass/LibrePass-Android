@@ -1,13 +1,16 @@
+// https://youtrack.jetbrains.com/issue/KTIJ-19369/False-positive-cant-be-called-in-this-context-by-implicit-receiver-with-plugins-in-Gradle-version-catalogs-as-a-TOML-file#focus=Comments-27-6204464.0-0
+@Suppress("DSL_SCOPE_VIOLATION")
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     // trick: for the same plugin versions in all sub-modules
-    id("com.android.application").version("8.2.0-alpha01").apply(false)
-    id("com.android.library").version("8.2.0-alpha01").apply(false)
-    id("com.google.devtools.ksp").version("1.8.20-1.0.11").apply(false)
-    kotlin("android").version("1.8.0").apply(false)
+    alias(libs.plugins.com.android.application) apply false
+    alias(libs.plugins.com.android.library) apply false
+    alias(libs.plugins.com.google.devtools.ksp) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.android) apply false
 
     // ktlint
-    id("org.jlleitschuh.gradle.ktlint").version("11.3.2")
+    alias(libs.plugins.org.jlleitschuh.gradle.ktlint) apply false
 }
 
 allprojects {

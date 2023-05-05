@@ -28,6 +28,7 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.composable.CipherGroup
 import dev.medzik.librepass.android.ui.composable.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composable.common.TextInputFieldBase
 import dev.medzik.librepass.android.ui.composable.common.TopBar
@@ -134,7 +135,7 @@ fun CipherAddEditView(
                 onValueChange = { cipherData = cipherData.copy(name = it) }
             )
 
-            Group(stringResource(id = R.string.cipher_group_login)) {
+            CipherGroup(stringResource(id = R.string.cipher_group_login)) {
                 TextInputFieldBase(
                     label = stringResource(id = R.string.cipher_field_username),
                     modifier = Modifier
@@ -164,7 +165,7 @@ fun CipherAddEditView(
                 )
             }
 
-            Group(stringResource(id = R.string.cipher_group_website)) {
+            CipherGroup(stringResource(id = R.string.cipher_group_website)) {
                 TextInputFieldBase(
                     label = stringResource(id = R.string.cipher_field_url),
                     modifier = Modifier.fillMaxWidth(),
@@ -173,7 +174,7 @@ fun CipherAddEditView(
                 )
             }
 
-            Group(stringResource(id = R.string.cipher_group_other)) {
+            CipherGroup(stringResource(id = R.string.cipher_group_other)) {
                 TextInputFieldBase(
                     label = stringResource(id = R.string.cipher_field_notes),
                     modifier = Modifier.fillMaxWidth(),
@@ -200,19 +201,4 @@ fun CipherAddEditView(
             }
         }
     }
-}
-
-@Composable
-fun Group(
-    name: String,
-    content: @Composable () -> Unit = {}
-) {
-    Text(
-        text = name,
-        style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(top = 32.dp, bottom = 16.dp)
-    )
-
-    content()
 }

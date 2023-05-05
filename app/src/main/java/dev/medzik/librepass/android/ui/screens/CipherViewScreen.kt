@@ -31,6 +31,7 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.composable.CipherGroup
 import dev.medzik.librepass.android.ui.composable.common.TopBar
 import dev.medzik.librepass.android.ui.composable.common.TopBarBackIcon
 import java.util.UUID
@@ -87,36 +88,42 @@ fun CipherViewScreen(navController: NavController) {
 
             CipherField(title = stringResource(id = R.string.cipher_field_name), value = cipherData.name)
 
-            Group(stringResource(id = R.string.cipher_group_login)) {
-                CipherField(
-                    title = stringResource(id = R.string.cipher_field_username),
-                    value = cipherData.username,
-                    copy = true
-                )
-                CipherField(
-                    title = stringResource(id = R.string.cipher_field_password),
-                    value = cipherData.password,
-                    copy = true,
-                    hidden = true
-                )
-            }
-
-            Group(stringResource(id = R.string.cipher_group_website)) {
-                cipherData.uris?.forEachIndexed { index, it ->
+            if (!cipherData.username.isNullOrEmpty() || cipherData.password.isNullOrEmpty()) {
+                CipherGroup(stringResource(id = R.string.cipher_group_login)) {
                     CipherField(
-                        title = stringResource(id = R.string.cipher_field_url) + " (${index + 1})",
-                        value = it,
+                        title = stringResource(id = R.string.cipher_field_username),
+                        value = cipherData.username,
                         copy = true
+                    )
+                    CipherField(
+                        title = stringResource(id = R.string.cipher_field_password),
+                        value = cipherData.password,
+                        copy = true,
+                        hidden = true
                     )
                 }
             }
 
-            Group(stringResource(id = R.string.cipher_group_other)) {
-                CipherField(
-                    title = stringResource(id = R.string.cipher_field_notes),
-                    value = cipherData.notes,
-                    copy = true
-                )
+            if (!cipherData.uris.isNullOrEmpty()) {
+                CipherGroup(stringResource(id = R.string.cipher_group_website)) {
+                    cipherData.uris?.forEachIndexed { index, it ->
+                        CipherField(
+                            title = stringResource(id = R.string.cipher_field_url) + " ${index + 1}",
+                            value = it,
+                            copy = true
+                        )
+                    }
+                }
+            }
+
+            if (!cipherData.notes.isNullOrEmpty()) {
+                CipherGroup(stringResource(id = R.string.cipher_group_other)) {
+                    CipherField(
+                        title = stringResource(id = R.string.cipher_field_notes),
+                        value = cipherData.notes,
+                        copy = true
+                    )
+                }
             }
         }
     }

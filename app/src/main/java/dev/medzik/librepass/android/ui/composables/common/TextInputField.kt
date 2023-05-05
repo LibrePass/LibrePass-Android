@@ -119,7 +119,7 @@ fun TextInputFieldBase(
                                 Icons.Filled.VisibilityOff
                             },
                             contentDescription = if (hiddenState.value) {
-                                stringResource(id = R.string.show_password)
+                                stringResource(id = R.string.hide_password)
                             } else {
                                 stringResource(id = R.string.show_password)
                             }

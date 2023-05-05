@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.composable
+package dev.medzik.librepass.android.ui.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

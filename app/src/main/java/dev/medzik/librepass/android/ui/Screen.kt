@@ -10,6 +10,7 @@ import dev.medzik.librepass.android.ui.screens.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.DashboardScreen
 import dev.medzik.librepass.android.ui.screens.LoginScreen
+import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.RegisterScreen
 import dev.medzik.librepass.android.ui.screens.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
@@ -34,6 +35,7 @@ sealed class Screen(private val route: String, private val arguments: List<Strin
     object CipherView : Screen("cipher-view", listOf(Argument.EncryptionKey.key, Argument.CipherId.key))
     object CipherAdd : Screen("cipher-add", listOf(Argument.EncryptionKey.key))
     object CipherEdit : Screen("cipher-edit", listOf(Argument.EncryptionKey.key, Argument.CipherId.key))
+    object PasswordGenerator : Screen("password-generator")
 
     val get get() = if (arguments != null) "$route/${arguments.joinToString("/")}" else route
 
@@ -101,6 +103,10 @@ fun LibrePassNavController() {
             val cipher = cipherTable.encryptedCipher.toCipher(encryptionKey)
 
             CipherAddEditView(navController = navController, baseCipher = cipher)
+        }
+
+        composable(Screen.PasswordGenerator.get) {
+            PasswordGenerator(navController = navController)
         }
     }
 }

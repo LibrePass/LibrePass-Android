@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,6 +27,7 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputFieldBase
@@ -64,6 +65,10 @@ fun CipherAddEditView(
 
     // coroutine scope
     val scope = rememberCoroutineScope()
+
+    navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("password")?.observeForever {
+        cipherData.password = it
+    }
 
     fun submit() {
         loading.value = true
@@ -154,10 +159,12 @@ fun CipherAddEditView(
                     hidden = true,
                     trailingIcon = {
                         // TODO: add password generator
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+                            navController.navigate(Screen.PasswordGenerator.get)
+                        }) {
                             Icon(
-                                imageVector = Icons.Default.Password,
-                                contentDescription = null
+                                imageVector = Icons.Default.Refresh,
+                                contentDescription = stringResource(id = R.string.generate_password)
                             )
                         }
                     }

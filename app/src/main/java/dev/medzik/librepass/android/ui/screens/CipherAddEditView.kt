@@ -27,11 +27,11 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
-import dev.medzik.librepass.android.ui.composable.CipherGroup
-import dev.medzik.librepass.android.ui.composable.common.LoadingIndicator
-import dev.medzik.librepass.android.ui.composable.common.TextInputFieldBase
-import dev.medzik.librepass.android.ui.composable.common.TopBar
-import dev.medzik.librepass.android.ui.composable.common.TopBarBackIcon
+import dev.medzik.librepass.android.ui.composables.CipherGroup
+import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
+import dev.medzik.librepass.android.ui.composables.common.TextInputFieldBase
+import dev.medzik.librepass.android.ui.composables.common.TopBar
+import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException

@@ -32,9 +32,9 @@ import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.ui.composable.common.LoadingIndicator
-import dev.medzik.librepass.android.ui.composable.common.TextInputField
-import dev.medzik.librepass.android.ui.composable.common.TopBar
+import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
+import dev.medzik.librepass.android.ui.composables.common.TextInputField
+import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.client.api.v1.AuthClient
 import kotlinx.coroutines.Dispatchers

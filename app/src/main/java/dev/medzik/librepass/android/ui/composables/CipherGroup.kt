@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.composable
+package dev.medzik.librepass.android.ui.composables
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme

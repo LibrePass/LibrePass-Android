@@ -34,6 +34,10 @@
     <string name="btn_save">Save</string>
     <string name="btn_add">Add</string>
     <string name="password_generator_topbar">Generator</string>
+    <string name="length">Length</string>
+    <string name="capital_letters">Capital letters</string>
+    <string name="numbers">Numbers</string>
+    <string name="symbols">Symbols</string>
     <string name="submit">Submit</string>
 
     <!-- Icon descriptions -->
@@ -41,4 +45,6 @@
     <string name="hide_password">Hide password</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="generate_password">Generate password</string>
+    <string name="increase">Increase</string>
+    <string name="decrease">Decrease</string>
 </resources>

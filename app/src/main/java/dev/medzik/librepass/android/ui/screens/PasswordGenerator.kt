@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -75,6 +76,9 @@ fun PasswordGenerator(navController: NavController) {
         }
     }
 
+    /**
+     * Generates password based on selected options and returns it.
+     */
     fun generatePassword(): String {
         var letters = PasswordType.LOWERCASE.literals
 
@@ -94,6 +98,11 @@ fun PasswordGenerator(navController: NavController) {
             .map { Random().nextInt(letters.length) }
             .map(letters::get)
             .joinToString("")
+    }
+
+    // regenerate on options change
+    LaunchedEffect(passwordLength, withCapitalLetters, withNumbers, withSymbols) {
+        password = generatePassword()
     }
 
     Scaffold(
@@ -154,7 +163,7 @@ fun PasswordGenerator(navController: NavController) {
                         .padding(end = 8.dp),
                     label = { Text(text = stringResource(id = R.string.length)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                    onValueChange = { if (it.length in 1..256) passwordLength = it.toLong() }
+                    onValueChange = { if (it.length in 1..3 && it.toLong() <= 256) passwordLength = it.toLong() }
                 )
 
                 // - and + buttons
@@ -164,7 +173,7 @@ fun PasswordGenerator(navController: NavController) {
                         contentDescription = stringResource(id = R.string.decrease)
                     )
                 }
-                IconButton(onClick = { passwordLength++ }) {
+                IconButton(onClick = { if (passwordLength < 256) passwordLength++ }) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = stringResource(id = R.string.increase)

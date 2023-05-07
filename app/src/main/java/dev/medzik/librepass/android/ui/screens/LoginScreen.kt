@@ -15,9 +15,11 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -42,28 +44,39 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(navController: NavController) {
+    // get composable context
     val context = LocalContext.current
 
+    // coroutine scope
     val scope = rememberCoroutineScope()
 
+    // login data
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
+    // error states
     val isEmailError = email.value.isNotEmpty() && !email.value.contains("@")
     val isPasswordError = password.value.isNotEmpty() && password.value.length < 8
 
-    val authClient = AuthClient()
+    // loading state
+    var loading by remember { mutableStateOf(false) }
 
-    val loading = remember { mutableStateOf(false) }
-
+    // snackbar state
     val snackbarHostState = remember { SnackbarHostState() }
 
+    // API client
+    val authClient = AuthClient()
+
+    /**
+     * Login user with given credentials and navigate to dashboard.
+     */
     fun onLogin(email: String, password: String) {
         if (isEmailError || isPasswordError) {
             return
         }
 
-        loading.value = true
+        // set loading state
+        loading = true
 
         scope.launch(Dispatchers.IO) {
             try {
@@ -98,19 +111,21 @@ fun LoginScreen(navController: NavController) {
                 // navigate to dashboard
                 scope.launch(Dispatchers.Main) {
                     navController.navigate(
-                        Screen.Dashboard.fill(Argument.EncryptionKey to encryptionKey)
+                        Screen.Dashboard.fill(
+                            Argument.EncryptionKey to encryptionKey
+                        )
                     ) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
             } catch (e: Exception) {
-                println(e)
                 // TODO: handle error for invalid credentials and network error
 //                scope.launch { snackbarHostState.showSnackbar("Invalid credentials") }
                 scope.launch { snackbarHostState.showSnackbar(e.toString()) }
             }
 
-            loading.value = false
+            // set loading state
+            loading = false
         }
     }
 
@@ -159,13 +174,13 @@ fun LoginScreen(navController: NavController) {
                 enabled =
                 !isEmailError && !isPasswordError &&
                     email.value.isNotEmpty() && password.value.isNotEmpty() &&
-                    !loading.value,
+                    !loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading.value) {
+                if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
                     Text(text = stringResource(id = R.string.login_button))

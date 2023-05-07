@@ -25,15 +25,14 @@ import dev.medzik.librepass.android.ui.composables.common.TopBarTwoColor
 
 @Composable
 fun WelcomeScreen(navController: NavController) {
+    // get composable context
+    val context = LocalContext.current
+
     // get app icon
-    val icon = LocalContext.current.packageManager.getApplicationIcon(
-        LocalContext.current.packageName
-    )
+    val icon = context.packageManager.getApplicationIcon(context.packageName)
 
     Scaffold(
-        topBar = {
-            TopBarTwoColor("Libre", "Pass")
-        }
+        topBar = { TopBarTwoColor("Libre", "Pass") }
     ) { innerPadding ->
         Column(
             modifier = Modifier

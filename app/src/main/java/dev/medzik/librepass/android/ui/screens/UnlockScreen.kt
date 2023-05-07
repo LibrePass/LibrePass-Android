@@ -11,9 +11,11 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -34,33 +36,41 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun UnlockScreen(navController: NavController) {
-    val password = remember { mutableStateOf("") }
-
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    val loading = remember { mutableStateOf(false) }
-
-    val scope = rememberCoroutineScope()
-
+    // get composable context
     val context = LocalContext.current
 
-    fun onUnlock(password: String) {
-        loading.value = true
+    // password state
+    val password = remember { mutableStateOf("") }
 
-        val repository = Repository(context = context)
+    // snackbar state
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // loading state
+    var loading by remember { mutableStateOf(false) }
+
+    // coroutine scope
+    val scope = rememberCoroutineScope()
+
+    // get credentials from database
+    val repository = Repository(context = context)
+    val dbCredentials = repository.credentials.get()!!
+    val encryptedEncryptionKey = dbCredentials.encryptionKey
+
+    fun onUnlock(password: String) {
+        // disable button
+        loading = true
 
         scope.launch(Dispatchers.IO) {
             try {
-                loading.value = true
+                loading = true
 
-                val dbCredentials = repository.credentials.get()!!
-
-                val encryptedEncryptionKey = dbCredentials.encryptionKey
-
+                // compute base password hash
+                // TODO: set argon2 params
                 val basePassword = AuthClient
                     .computeBasePasswordHash(password, dbCredentials.email)
                     .toHexHash()
 
+                // decrypt encryption key
                 val encryptionKey = AesCbc.decrypt(
                     encryptedEncryptionKey,
                     basePassword
@@ -79,15 +89,19 @@ fun UnlockScreen(navController: NavController) {
 
                 scope.launch(Dispatchers.Main) {
                     navController.navigate(
-                        Screen.Dashboard.fill(Argument.EncryptionKey to encryptionKey)
+                        Screen.Dashboard.fill(
+                            Argument.EncryptionKey to encryptionKey
+                        )
                     ) {
                         // disable back navigation
                         popUpTo(Screen.Unlock.get) { inclusive = true }
                     }
                 }
             } catch (e: Exception) {
-                loading.value = false
+                // enable button
+                loading = false
 
+                // TODO: error message
                 snackbarHostState.showSnackbar(e.toString())
             }
         }
@@ -115,13 +129,13 @@ fun UnlockScreen(navController: NavController) {
 
             Button(
                 onClick = { onUnlock(password.value) },
-                enabled = password.value.isNotEmpty() && !loading.value,
+                enabled = password.value.isNotEmpty() && !loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading.value) {
+                if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
                     Text(text = stringResource(id = R.string.login_button))

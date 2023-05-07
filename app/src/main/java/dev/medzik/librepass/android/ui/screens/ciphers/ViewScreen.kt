@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens
+package dev.medzik.librepass.android.ui.screens.ciphers
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,17 +34,20 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.navController.getString
 import java.util.UUID
 
 @Composable
 fun CipherViewScreen(navController: NavController) {
-    val encryptionKey = navController.currentBackStackEntry?.arguments?.getString(Argument.EncryptionKey.get)
+    // get encryption key from navController
+    val encryptionKey = navController.getString(Argument.EncryptionKey)
         ?: return
-    val cipherId = navController.currentBackStackEntry?.arguments?.getString(Argument.CipherId.get)
+    // get cipher id from navController
+    val cipherId = navController.getString(Argument.CipherId)
         ?: return
 
+    // get cipher from repository
     val repository = Repository(context = LocalContext.current)
-
     val cipher = repository.cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
     val cipherData = cipher.decrypt(encryptionKey)
 

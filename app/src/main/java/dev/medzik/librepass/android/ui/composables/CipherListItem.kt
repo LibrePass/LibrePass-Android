@@ -71,7 +71,7 @@ fun CipherListItem(
                         CipherListItemSheetContent(cipher, sheetState, onItemClick, onItemDelete)
                     }
 
-                    sheetState.show()
+                    sheetState.expand()
                 }
             }
         ) {

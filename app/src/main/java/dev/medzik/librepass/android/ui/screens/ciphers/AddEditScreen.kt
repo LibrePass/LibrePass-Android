@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens
+package dev.medzik.librepass.android.ui.screens.ciphers
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,6 +33,7 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputFieldBase
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.navController.getString
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
@@ -50,7 +51,7 @@ fun CipherAddEditView(
     baseCipher: Cipher? = null
 ) {
     // get encryption key from navController
-    val encryptionKey = navController.currentBackStackEntry?.arguments?.getString(Argument.EncryptionKey.get)
+    val encryptionKey = navController.getString(Argument.EncryptionKey)
         ?: return
 
     // database
@@ -61,17 +62,23 @@ fun CipherAddEditView(
 
     var cipherData by remember { mutableStateOf(baseCipher?.data ?: CipherData(name = "")) }
 
-    val loading = remember { mutableStateOf(false) }
+    // loading indicator
+    var loading by remember { mutableStateOf(false) }
 
     // coroutine scope
     val scope = rememberCoroutineScope()
 
+    // observe username and password from navController
+    // used to get password from password generator
     navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("password")?.observeForever {
         cipherData.password = it
     }
 
+    /**
+     * Insert or update cipher.
+     */
     fun submit() {
-        loading.value = true
+        loading = true
 
         val cipher = baseCipher?.copy(data = cipherData)
             ?: Cipher(
@@ -92,10 +99,10 @@ fun CipherAddEditView(
                 }
             } catch (e: ApiException) {
                 // TODO: handle api error
-                loading.value = false
+                loading = false
             } catch (e: ClientException) {
                 // TODO: handle client error (i.e. no internet connection)
-                loading.value = false
+                loading = false
             } finally {
                 runBlocking {
                     val cipherTable = CipherTable(
@@ -113,7 +120,7 @@ fun CipherAddEditView(
 
                 scope.launch(Dispatchers.Main) { navController.popBackStack() }
 
-                loading.value = false
+                loading = false
             }
         }
     }
@@ -191,13 +198,13 @@ fun CipherAddEditView(
 
             Button(
                 onClick = { submit() },
-                enabled = cipherData.name.isNotEmpty() && !loading.value,
+                enabled = cipherData.name.isNotEmpty() && !loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading.value) {
+                if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
                     Text(

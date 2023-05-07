@@ -25,6 +25,6 @@ object LibrePassDatabaseProvider {
                 .build()
         }
 
-        return database!!
+        return database as LibrePassDatabase
     }
 }

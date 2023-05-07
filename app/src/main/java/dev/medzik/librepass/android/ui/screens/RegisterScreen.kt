@@ -15,9 +15,11 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -38,28 +40,38 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(navController: NavController) {
+    // coroutine scope
     val scope = rememberCoroutineScope()
 
+    // register data
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val configPassword = remember { mutableStateOf("") }
     val passwordHint = remember { mutableStateOf("") }
 
+    // error states
     val isEmailError = email.value.isNotEmpty() && !email.value.contains("@")
     val isPasswordError = password.value.isNotEmpty() && password.value.length < 8
 
-    val authClient = AuthClient()
+    // loading state
+    var loading by remember { mutableStateOf(false) }
 
-    val loading = remember { mutableStateOf(false) }
-
+    // snackbar state
     val snackbarHostState = remember { SnackbarHostState() }
 
+    // API client
+    val authClient = AuthClient()
+
+    /**
+     * Register user with given credentials and navigate to login screen.
+     */
     fun onLogin(email: String, password: String) {
         if (isEmailError || isPasswordError || configPassword.value != password) {
             return
         }
 
-        loading.value = true
+        // disable button
+        loading = true
 
         scope.launch(Dispatchers.IO) {
             try {
@@ -74,12 +86,13 @@ fun RegisterScreen(navController: NavController) {
                 }
             } catch (e: Throwable) {
                 scope.launch(Dispatchers.Main) {
-//                    snackbarHostState.showSnackbar("Unexpected error occurred")
+                    // TODO: errors messages
                     snackbarHostState.showSnackbar(message = e.message ?: "Unknown error")
                 }
             }
 
-            loading.value = false
+            // enable button
+            loading = false
         }
     }
 
@@ -143,14 +156,14 @@ fun RegisterScreen(navController: NavController) {
                 enabled =
                 !isEmailError && !isPasswordError &&
                     email.value.isNotEmpty() && password.value.isNotEmpty() &&
-                    !loading.value &&
+                    !loading &&
                     configPassword.value == password.value,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading.value) {
+                if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
                     Text(text = stringResource(id = R.string.register_button))

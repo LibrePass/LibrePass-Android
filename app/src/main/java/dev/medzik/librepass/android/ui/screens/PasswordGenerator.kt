@@ -45,14 +45,17 @@ enum class PasswordType(val literals: String) {
 
 @Composable
 fun PasswordGenerator(navController: NavController) {
+    // generated password
     var password by remember { mutableStateOf("") }
 
     // TODO: save to preferences
+    // generator options
     var passwordLength by remember { mutableStateOf(10L) }
     var withCapitalLetters by remember { mutableStateOf(true) }
     var withNumbers by remember { mutableStateOf(true) }
     var withSymbols by remember { mutableStateOf(true) }
 
+    // clipboard manager
     val clipboardManager = LocalClipboardManager.current
 
     @Composable

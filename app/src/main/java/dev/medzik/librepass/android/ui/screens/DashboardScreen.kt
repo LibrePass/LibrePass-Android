@@ -4,27 +4,33 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.material3.pullrefresh.PullRefreshIndicator
 import androidx.compose.material3.pullrefresh.pullRefresh
 import androidx.compose.material3.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -41,7 +47,10 @@ import dev.medzik.librepass.android.ui.composables.CipherListItem
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
+import dev.medzik.librepass.android.utils.navController.getString
 import dev.medzik.librepass.client.api.v1.CipherClient
+import dev.medzik.librepass.client.errors.ApiException
+import dev.medzik.librepass.client.errors.ClientException
 import dev.medzik.librepass.types.api.Cipher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,7 +59,8 @@ import java.util.Date
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(navController: NavController) {
-    val encryptionKey = navController.currentBackStackEntry?.arguments?.getString(Argument.EncryptionKey.get)
+    // get encryption key from navController
+    val encryptionKey = navController.getString(Argument.EncryptionKey)
         ?: return
 
     // database
@@ -63,15 +73,19 @@ fun DashboardScreen(navController: NavController) {
     // coroutines scope
     val scope = rememberCoroutineScope()
 
+    // snack bar
+    val snackbarHostState = remember { SnackbarHostState() }
+
     // remember mutable state
-    val ciphers = remember { mutableStateOf(listOf<Cipher>()) }
+    var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
     val loading = remember { mutableStateOf(true) }
     val refreshing = remember { mutableStateOf(false) }
 
     /**
-     * Update ciphers from API and database and update UI
+     * Update ciphers from API and local database and update UI
      * @param state MutableState<Boolean> to update loading state
      */
+    @Throws(ClientException::class, ApiException::class)
     fun updateCiphers(state: MutableState<Boolean>) = scope.launch(Dispatchers.IO) {
         // set loading state to true
         state.value = true
@@ -130,11 +144,14 @@ fun DashboardScreen(navController: NavController) {
         val decryptedCiphers = dbCiphers.map { it.encryptedCipher.toCipher(encryptionKey) }
 
         // sort ciphers by name and update UI
-        ciphers.value = decryptedCiphers.sortedBy { it.data.name }
+        ciphers = decryptedCiphers.sortedBy { it.data.name }
 
         // set loading state to false
         state.value = false
     }
+
+    val sheetState = rememberModalBottomSheetState()
+    val sheetContent = remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
 
     // get ciphers on first load
     LaunchedEffect(scope) {
@@ -142,37 +159,45 @@ fun DashboardScreen(navController: NavController) {
         updateCiphers(loading)
     }
 
+    // onUnload
+    DisposableEffect(Unit) {
+        onDispose {
+            scope.launch { sheetState.hide() }
+        }
+    }
+
     // refresh ciphers on pull to refresh
     fun refresh() = updateCiphers(refreshing)
     val state = rememberPullRefreshState(refreshing.value, ::refresh)
-
-    val sheetState = rememberModalBottomSheetState()
-    val sheetContent = remember { mutableStateOf<@Composable () -> Unit>({}) }
 
     Scaffold(
         topBar = {
             TopBar(title = stringResource(id = R.string.dashboard))
         },
-        modifier = Modifier.navigationBarsPadding(),
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                navController.navigate(Screen.CipherAdd.fill(Argument.EncryptionKey to encryptionKey))
-            }) {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate(
+                        Screen.CipherAdd.fill(
+                            Argument.EncryptionKey to encryptionKey
+                        )
+                    )
+                }
+            ) {
                 Icon(Icons.Default.Add, contentDescription = null)
             }
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            // loading indicator if loading
             if (loading.value) {
                 Column(
-                    // center
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f),
+                    modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
@@ -183,13 +208,17 @@ fun DashboardScreen(navController: NavController) {
             Box(
                 modifier = Modifier.pullRefresh(state)
             ) {
-                LazyColumn {
-                    items(ciphers.value.size) { index ->
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(ciphers.size) { index ->
                         CipherListItem(
-                            ciphers.value[index],
+                            ciphers[index],
                             sheetState = sheetState,
                             sheetContent = sheetContent,
                             onItemClick = { cipher ->
+                                scope.launch { sheetState.hide() }
+
                                 navController.navigate(
                                     Screen.CipherView.fill(
                                         Argument.CipherId to cipher.id.toString(),
@@ -205,13 +234,14 @@ fun DashboardScreen(navController: NavController) {
                                     cipherClient.delete(cipher.id)
                                     repository.cipher.delete(cipher.id)
 
-                                    ciphers.value = ciphers.value.filter { it.id != cipher.id }
+                                    ciphers = ciphers.filter { it.id != cipher.id }
                                 }
                             }
                         )
                     }
                 }
 
+                // pull to refresh indicator must be aligned to top
                 PullRefreshIndicator(
                     refreshing = refreshing.value,
                     state = state,
@@ -221,17 +251,15 @@ fun DashboardScreen(navController: NavController) {
             }
         }
 
-        if (sheetState.isVisible) {
-            ModalBottomSheet(
-                sheetState = sheetState,
-                onDismissRequest = {
-                    scope.launch {
-                        sheetState.hide()
-                    }
-                }
-            ) {
-                sheetContent.value()
-            }
+        // bottom sheet
+        BottomSheetScaffold(
+            scaffoldState = BottomSheetScaffoldState(
+                bottomSheetState = sheetState,
+                snackbarHostState = snackbarHostState
+            ),
+            sheetContent = { sheetContent.value() }
+        ) {
+            // empty content
         }
     }
 }

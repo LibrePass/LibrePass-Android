@@ -11,6 +11,9 @@ data class Credentials(
 
     val accessToken: String,
     val refreshToken: String,
+    // If network error when vault unlocking
+    // Require to refresh credentials when network returns
+    val requireRefresh: Boolean = false,
 
     val encryptionKey: String,
 

@@ -11,6 +11,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,8 +56,10 @@ fun CipherAddEditView(
     val encryptionKey = navController.getString(Argument.EncryptionKey)
         ?: return
 
+    val context = LocalContext.current
+
     // database
-    val repository = Repository(context = LocalContext.current)
+    val repository = Repository(context = context)
     val credentials = repository.credentials.get()!!
 
     val cipherClient = CipherClient(credentials.accessToken)
@@ -67,6 +71,9 @@ fun CipherAddEditView(
 
     // coroutine scope
     val scope = rememberCoroutineScope()
+
+    // snackbar
+    val snackbarHostState = remember { SnackbarHostState() }
 
     // observe username and password from navController
     // used to get password from password generator
@@ -97,12 +104,16 @@ fun CipherAddEditView(
                 } else {
                     cipherClient.update(encryptedCipher)
                 }
-            } catch (e: ApiException) {
-                // TODO: handle api error
-                loading = false
             } catch (e: ClientException) {
-                // TODO: handle client error (i.e. no internet connection)
                 loading = false
+
+                // TODO: maybe cache it and send when network returns?
+                snackbarHostState.showSnackbar(context.getString(R.string.network_error))
+            } catch (e: ApiException) {
+                // / TODO: handle api error
+                loading = false
+
+                snackbarHostState.showSnackbar(e.toString())
             } finally {
                 runBlocking {
                     val cipherTable = CipherTable(
@@ -131,7 +142,8 @@ fun CipherAddEditView(
                 title = baseCipher?.data?.name ?: stringResource(id = R.string.add_new_cipher),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier

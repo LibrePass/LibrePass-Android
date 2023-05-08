@@ -47,4 +47,9 @@
     <string name="generate_password">Generate password</string>
     <string name="increase">Increase</string>
     <string name="decrease">Decrease</string>
+
+    <!-- API Errors -->
+    <string name="network_error">Network error</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="user_already_exists">User already exists</string>
 </resources>

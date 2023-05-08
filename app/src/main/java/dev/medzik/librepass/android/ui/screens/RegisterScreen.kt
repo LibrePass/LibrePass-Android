@@ -35,11 +35,16 @@ import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.client.api.v1.AuthClient
+import dev.medzik.librepass.client.errors.ApiException
+import dev.medzik.librepass.client.errors.ClientException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(navController: NavController) {
+    // get composable context
+    val context = LocalContext.current
+
     // coroutine scope
     val scope = rememberCoroutineScope()
 
@@ -84,10 +89,20 @@ fun RegisterScreen(navController: NavController) {
                         popUpTo(Screen.Login.get) { inclusive = true }
                     }
                 }
-            } catch (e: Throwable) {
-                scope.launch(Dispatchers.Main) {
-                    // TODO: errors messages
-                    snackbarHostState.showSnackbar(message = e.message ?: "Unknown error")
+            } catch (e: ClientException) {
+                // Handle network error
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        context.resources.getString(R.string.network_error)
+                    )
+                }
+            } catch (e: ApiException) {
+                // Handle API error
+                // TODO: user already exists and more
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        context.resources.getString(R.string.user_already_exists)
+                    )
                 }
             }
 

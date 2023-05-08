@@ -31,6 +31,8 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.client.api.v1.AuthClient
+import dev.medzik.librepass.client.errors.ApiException
+import dev.medzik.librepass.client.errors.ClientException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -60,6 +62,8 @@ fun UnlockScreen(navController: NavController) {
         // disable button
         loading = true
 
+        lateinit var encryptionKey: String
+
         scope.launch(Dispatchers.IO) {
             try {
                 loading = true
@@ -71,7 +75,7 @@ fun UnlockScreen(navController: NavController) {
                     .toHexHash()
 
                 // decrypt encryption key
-                val encryptionKey = AesCbc.decrypt(
+                encryptionKey = AesCbc.decrypt(
                     encryptedEncryptionKey,
                     basePassword
                 )
@@ -86,7 +90,19 @@ fun UnlockScreen(navController: NavController) {
                         refreshToken = credentials.refreshToken
                     )
                 )
+            } catch (e: ClientException) {
+                // Handle network error
+                loading = false
 
+                // set requireRefresh to true before go to dashboard
+                repository.credentials.update(
+                    dbCredentials.copy(requireRefresh = true)
+                )
+            } catch (e: ApiException) {
+                loading = false
+                // TODO: handle API errors
+                snackbarHostState.showSnackbar(e.toString())
+            } finally {
                 scope.launch(Dispatchers.Main) {
                     navController.navigate(
                         Screen.Dashboard.fill(
@@ -97,12 +113,6 @@ fun UnlockScreen(navController: NavController) {
                         popUpTo(Screen.Unlock.get) { inclusive = true }
                     }
                 }
-            } catch (e: Exception) {
-                // enable button
-                loading = false
-
-                // TODO: error message
-                snackbarHostState.showSnackbar(e.toString())
             }
         }
     }

@@ -39,6 +39,8 @@ import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.client.api.v1.AuthClient
+import dev.medzik.librepass.client.errors.ApiException
+import dev.medzik.librepass.client.errors.ClientException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -118,14 +120,17 @@ fun LoginScreen(navController: NavController) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
-            } catch (e: Exception) {
-                // TODO: handle error for invalid credentials and network error
-//                scope.launch { snackbarHostState.showSnackbar("Invalid credentials") }
-                scope.launch { snackbarHostState.showSnackbar(e.toString()) }
-            }
+            } catch (e: ClientException) {
+                // Handle network error
+                loading = false
 
-            // set loading state
-            loading = false
+                snackbarHostState.showSnackbar(context.resources.getString(R.string.network_error))
+            } catch (e: ApiException) {
+                // Handle API error
+                loading = false
+
+                snackbarHostState.showSnackbar(context.resources.getString(R.string.invalid_credentials))
+            }
         }
     }
 

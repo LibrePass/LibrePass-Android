@@ -15,7 +15,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.pullrefresh.PullRefreshIndicator
@@ -48,6 +47,7 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.navController.getString
+import dev.medzik.librepass.client.api.v1.AuthClient
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
@@ -63,8 +63,11 @@ fun DashboardScreen(navController: NavController) {
     val encryptionKey = navController.getString(Argument.EncryptionKey)
         ?: return
 
+    // get composable context
+    val context = LocalContext.current
+
     // database
-    val repository = Repository(context = LocalContext.current)
+    val repository = Repository(context = context)
     val credentials = repository.credentials.get()!!
 
     // cipher API client
@@ -73,13 +76,27 @@ fun DashboardScreen(navController: NavController) {
     // coroutines scope
     val scope = rememberCoroutineScope()
 
-    // snack bar
+    // snackbar
     val snackbarHostState = remember { SnackbarHostState() }
 
     // remember mutable state
     var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
     val loading = remember { mutableStateOf(true) }
     val refreshing = remember { mutableStateOf(false) }
+
+    /**
+     * Get ciphers from local repository and update UI
+     */
+    fun updateLocalCiphers() {
+        // get ciphers from local database
+        val dbCiphers = repository.cipher.getAll(credentials.userId)
+
+        // decrypt ciphers
+        val decryptedCiphers = dbCiphers.map { it.encryptedCipher.toCipher(encryptionKey) }
+
+        // sort ciphers by name and update UI
+        ciphers = decryptedCiphers.sortedBy { it.data.name }
+    }
 
     /**
      * Update ciphers from API and local database and update UI
@@ -89,6 +106,45 @@ fun DashboardScreen(navController: NavController) {
     fun updateCiphers(state: MutableState<Boolean>) = scope.launch(Dispatchers.IO) {
         // set loading state to true
         state.value = true
+
+        if (credentials.requireRefresh) {
+            try {
+                // refresh access token
+                val newCredentials = AuthClient().refresh(refreshToken = credentials.refreshToken)
+
+                // save new credentials
+                repository.credentials.update(
+                    credentials.copy(
+                        accessToken = newCredentials.accessToken,
+                        refreshToken = newCredentials.refreshToken,
+                        requireRefresh = false
+                    )
+                )
+            } catch (e: ClientException) {
+                scope.launch { snackbarHostState.showSnackbar(context.getString(R.string.network_error)) }
+
+                // show cipher from local repository
+                updateLocalCiphers()
+
+                // set loading state to false
+                state.value = false
+
+                // do not continue
+                return@launch
+            } catch (e: ApiException) {
+                // TODO: handle api error
+                scope.launch { snackbarHostState.showSnackbar(e.toString()) }
+
+                // show cipher from local repository
+                updateLocalCiphers()
+
+                // set loading state to false
+                state.value = false
+
+                // do not continue
+                return@launch
+            }
+        }
 
         // caching
         val cachedCiphers = repository.cipher.getAllIDs(credentials.userId)
@@ -137,14 +193,8 @@ fun DashboardScreen(navController: NavController) {
             }
         }
 
-        // get ciphers from local database
-        val dbCiphers = repository.cipher.getAll(credentials.userId)
-
-        // decrypt ciphers
-        val decryptedCiphers = dbCiphers.map { it.encryptedCipher.toCipher(encryptionKey) }
-
-        // sort ciphers by name and update UI
-        ciphers = decryptedCiphers.sortedBy { it.data.name }
+        // get cipher from local repository and update UI
+        updateLocalCiphers()
 
         // set loading state to false
         state.value = false
@@ -186,8 +236,8 @@ fun DashboardScreen(navController: NavController) {
             ) {
                 Icon(Icons.Default.Add, contentDescription = null)
             }
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        }
+        // snackbar is already in bottom sheet
     ) { innerPadding ->
         Column(
             modifier = Modifier

@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.libcrypto.AesCbc
+import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
@@ -92,25 +93,29 @@ fun UnlockScreen(navController: NavController) {
                 )
             } catch (e: ClientException) {
                 // Handle network error
-                loading = false
-
                 // set requireRefresh to true before go to dashboard
                 repository.credentials.update(
                     dbCredentials.copy(requireRefresh = true)
                 )
             } catch (e: ApiException) {
-                loading = false
                 // TODO: handle API errors
                 snackbarHostState.showSnackbar(e.toString())
+            } catch (e: EncryptException) {
+                // if password is invalid
+                loading = false
+                snackbarHostState.showSnackbar(context.getString(R.string.invalid_credentials))
             } finally {
-                scope.launch(Dispatchers.Main) {
-                    navController.navigate(
-                        Screen.Dashboard.fill(
-                            Argument.EncryptionKey to encryptionKey
-                        )
-                    ) {
-                        // disable back navigation
-                        popUpTo(Screen.Unlock.get) { inclusive = true }
+                // run only if loading is true (if no error occurred)
+                if (loading) {
+                    scope.launch(Dispatchers.Main) {
+                        navController.navigate(
+                            Screen.Dashboard.fill(
+                                Argument.EncryptionKey to encryptionKey
+                            )
+                        ) {
+                            // disable back navigation
+                            popUpTo(Screen.Unlock.get) { inclusive = true }
+                        }
                     }
                 }
             }

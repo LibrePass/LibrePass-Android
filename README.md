@@ -11,7 +11,7 @@ It will be also available in Google Play Store and F-Droid soon.
 
 ## Features
 
-- Password advanced encryption
+- Password encryption
 - Password manager
 - Password and username generator
 - Material You theme

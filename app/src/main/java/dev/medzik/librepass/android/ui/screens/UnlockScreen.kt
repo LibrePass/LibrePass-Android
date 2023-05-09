@@ -124,7 +124,7 @@ fun UnlockScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            TopBar(title = stringResource(id = R.string.login))
+            TopBar(title = stringResource(id = R.string.unlock))
         },
         modifier = Modifier.navigationBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -153,7 +153,7 @@ fun UnlockScreen(navController: NavController) {
                 if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
-                    Text(text = stringResource(id = R.string.login_button))
+                    Text(text = stringResource(id = R.string.unlock_button))
                 }
             }
         }

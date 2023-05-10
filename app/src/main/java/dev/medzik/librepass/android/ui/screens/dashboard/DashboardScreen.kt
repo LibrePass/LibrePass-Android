@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens
+package dev.medzik.librepass.android.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.librepass.android.data.Repository
-import dev.medzik.librepass.android.ui.screens.DashboardScreen
 import dev.medzik.librepass.android.ui.screens.LoginScreen
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.RegisterScreen
@@ -14,6 +13,7 @@ import dev.medzik.librepass.android.ui.screens.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherViewScreen
+import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
 import dev.medzik.librepass.android.utils.navController.getString
 import java.util.UUID
 
@@ -82,7 +82,8 @@ fun LibrePassNavController() {
         }
 
         composable(Screen.Dashboard.get) {
-            DashboardScreen(navController = navController)
+//            DashboardScreen(navController = navController)
+            DashboardNavigation(mainNavController = navController)
         }
 
         composable(Screen.CipherView.get) {

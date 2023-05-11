@@ -8,19 +8,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.material3.pullrefresh.PullRefreshIndicator
 import androidx.compose.material3.pullrefresh.pullRefresh
 import androidx.compose.material3.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -34,9 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
@@ -45,7 +40,6 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TopBar
-import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.navController.getString
 import dev.medzik.librepass.client.api.v1.AuthClient
 import dev.medzik.librepass.client.api.v1.CipherClient
@@ -58,7 +52,11 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen(navController: NavController) {
+fun DashboardScreen(
+    navController: NavController,
+    sheetState: SheetState,
+    sheetContent: MutableState<@Composable () -> Unit>
+) {
     // get encryption key from navController
     val encryptionKey = navController.getString(Argument.EncryptionKey)
         ?: return
@@ -200,9 +198,6 @@ fun DashboardScreen(navController: NavController) {
         state.value = false
     }
 
-    val sheetState = rememberModalBottomSheetState()
-    val sheetContent = remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
-
     // get ciphers on first load
     LaunchedEffect(scope) {
         // TODO: do not update ciphers if go back to dashboard
@@ -300,24 +295,5 @@ fun DashboardScreen(navController: NavController) {
                 )
             }
         }
-
-        // bottom sheet
-        BottomSheetScaffold(
-            scaffoldState = BottomSheetScaffoldState(
-                bottomSheetState = sheetState,
-                snackbarHostState = snackbarHostState
-            ),
-            sheetContent = { sheetContent.value() }
-        ) {
-            // empty content
-        }
-    }
-}
-
-@Preview
-@Composable
-fun DashboardScreenPreview() {
-    LibrePassTheme {
-        DashboardScreen(NavHostController(LocalContext.current))
     }
 }

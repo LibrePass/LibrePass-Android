@@ -8,11 +8,16 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,9 +37,14 @@ enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val
     Generator("generator", Icons.Default.Refresh, "Generator")
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardNavigation(mainNavController: NavController) {
     val navController = rememberNavController()
+
+    // bottom sheet
+    val sheetState = rememberModalBottomSheetState()
+    val sheetContent = remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
 
     Scaffold(
         bottomBar = {
@@ -55,7 +65,11 @@ fun DashboardNavigation(mainNavController: NavController) {
         ) {
             NavHost(navController, startDestination = DashboardNavigationItem.Dashboard.route) {
                 composable(DashboardNavigationItem.Dashboard.route) {
-                    DashboardScreen(navController = mainNavController)
+                    DashboardScreen(
+                        navController = mainNavController,
+                        sheetState = sheetState,
+                        sheetContent = sheetContent
+                    )
                 }
                 composable(DashboardNavigationItem.Generator.route) {
                     // TODO
@@ -67,6 +81,17 @@ fun DashboardNavigation(mainNavController: NavController) {
                 }
             }
         }
+    }
+
+    // bottom sheet
+    BottomSheetScaffold(
+        scaffoldState = BottomSheetScaffoldState(
+            bottomSheetState = sheetState,
+            snackbarHostState = SnackbarHostState()
+        ),
+        sheetContent = { sheetContent.value() }
+    ) {
+        // empty content
     }
 }
 

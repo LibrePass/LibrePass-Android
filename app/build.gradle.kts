@@ -92,6 +92,9 @@ dependencies {
     // navigation
     implementation(libs.androidx.navigation.compose)
 
+    // biometric
+    implementation(libs.androidx.biometric.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

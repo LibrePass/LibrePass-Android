@@ -17,5 +17,12 @@ data class Credentials(
 
     val encryptionKey: String,
 
+    // for biometric auth
+    val biometricEncryptionKey: String? = null,
+    val biometricEncryptionKeyIV: String? = null,
+
+    // settings
+    val biometricEnabled: Boolean = false,
+
     val lastSync: Long? = null
 )

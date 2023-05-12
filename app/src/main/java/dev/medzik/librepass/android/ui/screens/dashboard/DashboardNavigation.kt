@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomSheetScaffold
@@ -33,8 +32,9 @@ import androidx.navigation.compose.rememberNavController
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val title: String) {
     Dashboard("dashboard", Icons.Default.Lock, "Dashboard"),
-    Settings("settings", Icons.Default.Settings, "Settings"),
-    Generator("generator", Icons.Default.Refresh, "Generator")
+
+//    Generator("generator", Icons.Default.Refresh, "Generator"),
+    Settings("settings", Icons.Default.Settings, "Settings")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,13 +71,12 @@ fun DashboardNavigation(mainNavController: NavController) {
                         sheetContent = sheetContent
                     )
                 }
-                composable(DashboardNavigationItem.Generator.route) {
-                    // TODO
-                    GeneratorScreen()
-                }
+//                composable(DashboardNavigationItem.Generator.route) {
+//                    // TODO
+//                    GeneratorScreen()
+//                }
                 composable(DashboardNavigationItem.Settings.route) {
-                    // TODO
-                    SettingsScreen()
+                    SettingsScreen(navController = mainNavController)
                 }
             }
         }
@@ -95,21 +94,16 @@ fun DashboardNavigation(mainNavController: NavController) {
     }
 }
 
-@Composable
-fun GeneratorScreen() {
-    Text(text = "Generator")
-}
-
-@Composable
-fun SettingsScreen() {
-    Text(text = "Settings")
-}
+// @Composable
+// fun GeneratorScreen() {
+//    Text(text = "Generator")
+// }
 
 @Composable
 fun DashboardBottomNavigationBar(navController: NavController) {
     val items = listOf(
         DashboardNavigationItem.Dashboard,
-        DashboardNavigationItem.Generator,
+//        DashboardNavigationItem.Generator,
         DashboardNavigationItem.Settings
     )
     var selectedItem by remember { mutableStateOf(0) }

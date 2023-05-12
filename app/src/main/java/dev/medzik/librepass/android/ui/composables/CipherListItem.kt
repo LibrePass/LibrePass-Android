@@ -1,6 +1,7 @@
 package dev.medzik.librepass.android.ui.composables
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import dev.medzik.librepass.types.api.Cipher
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun CipherListItem(
     cipher: Cipher,
@@ -37,10 +38,23 @@ fun CipherListItem(
 ) {
     val scope = rememberCoroutineScope()
 
+    fun showSheet() {
+        scope.launch {
+            sheetContent.value = {
+                CipherListItemSheetContent(cipher, sheetState, onItemClick, onItemDelete)
+            }
+
+            sheetState.expand()
+        }
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onItemClick(cipher) }
+            .combinedClickable(
+                onClick = { onItemClick(cipher) },
+                onLongClick = { showSheet() }
+            )
             .padding(vertical = 16.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -65,15 +79,7 @@ fun CipherListItem(
         }
 
         IconButton(
-            onClick = {
-                scope.launch {
-                    sheetContent.value = {
-                        CipherListItemSheetContent(cipher, sheetState, onItemClick, onItemDelete)
-                    }
-
-                    sheetState.expand()
-                }
-            }
+            onClick = { showSheet() }
         ) {
             Icon(Icons.Default.MoreHoriz, contentDescription = null)
         }

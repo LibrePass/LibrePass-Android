@@ -7,7 +7,7 @@ import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
-import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.IvParameterSpec
 
 data class KeyStoreCipherText(val cipherText: String, val initializationVector: String)
 
@@ -35,7 +35,7 @@ object KeyStoreUtils {
         cipher.init(
             Cipher.DECRYPT_MODE,
             getOrCreateSecretKey(alias),
-            GCMParameterSpec(128, Hex.decodeHex(initializationVector))
+            IvParameterSpec(Hex.decodeHex(initializationVector))
         )
         return cipher
     }

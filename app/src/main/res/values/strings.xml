@@ -18,7 +18,12 @@
     <string name="invalid_email">Invalid email</string>
     <string name="invalid_password_too_short">Password is too short</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
-<!--    <string name="invalid_credentials">Invalid credentials</string>-->
+
+    <string name="settings">Settings</string>
+    <string name="use_biometric">Use biometric</string>
+    <string name="biometric_unlock">Unlock with biometric</string>
+    <string name="biometric_title">Unlock</string>
+    <string name="biometric_subtitle">Please authenticate yourself</string>
 
     <string name="unlock">Unlock</string>
     <string name="unlock_button">Unlock</string>
@@ -42,6 +47,7 @@
     <string name="numbers">Numbers</string>
     <string name="symbols">Symbols</string>
     <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Icon descriptions -->
     <string name="show_password">Show password</string>

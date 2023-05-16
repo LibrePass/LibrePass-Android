@@ -78,6 +78,49 @@ fun SettingsScreen(navController: NavController) {
         }
     }
 
+    /**
+     * Biometric checked event handler (enable/disable biometric authentication)
+     */
+    fun biometricChecked() {
+        if (biometricEnabled) {
+            biometricEnabled = false
+
+            scope.launch {
+                repository.credentials.update(
+                    credentials.copy(
+                        biometricEnabled = false
+                    )
+                )
+            }
+
+            return
+        }
+
+        showBiometricPrompt(
+            context = context,
+            cipher = KeyStoreUtils.getCipherForEncryption(KeyStoreAlias.ENCRYPTION_KEY.name),
+            onAuthenticationSucceeded = { cipher ->
+                val encryptedData = KeyStoreUtils.encrypt(
+                    cipher = cipher,
+                    data = encryptionKey
+                )
+
+                biometricEnabled = true
+
+                scope.launch {
+                    repository.credentials.update(
+                        credentials.copy(
+                            biometricEnabled = true,
+                            biometricEncryptionKey = encryptedData.cipherText,
+                            biometricEncryptionKeyIV = encryptedData.initializationVector
+                        )
+                    )
+                }
+            },
+            onAuthenticationFailed = { }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopBar(title = stringResource(id = R.string.settings))
@@ -93,46 +136,7 @@ fun SettingsScreen(navController: NavController) {
                     icon = Icons.Default.Fingerprint,
                     text = stringResource(id = R.string.biometric_unlock),
                     checked = biometricEnabled,
-                    onCheckedChange = {
-                        // TODO: save to settings
-                        if (biometricEnabled) {
-                            biometricEnabled = false
-
-                            scope.launch {
-                                repository.credentials.update(
-                                    credentials.copy(
-                                        biometricEnabled = false
-                                    )
-                                )
-                            }
-
-                            return@TypeSwitcher
-                        }
-
-                        showBiometricPrompt(
-                            context = context,
-                            cipher = KeyStoreUtils.getCipherForEncryption(KeyStoreAlias.ENCRYPTION_KEY.name),
-                            onAuthenticationSucceeded = { cipher ->
-                                val encryptedData = KeyStoreUtils.encrypt(
-                                    cipher = cipher,
-                                    data = encryptionKey
-                                )
-
-                                biometricEnabled = true
-
-                                scope.launch {
-                                    repository.credentials.update(
-                                        credentials.copy(
-                                            biometricEnabled = true,
-                                            biometricEncryptionKey = encryptedData.cipherText,
-                                            biometricEncryptionKeyIV = encryptedData.initializationVector
-                                        )
-                                    )
-                                }
-                            },
-                            onAuthenticationFailed = { }
-                        )
-                    }
+                    onCheckedChange = { biometricChecked() }
                 )
             }
         }

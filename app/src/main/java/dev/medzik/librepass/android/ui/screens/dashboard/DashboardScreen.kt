@@ -66,10 +66,7 @@ fun DashboardScreen(
 
     // database
     val repository = Repository(context = context)
-    val credentials = repository.credentials.get()!!
-
-    // cipher API client
-    val cipherClient = CipherClient(credentials.accessToken)
+    var credentials = repository.credentials.get()!!
 
     // coroutines scope
     val scope = rememberCoroutineScope()
@@ -111,13 +108,12 @@ fun DashboardScreen(
                 val newCredentials = AuthClient().refresh(refreshToken = credentials.refreshToken)
 
                 // save new credentials
-                repository.credentials.update(
-                    credentials.copy(
-                        accessToken = newCredentials.accessToken,
-                        refreshToken = newCredentials.refreshToken,
-                        requireRefresh = false
-                    )
+                credentials = credentials.copy(
+                    accessToken = newCredentials.accessToken,
+                    refreshToken = newCredentials.refreshToken,
+                    requireRefresh = false
                 )
+                repository.credentials.update(credentials)
             } catch (e: ClientException) {
                 scope.launch { snackbarHostState.showSnackbar(context.getString(R.string.network_error)) }
 
@@ -153,7 +149,7 @@ fun DashboardScreen(
             repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
 
             // get ciphers from API
-            val syncResponse = cipherClient.sync(Date(lastSync * 1000))
+            val syncResponse = CipherClient(credentials.accessToken).sync(Date(lastSync * 1000))
 
             // delete ciphers from local database that are not in API response
             for (cipher in cachedCiphers) {
@@ -177,7 +173,7 @@ fun DashboardScreen(
             repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
 
             // get all ciphers from API
-            val ciphersResponse = cipherClient.getAll()
+            val ciphersResponse = CipherClient(credentials.accessToken).getAll()
 
             // insert ciphers into local database
             for (cipher in ciphersResponse) {
@@ -276,7 +272,7 @@ fun DashboardScreen(
                             },
                             onItemDelete = { cipher ->
                                 scope.launch(Dispatchers.IO) {
-                                    cipherClient.delete(cipher.id)
+                                    CipherClient(credentials.accessToken).delete(cipher.id)
                                     repository.cipher.delete(cipher.id)
 
                                     ciphers = ciphers.filter { it.id != cipher.id }

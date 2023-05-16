@@ -8,12 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.pullrefresh.PullRefreshIndicator
 import androidx.compose.material3.pullrefresh.pullRefresh
@@ -50,12 +48,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     navController: NavController,
-    sheetState: SheetState,
-    sheetContent: MutableState<@Composable () -> Unit>
+    openBottomSheet: (sheetContent: @Composable () -> Unit) -> Unit,
+    closeBottomSheet: () -> Unit
 ) {
     // get encryption key from navController
     val encryptionKey = navController.getString(Argument.EncryptionKey)
@@ -203,7 +200,7 @@ fun DashboardScreen(
     // onUnload
     DisposableEffect(Unit) {
         onDispose {
-            scope.launch { sheetState.hide() }
+            scope.launch { closeBottomSheet() }
         }
     }
 
@@ -255,11 +252,9 @@ fun DashboardScreen(
                     items(ciphers.size) { index ->
                         CipherListItem(
                             ciphers[index],
-                            sheetState = sheetState,
-                            sheetContent = sheetContent,
+                            openBottomSheet = openBottomSheet,
+                            closeBottomSheet = closeBottomSheet,
                             onItemClick = { cipher ->
-                                scope.launch { sheetState.hide() }
-
                                 navController.navigate(
                                     Screen.CipherView.fill(
                                         Argument.CipherId to cipher.id.toString(),

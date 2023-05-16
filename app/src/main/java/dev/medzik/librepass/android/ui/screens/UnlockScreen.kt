@@ -38,8 +38,6 @@ import dev.medzik.librepass.android.utils.KeyStoreAlias
 import dev.medzik.librepass.android.utils.KeyStoreUtils
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.api.v1.AuthClient
-import dev.medzik.librepass.client.errors.ApiException
-import dev.medzik.librepass.client.errors.ClientException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -86,31 +84,15 @@ fun UnlockScreen(navController: NavController) {
                     encryptedEncryptionKey,
                     basePassword
                 )
-
-                // refresh access token
-                val credentials = AuthClient().refresh(refreshToken = dbCredentials.refreshToken)
-
-                // save new credentials
-                repository.credentials.update(
-                    dbCredentials.copy(
-                        accessToken = credentials.accessToken,
-                        refreshToken = credentials.refreshToken
-                    )
-                )
-            } catch (e: ClientException) {
-                // Handle network error
-                // set requireRefresh to true before go to dashboard
-                repository.credentials.update(
-                    dbCredentials.copy(requireRefresh = true)
-                )
-            } catch (e: ApiException) {
-                // TODO: handle API errors
-                snackbarHostState.showSnackbar(e.toString())
             } catch (e: EncryptException) {
                 // if password is invalid
                 loading = false
                 snackbarHostState.showSnackbar(context.getString(R.string.invalid_credentials))
             } finally {
+                repository.credentials.update(
+                    dbCredentials.copy(requireRefresh = true)
+                )
+
                 // run only if loading is true (if no error occurred)
                 if (loading) {
                     scope.launch(Dispatchers.Main) {
@@ -141,20 +123,20 @@ fun UnlockScreen(navController: NavController) {
                     data = dbCredentials.biometricEncryptionKey!!
                 )
 
-                // go to dashboard
-                scope.launch(Dispatchers.Main) {
-                    // require refresh credentials
+                scope.launch(Dispatchers.IO) {
                     repository.credentials.update(
                         dbCredentials.copy(requireRefresh = true)
                     )
 
-                    navController.navigate(
-                        Screen.Dashboard.fill(
-                            Argument.EncryptionKey to encryptionKey
-                        )
-                    ) {
-                        // disable back navigation
-                        popUpTo(Screen.Unlock.get) { inclusive = true }
+                    scope.launch(Dispatchers.Main) {
+                        navController.navigate(
+                            Screen.Dashboard.fill(
+                                Argument.EncryptionKey to encryptionKey
+                            )
+                        ) {
+                            // disable back navigation
+                            popUpTo(Screen.Unlock.get) { inclusive = true }
+                        }
                     }
                 }
             },

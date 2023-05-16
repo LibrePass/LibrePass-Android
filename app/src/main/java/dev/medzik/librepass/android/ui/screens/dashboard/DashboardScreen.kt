@@ -1,6 +1,5 @@
 package dev.medzik.librepass.android.ui.screens.dashboard
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +18,6 @@ import androidx.compose.material3.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,7 +34,6 @@ import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
-import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.navController.getString
 import dev.medzik.librepass.client.api.v1.AuthClient
@@ -73,8 +70,7 @@ fun DashboardScreen(
 
     // remember mutable state
     var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
-    val loading = remember { mutableStateOf(true) }
-    val refreshing = remember { mutableStateOf(false) }
+    var refreshing by remember { mutableStateOf(false) }
 
     /**
      * Get ciphers from local repository and update UI
@@ -92,12 +88,11 @@ fun DashboardScreen(
 
     /**
      * Update ciphers from API and local database and update UI
-     * @param state MutableState<Boolean> to update loading state
      */
     @Throws(ClientException::class, ApiException::class)
-    fun updateCiphers(state: MutableState<Boolean>) = scope.launch(Dispatchers.IO) {
+    fun updateCiphers() = scope.launch(Dispatchers.IO) {
         // set loading state to true
-        state.value = true
+        refreshing = true
 
         if (credentials.requireRefresh) {
             try {
@@ -118,7 +113,7 @@ fun DashboardScreen(
                 updateLocalCiphers()
 
                 // set loading state to false
-                state.value = false
+                refreshing = false
 
                 // do not continue
                 return@launch
@@ -130,7 +125,7 @@ fun DashboardScreen(
                 updateLocalCiphers()
 
                 // set loading state to false
-                state.value = false
+                refreshing = false
 
                 // do not continue
                 return@launch
@@ -188,13 +183,18 @@ fun DashboardScreen(
         updateLocalCiphers()
 
         // set loading state to false
-        state.value = false
+        refreshing = false
     }
 
-    // get ciphers on first load
+    // load ciphers from local database on start
     LaunchedEffect(scope) {
-        // TODO: do not update ciphers if go back to dashboard
-        updateCiphers(loading)
+        // get ciphers from local database and update UI
+        updateLocalCiphers()
+
+        // update ciphers from API and update UI
+        // and show loading indicator while updating
+        // after local ciphers are loaded to prevent empty screen
+        updateCiphers()
     }
 
     // onUnload
@@ -205,8 +205,7 @@ fun DashboardScreen(
     }
 
     // refresh ciphers on pull to refresh
-    fun refresh() = updateCiphers(refreshing)
-    val state = rememberPullRefreshState(refreshing.value, ::refresh)
+    val pullRefreshState = rememberPullRefreshState(refreshing, ::updateCiphers)
 
     Scaffold(
         topBar = {
@@ -232,26 +231,15 @@ fun DashboardScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            // loading indicator if loading
-            if (loading.value) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    LoadingIndicator(animating = true)
-                }
-            }
-
             Box(
-                modifier = Modifier.pullRefresh(state)
+                modifier = Modifier.pullRefresh(pullRefreshState)
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(ciphers.size) { index ->
                         CipherListItem(
-                            ciphers[index],
+                            cipher = ciphers[index],
                             openBottomSheet = openBottomSheet,
                             closeBottomSheet = closeBottomSheet,
                             onItemClick = { cipher ->
@@ -279,8 +267,8 @@ fun DashboardScreen(
 
                 // pull to refresh indicator must be aligned to top
                 PullRefreshIndicator(
-                    refreshing = refreshing.value,
-                    state = state,
+                    refreshing = refreshing,
+                    state = pullRefreshState,
                     modifier = Modifier.align(Alignment.TopCenter),
                     contentColor = MaterialTheme.colorScheme.primary
                 )

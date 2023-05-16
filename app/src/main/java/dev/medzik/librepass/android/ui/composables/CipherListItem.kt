@@ -15,11 +15,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,12 +25,12 @@ import androidx.compose.ui.unit.dp
 import dev.medzik.librepass.types.api.Cipher
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CipherListItem(
     cipher: Cipher,
-    sheetState: SheetState,
-    sheetContent: MutableState<@Composable () -> Unit>,
+    openBottomSheet: (sheetContent: @Composable () -> Unit) -> Unit,
+    closeBottomSheet: () -> Unit,
     onItemClick: (Cipher) -> Unit,
     onItemDelete: (Cipher) -> Unit
 ) {
@@ -40,11 +38,14 @@ fun CipherListItem(
 
     fun showSheet() {
         scope.launch {
-            sheetContent.value = {
-                CipherListItemSheetContent(cipher, sheetState, onItemClick, onItemDelete)
+            openBottomSheet {
+                CipherListItemSheetContent(
+                    cipher = cipher,
+                    onItemClick = onItemClick,
+                    onItemDelete = onItemDelete,
+                    closeBottomSheet = closeBottomSheet
+                )
             }
-
-            sheetState.expand()
         }
     }
 
@@ -90,17 +91,15 @@ fun CipherListItem(
 @Composable
 fun CipherListItemSheetContent(
     cipher: Cipher,
-    sheetState: SheetState,
     onItemClick: (Cipher) -> Unit,
-    onItemDelete: (Cipher) -> Unit
+    onItemDelete: (Cipher) -> Unit,
+    closeBottomSheet: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
-
     Column {
         TextButton(
             onClick = {
-                scope.launch { sheetState.hide() }
                 onItemClick(cipher)
+                closeBottomSheet()
             },
             colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
             modifier = Modifier.fillMaxWidth()
@@ -114,7 +113,7 @@ fun CipherListItemSheetContent(
         TextButton(
             onClick = {
                 onItemDelete(cipher)
-                scope.launch { sheetState.hide() }
+                closeBottomSheet()
             },
             colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
             modifier = Modifier.fillMaxWidth()

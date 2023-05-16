@@ -7,14 +7,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -33,7 +31,7 @@ import androidx.navigation.compose.rememberNavController
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val title: String) {
     Dashboard("dashboard", Icons.Default.Lock, "Dashboard"),
 
-//    Generator("generator", Icons.Default.Refresh, "Generator"),
+    //    Generator("generator", Icons.Default.Refresh, "Generator"),
     Settings("settings", Icons.Default.Settings, "Settings")
 }
 
@@ -43,8 +41,9 @@ fun DashboardNavigation(mainNavController: NavController) {
     val navController = rememberNavController()
 
     // bottom sheet
-    val sheetState = rememberModalBottomSheetState()
-    val sheetContent = remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
+    var openBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var sheetContent by remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
 
     Scaffold(
         bottomBar = {
@@ -67,8 +66,11 @@ fun DashboardNavigation(mainNavController: NavController) {
                 composable(DashboardNavigationItem.Dashboard.route) {
                     DashboardScreen(
                         navController = mainNavController,
-                        sheetState = sheetState,
-                        sheetContent = sheetContent
+                        openBottomSheet = {
+                            sheetContent = it
+                            openBottomSheet = true
+                        },
+                        closeBottomSheet = { openBottomSheet = false }
                     )
                 }
 //                composable(DashboardNavigationItem.Generator.route) {
@@ -83,14 +85,13 @@ fun DashboardNavigation(mainNavController: NavController) {
     }
 
     // bottom sheet
-    BottomSheetScaffold(
-        scaffoldState = BottomSheetScaffoldState(
-            bottomSheetState = sheetState,
-            snackbarHostState = SnackbarHostState()
-        ),
-        sheetContent = { sheetContent.value() }
-    ) {
-        // empty content
+    if (openBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { openBottomSheet = false },
+            sheetState = sheetState
+        ) {
+            sheetContent()
+        }
     }
 }
 

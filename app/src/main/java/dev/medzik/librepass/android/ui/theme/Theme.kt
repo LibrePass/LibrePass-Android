@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -99,12 +100,21 @@ fun LibrePassTheme(
     DisposableEffect(systemUiController, useDarkIcons) {
         // Update all of the system bar colors to be transparent, and use
         // dark icons if we're in light theme
-        systemUiController.setSystemBarsColor(
-            color = colorScheme.background,
+        systemUiController.setStatusBarColor(
+            color = Color.Transparent,
             darkIcons = useDarkIcons
         )
 
-        // setStatusBarColor() and setNavigationBarColor() also exist
+        systemUiController.setNavigationBarColor(
+            color = Color.Transparent,
+            darkIcons = useDarkIcons,
+            navigationBarContrastEnforced = false
+        )
+
+//        systemUiController.setSystemBarsColor(
+//            color = colorScheme.background,
+//            darkIcons = useDarkIcons
+//        )
 
         onDispose {}
     }

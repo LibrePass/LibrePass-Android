@@ -143,27 +143,10 @@ fun UnlockScreen(navController: NavController) {
 
                 // go to dashboard
                 scope.launch(Dispatchers.Main) {
-                    // refresh credentials
-                    try {
-                        val credentials = AuthClient().refresh(refreshToken = dbCredentials.refreshToken)
-
-                        // save new credentials
-                        repository.credentials.update(
-                            dbCredentials.copy(
-                                accessToken = credentials.accessToken,
-                                refreshToken = credentials.refreshToken
-                            )
-                        )
-                    } catch (e: ClientException) {
-                        // Handle network error
-                        // set requireRefresh to true before go to dashboard
-                        repository.credentials.update(
-                            dbCredentials.copy(requireRefresh = true)
-                        )
-                    } catch (e: ApiException) {
-                        // TODO: handle API errors
-                        snackbarHostState.showSnackbar(e.toString())
-                    }
+                    // require refresh credentials
+                    repository.credentials.update(
+                        dbCredentials.copy(requireRefresh = true)
+                    )
 
                     navController.navigate(
                         Screen.Dashboard.fill(

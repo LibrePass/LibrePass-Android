@@ -78,7 +78,7 @@ fun CipherAddEditView(
     // observe username and password from navController
     // used to get password from password generator
     navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("password")?.observeForever {
-        cipherData.password = it
+        cipherData = cipherData.copy(password = it)
     }
 
     /**

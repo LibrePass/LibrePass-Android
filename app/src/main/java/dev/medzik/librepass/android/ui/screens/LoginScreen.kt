@@ -41,6 +41,7 @@ import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.client.api.v1.AuthClient
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
+import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -82,7 +83,7 @@ fun LoginScreen(navController: NavController) {
 
         scope.launch(Dispatchers.IO) {
             try {
-                val basePassword = AuthClient.computeBasePasswordHash(
+                val basePassword = computeBasePasswordHash(
                     password = password,
                     email = email
                 ).toHexHash()
@@ -90,8 +91,9 @@ fun LoginScreen(navController: NavController) {
                 val credentials = authClient.login(
                     email = email,
                     password = password
-//                    passwordIsBaseHash = true
                 )
+
+                val argon2idParameters = authClient.getUserArgon2idParameters(email)
 
                 val repository = Repository(context = context)
 
@@ -100,8 +102,12 @@ fun LoginScreen(navController: NavController) {
                         userId = credentials.userId,
                         email = email,
                         accessToken = credentials.accessToken,
-                        refreshToken = credentials.refreshToken,
-                        encryptionKey = credentials.encryptionKey
+                        encryptionKey = credentials.encryptionKey,
+                        // argon2id parameters
+                        memory = argon2idParameters.memory,
+                        iterations = argon2idParameters.iterations,
+                        parallelism = argon2idParameters.parallelism,
+                        version = argon2idParameters.version
                     )
                 )
 

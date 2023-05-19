@@ -11,7 +11,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.pullrefresh.PullRefreshIndicator
 import androidx.compose.material3.pullrefresh.pullRefresh
 import androidx.compose.material3.pullrefresh.rememberPullRefreshState
@@ -36,7 +35,6 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.navController.getString
-import dev.medzik.librepass.client.api.v1.AuthClient
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
@@ -60,13 +58,10 @@ fun DashboardScreen(
 
     // database
     val repository = Repository(context = context)
-    var credentials = repository.credentials.get()!!
+    val credentials = repository.credentials.get()!!
 
     // coroutines scope
     val scope = rememberCoroutineScope()
-
-    // snackbar
-    val snackbarHostState = remember { SnackbarHostState() }
 
     // remember mutable state
     var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
@@ -93,44 +88,6 @@ fun DashboardScreen(
     fun updateCiphers() = scope.launch(Dispatchers.IO) {
         // set loading state to true
         refreshing = true
-
-        if (credentials.requireRefresh) {
-            try {
-                // refresh access token
-                val newCredentials = AuthClient().refresh(refreshToken = credentials.refreshToken)
-
-                // save new credentials
-                credentials = credentials.copy(
-                    accessToken = newCredentials.accessToken,
-                    refreshToken = newCredentials.refreshToken,
-                    requireRefresh = false
-                )
-                repository.credentials.update(credentials)
-            } catch (e: ClientException) {
-                scope.launch { snackbarHostState.showSnackbar(context.getString(R.string.network_error)) }
-
-                // show cipher from local repository
-                updateLocalCiphers()
-
-                // set loading state to false
-                refreshing = false
-
-                // do not continue
-                return@launch
-            } catch (e: ApiException) {
-                // TODO: handle api error
-                scope.launch { snackbarHostState.showSnackbar(e.toString()) }
-
-                // show cipher from local repository
-                updateLocalCiphers()
-
-                // set loading state to false
-                refreshing = false
-
-                // do not continue
-                return@launch
-            }
-        }
 
         // caching
         val cachedCiphers = repository.cipher.getAllIDs(credentials.userId)

@@ -37,7 +37,8 @@ import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.KeyStoreAlias
 import dev.medzik.librepass.android.utils.KeyStoreUtils
 import dev.medzik.librepass.android.utils.showBiometricPrompt
-import dev.medzik.librepass.client.api.v1.AuthClient
+import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
+import dev.medzik.librepass.types.api.auth.UserArgon2idParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -74,10 +75,16 @@ fun UnlockScreen(navController: NavController) {
                 loading = true
 
                 // compute base password hash
-                // TODO: set argon2 params
-                val basePassword = AuthClient
-                    .computeBasePasswordHash(password, dbCredentials.email)
-                    .toHexHash()
+                val basePassword = computeBasePasswordHash(
+                    password = password,
+                    email = dbCredentials.email,
+                    parameters = UserArgon2idParameters(
+                        memory = dbCredentials.memory,
+                        iterations = dbCredentials.iterations,
+                        parallelism = dbCredentials.parallelism,
+                        version = dbCredentials.version
+                    )
+                ).toHexHash()
 
                 // decrypt encryption key
                 encryptionKey = AesCbc.decrypt(
@@ -89,10 +96,6 @@ fun UnlockScreen(navController: NavController) {
                 loading = false
                 snackbarHostState.showSnackbar(context.getString(R.string.invalid_credentials))
             } finally {
-                repository.credentials.update(
-                    dbCredentials.copy(requireRefresh = true)
-                )
-
                 // run only if loading is true (if no error occurred)
                 if (loading) {
                     scope.launch(Dispatchers.Main) {
@@ -124,10 +127,6 @@ fun UnlockScreen(navController: NavController) {
                 )
 
                 scope.launch(Dispatchers.IO) {
-                    repository.credentials.update(
-                        dbCredentials.copy(requireRefresh = true)
-                    )
-
                     scope.launch(Dispatchers.Main) {
                         navController.navigate(
                             Screen.Dashboard.fill(

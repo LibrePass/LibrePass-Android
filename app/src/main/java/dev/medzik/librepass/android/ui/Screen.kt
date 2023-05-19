@@ -82,7 +82,6 @@ fun LibrePassNavController() {
         }
 
         composable(Screen.Dashboard.get) {
-//            DashboardScreen(navController = navController)
             DashboardNavigation(mainNavController = navController)
         }
 

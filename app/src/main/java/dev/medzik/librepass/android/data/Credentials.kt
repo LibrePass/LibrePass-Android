@@ -10,12 +10,13 @@ data class Credentials(
     val email: String,
 
     val accessToken: String,
-    val refreshToken: String,
-    // If network error when vault unlocking
-    // Require to refresh credentials when network returns
-    val requireRefresh: Boolean = false,
-
     val encryptionKey: String,
+
+    // argon2id parameters
+    val memory: Int,
+    val iterations: Int,
+    val parallelism: Int,
+    val version: Int,
 
     // for biometric auth
     val biometricEncryptionKey: String? = null,

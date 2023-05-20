@@ -120,7 +120,8 @@ fun LoginScreen(navController: NavController) {
                 scope.launch(Dispatchers.Main) {
                     navController.navigate(
                         screen = Screen.Dashboard,
-                        argument = Argument.EncryptionKey to encryptionKey
+                        argument = Argument.EncryptionKey to encryptionKey,
+                        disableBack = true
                     )
                 }
             } catch (e: Exception) {

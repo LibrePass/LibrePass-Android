@@ -22,6 +22,7 @@ import com.google.accompanist.drawablepainter.DrawablePainter
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.TopBarTwoColor
+import dev.medzik.librepass.android.utils.navigation.navigate
 
 /**
  * Welcome screen shows app icon, welcome text and two buttons to login and register.
@@ -58,7 +59,7 @@ fun WelcomeScreen(navController: NavController) {
             )
 
             Button(
-                onClick = { navController.navigate(Screen.Register.get) },
+                onClick = { navController.navigate(Screen.Register) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 90.dp)
@@ -68,7 +69,7 @@ fun WelcomeScreen(navController: NavController) {
             }
 
             OutlinedButton(
-                onClick = { navController.navigate(Screen.Login.get) },
+                onClick = { navController.navigate(Screen.Login) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 90.dp)

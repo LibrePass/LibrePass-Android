@@ -35,6 +35,7 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.navigation.getString
+import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
@@ -173,9 +174,8 @@ fun DashboardScreen(
             FloatingActionButton(
                 onClick = {
                     navController.navigate(
-                        Screen.CipherAdd.fill(
-                            Argument.EncryptionKey to encryptionKey
-                        )
+                        screen = Screen.CipherAdd,
+                        argument = Argument.EncryptionKey to encryptionKey
                     )
                 }
             ) {
@@ -200,15 +200,14 @@ fun DashboardScreen(
                             openBottomSheet = openBottomSheet,
                             closeBottomSheet = closeBottomSheet,
                             onItemClick = { cipher ->
+                                // TODO: restore state of dashboard screen after navigating back
                                 navController.navigate(
-                                    Screen.CipherView.fill(
+                                    screen = Screen.CipherView,
+                                    arguments = listOf(
                                         Argument.CipherId to cipher.id.toString(),
                                         Argument.EncryptionKey to encryptionKey
                                     )
-                                ) {
-                                    // TODO: restore state of dashboard screen after navigating back
-                                    popUpTo(Screen.Dashboard.get) { saveState = true }
-                                }
+                                )
                             },
                             onItemDelete = { cipher ->
                                 scope.launch(Dispatchers.IO) {

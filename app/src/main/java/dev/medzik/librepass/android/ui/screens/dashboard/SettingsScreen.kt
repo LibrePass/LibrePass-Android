@@ -29,7 +29,7 @@ import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.KeyStoreAlias
 import dev.medzik.librepass.android.utils.KeyStoreUtils
-import dev.medzik.librepass.android.utils.navController.getString
+import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import kotlinx.coroutines.launch
 

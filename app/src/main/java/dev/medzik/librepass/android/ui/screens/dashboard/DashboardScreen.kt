@@ -34,7 +34,7 @@ import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
 import dev.medzik.librepass.android.ui.composables.common.TopBar
-import dev.medzik.librepass.android.utils.navController.getString
+import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException

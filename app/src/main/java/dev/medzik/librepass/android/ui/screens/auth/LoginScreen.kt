@@ -38,7 +38,8 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
-import dev.medzik.librepass.android.utils.handle
+import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.client.api.v1.AuthClient
 import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
 import kotlinx.coroutines.Dispatchers
@@ -118,12 +119,9 @@ fun LoginScreen(navController: NavController) {
                 // navigate to dashboard
                 scope.launch(Dispatchers.Main) {
                     navController.navigate(
-                        Screen.Dashboard.fill(
-                            Argument.EncryptionKey to encryptionKey
-                        )
-                    ) {
-                        popUpTo(0) { inclusive = true }
-                    }
+                        screen = Screen.Dashboard,
+                        argument = Argument.EncryptionKey to encryptionKey
+                    )
                 }
             } catch (e: Exception) {
                 loading = false

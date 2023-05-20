@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.utils
+package dev.medzik.librepass.android.utils.exception
 
 import android.content.Context
 import androidx.compose.material3.SnackbarHostState

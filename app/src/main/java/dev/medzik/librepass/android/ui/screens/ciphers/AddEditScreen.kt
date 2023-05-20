@@ -35,8 +35,8 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputFieldBase
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
-import dev.medzik.librepass.android.utils.handle
-import dev.medzik.librepass.android.utils.navController.getString
+import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.types.api.Cipher
 import dev.medzik.librepass.types.api.CipherData

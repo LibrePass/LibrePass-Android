@@ -23,6 +23,10 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.TopBarTwoColor
 
+/**
+ * Welcome screen shows app icon, welcome text and two buttons to login and register.
+ * It is the first screen the user sees after opening the application.
+ */
 @Composable
 fun WelcomeScreen(navController: NavController) {
     // get composable context

@@ -9,14 +9,20 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 
+/**
+ * KeyStore cipher text.
+ * @param cipherText The cipher text.
+ * @param initializationVector The initialization vector (IV) for this cipher text.
+ */
 data class KeyStoreCipherText(val cipherText: String, val initializationVector: String)
 
 /**
- * Android KeyStore utils e.g. for biometric authentication.
+ * Utilities for Android Key Store. It is used for biometric authentication.
  */
 object KeyStoreUtils {
     /**
      * Get Cipher for encryption.
+     * @param alias Alias for secret key.
      */
     fun getCipherForEncryption(alias: String): Cipher {
         val cipher = getCipher()
@@ -26,6 +32,8 @@ object KeyStoreUtils {
 
     /**
      * Get Cipher for decryption.
+     * @param alias Alias for secret key.
+     * @param initializationVector Initialization vector.
      */
     fun getCipherForDecryption(
         alias: String,
@@ -110,6 +118,9 @@ object KeyStoreUtils {
     }
 }
 
+/**
+ * Alias for secrets in KeyStore.
+ */
 enum class KeyStoreAlias {
     ENCRYPTION_KEY
 }

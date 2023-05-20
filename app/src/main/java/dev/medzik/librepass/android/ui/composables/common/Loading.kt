@@ -24,9 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * Only the dot that is used in [LoadingIndicator].
+ */
 @Composable
 fun LoadingDot(
     color: Color,
@@ -39,6 +43,14 @@ fun LoadingDot(
     )
 }
 
+/**
+ * A loading indicator that animates three dots in a row.
+ * @param animating Whether the indicator should be animating.
+ * @param modifier The modifier to apply to the indicator.
+ * @param color The color of the indicator.
+ * @param indicatorSpacing The spacing between the dots.
+ * @see LoadingDot
+ */
 @Composable
 fun LoadingIndicator(
     animating: Boolean,
@@ -78,4 +90,10 @@ fun LoadingIndicator(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun LoadingIndicatorPreview() {
+    LoadingIndicator(animating = false)
 }

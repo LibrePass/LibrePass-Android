@@ -1,8 +1,10 @@
 package dev.medzik.librepass.android.ui.composables.common
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -10,7 +12,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import dev.medzik.librepass.android.R
 
@@ -18,7 +22,8 @@ import dev.medzik.librepass.android.R
 @Composable
 fun TopBar(
     title: String,
-    navigationIcon: @Composable (() -> Unit)? = null
+    navigationIcon: @Composable (() -> Unit) = {},
+    actions: @Composable (RowScope.() -> Unit) = {}
 ) {
     TopAppBar(
         title = {
@@ -27,28 +32,67 @@ fun TopBar(
                 style = MaterialTheme.typography.titleLarge
             )
         },
-        navigationIcon = navigationIcon ?: {}
+        navigationIcon = navigationIcon,
+        actions = actions
+    )
+}
+
+@Preview
+@Composable
+fun TopBarPreview() {
+    TopBar(
+        title = "Title",
+        navigationIcon = {
+            TopBarBackIcon(navController = NavController(LocalContext.current))
+        },
+        actions = {
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Default.MoreHoriz,
+                    contentDescription = null
+                )
+            }
+        }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarTwoColor(
-    text1: String,
-    text2: String
+    firstText: String,
+    secondText: String,
+    actions: @Composable (RowScope.() -> Unit) = {}
 ) {
     TopAppBar(
         title = {
             Row {
                 Text(
-                    text = text1,
+                    text = firstText,
                     style = MaterialTheme.typography.titleLarge
                 )
 
                 Text(
-                    text = text2,
+                    text = secondText,
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleLarge
+                )
+            }
+        },
+        actions = actions
+    )
+}
+
+@Preview
+@Composable
+fun TopBarTwoColorPreview() {
+    TopBarTwoColor(
+        firstText = "First",
+        secondText = "Second",
+        actions = {
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Default.MoreHoriz,
+                    contentDescription = null
                 )
             }
         }

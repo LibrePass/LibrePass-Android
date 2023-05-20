@@ -13,6 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
+/**
+ * Default light theme colors when dynamic color is not available.
+ */
 private val lightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
@@ -45,6 +48,9 @@ private val lightColorScheme = lightColorScheme(
     scrim = md_theme_light_scrim
 )
 
+/**
+ * Default dark theme colors when dynamic color is not available.
+ */
 private val darkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
@@ -77,6 +83,10 @@ private val darkColorScheme = darkColorScheme(
     scrim = md_theme_dark_scrim
 )
 
+/**
+ * The default LibrePass theme. This theme is used by all of the screens within the app.
+ * The theme colors are dynamically updated based on the system theme (Android 12+ only).
+ */
 @Composable
 fun LibrePassTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

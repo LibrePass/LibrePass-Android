@@ -34,7 +34,7 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
-import dev.medzik.librepass.android.utils.navController.getString
+import dev.medzik.librepass.android.utils.navigation.getString
 import java.util.UUID
 
 @Composable

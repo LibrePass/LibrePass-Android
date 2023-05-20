@@ -63,7 +63,7 @@ fun DashboardScreen(
     // coroutines scope
     val scope = rememberCoroutineScope()
 
-    // remember mutable state
+    // remember state
     var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
     var refreshing by remember { mutableStateOf(false) }
 
@@ -154,7 +154,8 @@ fun DashboardScreen(
         updateCiphers()
     }
 
-    // onUnload
+    // close bottom sheet on navigation change
+    // to prevent bugs/crashes
     DisposableEffect(Unit) {
         onDispose {
             scope.launch { closeBottomSheet() }
@@ -181,7 +182,6 @@ fun DashboardScreen(
                 Icon(Icons.Default.Add, contentDescription = null)
             }
         }
-        // snackbar is already in bottom sheet
     ) { innerPadding ->
         Column(
             modifier = Modifier

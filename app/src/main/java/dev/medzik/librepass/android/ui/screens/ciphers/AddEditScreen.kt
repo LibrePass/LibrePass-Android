@@ -35,10 +35,9 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputFieldBase
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.handle
 import dev.medzik.librepass.android.utils.navController.getString
 import dev.medzik.librepass.client.api.v1.CipherClient
-import dev.medzik.librepass.client.errors.ApiException
-import dev.medzik.librepass.client.errors.ClientException
 import dev.medzik.librepass.types.api.Cipher
 import dev.medzik.librepass.types.api.CipherData
 import dev.medzik.librepass.types.api.CipherType
@@ -56,6 +55,7 @@ fun CipherAddEditView(
     val encryptionKey = navController.getString(Argument.EncryptionKey)
         ?: return
 
+    // get compose context
     val context = LocalContext.current
 
     // database
@@ -64,14 +64,13 @@ fun CipherAddEditView(
 
     val cipherClient = CipherClient(credentials.accessToken)
 
+    // cipher data to be submitted
     var cipherData by remember { mutableStateOf(baseCipher?.data ?: CipherData(name = "")) }
-
     // loading indicator
     var loading by remember { mutableStateOf(false) }
 
     // coroutine scope
     val scope = rememberCoroutineScope()
-
     // snackbar
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -104,17 +103,7 @@ fun CipherAddEditView(
                 } else {
                     cipherClient.update(encryptedCipher)
                 }
-            } catch (e: ClientException) {
-                loading = false
 
-                // TODO: maybe cache it and send when network returns?
-                snackbarHostState.showSnackbar(context.getString(R.string.network_error))
-            } catch (e: ApiException) {
-                // / TODO: handle api error
-                loading = false
-
-                snackbarHostState.showSnackbar(e.toString())
-            } finally {
                 runBlocking {
                     val cipherTable = CipherTable(
                         id = encryptedCipher.id,
@@ -130,8 +119,9 @@ fun CipherAddEditView(
                 }
 
                 scope.launch(Dispatchers.Main) { navController.popBackStack() }
-
+            } catch (e: Exception) {
                 loading = false
+                e.handle(context, snackbarHostState)
             }
         }
     }

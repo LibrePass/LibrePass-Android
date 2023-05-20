@@ -61,4 +61,7 @@
     <string name="network_error">Network error</string>
     <string name="invalid_credentials">Invalid credentials</string>
     <string name="user_already_exists">User already exists</string>
+
+    <string name="encryption_error">Encryption/Decryption error</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>

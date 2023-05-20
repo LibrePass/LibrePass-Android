@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens
+package dev.medzik.librepass.android.ui.screens.auth
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -45,24 +45,23 @@ import kotlinx.coroutines.launch
 @Composable
 fun UnlockScreen(navController: NavController) {
     // get composable context
+    // must be FragmentActivity because of biometric prompt
     val context = LocalContext.current as FragmentActivity
-
-    // password state
-    val password = remember { mutableStateOf("") }
-
-    // snackbar state
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    // loading state
-    var loading by remember { mutableStateOf(false) }
-
-    // coroutine scope
-    val scope = rememberCoroutineScope()
 
     // get credentials from database
     val repository = Repository(context = context)
     val dbCredentials = repository.credentials.get()!!
     val encryptedEncryptionKey = dbCredentials.encryptionKey
+
+    // password state
+    val password = remember { mutableStateOf("") }
+    // loading state
+    var loading by remember { mutableStateOf(false) }
+
+    // snackbar state
+    val snackbarHostState = remember { SnackbarHostState() }
+    // coroutine scope
+    val scope = rememberCoroutineScope()
 
     fun onUnlock(password: String) {
         // disable button
@@ -164,7 +163,8 @@ fun UnlockScreen(navController: NavController) {
         ) {
             TextInputField(
                 label = stringResource(id = R.string.password),
-                state = password,
+                value = password.value,
+                onValueChange = { password.value = it },
                 hidden = true,
                 keyboardType = KeyboardType.Password
             )

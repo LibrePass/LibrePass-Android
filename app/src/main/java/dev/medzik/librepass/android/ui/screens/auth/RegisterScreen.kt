@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens
+package dev.medzik.librepass.android.ui.screens.auth
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,9 +34,8 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
+import dev.medzik.librepass.android.utils.handle
 import dev.medzik.librepass.client.api.v1.AuthClient
-import dev.medzik.librepass.client.errors.ApiException
-import dev.medzik.librepass.client.errors.ClientException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -45,22 +44,20 @@ fun RegisterScreen(navController: NavController) {
     // get composable context
     val context = LocalContext.current
 
-    // coroutine scope
-    val scope = rememberCoroutineScope()
-
     // register data
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-    val configPassword = remember { mutableStateOf("") }
-    val passwordHint = remember { mutableStateOf("") }
-
-    // error states
-    val isEmailError = email.value.isNotEmpty() && !email.value.contains("@")
-    val isPasswordError = password.value.isNotEmpty() && password.value.length < 8
-
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var configPassword by remember { mutableStateOf("") }
+    var passwordHint by remember { mutableStateOf("") }
     // loading state
     var loading by remember { mutableStateOf(false) }
 
+    // error states
+    val isEmailError = email.isNotEmpty() && !email.contains("@")
+    val isPasswordError = password.isNotEmpty() && password.length < 8
+
+    // coroutine scope
+    val scope = rememberCoroutineScope()
     // snackbar state
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -71,7 +68,7 @@ fun RegisterScreen(navController: NavController) {
      * Register user with given credentials and navigate to login screen.
      */
     fun onLogin(email: String, password: String) {
-        if (isEmailError || isPasswordError || configPassword.value != password) {
+        if (isEmailError || isPasswordError || configPassword != password) {
             return
         }
 
@@ -89,25 +86,11 @@ fun RegisterScreen(navController: NavController) {
                         popUpTo(Screen.Login.get) { inclusive = true }
                     }
                 }
-            } catch (e: ClientException) {
-                // Handle network error
-                scope.launch {
-                    snackbarHostState.showSnackbar(
-                        context.resources.getString(R.string.network_error)
-                    )
-                }
-            } catch (e: ApiException) {
-                // Handle API error
-                // TODO: user already exists and more
-                scope.launch {
-                    snackbarHostState.showSnackbar(
-                        context.resources.getString(R.string.user_already_exists)
-                    )
-                }
-            }
+            } catch (e: Exception) {
+                loading = false
 
-            // enable button
-            loading = false
+                e.handle(context, snackbarHostState)
+            }
         }
     }
 
@@ -136,7 +119,8 @@ fun RegisterScreen(navController: NavController) {
         ) {
             TextInputField(
                 label = stringResource(id = R.string.email),
-                state = email,
+                value = email,
+                onValueChange = { email = it },
                 isError = isEmailError,
                 errorMessage = stringResource(id = R.string.invalid_email),
                 keyboardType = KeyboardType.Email
@@ -144,7 +128,8 @@ fun RegisterScreen(navController: NavController) {
 
             TextInputField(
                 label = stringResource(id = R.string.password),
-                state = password,
+                value = password,
+                onValueChange = { password = it },
                 hidden = true,
                 isError = isPasswordError,
                 errorMessage = stringResource(id = R.string.invalid_password_too_short),
@@ -153,26 +138,25 @@ fun RegisterScreen(navController: NavController) {
 
             TextInputField(
                 label = stringResource(id = R.string.confirm_password),
-                state = configPassword,
+                value = configPassword,
+                onValueChange = { configPassword = it },
                 hidden = true,
-                isError = configPassword.value.isNotEmpty() && configPassword.value != password.value,
+                isError = configPassword.isNotEmpty() && configPassword != password,
                 errorMessage = stringResource(id = R.string.passwords_do_not_match),
                 keyboardType = KeyboardType.Password
             )
 
             TextInputField(
                 label = "${stringResource(id = R.string.password_hint)} (${stringResource(id = R.string.optional)})",
-                state = passwordHint,
+                value = passwordHint,
+                onValueChange = { passwordHint = it },
                 keyboardType = KeyboardType.Text
             )
 
             Button(
-                onClick = { onLogin(email.value, password.value) },
-                enabled =
-                !isEmailError && !isPasswordError &&
-                    email.value.isNotEmpty() && password.value.isNotEmpty() &&
-                    !loading &&
-                    configPassword.value == password.value,
+                onClick = { onLogin(email, password) },
+                // disable button if there are any errors or loading is in progress
+                enabled = !isEmailError && !isPasswordError && configPassword == password && !loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)

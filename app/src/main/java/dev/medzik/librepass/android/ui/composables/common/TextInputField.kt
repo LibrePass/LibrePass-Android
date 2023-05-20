@@ -12,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -26,7 +25,8 @@ import dev.medzik.librepass.android.R
 fun TextInputField(
     label: String,
     hidden: Boolean = false,
-    state: MutableState<String>,
+    value: String?,
+    onValueChange: (String) -> Unit,
     isError: Boolean = false,
     errorMessage: String = "",
     keyboardType: KeyboardType = KeyboardType.Text
@@ -34,8 +34,8 @@ fun TextInputField(
     val hiddenState = remember { mutableStateOf(hidden) }
 
     OutlinedTextField(
-        value = state.value,
-        onValueChange = { state.value = it },
+        value = value ?: "",
+        onValueChange = onValueChange,
         label = { Text(label) },
         maxLines = 1,
         singleLine = true,
@@ -85,21 +85,16 @@ fun TextInputFieldBase(
     label: String,
     modifier: Modifier = Modifier,
     hidden: Boolean = false,
-    state: MutableState<String>? = null,
-    value: String? = null,
-    onValueChange: ((String) -> Unit)? = null,
+    value: String?,
+    onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     trailingIcon: @Composable () -> Unit = {}
 ) {
     val hiddenState = remember { mutableStateOf(hidden) }
 
-    if (state == null && onValueChange == null) {
-        throw IllegalArgumentException("Either state or onValueChange must be provided")
-    }
-
     OutlinedTextField(
-        value = value ?: state?.value ?: "",
-        onValueChange = onValueChange ?: { state!!.value = it },
+        value = value ?: "",
+        onValueChange = onValueChange,
         label = { Text(label) },
         maxLines = 1,
         singleLine = true,

@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens
+package dev.medzik.librepass.android.ui.screens.auth
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,9 +38,8 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
+import dev.medzik.librepass.android.utils.handle
 import dev.medzik.librepass.client.api.v1.AuthClient
-import dev.medzik.librepass.client.errors.ApiException
-import dev.medzik.librepass.client.errors.ClientException
 import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -50,20 +49,17 @@ fun LoginScreen(navController: NavController) {
     // get composable context
     val context = LocalContext.current
 
-    // coroutine scope
-    val scope = rememberCoroutineScope()
+    // repository
+    val repository = Repository(context = context)
 
     // login data
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-
-    // error states
-    val isEmailError = email.value.isNotEmpty() && !email.value.contains("@")
-    val isPasswordError = password.value.isNotEmpty() && password.value.length < 8
-
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
     // loading state
     var loading by remember { mutableStateOf(false) }
 
+    // coroutine scope
+    val scope = rememberCoroutineScope()
     // snackbar state
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -74,7 +70,7 @@ fun LoginScreen(navController: NavController) {
      * Login user with given credentials and navigate to dashboard.
      */
     fun onLogin(email: String, password: String) {
-        if (isEmailError || isPasswordError) {
+        if (email.isEmpty() || password.isEmpty()) {
             return
         }
 
@@ -83,20 +79,22 @@ fun LoginScreen(navController: NavController) {
 
         scope.launch(Dispatchers.IO) {
             try {
+                // compute base password hash
                 val basePassword = computeBasePasswordHash(
                     password = password,
                     email = email
                 ).toHexHash()
 
+                // authenticate user and get credentials
                 val credentials = authClient.login(
                     email = email,
                     password = password
                 )
 
+                // get argon2id parameters
                 val argon2idParameters = authClient.getUserArgon2idParameters(email)
 
-                val repository = Repository(context = context)
-
+                // insert credentials into local database
                 repository.credentials.insert(
                     Credentials(
                         userId = credentials.userId,
@@ -111,6 +109,7 @@ fun LoginScreen(navController: NavController) {
                     )
                 )
 
+                // decrypt encryption key
                 val encryptionKey = AesCbc.decrypt(
                     credentials.encryptionKey,
                     basePassword
@@ -126,16 +125,10 @@ fun LoginScreen(navController: NavController) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
-            } catch (e: ClientException) {
-                // Handle network error
+            } catch (e: Exception) {
                 loading = false
 
-                snackbarHostState.showSnackbar(context.resources.getString(R.string.network_error))
-            } catch (e: ApiException) {
-                // Handle API error
-                loading = false
-
-                snackbarHostState.showSnackbar(context.resources.getString(R.string.invalid_credentials))
+                e.handle(context, snackbarHostState)
             }
         }
     }
@@ -165,27 +158,27 @@ fun LoginScreen(navController: NavController) {
         ) {
             TextInputField(
                 label = stringResource(id = R.string.email),
-                state = email,
-                isError = isEmailError,
+                value = email,
+                onValueChange = { email = it },
+                isError = email.isEmpty(),
                 errorMessage = stringResource(id = R.string.invalid_email),
                 keyboardType = KeyboardType.Email
             )
 
             TextInputField(
                 label = stringResource(id = R.string.password),
-                state = password,
+                value = password,
+                onValueChange = { password = it },
                 hidden = true,
-                isError = isPasswordError,
+                isError = password.isEmpty(),
                 errorMessage = stringResource(id = R.string.invalid_password_too_short),
                 keyboardType = KeyboardType.Password
             )
 
             Button(
-                onClick = { onLogin(email.value, password.value) },
-                enabled =
-                !isEmailError && !isPasswordError &&
-                    email.value.isNotEmpty() && password.value.isNotEmpty() &&
-                    !loading,
+                onClick = { onLogin(email, password) },
+                // disable button if email or password is empty or loading is in progress
+                enabled = email.isNotEmpty() && password.isNotEmpty() && !loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)

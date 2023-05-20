@@ -15,7 +15,7 @@ import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
-import dev.medzik.librepass.android.utils.navController.getString
+import dev.medzik.librepass.android.utils.navigation.getString
 import java.util.UUID
 
 /**

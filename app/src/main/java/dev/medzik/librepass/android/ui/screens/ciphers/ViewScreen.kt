@@ -35,6 +35,7 @@ import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.utils.navigation.getString
+import dev.medzik.librepass.android.utils.navigation.navigate
 import java.util.UUID
 
 @Composable
@@ -63,7 +64,8 @@ fun CipherViewScreen(navController: NavController) {
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 navController.navigate(
-                    Screen.CipherEdit.fill(
+                    screen = Screen.CipherEdit,
+                    arguments = listOf(
                         Argument.EncryptionKey to encryptionKey,
                         Argument.CipherId to cipherId
                     )

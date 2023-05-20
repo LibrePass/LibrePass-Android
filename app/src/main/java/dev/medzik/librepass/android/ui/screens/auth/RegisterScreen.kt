@@ -35,6 +35,7 @@ import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.client.api.v1.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -81,10 +82,10 @@ fun RegisterScreen(navController: NavController) {
 
                 // navigate to login
                 scope.launch(Dispatchers.Main) {
-                    navController.navigate(Screen.Login.get) {
-                        // disable back navigation
-                        popUpTo(Screen.Login.get) { inclusive = true }
-                    }
+                    navController.navigate(
+                        screen = Screen.Login,
+                        disableBack = true
+                    )
                 }
             } catch (e: Exception) {
                 loading = false

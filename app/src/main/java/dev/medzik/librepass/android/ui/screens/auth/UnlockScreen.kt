@@ -36,6 +36,7 @@ import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.KeyStoreAlias
 import dev.medzik.librepass.android.utils.KeyStoreUtils
+import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
 import dev.medzik.librepass.types.api.auth.UserArgon2idParameters
@@ -99,13 +100,10 @@ fun UnlockScreen(navController: NavController) {
                 if (loading) {
                     scope.launch(Dispatchers.Main) {
                         navController.navigate(
-                            Screen.Dashboard.fill(
-                                Argument.EncryptionKey to encryptionKey
-                            )
-                        ) {
-                            // disable back navigation
-                            popUpTo(Screen.Unlock.get) { inclusive = true }
-                        }
+                            screen = Screen.Dashboard,
+                            argument = Argument.EncryptionKey to encryptionKey,
+                            disableBack = true
+                        )
                     }
                 }
             }

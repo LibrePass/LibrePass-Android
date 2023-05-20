@@ -5,6 +5,15 @@ import androidx.fragment.app.FragmentActivity
 import dev.medzik.librepass.android.R
 import javax.crypto.Cipher
 
+/**
+ * Show biometric prompt and call [onAuthenticationSucceeded] if authentication succeeded or
+ * [onAuthenticationFailed] if authentication failed.
+ * @param context [FragmentActivity] context
+ * @param cipher [Cipher] to use for authentication (should be initialized) (see [KeyStoreUtils])
+ * @param onAuthenticationSucceeded callback called when authentication succeeded
+ * @param onAuthenticationFailed callback called when authentication failed
+ * @see BiometricPrompt
+ */
 fun showBiometricPrompt(
     context: FragmentActivity,
     cipher: Cipher,

@@ -159,8 +159,6 @@ fun LoginScreen(navController: NavController) {
                 label = stringResource(id = R.string.email),
                 value = email,
                 onValueChange = { email = it },
-                isError = email.isEmpty(),
-                errorMessage = stringResource(id = R.string.invalid_email),
                 keyboardType = KeyboardType.Email
             )
 
@@ -169,8 +167,6 @@ fun LoginScreen(navController: NavController) {
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,
-                isError = password.isEmpty(),
-                errorMessage = stringResource(id = R.string.invalid_password_too_short),
                 keyboardType = KeyboardType.Password
             )
 

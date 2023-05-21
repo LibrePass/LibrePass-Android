@@ -16,7 +16,7 @@ fun CipherGroup(
         text = name,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(top = 32.dp, bottom = 16.dp)
+        modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
     )
 
     content()

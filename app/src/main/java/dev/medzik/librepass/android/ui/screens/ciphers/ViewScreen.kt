@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Edit
@@ -78,56 +79,57 @@ fun CipherViewScreen(navController: NavController) {
             }
         }
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
         ) {
-            Text(
-                text = stringResource(id = R.string.item_details),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
-            )
-
-            CipherField(title = stringResource(id = R.string.cipher_field_name), value = cipherData.name)
-
-            if (!cipherData.username.isNullOrEmpty() || cipherData.password.isNullOrEmpty()) {
-                CipherGroup(stringResource(id = R.string.cipher_group_login)) {
-                    CipherField(
-                        title = stringResource(id = R.string.cipher_field_username),
-                        value = cipherData.username,
-                        copy = true
-                    )
-                    CipherField(
-                        title = stringResource(id = R.string.cipher_field_password),
-                        value = cipherData.password,
-                        copy = true,
-                        hidden = true
-                    )
-                }
+            item {
+                CipherField(title = stringResource(id = R.string.cipher_field_name), value = cipherData.name)
             }
 
-            if (!cipherData.uris.isNullOrEmpty()) {
-                CipherGroup(stringResource(id = R.string.cipher_group_website)) {
-                    cipherData.uris?.forEachIndexed { index, it ->
+            if (!cipherData.username.isNullOrEmpty() || cipherData.password.isNullOrEmpty()) {
+                item {
+                    CipherGroup(stringResource(id = R.string.cipher_group_login)) {
                         CipherField(
-                            title = stringResource(id = R.string.cipher_field_url) + " ${index + 1}",
-                            value = it,
+                            title = stringResource(id = R.string.cipher_field_username),
+                            value = cipherData.username,
                             copy = true
+                        )
+                        CipherField(
+                            title = stringResource(id = R.string.cipher_field_password),
+                            value = cipherData.password,
+                            copy = true,
+                            hidden = true
                         )
                     }
                 }
             }
 
+            item {
+                if (!cipherData.uris.isNullOrEmpty()) {
+                    CipherGroup(stringResource(id = R.string.cipher_group_website)) {
+                        cipherData.uris?.forEachIndexed { index, it ->
+                            CipherField(
+                                title = stringResource(id = R.string.cipher_field_url) + " ${index + 1}",
+                                value = it,
+                                copy = true
+                            )
+                        }
+                    }
+                }
+            }
+
             if (!cipherData.notes.isNullOrEmpty()) {
-                CipherGroup(stringResource(id = R.string.cipher_group_other)) {
-                    CipherField(
-                        title = stringResource(id = R.string.cipher_field_notes),
-                        value = cipherData.notes,
-                        copy = true
-                    )
+                item {
+                    CipherGroup(stringResource(id = R.string.cipher_group_other)) {
+                        CipherField(
+                            title = stringResource(id = R.string.cipher_field_notes),
+                            value = cipherData.notes,
+                            copy = true
+                        )
+                    }
                 }
             }
         }

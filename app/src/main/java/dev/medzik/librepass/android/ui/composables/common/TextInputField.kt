@@ -88,6 +88,7 @@ fun TextInputFieldBase(
     value: String?,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
+    singleLine: Boolean = true,
     trailingIcon: @Composable () -> Unit = {}
 ) {
     val hiddenState = remember { mutableStateOf(hidden) }
@@ -96,8 +97,7 @@ fun TextInputFieldBase(
         value = value ?: "",
         onValueChange = onValueChange,
         label = { Text(label) },
-        maxLines = 1,
-        singleLine = true,
+        singleLine = singleLine,
         visualTransformation = if (hidden && hiddenState.value) {
             PasswordVisualTransformation()
         } else {

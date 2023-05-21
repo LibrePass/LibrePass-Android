@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -53,40 +54,42 @@ fun CipherListItem(
         }
     }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .combinedClickable(
-                onClick = { onItemClick(cipher) },
-                onLongClick = { showSheet() }
-            )
-            .padding(vertical = 16.dp, horizontal = 24.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(Icons.Default.AccountCircle, contentDescription = null)
-
-        Column(
+    Card(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Row(
             modifier = Modifier
-                .padding(start = 16.dp)
-                .fillMaxSize()
-                .weight(1f)
+                .fillMaxWidth()
+                .combinedClickable(
+                    onClick = { onItemClick(cipher) },
+                    onLongClick = { showSheet() }
+                )
+                .padding(vertical = 16.dp, horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = cipher.data.name,
-                style = MaterialTheme.typography.titleMedium
-            )
+            Icon(Icons.Default.AccountCircle, contentDescription = null)
 
-            Text(
-                text = cipher.data.username ?: "",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-            )
-        }
+            Column(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxSize()
+                    .weight(1f)
+            ) {
+                Text(
+                    text = cipher.data.name,
+                    style = MaterialTheme.typography.titleMedium
+                )
 
-        IconButton(
-            onClick = { showSheet() }
-        ) {
-            Icon(Icons.Default.MoreHoriz, contentDescription = null)
+                Text(
+                    text = cipher.data.username ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                )
+            }
+
+            IconButton(
+                onClick = { showSheet() }
+            ) {
+                Icon(Icons.Default.MoreHoriz, contentDescription = null)
+            }
         }
     }
 }

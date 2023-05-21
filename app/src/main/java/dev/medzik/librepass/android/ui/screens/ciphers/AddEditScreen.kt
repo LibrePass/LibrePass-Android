@@ -193,6 +193,7 @@ fun CipherAddEditView(
                 TextInputFieldBase(
                     label = stringResource(id = R.string.cipher_field_notes),
                     modifier = Modifier.fillMaxWidth(),
+                    singleLine = false,
                     value = cipherData.notes,
                     onValueChange = { cipherData = cipherData.copy(notes = it) }
                 )

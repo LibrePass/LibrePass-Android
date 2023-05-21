@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.ui.Argument.CipherId
+import dev.medzik.librepass.android.ui.Argument.EncryptionKey
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
 import dev.medzik.librepass.android.ui.screens.auth.LoginScreen
@@ -56,10 +58,10 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
     Register("register"),
     Login("login"),
     Unlock("unlock"),
-    Dashboard("dashboard", listOf(Argument.EncryptionKey)),
-    CipherView("cipher-view", listOf(Argument.EncryptionKey, Argument.CipherId)),
-    CipherAdd("cipher-add", listOf(Argument.EncryptionKey)),
-    CipherEdit("cipher-edit", listOf(Argument.EncryptionKey, Argument.CipherId)),
+    Dashboard("dashboard", listOf(EncryptionKey)),
+    CipherView("cipher-view", listOf(EncryptionKey, CipherId)),
+    CipherAdd("cipher-add", listOf(EncryptionKey)),
+    CipherEdit("cipher-edit", listOf(EncryptionKey, CipherId)),
     PasswordGenerator("password-generator")
 
     ;
@@ -85,7 +87,7 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
      */
     @Throws(IllegalArgumentException::class)
     fun fill(vararg arguments: Pair<Argument, String>): String {
-        if (arguments.size != this.arguments?.size) {
+        if (arguments.size != (this.arguments?.size ?: 0)) {
             throw IllegalArgumentException("Invalid number of arguments. Expected ${this.arguments?.size}, got ${arguments.size}")
         }
 
@@ -139,10 +141,10 @@ fun LibrePassNavController() {
 
         composable(Screen.CipherEdit.get) {
             // get cipher id nav controller
-            val cipherId = navController.getString(Argument.CipherId)
+            val cipherId = navController.getString(CipherId)
                 ?: return@composable
             // get encryption key from nav controller
-            val encryptionKey = navController.getString(Argument.EncryptionKey)
+            val encryptionKey = navController.getString(EncryptionKey)
                 ?: return@composable
 
             // get cipher from local database

@@ -1,7 +1,6 @@
 package dev.medzik.librepass.android.utils.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.NavOptionsBuilder
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 
@@ -16,7 +15,7 @@ fun NavController.getString(argument: Argument): String? {
  * Navigate to [Screen] with given [arguments].
  * @param screen [Screen] to navigate to.
  * @param arguments Pair of [Argument] and [String].
- * @param builder [NavOptionsBuilder] to configure navigation.
+ * @param disableBack [Boolean] to disable back navigation.
  */
 fun NavController.navigate(
     screen: Screen,
@@ -40,7 +39,7 @@ fun NavController.navigate(
  * Navigate to [Screen] with given [argument].
  * @param screen [Screen] to navigate to.
  * @param argument Pair of [Argument] and [String].
- * @param builder [NavOptionsBuilder] to configure navigation.
+ * @param disableBack [Boolean] to disable back navigation.
  */
 fun NavController.navigate(
     screen: Screen,
@@ -62,7 +61,7 @@ fun NavController.navigate(
 /**
  * Navigate to [Screen] without arguments.
  * @param screen [Screen] to navigate to.
- * @param builder [NavOptionsBuilder] to configure navigation.
+ * @param disableBack [Boolean] to disable back navigation.
  */
 fun NavController.navigate(
     screen: Screen,

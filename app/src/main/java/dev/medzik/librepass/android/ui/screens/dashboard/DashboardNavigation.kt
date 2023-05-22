@@ -13,6 +13,8 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -40,6 +42,8 @@ enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val
 fun DashboardNavigation(mainNavController: NavController) {
     val navController = rememberNavController()
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
     // bottom sheet
     var openBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -50,7 +54,8 @@ fun DashboardNavigation(mainNavController: NavController) {
             BottomAppBar {
                 DashboardBottomNavigationBar(navController = navController)
             }
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Box(
             modifier = Modifier.padding(
@@ -70,7 +75,8 @@ fun DashboardNavigation(mainNavController: NavController) {
                             sheetContent = it
                             openBottomSheet = true
                         },
-                        closeBottomSheet = { openBottomSheet = false }
+                        closeBottomSheet = { openBottomSheet = false },
+                        snackbarHostState = snackbarHostState
                     )
                 }
 //                composable(DashboardNavigationItem.Generator.route) {

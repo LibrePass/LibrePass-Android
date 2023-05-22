@@ -11,6 +11,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.pullrefresh.PullRefreshIndicator
 import androidx.compose.material3.pullrefresh.pullRefresh
 import androidx.compose.material3.pullrefresh.rememberPullRefreshState
@@ -34,6 +35,7 @@ import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
 import dev.medzik.librepass.android.ui.composables.common.TopBar
+import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.client.api.v1.CipherClient
@@ -48,7 +50,8 @@ import java.util.Date
 fun DashboardScreen(
     navController: NavController,
     openBottomSheet: (sheetContent: @Composable () -> Unit) -> Unit,
-    closeBottomSheet: () -> Unit
+    closeBottomSheet: () -> Unit,
+    snackbarHostState: SnackbarHostState
 ) {
     // get encryption key from navController
     val encryptionKey = navController.getString(Argument.EncryptionKey)
@@ -90,58 +93,62 @@ fun DashboardScreen(
         // set loading state to true
         refreshing = true
 
-        // caching
-        val cachedCiphers = repository.cipher.getAllIDs(credentials.userId)
-        val lastSync = repository.credentials.get()!!.lastSync
+        try {
+            // caching
+            val cachedCiphers = repository.cipher.getAllIDs(credentials.userId)
+            val lastSync = repository.credentials.get()!!.lastSync
 
-        if (lastSync != null) {
-            // update last sync date
-            repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
+            if (lastSync != null) {
+                // update last sync date
+                repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
 
-            // get ciphers from API
-            val syncResponse = CipherClient(credentials.accessToken).sync(Date(lastSync * 1000))
+                // get ciphers from API
+                val syncResponse = CipherClient(credentials.accessToken).sync(Date(lastSync * 1000))
 
-            // delete ciphers from local database that are not in API response
-            for (cipher in cachedCiphers) {
-                if (cipher !in syncResponse.ids) {
-                    repository.cipher.delete(cipher)
+                // delete ciphers from local database that are not in API response
+                for (cipher in cachedCiphers) {
+                    if (cipher !in syncResponse.ids) {
+                        repository.cipher.delete(cipher)
+                    }
+                }
+
+                // update ciphers in local database
+                for (cipher in syncResponse.ciphers) {
+                    repository.cipher.insert(
+                        CipherTable(
+                            id = cipher.id,
+                            owner = cipher.owner,
+                            encryptedCipher = cipher
+                        )
+                    )
+                }
+            } else {
+                // update last sync date
+                repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
+
+                // get all ciphers from API
+                val ciphersResponse = CipherClient(credentials.accessToken).getAll()
+
+                // insert ciphers into local database
+                for (cipher in ciphersResponse) {
+                    repository.cipher.insert(
+                        CipherTable(
+                            id = cipher.id,
+                            owner = cipher.owner,
+                            encryptedCipher = cipher
+                        )
+                    )
                 }
             }
+        } catch (e: Exception) {
+            e.handle(context, snackbarHostState)
+        } finally {
+            // get cipher from local repository and update UI
+            updateLocalCiphers()
 
-            // update ciphers in local database
-            for (cipher in syncResponse.ciphers) {
-                repository.cipher.insert(
-                    CipherTable(
-                        id = cipher.id,
-                        owner = cipher.owner,
-                        encryptedCipher = cipher
-                    )
-                )
-            }
-        } else {
-            // update last sync date
-            repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
-
-            // get all ciphers from API
-            val ciphersResponse = CipherClient(credentials.accessToken).getAll()
-
-            // insert ciphers into local database
-            for (cipher in ciphersResponse) {
-                repository.cipher.insert(
-                    CipherTable(
-                        id = cipher.id,
-                        owner = cipher.owner,
-                        encryptedCipher = cipher
-                    )
-                )
-            }
+            // set loading state to false
+            refreshing = false
         }
-
-        // get cipher from local repository and update UI
-        updateLocalCiphers()
-
-        // set loading state to false
-        refreshing = false
     }
 
     // load ciphers from local database on start

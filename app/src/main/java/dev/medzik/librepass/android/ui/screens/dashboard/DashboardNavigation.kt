@@ -93,6 +93,8 @@ fun DashboardNavigation(mainNavController: NavController) {
     // bottom sheet
     if (openBottomSheet) {
         ModalBottomSheet(
+            // TODO: I don't know if this is how it's done but it works
+            tonalElevation = 3.dp,
             onDismissRequest = { openBottomSheet = false },
             sheetState = sheetState
         ) {

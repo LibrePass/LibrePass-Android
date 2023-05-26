@@ -122,7 +122,9 @@ fun DashboardBottomNavigationBar(navController: NavController) {
         }
     }
 
-    NavigationBar {
+    NavigationBar(
+        tonalElevation = 0.dp
+    ) {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 alwaysShowLabel = true,

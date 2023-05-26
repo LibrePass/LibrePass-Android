@@ -19,6 +19,7 @@ class MainActivity : FragmentActivity() {
         // Handle uncaught exceptions
         Thread.setDefaultUncaughtExceptionHandler { _, e ->
             Log.e("LibrePass", "Uncaught exception", e)
+            finish()
         }
 
         // This will lay out our app behind the system bars

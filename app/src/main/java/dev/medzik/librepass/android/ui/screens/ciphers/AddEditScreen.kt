@@ -44,6 +44,7 @@ import dev.medzik.librepass.types.api.CipherType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import java.util.UUID
 
 @Composable
@@ -78,6 +79,13 @@ fun CipherAddEditView(
     // used to get password from password generator
     navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("password")?.observeForever {
         cipherData = cipherData.copy(password = it)
+    }
+    // observe for cipher from backstack
+    navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("cipher")?.observeForever {
+        val currentPassword = cipherData.password
+
+        cipherData = Json.decodeFromString(CipherData.serializer(), it)
+        cipherData = cipherData.copy(password = currentPassword)
     }
 
     /**
@@ -169,6 +177,12 @@ fun CipherAddEditView(
                     trailingIcon = {
                         // TODO: add password generator
                         IconButton(onClick = {
+                            // save cipher data as json to navController
+                            navController.currentBackStackEntry?.savedStateHandle?.set(
+                                "cipher",
+                                Json.encodeToString(CipherData.serializer(), cipherData)
+                            )
+
                             navController.navigate(Screen.PasswordGenerator.get)
                         }) {
                             Icon(

@@ -31,7 +31,7 @@
     <string name="dashboard">Self</string>
     <string name="add_new_cipher">Dodaj nowy szyfr</string>
     <string name="item_details">Szczegóły szyfru</string>
-    <string name="cipher_field_name">Nazya</string>
+    <string name="cipher_field_name">Nazwa</string>
     <string name="cipher_group_login">Informacje logowania</string>
     <string name="cipher_field_username">Nazwa użytkownika</string>
     <string name="cipher_field_password">Hasło</string>

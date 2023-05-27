@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LibrePass</string>
+    <string name="app_name" translatable="false">LibrePass</string>
 
     <string name="welcome">Welcome to LibrePass</string>
 
@@ -26,7 +26,6 @@
     <string name="biometric_subtitle">Please authenticate yourself</string>
 
     <string name="unlock">Unlock</string>
-    <string name="unlock_button">Unlock</string>
 
     <string name="dashboard">Dashboard</string>
     <string name="add_new_cipher">Add new cipher</string>

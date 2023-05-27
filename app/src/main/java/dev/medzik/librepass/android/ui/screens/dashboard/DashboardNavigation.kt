@@ -39,11 +39,11 @@ import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
 
-enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val title: String) {
-    Dashboard("dashboard", Icons.Default.Lock, "Dashboard"),
+enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val titleId: Int) {
+    Dashboard("dashboard", Icons.Default.Lock, R.string.dashboard),
 
     //    Generator("generator", Icons.Default.Refresh, "Generator"),
-    Settings("settings", Icons.Default.Settings, "Settings")
+    Settings("settings", Icons.Default.Settings, R.string.settings)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -162,8 +162,8 @@ fun DashboardBottomNavigationBar(navController: NavController, onItemSelected: (
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 alwaysShowLabel = true,
-                icon = { Icon(item.icon, contentDescription = item.title) },
-                label = { Text(item.title) },
+                icon = { Icon(item.icon, contentDescription = stringResource(id = item.titleId)) },
+                label = { Text(stringResource(id = item.titleId)) },
                 selected = selectedItem == index,
                 onClick = {
                     onItemSelected(index)

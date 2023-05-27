@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">LibrePass</string>
+
+    <string name="welcome">Witaj w LibrePass</string>
+
+    <!-- TopBar -->
+    <string name="back">Back</string>
+
+    <string name="register">Rejestracja</string>
+    <string name="login">Logowanie</string>
+    <string name="email">Email</string>
+    <string name="password">Hasło</string>
+    <string name="confirm_password">Potwierdź hasło</string>
+    <string name="password_hint">Podpowiedź hasła</string>
+    <string name="optional">opcjonalne</string>
+    <string name="login_button">Zaloguj się</string>
+    <string name="register_button">Zarejestruj się</string>
+    <string name="invalid_email">Niepoprawny adres email</string>
+    <string name="invalid_password_too_short">Hasło jest zbyt krótkie</string>
+    <string name="passwords_do_not_match">Hasła nie są identyczne</string>
+
+    <string name="settings">Ustawiania</string>
+    <string name="use_biometric">Użyj biometrii</string>
+    <string name="biometric_unlock">Odblokuj używając biometrii</string>
+    <string name="biometric_title">Odblokowanie</string>
+    <string name="biometric_subtitle">Prosimy o uwierzytelnienie się</string>
+
+    <string name="unlock">Odblokuj</string>
+    <string name="unlock_button">Odblokuj</string>
+
+    <string name="dashboard">Self</string>
+    <string name="add_new_cipher">Dodaj nowy szyfr</string>
+    <string name="item_details">Szczegóły szyfru</string>
+    <string name="cipher_field_name">Nazya</string>
+    <string name="cipher_group_login">Informacje logowania</string>
+    <string name="cipher_field_username">Nazwa użytkownika</string>
+    <string name="cipher_field_password">Hasło</string>
+    <string name="cipher_group_website">Strona</string>
+    <string name="cipher_field_url">Adres URL</string>
+    <string name="cipher_group_other">Inne</string>
+    <string name="cipher_field_notes">Notatki</string>
+    <string name="btn_save">Zapisz</string>
+    <string name="btn_add">Dodaj</string>
+    <string name="password_generator_topbar">Generator</string>
+    <string name="length">Długość</string>
+    <string name="capital_letters">Duże litery</string>
+    <string name="numbers">Liczby</string>
+    <string name="symbols">Symbole</string>
+    <string name="submit">Potwierdź</string>
+    <string name="cancel">Anuluj</string>
+
+    <string name="view">Podgląd</string>
+    <string name="edit">Edytuj</string>
+    <string name="delete">Usuń</string>
+
+    <!-- Icon descriptions -->
+    <string name="show_password">Pokaż hasło</string>
+    <string name="hide_password">Ukryj hasło</string>
+    <string name="copy_to_clipboard">Kopiuj do schowka</string>
+    <string name="generate_password">Wygeneruj hasło</string>
+    <string name="increase">Zwiększ</string>
+    <string name="decrease">Zmniejsz</string>
+
+    <!-- API Errors -->
+    <string name="network_error">Błąd sieci</string>
+    <string name="invalid_credentials">Nieprawidłowe dane uwierzytelniające</string>
+    <string name="user_already_exists">Użytkownik już istnieje</string>
+
+    <string name="encryption_error">Błąd szyfrowania/deszyfrowania</string>
+    <string name="unknown_error">Nieznany błąd</string>
+</resources>

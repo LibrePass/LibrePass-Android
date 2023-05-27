@@ -1,13 +1,14 @@
 package dev.medzik.librepass.android.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
@@ -19,16 +20,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.composables.common.TopBar
+import dev.medzik.librepass.android.utils.navigation.getString
+import dev.medzik.librepass.android.utils.navigation.navigate
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val title: String) {
     Dashboard("dashboard", Icons.Default.Lock, "Dashboard"),
@@ -40,6 +49,10 @@ enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardNavigation(mainNavController: NavController) {
+    // get encryption key from navController
+    val encryptionKey = mainNavController.getString(Argument.EncryptionKey)
+        ?: return
+
     val navController = rememberNavController()
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -49,23 +62,42 @@ fun DashboardNavigation(mainNavController: NavController) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var sheetContent by remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
 
+    var currentScreenId by remember { mutableIntStateOf(0) }
+
     Scaffold(
+        topBar = {
+            TopBar(
+                title = stringResource(
+                    id = if (currentScreenId == 0) R.string.dashboard else R.string.settings
+                )
+            )
+        },
         bottomBar = {
             BottomAppBar {
-                DashboardBottomNavigationBar(navController = navController)
+                DashboardBottomNavigationBar(
+                    navController = navController,
+                    onItemSelected = { currentScreenId = it }
+                )
+            }
+        },
+        floatingActionButton = {
+            if (currentScreenId == 0) {
+                FloatingActionButton(
+                    onClick = {
+                        mainNavController.navigate(
+                            screen = Screen.CipherAdd,
+                            argument = Argument.EncryptionKey to encryptionKey
+                        )
+                    }
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = null)
+                }
             }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Box(
-            modifier = Modifier.padding(
-                PaddingValues(
-                    0.dp,
-                    0.dp,
-                    0.dp,
-                    innerPadding.calculateBottomPadding()
-                )
-            )
+            modifier = Modifier.padding(innerPadding)
         ) {
             NavHost(navController, startDestination = DashboardNavigationItem.Dashboard.route) {
                 composable(DashboardNavigationItem.Dashboard.route) {
@@ -109,13 +141,13 @@ fun DashboardNavigation(mainNavController: NavController) {
 // }
 
 @Composable
-fun DashboardBottomNavigationBar(navController: NavController) {
+fun DashboardBottomNavigationBar(navController: NavController, onItemSelected: (Int) -> Unit) {
     val items = listOf(
         DashboardNavigationItem.Dashboard,
 //        DashboardNavigationItem.Generator,
         DashboardNavigationItem.Settings
     )
-    var selectedItem by remember { mutableStateOf(0) }
+    var selectedItem by remember { mutableIntStateOf(0) }
     var currentRoute by remember { mutableStateOf(DashboardNavigationItem.Dashboard.route) }
 
     items.forEachIndexed { index, navigationItem ->
@@ -134,6 +166,7 @@ fun DashboardBottomNavigationBar(navController: NavController) {
                 label = { Text(item.title) },
                 selected = selectedItem == index,
                 onClick = {
+                    onItemSelected(index)
                     selectedItem = index
                     currentRoute = item.route
                     navController.navigate(item.route) {

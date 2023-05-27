@@ -21,9 +21,9 @@ fun showBiometricPrompt(
     onAuthenticationFailed: () -> Unit
 ) {
     val promptInfo = BiometricPrompt.PromptInfo.Builder()
-        .setTitle(context.getString(R.string.biometric_title))
-        .setSubtitle(context.getString(R.string.biometric_subtitle))
-        .setNegativeButtonText(context.getString(R.string.cancel))
+        .setTitle(context.getString(R.string.BiometricUnlock_Title))
+        .setSubtitle(context.getString(R.string.BiometricUnlock_Subtitle))
+        .setNegativeButtonText(context.getString(R.string.BiometricUnlock_Button_UsePassword))
         .build()
 
     val biometricPrompt = BiometricPrompt(

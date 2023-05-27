@@ -34,14 +34,14 @@ fun Exception.handle(context: Context, snackbar: SnackbarHostState) {
         // handle encrypt exception
         is EncryptException -> {
             GlobalScope.launch {
-                snackbar.showSnackbar(context.getString(R.string.encryption_error))
+                snackbar.showSnackbar(context.getString(R.string.Error_EncryptionError))
             }
         }
 
         // handle client exception (network error)
         is ClientException -> {
             GlobalScope.launch {
-                snackbar.showSnackbar(context.getString(R.string.network_error))
+                snackbar.showSnackbar(context.getString(R.string.Error_NetworkError))
             }
         }
 
@@ -56,7 +56,7 @@ fun Exception.handle(context: Context, snackbar: SnackbarHostState) {
         // handle other exceptions
         else -> {
             GlobalScope.launch {
-                snackbar.showSnackbar(context.getString(R.string.unknown_error))
+                snackbar.showSnackbar(context.getString(R.string.Error_UnknownError))
             }
         }
     }

@@ -4,13 +4,31 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.UUID
 
+/**
+ * Credentials for a user.
+ * @property userId unique user id
+ * @property email user email
+ * @property accessToken access token for the API
+ * @property encryptionKey encryption key for encrypting/decrypting (encrypted using password)
+ * @property memory argon2id memory parameter
+ * @property iterations argon2id iterations parameter
+ * @property parallelism argon2id parallelism parameter
+ * @property version argon2id version parameter
+ * @property biometricEncryptionKey encryption key for encrypting/decrypting (encrypted using biometric)
+ * @property biometricEncryptionKeyIV initialization vector for biometricEncryptionKey
+ * @property biometricEnabled whether biometric auth is enabled
+ * @property lastSync last time the data was synced with the server
+ */
 @Entity
 data class Credentials(
-    @PrimaryKey val userId: UUID,
+    @PrimaryKey
+    val userId: UUID,
     val email: String,
 
     val accessToken: String,
     val encryptionKey: String,
+
+    val lastSync: Long? = null,
 
     // argon2id parameters
     val memory: Int,
@@ -23,7 +41,5 @@ data class Credentials(
     val biometricEncryptionKeyIV: String? = null,
 
     // settings
-    val biometricEnabled: Boolean = false,
-
-    val lastSync: Long? = null
+    val biometricEnabled: Boolean = false
 )

@@ -32,7 +32,7 @@ import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
-import dev.medzik.librepass.types.api.Cipher
+import dev.medzik.librepass.types.Cipher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -70,10 +70,10 @@ fun DashboardScreen(
         val dbCiphers = repository.cipher.getAll(credentials.userId)
 
         // decrypt ciphers
-        val decryptedCiphers = dbCiphers.map { it.encryptedCipher.toCipher(encryptionKey) }
+        val decryptedCiphers = dbCiphers.map { Cipher.from(it.encryptedCipher, encryptionKey) }
 
         // sort ciphers by name and update UI
-        ciphers = decryptedCiphers.sortedBy { it.data.name }
+        ciphers = decryptedCiphers.sortedBy { it.loginData!!.name }
     }
 
     /**

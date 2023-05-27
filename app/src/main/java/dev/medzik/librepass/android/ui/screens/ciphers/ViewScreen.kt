@@ -37,6 +37,7 @@ import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.types.Cipher
 import java.util.UUID
 
 @Composable
@@ -51,7 +52,7 @@ fun CipherViewScreen(navController: NavController) {
     // get cipher from repository
     val repository = Repository(context = LocalContext.current)
     val cipher = repository.cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
-    val cipherData = cipher.decrypt(encryptionKey)
+    val cipherData = Cipher.from(cipher, encryptionKey).loginData!!
 
     Scaffold(
         topBar = {

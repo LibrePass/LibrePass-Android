@@ -89,7 +89,7 @@ fun CipherViewScreen(navController: NavController) {
                 CipherField(title = stringResource(id = R.string.cipher_field_name), value = cipherData.name)
             }
 
-            if (!cipherData.username.isNullOrEmpty() || cipherData.password.isNullOrEmpty()) {
+            if (!cipherData.username.isNullOrEmpty() || !cipherData.password.isNullOrEmpty()) {
                 item {
                     CipherGroup(stringResource(id = R.string.cipher_group_login)) {
                         CipherField(

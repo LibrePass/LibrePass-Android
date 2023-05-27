@@ -22,7 +22,7 @@ class MainActivity : FragmentActivity() {
             finish()
         }
 
-        // This will lay out our app behind the system bars
+        // This will lay out our app behind the system bars (to make them transparent)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {

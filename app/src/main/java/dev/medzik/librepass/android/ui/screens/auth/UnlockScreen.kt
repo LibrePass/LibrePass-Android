@@ -178,7 +178,7 @@ fun UnlockScreen(navController: NavController) {
                 if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
-                    Text(text = stringResource(id = R.string.unlock_button))
+                    Text(text = stringResource(id = R.string.unlock))
                 }
             }
 

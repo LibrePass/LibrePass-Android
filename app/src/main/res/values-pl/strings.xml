@@ -1,10 +1,8 @@
 <resources>
-    <string name="app_name">LibrePass</string>
-
     <string name="welcome">Witaj w LibrePass</string>
 
     <!-- TopBar -->
-    <string name="back">Back</string>
+    <string name="back">Wróć</string>
 
     <string name="register">Rejestracja</string>
     <string name="login">Logowanie</string>
@@ -19,16 +17,15 @@
     <string name="invalid_password_too_short">Hasło jest zbyt krótkie</string>
     <string name="passwords_do_not_match">Hasła nie są identyczne</string>
 
-    <string name="settings">Ustawiania</string>
+    <string name="settings">Ustawienia</string>
     <string name="use_biometric">Użyj biometrii</string>
-    <string name="biometric_unlock">Odblokuj używając biometrii</string>
+    <string name="biometric_unlock">Odblokowywanie biometryczne</string>
     <string name="biometric_title">Odblokowanie</string>
     <string name="biometric_subtitle">Prosimy o uwierzytelnienie się</string>
 
     <string name="unlock">Odblokuj</string>
-    <string name="unlock_button">Odblokuj</string>
 
-    <string name="dashboard">Self</string>
+    <string name="dashboard">Sejf</string>
     <string name="add_new_cipher">Dodaj nowy szyfr</string>
     <string name="item_details">Szczegóły szyfru</string>
     <string name="cipher_field_name">Nazwa</string>

@@ -40,10 +40,10 @@ import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val titleId: Int) {
-    Dashboard("dashboard", Icons.Default.Lock, R.string.dashboard),
+    Dashboard("dashboard", Icons.Default.Lock, R.string.DashboardBottomNav_Dashboard),
 
-    //    Generator("generator", Icons.Default.Refresh, "Generator"),
-    Settings("settings", Icons.Default.Settings, R.string.settings)
+//    Generator("generator", Icons.Default.Refresh, "Generator"),
+    Settings("settings", Icons.Default.Settings, R.string.DashboardBottomNav_Settings)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +68,7 @@ fun DashboardNavigation(mainNavController: NavController) {
         topBar = {
             TopBar(
                 title = stringResource(
-                    id = if (currentScreenId == 0) R.string.dashboard else R.string.settings
+                    id = if (currentScreenId == 0) R.string.TopBar_Vault else R.string.TopBar_Settings
                 )
             )
         },

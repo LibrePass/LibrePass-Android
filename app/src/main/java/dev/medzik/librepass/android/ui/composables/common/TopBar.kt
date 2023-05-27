@@ -13,10 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-import dev.medzik.librepass.android.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -104,7 +102,7 @@ fun TopBarBackIcon(navController: NavController) {
     IconButton(onClick = { navController.popBackStack() }) {
         Icon(
             imageVector = Icons.Default.ArrowBack,
-            contentDescription = stringResource(id = R.string.back)
+            contentDescription = null
         )
     }
 }

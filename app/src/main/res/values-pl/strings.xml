@@ -1,68 +1,74 @@
 <resources>
-    <string name="welcome">Witaj w LibrePass</string>
-
     <!-- TopBar -->
-    <string name="back">Wróć</string>
+    <string name="TopBar_Register">Rejestracja</string>
+    <string name="TopBar_Login">Logowanie</string>
+    <string name="TopBar_Unlock">Odblokuj self</string>
+    <string name="TopBar_AddNewCipher">Dodaj nowy szyfr</string>
+    <string name="TopBar_Vault">Sejf</string>
+    <string name="TopBar_Settings">Ustawienia</string>
+    <string name="TopBar_PasswordGenerator">Generator</string>
 
-    <string name="register">Rejestracja</string>
-    <string name="login">Logowanie</string>
-    <string name="email">Email</string>
-    <string name="password">Hasło</string>
-    <string name="confirm_password">Potwierdź hasło</string>
-    <string name="password_hint">Podpowiedź hasła</string>
-    <string name="optional">opcjonalne</string>
-    <string name="login_button">Zaloguj się</string>
-    <string name="register_button">Zarejestruj się</string>
-    <string name="invalid_email">Niepoprawny adres email</string>
-    <string name="invalid_password_too_short">Hasło jest zbyt krótkie</string>
-    <string name="passwords_do_not_match">Hasła nie są identyczne</string>
+    <!-- Input Fields -->
+    <string name="InputField_Email">Email</string>
+    <string name="InputField_Password">Hasło</string>
+    <string name="InputField_ConfirmPassword">Potwierdź hasło</string>
+    <string name="InputField_PasswordHint">Podpowiedź hasła</string>
+    <string name="InputField_Optional">opcjonalne</string>
+    <!-- Error Messages -->
+    <string name="Error_InvalidEmail">Nieprawidłowy adres email</string>
+    <string name="Error_InvalidPasswordTooShort">Hasło jest zbyt krótkie</string>
+    <string name="Error_PasswordsDoNotMatch">Hasła nie pasują do siebie</string>
 
-    <string name="settings">Ustawienia</string>
-    <string name="use_biometric">Użyj biometrii</string>
-    <string name="biometric_unlock">Odblokowywanie biometryczne</string>
-    <string name="biometric_title">Odblokowanie</string>
-    <string name="biometric_subtitle">Prosimy o uwierzytelnienie się</string>
+    <!-- Buttons -->
+    <string name="Button_Register">Zarejestruj</string>
+    <string name="Button_Login">Zaloguj</string>
+    <string name="Button_Unlock">Odblokuj</string>
+    <string name="Button_UseBiometric">Użyj biometrii</string>
+    <string name="Button_Save">Zapisz</string>
+    <string name="Button_Add">Dodaj</string>
 
-    <string name="unlock">Odblokuj</string>
+    <!-- Welcome screen -->
+    <string name="WelcomeScreen_Title">Witaj w LibrePass</string>
+    <string name="WelcomeScreen_Button_Register">Rejestracja</string>
+    <string name="WelcomeScreen_Button_Login">Logowanie</string>
 
-    <string name="dashboard">Sejf</string>
-    <string name="add_new_cipher">Dodaj nowy szyfr</string>
-    <string name="item_details">Szczegóły szyfru</string>
-    <string name="cipher_field_name">Nazwa</string>
-    <string name="cipher_group_login">Informacje logowania</string>
-    <string name="cipher_field_username">Nazwa użytkownika</string>
-    <string name="cipher_field_password">Hasło</string>
-    <string name="cipher_group_website">Strona</string>
-    <string name="cipher_field_url">Adres URL</string>
-    <string name="cipher_group_other">Inne</string>
-    <string name="cipher_field_notes">Notatki</string>
-    <string name="btn_save">Zapisz</string>
-    <string name="btn_add">Dodaj</string>
-    <string name="password_generator_topbar">Generator</string>
-    <string name="length">Długość</string>
-    <string name="capital_letters">Duże litery</string>
-    <string name="numbers">Liczby</string>
-    <string name="symbols">Symbole</string>
-    <string name="submit">Potwierdź</string>
-    <string name="cancel">Anuluj</string>
+    <!-- Biometric unlock -->
+    <string name="BiometricUnlock_Title">Odblokuj</string>
+    <string name="BiometricUnlock_Subtitle">Proszę uwierzytelnić się</string>
+    <string name="BiometricUnlock_Button_UsePassword">Użyj hasła</string>
 
-    <string name="view">Podgląd</string>
-    <string name="edit">Edytuj</string>
-    <string name="delete">Usuń</string>
+    <!-- Cipher Fields -->
+    <string name="CipherField_Name">Nazwa</string>
+    <string name="CipherField_Group_Login">Dane logowania</string>
+    <string name="CipherField_Username">Nazwa użytkownika</string>
+    <string name="CipherField_Password">Hasło</string>
+    <string name="CipherField_Group_Website">Strona internetowa</string>
+    <string name="CipherField_URL">Adres URL</string>
+    <string name="CipherField_Group_Other">Inne</string>
+    <string name="CipherField_Notes">Notatki</string>
 
-    <!-- Icon descriptions -->
-    <string name="show_password">Pokaż hasło</string>
-    <string name="hide_password">Ukryj hasło</string>
-    <string name="copy_to_clipboard">Kopiuj do schowka</string>
-    <string name="generate_password">Wygeneruj hasło</string>
-    <string name="increase">Zwiększ</string>
-    <string name="decrease">Zmniejsz</string>
+    <!-- Cipher Bottom Sheet -->
+    <string name="CipherBottomSheet_View">Podgląd</string>
+    <string name="CipherBottomSheet_Edit">Edytuj</string>
+    <string name="CipherBottomSheet_Delete">Usuń</string>
 
-    <!-- API Errors -->
-    <string name="network_error">Błąd sieci</string>
-    <string name="invalid_credentials">Nieprawidłowe dane uwierzytelniające</string>
-    <string name="user_already_exists">Użytkownik już istnieje</string>
+    <!-- Dashboard bottom navigation -->
+    <string name="DashboardBottomNav_Dashboard">Sejf</string>
+    <string name="DashboardBottomNav_Settings">Ustawienia</string>
 
-    <string name="encryption_error">Błąd szyfrowania/deszyfrowania</string>
-    <string name="unknown_error">Nieznany błąd</string>
+    <!-- Settings -->
+    <string name="Settings_BiometricUnlock">Odblokowywanie biometryczne</string>
+
+    <!-- Password Generator -->
+    <string name="PasswordGenerator_Length">Długość</string>
+    <string name="PasswordGenerator_CapitalLetters">Duże litery</string>
+    <string name="PasswordGenerator_Numbers">Liczby</string>
+    <string name="PasswordGenerator_Symbols">Symbole</string>
+    <string name="PasswordGenerator_Submit">Potwierdź</string>
+
+    <!-- Error Messages -->
+    <string name="Error_NetworkError">Błąd sieci</string>
+    <string name="Error_InvalidCredentials">Nieprawidłowe dane uwierzytelniające</string>
+    <string name="Error_EncryptionError">Błąd szyfrowania/deszyfrowania</string>
+    <string name="Error_UnknownError">Nieznany błąd</string>
 </resources>

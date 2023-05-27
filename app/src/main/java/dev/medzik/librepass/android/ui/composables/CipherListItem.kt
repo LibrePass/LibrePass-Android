@@ -131,7 +131,7 @@ fun CipherListItemSheetContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.view),
+                text = stringResource(id = R.string.CipherBottomSheet_View),
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
         }
@@ -145,7 +145,7 @@ fun CipherListItemSheetContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.edit),
+                text = stringResource(id = R.string.CipherBottomSheet_Edit),
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
         }
@@ -159,7 +159,7 @@ fun CipherListItemSheetContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.delete),
+                text = stringResource(id = R.string.CipherBottomSheet_Delete),
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
         }

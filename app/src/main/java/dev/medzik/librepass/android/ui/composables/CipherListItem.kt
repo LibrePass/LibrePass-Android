@@ -26,9 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.types.api.Cipher
-import dev.medzik.librepass.types.api.CipherData
-import dev.medzik.librepass.types.api.CipherType
+import dev.medzik.librepass.types.Cipher
+import dev.medzik.librepass.types.CipherType
+import dev.medzik.librepass.types.LoginCipherData
 import kotlinx.coroutines.launch
 import okhttp3.internal.cache2.Relay.Companion.edit
 import java.util.UUID
@@ -78,10 +78,10 @@ fun CipherListItem(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                val name = if (cipher.data.name.length > 16) {
-                    cipher.data.name.substring(0, 16) + "..."
+                val name = if (cipher.loginData!!.name.length > 16) {
+                    cipher.loginData!!.name.substring(0, 16) + "..."
                 } else {
-                    cipher.data.name
+                    cipher.loginData!!.name
                 }
 
                 Text(
@@ -89,11 +89,11 @@ fun CipherListItem(
                     style = MaterialTheme.typography.titleMedium
                 )
 
-                if (cipher.data.username != null) {
-                    val username = if (cipher.data.username!!.length > 20) {
-                        cipher.data.username!!.substring(0, 20) + "..."
+                if (cipher.loginData!!.username != null) {
+                    val username = if (cipher.loginData!!.username!!.length > 20) {
+                        cipher.loginData!!.username!!.substring(0, 20) + "..."
                     } else {
-                        cipher.data.username!!
+                        cipher.loginData!!.username!!
                     }
 
                     Text(
@@ -175,8 +175,8 @@ fun CipherListItemPreview() {
                 cipher = Cipher(
                     id = UUID.randomUUID(),
                     owner = UUID.randomUUID(),
-                    type = CipherType.Login.type,
-                    data = CipherData(
+                    type = CipherType.Login,
+                    loginData = LoginCipherData(
                         name = "Name",
                         username = "Username"
                     )
@@ -193,8 +193,8 @@ fun CipherListItemPreview() {
                 cipher = Cipher(
                     id = UUID.randomUUID(),
                     owner = UUID.randomUUID(),
-                    type = CipherType.Login.type,
-                    data = CipherData(
+                    type = CipherType.Login,
+                    loginData = LoginCipherData(
                         name = "Some long name of the cipher",
                         username = "Some long username of the cipher"
                     )
@@ -211,8 +211,8 @@ fun CipherListItemPreview() {
                 cipher = Cipher(
                     id = UUID.randomUUID(),
                     owner = UUID.randomUUID(),
-                    type = CipherType.Login.type,
-                    data = CipherData(
+                    type = CipherType.Login,
+                    loginData = LoginCipherData(
                         name = "Name"
                     )
                 ),

@@ -38,9 +38,9 @@ import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.client.api.v1.CipherClient
-import dev.medzik.librepass.types.api.Cipher
-import dev.medzik.librepass.types.api.CipherData
-import dev.medzik.librepass.types.api.CipherType
+import dev.medzik.librepass.types.Cipher
+import dev.medzik.librepass.types.CipherType
+import dev.medzik.librepass.types.LoginCipherData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -66,7 +66,7 @@ fun CipherAddEditView(
     val cipherClient = CipherClient(credentials.accessToken)
 
     // cipher data to be submitted
-    var cipherData by remember { mutableStateOf(baseCipher?.data ?: CipherData(name = "")) }
+    var cipherData by remember { mutableStateOf(baseCipher?.loginData ?: LoginCipherData(name = "")) }
     // loading indicator
     var loading by remember { mutableStateOf(false) }
 
@@ -84,7 +84,7 @@ fun CipherAddEditView(
     navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("cipher")?.observeForever {
         val currentPassword = cipherData.password
 
-        cipherData = Json.decodeFromString(CipherData.serializer(), it)
+        cipherData = Json.decodeFromString(LoginCipherData.serializer(), it)
         cipherData = cipherData.copy(password = currentPassword)
     }
 
@@ -94,12 +94,12 @@ fun CipherAddEditView(
     fun submit() {
         loading = true
 
-        val cipher = baseCipher?.copy(data = cipherData)
+        val cipher = baseCipher?.copy(loginData = cipherData)
             ?: Cipher(
                 id = UUID.randomUUID(),
                 owner = credentials.userId,
-                type = CipherType.Login.type,
-                data = cipherData
+                type = CipherType.Login,
+                loginData = cipherData
             )
 
         scope.launch(Dispatchers.IO) {
@@ -137,7 +137,7 @@ fun CipherAddEditView(
     Scaffold(
         topBar = {
             TopBar(
-                title = baseCipher?.data?.name ?: stringResource(id = R.string.add_new_cipher),
+                title = baseCipher?.loginData?.name ?: stringResource(id = R.string.add_new_cipher),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         },
@@ -180,7 +180,7 @@ fun CipherAddEditView(
                             // save cipher data as json to navController
                             navController.currentBackStackEntry?.savedStateHandle?.set(
                                 "cipher",
-                                Json.encodeToString(CipherData.serializer(), cipherData)
+                                Json.encodeToString(LoginCipherData.serializer(), cipherData)
                             )
 
                             navController.navigate(Screen.PasswordGenerator.get)

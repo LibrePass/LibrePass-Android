@@ -178,7 +178,7 @@ fun DashboardScreen(
                         cipher = ciphers[index],
                         openBottomSheet = openBottomSheet,
                         closeBottomSheet = closeBottomSheet,
-                        onItemClick = { cipher ->
+                        itemClick = { cipher ->
                             navController.navigate(
                                 screen = Screen.CipherView,
                                 arguments = listOf(
@@ -187,7 +187,16 @@ fun DashboardScreen(
                                 )
                             )
                         },
-                        onItemDelete = { cipher ->
+                        itemEdit = { cipher ->
+                            navController.navigate(
+                                screen = Screen.CipherEdit,
+                                arguments = listOf(
+                                    Argument.CipherId to cipher.id.toString(),
+                                    Argument.EncryptionKey to encryptionKey
+                                )
+                            )
+                        },
+                        itemDelete = { cipher ->
                             scope.launch(Dispatchers.IO) {
                                 try {
                                     CipherClient(credentials.accessToken).delete(cipher.id)

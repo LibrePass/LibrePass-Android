@@ -49,6 +49,10 @@
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
 
+    <string name="view">View</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
     <!-- Icon descriptions -->
     <string name="show_password">Show password</string>
     <string name="hide_password">Hide password</string>

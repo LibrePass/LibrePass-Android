@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -51,7 +52,7 @@ fun PasswordGenerator(navController: NavController) {
 
     // TODO: save to preferences
     // generator options
-    var passwordLength by remember { mutableStateOf(10L) }
+    var passwordLength by remember { mutableLongStateOf(10L) }
     var withCapitalLetters by remember { mutableStateOf(true) }
     var withNumbers by remember { mutableStateOf(true) }
     var withSymbols by remember { mutableStateOf(true) }

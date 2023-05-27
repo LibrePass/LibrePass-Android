@@ -207,7 +207,6 @@ fun DashboardScreen(
                             openBottomSheet = openBottomSheet,
                             closeBottomSheet = closeBottomSheet,
                             onItemClick = { cipher ->
-                                // TODO: restore state of dashboard screen after navigating back
                                 navController.navigate(
                                     screen = Screen.CipherView,
                                     arguments = listOf(
@@ -218,10 +217,14 @@ fun DashboardScreen(
                             },
                             onItemDelete = { cipher ->
                                 scope.launch(Dispatchers.IO) {
-                                    CipherClient(credentials.accessToken).delete(cipher.id)
-                                    repository.cipher.delete(cipher.id)
+                                    try {
+                                        CipherClient(credentials.accessToken).delete(cipher.id)
+                                        repository.cipher.delete(cipher.id)
 
-                                    ciphers = ciphers.filter { it.id != cipher.id }
+                                        ciphers = ciphers.filter { it.id != cipher.id }
+                                    } catch (e: Exception) {
+                                        e.handle(context, snackbarHostState)
+                                    }
                                 }
                             }
                         )

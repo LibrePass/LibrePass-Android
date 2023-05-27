@@ -3,14 +3,8 @@ package dev.medzik.librepass.android.ui.screens.dashboard
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.pullrefresh.PullRefreshIndicator
 import androidx.compose.material3.pullrefresh.pullRefresh
@@ -26,15 +20,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
-import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
@@ -173,72 +164,52 @@ fun DashboardScreen(
     // refresh ciphers on pull to refresh
     val pullRefreshState = rememberPullRefreshState(refreshing, ::updateCiphers)
 
-    Scaffold(
-        topBar = {
-            TopBar(title = stringResource(id = R.string.dashboard))
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navController.navigate(
-                        screen = Screen.CipherAdd,
-                        argument = Argument.EncryptionKey to encryptionKey
-                    )
-                }
-            ) {
-                Icon(Icons.Default.Add, contentDescription = null)
-            }
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Box(
+            modifier = Modifier.pullRefresh(pullRefreshState)
         ) {
-            Box(
-                modifier = Modifier.pullRefresh(pullRefreshState)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(ciphers.size) { index ->
-                        CipherListItem(
-                            cipher = ciphers[index],
-                            openBottomSheet = openBottomSheet,
-                            closeBottomSheet = closeBottomSheet,
-                            onItemClick = { cipher ->
-                                navController.navigate(
-                                    screen = Screen.CipherView,
-                                    arguments = listOf(
-                                        Argument.CipherId to cipher.id.toString(),
-                                        Argument.EncryptionKey to encryptionKey
-                                    )
+                items(ciphers.size) { index ->
+                    CipherListItem(
+                        cipher = ciphers[index],
+                        openBottomSheet = openBottomSheet,
+                        closeBottomSheet = closeBottomSheet,
+                        onItemClick = { cipher ->
+                            navController.navigate(
+                                screen = Screen.CipherView,
+                                arguments = listOf(
+                                    Argument.CipherId to cipher.id.toString(),
+                                    Argument.EncryptionKey to encryptionKey
                                 )
-                            },
-                            onItemDelete = { cipher ->
-                                scope.launch(Dispatchers.IO) {
-                                    try {
-                                        CipherClient(credentials.accessToken).delete(cipher.id)
-                                        repository.cipher.delete(cipher.id)
+                            )
+                        },
+                        onItemDelete = { cipher ->
+                            scope.launch(Dispatchers.IO) {
+                                try {
+                                    CipherClient(credentials.accessToken).delete(cipher.id)
+                                    repository.cipher.delete(cipher.id)
 
-                                        ciphers = ciphers.filter { it.id != cipher.id }
-                                    } catch (e: Exception) {
-                                        e.handle(context, snackbarHostState)
-                                    }
+                                    ciphers = ciphers.filter { it.id != cipher.id }
+                                } catch (e: Exception) {
+                                    e.handle(context, snackbarHostState)
                                 }
                             }
-                        )
-                    }
+                        }
+                    )
                 }
-
-                // pull to refresh indicator must be aligned to top
-                PullRefreshIndicator(
-                    refreshing = refreshing,
-                    state = pullRefreshState,
-                    modifier = Modifier.align(Alignment.TopCenter),
-                    contentColor = MaterialTheme.colorScheme.primary
-                )
             }
+
+            // pull to refresh indicator must be aligned to top
+            PullRefreshIndicator(
+                refreshing = refreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter),
+                contentColor = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

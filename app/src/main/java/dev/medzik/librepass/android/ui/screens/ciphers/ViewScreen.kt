@@ -18,8 +18,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -87,19 +89,19 @@ fun CipherViewScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             item {
-                CipherField(title = stringResource(id = R.string.cipher_field_name), value = cipherData.name)
+                CipherField(title = stringResource(id = R.string.CipherField_Name), value = cipherData.name)
             }
 
             if (!cipherData.username.isNullOrEmpty() || !cipherData.password.isNullOrEmpty()) {
                 item {
-                    CipherGroup(stringResource(id = R.string.cipher_group_login)) {
+                    CipherGroup(stringResource(id = R.string.CipherField_Group_Login)) {
                         CipherField(
-                            title = stringResource(id = R.string.cipher_field_username),
+                            title = stringResource(id = R.string.CipherField_Username),
                             value = cipherData.username,
                             copy = true
                         )
                         CipherField(
-                            title = stringResource(id = R.string.cipher_field_password),
+                            title = stringResource(id = R.string.CipherField_Password),
                             value = cipherData.password,
                             copy = true,
                             hidden = true
@@ -110,10 +112,10 @@ fun CipherViewScreen(navController: NavController) {
 
             item {
                 if (!cipherData.uris.isNullOrEmpty()) {
-                    CipherGroup(stringResource(id = R.string.cipher_group_website)) {
+                    CipherGroup(stringResource(id = R.string.CipherField_Group_Website)) {
                         cipherData.uris?.forEachIndexed { index, it ->
                             CipherField(
-                                title = stringResource(id = R.string.cipher_field_url) + " ${index + 1}",
+                                title = stringResource(id = R.string.CipherField_URL) + " ${index + 1}",
                                 value = it,
                                 copy = true
                             )
@@ -124,9 +126,9 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.notes.isNullOrEmpty()) {
                 item {
-                    CipherGroup(stringResource(id = R.string.cipher_group_other)) {
+                    CipherGroup(stringResource(id = R.string.CipherField_Group_Other)) {
                         CipherField(
-                            title = stringResource(id = R.string.cipher_field_notes),
+                            title = stringResource(id = R.string.CipherField_Notes),
                             value = cipherData.notes,
                             copy = true
                         )
@@ -148,7 +150,7 @@ fun CipherField(
 
     val clipboardManager = LocalClipboardManager.current
 
-    val hiddenState = remember { mutableStateOf(hidden) }
+    var hiddenState by remember { mutableStateOf(hidden) }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -163,7 +165,7 @@ fun CipherField(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             )
 
-            if (hiddenState.value) {
+            if (hiddenState) {
                 Text(
                     text = "•".repeat(value.length),
                     style = MaterialTheme.typography.bodyMedium
@@ -178,14 +180,10 @@ fun CipherField(
 
         Row {
             if (hidden) {
-                IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
+                IconButton(onClick = { hiddenState = !hiddenState }) {
                     Icon(
-                        imageVector = if (hiddenState.value) { Icons.Filled.Visibility } else { Icons.Filled.VisibilityOff },
-                        contentDescription = if (hiddenState.value) {
-                            stringResource(id = R.string.show_password)
-                        } else {
-                            stringResource(id = R.string.show_password)
-                        }
+                        imageVector = if (hiddenState) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                        contentDescription = null
                     )
                 }
             }
@@ -194,7 +192,7 @@ fun CipherField(
                 IconButton(onClick = { clipboardManager.setText(AnnotatedString(value)) }) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = stringResource(id = R.string.copy_to_clipboard)
+                        contentDescription = null
                     )
                 }
             }

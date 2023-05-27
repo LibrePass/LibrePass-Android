@@ -5,11 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -37,6 +33,7 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
+import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.navigate
@@ -135,14 +132,9 @@ fun LoginScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(id = R.string.login),
+                title = stringResource(id = R.string.TopBar_Login),
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(id = R.string.back)
-                        )
-                    }
+                    TopBarBackIcon(navController = navController)
                 }
             )
         },
@@ -156,14 +148,14 @@ fun LoginScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = stringResource(id = R.string.email),
+                label = stringResource(id = R.string.InputField_Email),
                 value = email,
                 onValueChange = { email = it },
                 keyboardType = KeyboardType.Email
             )
 
             TextInputField(
-                label = stringResource(id = R.string.password),
+                label = stringResource(id = R.string.InputField_Password),
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,
@@ -182,7 +174,7 @@ fun LoginScreen(navController: NavController) {
                 if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
-                    Text(text = stringResource(id = R.string.login_button))
+                    Text(text = stringResource(id = R.string.Button_Login))
                 }
             }
         }

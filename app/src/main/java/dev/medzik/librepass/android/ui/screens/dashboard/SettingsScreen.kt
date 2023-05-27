@@ -123,7 +123,7 @@ fun SettingsScreen(navController: NavController) {
         item {
             TypeSwitcher(
                 icon = Icons.Default.Fingerprint,
-                text = stringResource(id = R.string.biometric_unlock),
+                text = stringResource(id = R.string.Settings_BiometricUnlock),
                 checked = biometricEnabled,
                 onCheckedChange = { biometricChecked() }
             )

@@ -109,7 +109,7 @@ fun PasswordGenerator(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(id = R.string.password_generator_topbar),
+                title = stringResource(id = R.string.TopBar_PasswordGenerator),
                 navigationIcon = {
                     TopBarBackIcon(navController = navController)
                 }
@@ -132,7 +132,7 @@ fun PasswordGenerator(navController: NavController) {
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.ContentCopy,
-                                    contentDescription = stringResource(id = R.string.copy_to_clipboard)
+                                    contentDescription = null
                                 )
                             }
 
@@ -141,7 +141,7 @@ fun PasswordGenerator(navController: NavController) {
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Refresh,
-                                    contentDescription = stringResource(id = R.string.generate_password)
+                                    contentDescription = null
                                 )
                             }
                         }
@@ -162,7 +162,7 @@ fun PasswordGenerator(navController: NavController) {
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 8.dp),
-                    label = { Text(text = stringResource(id = R.string.length)) },
+                    label = { Text(text = stringResource(id = R.string.PasswordGenerator_Length)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     onValueChange = { if (it.length in 1..3 && it.toLong() <= 256) passwordLength = it.toLong() }
                 )
@@ -171,34 +171,34 @@ fun PasswordGenerator(navController: NavController) {
                 IconButton(onClick = { if (passwordLength > 1) passwordLength-- }) {
                     Icon(
                         imageVector = Icons.Default.Remove,
-                        contentDescription = stringResource(id = R.string.decrease)
+                        contentDescription = null
                     )
                 }
                 IconButton(onClick = { if (passwordLength < 256) passwordLength++ }) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(id = R.string.increase)
+                        contentDescription = null
                     )
                 }
             }
 
             // Capital letters switch
             TypeSwitcher(
-                text = stringResource(id = R.string.capital_letters),
+                text = stringResource(id = R.string.PasswordGenerator_CapitalLetters),
                 checked = withCapitalLetters,
                 onCheckedChange = { withCapitalLetters = it }
             )
 
             // Numeric switch
             TypeSwitcher(
-                text = stringResource(id = R.string.numbers),
+                text = stringResource(id = R.string.PasswordGenerator_Numbers),
                 checked = withNumbers,
                 onCheckedChange = { withNumbers = it }
             )
 
             // Symbols switch
             TypeSwitcher(
-                text = stringResource(id = R.string.symbols),
+                text = stringResource(id = R.string.PasswordGenerator_Symbols),
                 checked = withSymbols,
                 onCheckedChange = { withSymbols = it }
             )
@@ -215,7 +215,7 @@ fun PasswordGenerator(navController: NavController) {
                     navController.popBackStack()
                 }
             ) {
-                Text(text = stringResource(id = R.string.submit))
+                Text(text = stringResource(id = R.string.PasswordGenerator_Submit))
             }
         }
     }

@@ -94,7 +94,7 @@ fun UnlockScreen(navController: NavController) {
             } catch (e: EncryptException) {
                 // if password is invalid
                 loading = false
-                snackbarHostState.showSnackbar(context.getString(R.string.invalid_credentials))
+                snackbarHostState.showSnackbar(context.getString(R.string.Error_InvalidCredentials))
             } finally {
                 // run only if loading is true (if no error occurred)
                 if (loading) {
@@ -148,7 +148,7 @@ fun UnlockScreen(navController: NavController) {
 
     Scaffold(
         topBar = {
-            TopBar(title = stringResource(id = R.string.unlock))
+            TopBar(title = stringResource(id = R.string.TopBar_Unlock))
         },
         modifier = Modifier.navigationBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -160,7 +160,7 @@ fun UnlockScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = stringResource(id = R.string.password),
+                label = stringResource(id = R.string.InputField_Password),
                 value = password.value,
                 onValueChange = { password.value = it },
                 hidden = true,
@@ -178,7 +178,7 @@ fun UnlockScreen(navController: NavController) {
                 if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
-                    Text(text = stringResource(id = R.string.unlock))
+                    Text(text = stringResource(id = R.string.Button_Unlock))
                 }
             }
 
@@ -190,7 +190,7 @@ fun UnlockScreen(navController: NavController) {
                         .padding(top = 8.dp)
                         .padding(horizontal = 80.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.use_biometric))
+                    Text(text = stringResource(id = R.string.Button_UseBiometric))
                 }
             }
         }

@@ -54,7 +54,7 @@ fun WelcomeScreen(navController: NavController) {
             )
 
             Text(
-                text = stringResource(id = R.string.welcome),
+                text = stringResource(id = R.string.WelcomeScreen_Title),
                 modifier = Modifier.padding(top = 20.dp)
             )
 
@@ -65,7 +65,7 @@ fun WelcomeScreen(navController: NavController) {
                     .padding(horizontal = 90.dp)
                     .padding(top = 20.dp)
             ) {
-                Text(text = stringResource(id = R.string.register))
+                Text(text = stringResource(id = R.string.WelcomeScreen_Button_Register))
             }
 
             OutlinedButton(
@@ -75,7 +75,7 @@ fun WelcomeScreen(navController: NavController) {
                     .padding(horizontal = 90.dp)
                     .padding(top = 8.dp)
             ) {
-                Text(text = stringResource(id = R.string.login))
+                Text(text = stringResource(id = R.string.WelcomeScreen_Button_Login))
             }
         }
     }

@@ -5,11 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -33,6 +29,7 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
+import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.navigate
@@ -98,14 +95,9 @@ fun RegisterScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(id = R.string.register),
+                title = stringResource(id = R.string.TopBar_Register),
                 navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = stringResource(id = R.string.back)
-                        )
-                    }
+                    TopBarBackIcon(navController = navController)
                 }
             )
         },
@@ -119,36 +111,36 @@ fun RegisterScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = stringResource(id = R.string.email),
+                label = stringResource(id = R.string.InputField_Email),
                 value = email,
                 onValueChange = { email = it },
                 isError = isEmailError,
-                errorMessage = stringResource(id = R.string.invalid_email),
+                errorMessage = stringResource(id = R.string.Error_InvalidEmail),
                 keyboardType = KeyboardType.Email
             )
 
             TextInputField(
-                label = stringResource(id = R.string.password),
+                label = stringResource(id = R.string.InputField_Password),
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,
                 isError = isPasswordError,
-                errorMessage = stringResource(id = R.string.invalid_password_too_short),
+                errorMessage = stringResource(id = R.string.Error_InvalidPasswordTooShort),
                 keyboardType = KeyboardType.Password
             )
 
             TextInputField(
-                label = stringResource(id = R.string.confirm_password),
+                label = stringResource(id = R.string.InputField_ConfirmPassword),
                 value = configPassword,
                 onValueChange = { configPassword = it },
                 hidden = true,
                 isError = configPassword.isNotEmpty() && configPassword != password,
-                errorMessage = stringResource(id = R.string.passwords_do_not_match),
+                errorMessage = stringResource(id = R.string.Error_PasswordsDoNotMatch),
                 keyboardType = KeyboardType.Password
             )
 
             TextInputField(
-                label = "${stringResource(id = R.string.password_hint)} (${stringResource(id = R.string.optional)})",
+                label = "${stringResource(id = R.string.InputField_PasswordHint)} (${stringResource(id = R.string.InputField_Optional)})",
                 value = passwordHint,
                 onValueChange = { passwordHint = it },
                 keyboardType = KeyboardType.Text
@@ -166,7 +158,7 @@ fun RegisterScreen(navController: NavController) {
                 if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
-                    Text(text = stringResource(id = R.string.register_button))
+                    Text(text = stringResource(id = R.string.Button_Register))
                 }
             }
         }

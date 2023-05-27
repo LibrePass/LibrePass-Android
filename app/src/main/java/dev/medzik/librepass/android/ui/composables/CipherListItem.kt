@@ -22,12 +22,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.medzik.librepass.android.R
 import dev.medzik.librepass.types.api.Cipher
 import dev.medzik.librepass.types.api.CipherData
 import dev.medzik.librepass.types.api.CipherType
 import kotlinx.coroutines.launch
+import okhttp3.internal.cache2.Relay.Companion.edit
 import java.util.UUID
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -36,8 +39,9 @@ fun CipherListItem(
     cipher: Cipher,
     openBottomSheet: (sheetContent: @Composable () -> Unit) -> Unit,
     closeBottomSheet: () -> Unit,
-    onItemClick: (Cipher) -> Unit,
-    onItemDelete: (Cipher) -> Unit
+    itemClick: (Cipher) -> Unit,
+    itemEdit: (Cipher) -> Unit,
+    itemDelete: (Cipher) -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
@@ -46,8 +50,9 @@ fun CipherListItem(
             openBottomSheet {
                 CipherListItemSheetContent(
                     cipher = cipher,
-                    onItemClick = onItemClick,
-                    onItemDelete = onItemDelete,
+                    view = itemClick,
+                    edit = itemEdit,
+                    delete = itemDelete,
                     closeBottomSheet = closeBottomSheet
                 )
             }
@@ -59,7 +64,7 @@ fun CipherListItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .combinedClickable(
-                    onClick = { onItemClick(cipher) },
+                    onClick = { itemClick(cipher) },
                     onLongClick = { showSheet() }
                 )
                 .padding(vertical = 8.dp, horizontal = 24.dp),
@@ -73,16 +78,30 @@ fun CipherListItem(
                     .fillMaxSize()
                     .weight(1f)
             ) {
+                val name = if (cipher.data.name.length > 16) {
+                    cipher.data.name.substring(0, 16) + "..."
+                } else {
+                    cipher.data.name
+                }
+
                 Text(
-                    text = cipher.data.name,
+                    text = name,
                     style = MaterialTheme.typography.titleMedium
                 )
 
-                Text(
-                    text = cipher.data.username ?: "",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
+                if (cipher.data.username != null) {
+                    val username = if (cipher.data.username!!.length > 20) {
+                        cipher.data.username!!.substring(0, 20) + "..."
+                    } else {
+                        cipher.data.username!!
+                    }
+
+                    Text(
+                        text = username,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                }
             }
 
             IconButton(
@@ -97,35 +116,50 @@ fun CipherListItem(
 @Composable
 fun CipherListItemSheetContent(
     cipher: Cipher,
-    onItemClick: (Cipher) -> Unit,
-    onItemDelete: (Cipher) -> Unit,
+    view: (Cipher) -> Unit,
+    edit: (Cipher) -> Unit,
+    delete: (Cipher) -> Unit,
     closeBottomSheet: () -> Unit
 ) {
     Column {
         TextButton(
             onClick = {
-                onItemClick(cipher)
+                view(cipher)
                 closeBottomSheet()
             },
             colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "View",
+                text = stringResource(id = R.string.view),
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
         }
 
         TextButton(
             onClick = {
-                onItemDelete(cipher)
+                edit(cipher)
                 closeBottomSheet()
             },
             colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "Delete",
+                text = stringResource(id = R.string.edit),
+                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
+            )
+        }
+
+        TextButton(
+            onClick = {
+                delete(cipher)
+                closeBottomSheet()
+            },
+            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(id = R.string.delete),
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
         }
@@ -149,8 +183,44 @@ fun CipherListItemPreview() {
                 ),
                 openBottomSheet = {},
                 closeBottomSheet = {},
-                onItemClick = {},
-                onItemDelete = {}
+                itemClick = {},
+                itemEdit = {},
+                itemDelete = {}
+            )
+        }
+        item {
+            CipherListItem(
+                cipher = Cipher(
+                    id = UUID.randomUUID(),
+                    owner = UUID.randomUUID(),
+                    type = CipherType.Login.type,
+                    data = CipherData(
+                        name = "Some long name of the cipher",
+                        username = "Some long username of the cipher"
+                    )
+                ),
+                openBottomSheet = {},
+                closeBottomSheet = {},
+                itemClick = {},
+                itemEdit = {},
+                itemDelete = {}
+            )
+        }
+        item {
+            CipherListItem(
+                cipher = Cipher(
+                    id = UUID.randomUUID(),
+                    owner = UUID.randomUUID(),
+                    type = CipherType.Login.type,
+                    data = CipherData(
+                        name = "Name"
+                    )
+                ),
+                openBottomSheet = {},
+                closeBottomSheet = {},
+                itemClick = {},
+                itemEdit = {},
+                itemDelete = {}
             )
         }
     }

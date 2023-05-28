@@ -18,8 +18,6 @@ import java.util.UUID
  * @property biometricEncryptionKey encryption key for encrypting/decrypting (encrypted using biometric)
  * @property biometricEncryptionKeyIV initialization vector for biometricEncryptionKey
  * @property biometricEnabled whether biometric auth is enabled
- * @property dynamicColor whether dynamic colors are enabled
- * @property darkMode whether dark mode is enabled (0 = system, 1 = light, 2 = dark)
  */
 @Entity
 data class Credentials(
@@ -43,7 +41,5 @@ data class Credentials(
     val biometricEncryptionKeyIV: String? = null,
 
     // settings
-    val biometricEnabled: Boolean = false,
-    val dynamicColor: Boolean = true,
-    val darkMode: Int = 0
+    val biometricEnabled: Boolean = false
 )

@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.data.Settings
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.composables.Group
 import dev.medzik.librepass.android.utils.KeyStoreAlias
@@ -44,40 +45,19 @@ fun SettingsScreen(navController: NavController) {
     // get credentials from local database
     val repository = Repository(context = context)
     val credentials = repository.credentials.get()!!
+    val settings = repository.settings.get() ?: Settings()
+
+    if (repository.settings.get() == null) {
+        repository.settings.insert(settings)
+    }
 
     var biometricEnabled by remember { mutableStateOf(credentials.biometricEnabled) }
-    var dynamicColor by remember { mutableStateOf(credentials.dynamicColor) }
+    var dynamicColor by remember { mutableStateOf(settings.dynamicColor) }
 
     // coroutine scope
     val scope = rememberCoroutineScope()
 
-    @Composable
-    fun TypeSwitcher(
-        icon: ImageVector,
-        text: String,
-        checked: Boolean,
-        onCheckedChange: (Boolean) -> Unit
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                modifier = Modifier.padding(end = 16.dp)
-            )
-
-            Text(
-                text = text,
-                modifier = Modifier.weight(1f)
-            )
-
-            Switch(
-                checked = checked,
-                onCheckedChange = onCheckedChange
-            )
-        }
-    }
+    fun reloadActivity() = context.recreate()
 
     /**
      * Biometric checked event handler (enable/disable biometric authentication)
@@ -122,6 +102,35 @@ fun SettingsScreen(navController: NavController) {
         )
     }
 
+    @Composable
+    fun SettingsSwitcher(
+        icon: ImageVector,
+        text: String,
+        checked: Boolean,
+        onCheckedChange: (Boolean) -> Unit
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.padding(end = 16.dp)
+            )
+
+            Text(
+                text = text,
+                modifier = Modifier.weight(1f)
+            )
+
+            Switch(
+                checked = checked,
+                onCheckedChange = onCheckedChange,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
+    }
+
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
         item {
             Group(
@@ -129,22 +138,21 @@ fun SettingsScreen(navController: NavController) {
             ) {
                 // TODO: add theme selection
 
-                TypeSwitcher(
+                SettingsSwitcher(
                     icon = Icons.Default.ColorLens,
                     text = stringResource(id = R.string.Settings_MaterialYou),
                     checked = dynamicColor,
                     onCheckedChange = {
                         dynamicColor = it
-                        scope.launch {
-                            repository.credentials.update(
-                                credentials.copy(
-                                    dynamicColor = it
-                                )
-                            )
-                        }
 
-                        // restart activity
-                        context.recreate()
+                        repository.settings.update(
+                            settings.copy(
+                                dynamicColor = it
+                            )
+                        )
+
+                        // restart activity to apply changes
+                        reloadActivity()
                     }
                 )
             }
@@ -154,7 +162,7 @@ fun SettingsScreen(navController: NavController) {
             Group(
                 name = stringResource(id = R.string.Settings_Group_Security)
             ) {
-                TypeSwitcher(
+                SettingsSwitcher(
                     icon = Icons.Default.Fingerprint,
                     text = stringResource(id = R.string.Settings_BiometricUnlock),
                     checked = biometricEnabled,

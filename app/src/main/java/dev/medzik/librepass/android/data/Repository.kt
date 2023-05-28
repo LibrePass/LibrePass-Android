@@ -10,6 +10,7 @@ import android.content.Context
 interface RepositoryInterface {
     val credentials: CredentialsDao
     val cipher: CipherDao
+    val settings: SettingsDao
 }
 
 /**
@@ -21,4 +22,5 @@ class Repository(context: Context) : RepositoryInterface {
 
     override val credentials = database.credentialsDao()
     override val cipher = database.cipherDao()
+    override val settings = database.settingsDao()
 }

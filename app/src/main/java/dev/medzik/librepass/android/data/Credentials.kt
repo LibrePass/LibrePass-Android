@@ -10,6 +10,7 @@ import java.util.UUID
  * @property email user email
  * @property accessToken access token for the API
  * @property encryptionKey encryption key for encrypting/decrypting (encrypted using password)
+ * @property lastSync last time the data was synced with the server
  * @property memory argon2id memory parameter
  * @property iterations argon2id iterations parameter
  * @property parallelism argon2id parallelism parameter
@@ -17,7 +18,8 @@ import java.util.UUID
  * @property biometricEncryptionKey encryption key for encrypting/decrypting (encrypted using biometric)
  * @property biometricEncryptionKeyIV initialization vector for biometricEncryptionKey
  * @property biometricEnabled whether biometric auth is enabled
- * @property lastSync last time the data was synced with the server
+ * @property dynamicColor whether dynamic colors are enabled
+ * @property darkMode whether dark mode is enabled (0 = system, 1 = light, 2 = dark)
  */
 @Entity
 data class Credentials(
@@ -41,5 +43,7 @@ data class Credentials(
     val biometricEncryptionKeyIV: String? = null,
 
     // settings
-    val biometricEnabled: Boolean = false
+    val biometricEnabled: Boolean = false,
+    val dynamicColor: Boolean = true,
+    val darkMode: Int = 0
 )

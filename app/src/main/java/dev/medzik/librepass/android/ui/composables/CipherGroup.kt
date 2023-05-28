@@ -1,5 +1,6 @@
 package dev.medzik.librepass.android.ui.composables
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,4 +21,21 @@ fun CipherGroup(
     )
 
     content()
+}
+
+@Composable
+fun Group(
+    name: String,
+    content: @Composable () -> Unit = {}
+) {
+    Text(
+        text = name,
+        style = MaterialTheme.typography.titleSmall,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier.padding(bottom = 8.dp)
+    )
+
+    content()
+
+    Spacer(modifier = Modifier.padding(bottom = 16.dp))
 }

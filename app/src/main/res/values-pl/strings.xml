@@ -57,7 +57,9 @@
     <string name="DashboardBottomNav_Settings">Ustawienia</string>
 
     <!-- Settings -->
-    <string name="Settings_BiometricUnlock">Odblokowywanie biometryczne</string>
+    <string name="Settings_Group_Appearance">Wygląd</string>
+    <string name="Settings_Group_Security">Zabezpieczenia</string>
+    <string name="Settings_BiometricUnlock">Odblokowanie biometryczne</string>
 
     <!-- Password Generator -->
     <string name="PasswordGenerator_Length">Długość</string>

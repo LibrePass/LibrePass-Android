@@ -2,7 +2,7 @@
     <!-- TopBar -->
     <string name="TopBar_Register">Rejestracja</string>
     <string name="TopBar_Login">Logowanie</string>
-    <string name="TopBar_Unlock">Odblokuj self</string>
+    <string name="TopBar_Unlock">Odblokuj sejf</string>
     <string name="TopBar_AddNewCipher">Dodaj nowy szyfr</string>
     <string name="TopBar_Vault">Sejf</string>
     <string name="TopBar_Settings">Ustawienia</string>

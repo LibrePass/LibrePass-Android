@@ -58,6 +58,10 @@
 
     <!-- Settings -->
     <string name="Settings_Group_Appearance">Wygląd</string>
+    <string name="Settings_Theme">Motyw</string>
+    <string name="Settings_SystemDefault">Ustawiania systemowe</string>
+    <string name="Settings_Light">Jasny</string>
+    <string name="Settings_Dark">Ciemny</string>
     <string name="Settings_Group_Security">Zabezpieczenia</string>
     <string name="Settings_BiometricUnlock">Odblokowanie biometryczne</string>
 

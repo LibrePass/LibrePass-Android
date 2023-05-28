@@ -1,16 +1,29 @@
 package dev.medzik.librepass.android.ui.screens.dashboard
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ColorLens
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Fingerprint
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.InvertColors
+import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -52,6 +65,7 @@ fun SettingsScreen(navController: NavController) {
     }
 
     var biometricEnabled by remember { mutableStateOf(credentials.biometricEnabled) }
+    var theme by remember { mutableIntStateOf(settings.theme) }
     var dynamicColor by remember { mutableStateOf(settings.dynamicColor) }
 
     // coroutine scope
@@ -131,12 +145,99 @@ fun SettingsScreen(navController: NavController) {
         }
     }
 
+    var themeSelectorExpanded by remember { mutableStateOf(false) }
+
+    fun changeTheme(id: Int) {
+        // close theme selector
+        themeSelectorExpanded = false
+
+        // save theme to database
+        theme = id
+        repository.settings.update(settings.copy(theme = id))
+
+        // reload activity
+        reloadActivity()
+    }
+
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
         item {
             Group(
                 name = stringResource(id = R.string.Settings_Group_Appearance)
             ) {
                 // TODO: add theme selection
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.TopStart)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.DarkMode,
+                            contentDescription = null,
+                            modifier = Modifier.padding(end = 16.dp)
+                        )
+
+                        Text(
+                            text = stringResource(id = R.string.Settings_Theme),
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        TextButton(
+                            onClick = { themeSelectorExpanded = true },
+                            modifier = Modifier.padding(start = 16.dp)
+                        ) {
+                            Text(
+                                when (theme) {
+                                    0 -> stringResource(id = R.string.Settings_SystemDefault)
+                                    1 -> stringResource(id = R.string.Settings_Light)
+                                    2 -> stringResource(id = R.string.Settings_Dark)
+                                    // never happens
+                                    else -> ""
+                                }
+                            )
+                        }
+
+                        // display from right side
+                        DropdownMenu(
+                            expanded = themeSelectorExpanded,
+                            onDismissRequest = { themeSelectorExpanded = false },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(id = R.string.Settings_SystemDefault)) },
+                                onClick = { changeTheme(0) },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Outlined.InvertColors,
+                                        contentDescription = null
+                                    )
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(id = R.string.Settings_Light)) },
+                                onClick = { changeTheme(1) },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Outlined.LightMode,
+                                        contentDescription = null
+                                    )
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(id = R.string.Settings_Dark)) },
+                                onClick = { changeTheme(2) },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Outlined.DarkMode,
+                                        contentDescription = null
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
 
                 SettingsSwitcher(
                     icon = Icons.Default.ColorLens,

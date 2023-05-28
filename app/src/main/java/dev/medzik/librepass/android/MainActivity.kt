@@ -3,6 +3,7 @@ package dev.medzik.librepass.android
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,9 +32,12 @@ class MainActivity : FragmentActivity() {
         val repository = Repository(context = this)
         val settings = repository.settings.get() ?: Settings()
 
+        val autoTheme = settings.theme == 0
+        val darkTheme = settings.theme == 2
+
         setContent {
             LibrePassTheme(
-                // TODO theme
+                darkTheme = darkTheme || (autoTheme && isSystemInDarkTheme()),
                 dynamicColor = settings.dynamicColor
             ) {
                 Surface(

@@ -59,6 +59,9 @@
     <string name="DashboardBottomNav_Settings">Settings</string>
 
     <!-- Settings -->
+    <string name="Settings_Group_Appearance">Appearance</string>
+    <string name="Settings_MaterialYou" translatable="false">Material You (Android 12+)</string>
+    <string name="Settings_Group_Security">Security</string>
     <string name="Settings_BiometricUnlock">Unlock with biometrics</string>
 
     <!-- Password Generator -->

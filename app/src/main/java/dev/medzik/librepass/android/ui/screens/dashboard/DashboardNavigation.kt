@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -62,7 +63,7 @@ fun DashboardNavigation(mainNavController: NavController) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var sheetContent by remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
 
-    var currentScreenId by remember { mutableIntStateOf(0) }
+    var currentScreenId by rememberSaveable { mutableIntStateOf(0) }
 
     Scaffold(
         topBar = {
@@ -147,14 +148,16 @@ fun DashboardBottomNavigationBar(navController: NavController, onItemSelected: (
 //        DashboardNavigationItem.Generator,
         DashboardNavigationItem.Settings
     )
-    var selectedItem by remember { mutableIntStateOf(0) }
-    var currentRoute by remember { mutableStateOf(DashboardNavigationItem.Dashboard.route) }
+    var selectedItem by rememberSaveable { mutableIntStateOf(0) }
+    var currentRoute by rememberSaveable { mutableStateOf(DashboardNavigationItem.Dashboard.route) }
 
     items.forEachIndexed { index, navigationItem ->
         if (navigationItem.route == currentRoute) {
             selectedItem = index
         }
     }
+
+    // TODO: save selectedItem and currentRoute after context.recreate()
 
     NavigationBar(
         tonalElevation = 0.dp

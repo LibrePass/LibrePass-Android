@@ -164,7 +164,6 @@ fun SettingsScreen(navController: NavController) {
             Group(
                 name = stringResource(id = R.string.Settings_Group_Appearance)
             ) {
-                // TODO: add theme selection
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -199,7 +198,6 @@ fun SettingsScreen(navController: NavController) {
                             )
                         }
 
-                        // display from right side
                         DropdownMenu(
                             expanded = themeSelectorExpanded,
                             onDismissRequest = { themeSelectorExpanded = false },

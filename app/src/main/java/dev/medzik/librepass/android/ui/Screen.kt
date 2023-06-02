@@ -18,7 +18,7 @@ import dev.medzik.librepass.android.ui.screens.ciphers.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
 import dev.medzik.librepass.android.utils.navigation.getString
-import dev.medzik.librepass.types.Cipher
+import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
 /**
@@ -153,7 +153,7 @@ fun LibrePassNavController() {
                 ?: return@composable
 
             // decrypt cipher
-            val cipher = Cipher.from(cipherTable.encryptedCipher, encryptionKey)
+            val cipher = Cipher(cipherTable.encryptedCipher, encryptionKey)
 
             CipherAddEditView(navController = navController, baseCipher = cipher)
         }

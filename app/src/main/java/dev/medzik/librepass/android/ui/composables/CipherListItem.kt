@@ -26,11 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.types.Cipher
-import dev.medzik.librepass.types.CipherType
-import dev.medzik.librepass.types.LoginCipherData
+import dev.medzik.librepass.types.cipher.Cipher
+import dev.medzik.librepass.types.cipher.CipherType
+import dev.medzik.librepass.types.cipher.data.CipherLoginData
 import kotlinx.coroutines.launch
-import okhttp3.internal.cache2.Relay.Companion.edit
 import java.util.UUID
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -176,7 +175,7 @@ fun CipherListItemPreview() {
                     id = UUID.randomUUID(),
                     owner = UUID.randomUUID(),
                     type = CipherType.Login,
-                    loginData = LoginCipherData(
+                    loginData = CipherLoginData(
                         name = "Name",
                         username = "Username"
                     )
@@ -194,7 +193,7 @@ fun CipherListItemPreview() {
                     id = UUID.randomUUID(),
                     owner = UUID.randomUUID(),
                     type = CipherType.Login,
-                    loginData = LoginCipherData(
+                    loginData = CipherLoginData(
                         name = "Some long name of the cipher",
                         username = "Some long username of the cipher"
                     )
@@ -212,7 +211,7 @@ fun CipherListItemPreview() {
                     id = UUID.randomUUID(),
                     owner = UUID.randomUUID(),
                     type = CipherType.Login,
-                    loginData = LoginCipherData(
+                    loginData = CipherLoginData(
                         name = "Name"
                     )
                 ),

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import dev.medzik.librepass.types.EncryptedCipher
+import dev.medzik.librepass.types.cipher.EncryptedCipher
 import kotlinx.serialization.json.Json
 import java.util.UUID
 

@@ -39,9 +39,10 @@ import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.client.api.v1.CipherClient
-import dev.medzik.librepass.types.Cipher
-import dev.medzik.librepass.types.CipherType
-import dev.medzik.librepass.types.LoginCipherData
+import dev.medzik.librepass.types.cipher.Cipher
+import dev.medzik.librepass.types.cipher.CipherType
+import dev.medzik.librepass.types.cipher.EncryptedCipher
+import dev.medzik.librepass.types.cipher.data.CipherLoginData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -67,7 +68,7 @@ fun CipherAddEditView(
     val cipherClient = CipherClient(credentials.accessToken)
 
     // cipher data to be submitted
-    var cipherData by remember { mutableStateOf(baseCipher?.loginData ?: LoginCipherData(name = "")) }
+    var cipherData by remember { mutableStateOf(baseCipher?.loginData ?: CipherLoginData(name = "")) }
     // loading indicator
     var loading by remember { mutableStateOf(false) }
 
@@ -85,7 +86,7 @@ fun CipherAddEditView(
     navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("cipher")?.observeForever {
         val currentPassword = cipherData.password
 
-        cipherData = Json.decodeFromString(LoginCipherData.serializer(), it)
+        cipherData = Json.decodeFromString(CipherLoginData.serializer(), it)
         cipherData = cipherData.copy(password = currentPassword)
     }
 
@@ -104,7 +105,7 @@ fun CipherAddEditView(
             )
 
         scope.launch(Dispatchers.IO) {
-            val encryptedCipher = cipher.toEncryptedCipher(encryptionKey)
+            val encryptedCipher = EncryptedCipher(cipher, encryptionKey)
 
             try {
                 if (baseCipher == null) {
@@ -180,7 +181,7 @@ fun CipherAddEditView(
                             // save cipher data as json to navController
                             navController.currentBackStackEntry?.savedStateHandle?.set(
                                 "cipher",
-                                Json.encodeToString(LoginCipherData.serializer(), cipherData)
+                                Json.encodeToString(CipherLoginData.serializer(), cipherData)
                             )
 
                             navController.navigate(Screen.PasswordGenerator)

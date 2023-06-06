@@ -18,7 +18,7 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 
 # plugins
-com-android-application = "8.1.0-beta03"
+com-android-application = "8.1.0-beta04"
 org-jetbrains-kotlin-android = "1.8.21"
 google-ksp = "1.8.21-1.0.11"
 gradle-ktlint = "11.3.2"

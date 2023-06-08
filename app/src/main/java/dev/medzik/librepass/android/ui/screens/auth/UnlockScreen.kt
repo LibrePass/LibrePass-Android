@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import dev.medzik.libcrypto.AesCbc
+import dev.medzik.libcrypto.AES
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
@@ -38,6 +38,7 @@ import dev.medzik.librepass.android.utils.KeyStoreAlias
 import dev.medzik.librepass.android.utils.KeyStoreUtils
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.showBiometricPrompt
+import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
 import dev.medzik.librepass.types.api.auth.UserArgon2idParameters
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +53,6 @@ fun UnlockScreen(navController: NavController) {
     // get credentials from database
     val repository = Repository(context = context)
     val dbCredentials = repository.credentials.get()!!
-    val encryptedEncryptionKey = dbCredentials.encryptionKey
 
     // password state
     val password = remember { mutableStateOf("") }
@@ -68,7 +68,7 @@ fun UnlockScreen(navController: NavController) {
         // disable button
         loading = true
 
-        lateinit var encryptionKey: String
+        lateinit var privateKey: String
 
         scope.launch(Dispatchers.IO) {
             try {
@@ -84,24 +84,30 @@ fun UnlockScreen(navController: NavController) {
                         parallelism = dbCredentials.parallelism,
                         version = dbCredentials.version
                     )
-                ).toHexHash()
+                )
 
                 // decrypt encryption key
-                encryptionKey = AesCbc.decrypt(
-                    encryptedEncryptionKey,
-                    basePassword
+                privateKey = AES.decrypt(
+                    AES.GCM,
+                    basePassword.toHexHash(),
+                    dbCredentials.protectedPrivateKey
                 )
             } catch (e: EncryptException) {
                 // if password is invalid
                 loading = false
                 snackbarHostState.showSnackbar(context.getString(R.string.Error_InvalidCredentials))
             } finally {
+                val secretKey = Cryptography.calculateSecretKey(privateKey, dbCredentials.publicKey)
+
                 // run only if loading is true (if no error occurred)
                 if (loading) {
                     scope.launch(Dispatchers.Main) {
                         navController.navigate(
                             screen = Screen.Dashboard,
-                            argument = Argument.EncryptionKey to encryptionKey,
+                            arguments = listOf(
+                                Argument.SecretKey to secretKey,
+                                Argument.PrivateKey to privateKey
+                            ),
                             disableBack = true
                         )
                     }
@@ -115,24 +121,26 @@ fun UnlockScreen(navController: NavController) {
             context = context,
             cipher = KeyStoreUtils.getCipherForDecryption(
                 alias = KeyStoreAlias.ENCRYPTION_KEY.name,
-                initializationVector = dbCredentials.biometricEncryptionKeyIV!!
+                initializationVector = dbCredentials.biometricProtectedPrivateKeyIV!!
             ),
             onAuthenticationSucceeded = { cipher ->
-                val encryptionKey = KeyStoreUtils.decrypt(
+                val privateKey = KeyStoreUtils.decrypt(
                     cipher = cipher,
-                    data = dbCredentials.biometricEncryptionKey!!
+                    data = dbCredentials.biometricProtectedPrivateKey!!
                 )
+
+                val secretKey = Cryptography.calculateSecretKey(privateKey, dbCredentials.publicKey)
 
                 scope.launch(Dispatchers.IO) {
                     scope.launch(Dispatchers.Main) {
                         navController.navigate(
-                            Screen.Dashboard.fill(
-                                Argument.EncryptionKey to encryptionKey
-                            )
-                        ) {
-                            // disable back navigation
-                            popUpTo(Screen.Unlock.get) { inclusive = true }
-                        }
+                            screen = Screen.Dashboard,
+                            arguments = listOf(
+                                Argument.SecretKey to secretKey,
+                                Argument.PrivateKey to privateKey
+                            ),
+                            disableBack = true
+                        )
                     }
                 }
             },

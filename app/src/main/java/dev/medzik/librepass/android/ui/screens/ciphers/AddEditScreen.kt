@@ -55,7 +55,7 @@ fun CipherAddEditView(
     baseCipher: Cipher? = null
 ) {
     // get encryption key from navController
-    val encryptionKey = navController.getString(Argument.EncryptionKey)
+    val secretKey = navController.getString(Argument.SecretKey)
         ?: return
 
     // get compose context
@@ -65,7 +65,7 @@ fun CipherAddEditView(
     val repository = Repository(context = context)
     val credentials = repository.credentials.get()!!
 
-    val cipherClient = CipherClient(credentials.accessToken)
+    val cipherClient = CipherClient(credentials.apiKey)
 
     // cipher data to be submitted
     var cipherData by remember { mutableStateOf(baseCipher?.loginData ?: CipherLoginData(name = "")) }
@@ -105,7 +105,7 @@ fun CipherAddEditView(
             )
 
         scope.launch(Dispatchers.IO) {
-            val encryptedCipher = EncryptedCipher(cipher, encryptionKey)
+            val encryptedCipher = EncryptedCipher(cipher, secretKey)
 
             try {
                 if (baseCipher == null) {

@@ -51,7 +51,7 @@ enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val
 @Composable
 fun DashboardNavigation(mainNavController: NavController) {
     // get encryption key from navController
-    val encryptionKey = mainNavController.getString(Argument.EncryptionKey)
+    val secretKey = mainNavController.getString(Argument.SecretKey)
         ?: return
 
     val navController = rememberNavController()
@@ -87,7 +87,7 @@ fun DashboardNavigation(mainNavController: NavController) {
                     onClick = {
                         mainNavController.navigate(
                             screen = Screen.CipherAdd,
-                            argument = Argument.EncryptionKey to encryptionKey
+                            argument = Argument.SecretKey to secretKey
                         )
                     }
                 ) {

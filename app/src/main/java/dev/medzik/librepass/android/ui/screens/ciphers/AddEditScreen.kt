@@ -13,7 +13,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,6 +38,8 @@ import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.android.utils.remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -46,7 +47,6 @@ import dev.medzik.librepass.types.cipher.EncryptedCipher
 import dev.medzik.librepass.types.cipher.data.CipherLoginData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import java.util.UUID
 
@@ -55,28 +55,27 @@ fun CipherAddEditView(
     navController: NavController,
     baseCipher: Cipher? = null
 ) {
-    // get secret key from navController
     val secretKey = navController.getString(Argument.SecretKey)
         ?: return
 
-    // get compose context
     val context = LocalContext.current
 
-    // database
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = rememberSnackbarHostState()
+
+    // states
+    var loading by rememberLoadingState()
+    var cipherData by remember {
+        mutableStateOf(baseCipher?.loginData ?: CipherLoginData(name = ""))
+    }
+
+    // database repository
     val repository = Repository(context = context)
     val credentials = repository.credentials.get()!!
+    val cipherDao = repository.cipher
 
+    // API client
     val cipherClient = CipherClient(credentials.apiKey)
-
-    // cipher data to be submitted
-    var cipherData by remember { mutableStateOf(baseCipher?.loginData ?: CipherLoginData(name = "")) }
-    // loading indicator
-    var loading by remember { mutableStateOf(false) }
-
-    // coroutine scope
-    val scope = rememberCoroutineScope()
-    // snackbar
-    val snackbarHostState = remember { SnackbarHostState() }
 
     // observe username and password from navController
     // used to get password from password generator
@@ -91,12 +90,12 @@ fun CipherAddEditView(
         cipherData = cipherData.copy(password = currentPassword)
     }
 
-    /**
-     * Insert or update cipher.
-     */
+    // Insert or update cipher
     fun submit() {
+        // set loading indicator
         loading = true
 
+        // update existing cipher or create new one
         val cipher = baseCipher?.copy(loginData = cipherData)
             ?: Cipher(
                 id = UUID.randomUUID(),
@@ -106,29 +105,26 @@ fun CipherAddEditView(
             )
 
         scope.launch(Dispatchers.IO) {
+            // encrypt cipher
             val encryptedCipher = EncryptedCipher(cipher, secretKey)
 
             try {
+                // insert or update cipher on server
                 if (baseCipher == null) {
                     cipherClient.insert(encryptedCipher)
                 } else {
                     cipherClient.update(encryptedCipher)
                 }
 
-                runBlocking {
-                    val cipherTable = CipherTable(
-                        id = encryptedCipher.id,
-                        owner = encryptedCipher.owner,
-                        encryptedCipher = encryptedCipher
-                    )
-
-                    if (baseCipher == null) {
-                        repository.cipher.insert(cipherTable)
-                    } else {
-                        repository.cipher.update(cipherTable)
-                    }
+                // insert or update cipher in local database
+                val cipherTable = CipherTable(encryptedCipher)
+                if (baseCipher == null) {
+                    cipherDao.insert(cipherTable)
+                } else {
+                    cipherDao.update(cipherTable)
                 }
 
+                // go back
                 scope.launch(Dispatchers.Main) { navController.popBackStack() }
             } catch (e: Exception) {
                 loading = false

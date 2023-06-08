@@ -122,5 +122,5 @@ object KeyStoreUtils {
  * Alias for secrets in KeyStore.
  */
 enum class KeyStoreAlias {
-    ENCRYPTION_KEY
+    PRIVATE_KEY
 }

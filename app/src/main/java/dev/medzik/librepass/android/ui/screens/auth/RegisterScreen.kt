@@ -3,17 +3,13 @@ package dev.medzik.librepass.android.ui.screens.auth
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -33,43 +29,36 @@ import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.android.utils.remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
+import dev.medzik.librepass.android.utils.remember.rememberStringData
 import dev.medzik.librepass.client.api.v1.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(navController: NavController) {
-    // get composable context
     val context = LocalContext.current
 
-    // register data
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var configPassword by remember { mutableStateOf("") }
-    var passwordHint by remember { mutableStateOf("") }
-    // loading state
-    var loading by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = rememberSnackbarHostState()
+
+    // states
+    var loading by rememberLoadingState()
+    var email by rememberStringData()
+    var password by rememberStringData()
+    var configPassword by rememberStringData()
+    var passwordHint by rememberStringData()
 
     // error states
     val isEmailError = email.isNotEmpty() && !email.contains("@")
     val isPasswordError = password.isNotEmpty() && password.length < 8
 
-    // coroutine scope
-    val scope = rememberCoroutineScope()
-    // snackbar state
-    val snackbarHostState = remember { SnackbarHostState() }
-
     // API client
     val authClient = AuthClient()
 
-    /**
-     * Register user with given credentials and navigate to login screen.
-     */
-    fun onLogin(email: String, password: String) {
-        if (isEmailError || isPasswordError || configPassword != password) {
-            return
-        }
-
+    // Register user with given credentials and navigate to login screen.
+    fun submit(email: String, password: String) {
         // disable button
         loading = true
 
@@ -101,7 +90,6 @@ fun RegisterScreen(navController: NavController) {
                 }
             )
         },
-        modifier = Modifier.navigationBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
@@ -147,7 +135,7 @@ fun RegisterScreen(navController: NavController) {
             )
 
             Button(
-                onClick = { onLogin(email, password) },
+                onClick = { submit(email, password) },
                 // disable button if there are any errors or loading is in progress
                 enabled = !isEmailError && !isPasswordError && configPassword == password && !loading,
                 modifier = Modifier

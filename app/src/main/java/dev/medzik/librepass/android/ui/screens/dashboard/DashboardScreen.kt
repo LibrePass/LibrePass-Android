@@ -45,7 +45,7 @@ fun DashboardScreen(
     snackbarHostState: SnackbarHostState
 ) {
     // get encryption key from navController
-    val encryptionKey = navController.getString(Argument.EncryptionKey)
+    val secretKey = navController.getString(Argument.SecretKey)
         ?: return
 
     // get composable context
@@ -70,7 +70,7 @@ fun DashboardScreen(
         val dbCiphers = repository.cipher.getAll(credentials.userId)
 
         // decrypt ciphers
-        val decryptedCiphers = dbCiphers.map { Cipher(it.encryptedCipher, encryptionKey) }
+        val decryptedCiphers = dbCiphers.map { Cipher(it.encryptedCipher, secretKey) }
 
         // sort ciphers by name and update UI
         ciphers = decryptedCiphers.sortedBy { it.loginData!!.name }
@@ -94,7 +94,7 @@ fun DashboardScreen(
                 repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
 
                 // get ciphers from API
-                val syncResponse = CipherClient(credentials.accessToken).sync(Date(lastSync * 1000))
+                val syncResponse = CipherClient(credentials.apiKey).sync(Date(lastSync * 1000))
 
                 // delete ciphers from local database that are not in API response
                 for (cipher in cachedCiphers) {
@@ -118,7 +118,7 @@ fun DashboardScreen(
                 repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
 
                 // get all ciphers from API
-                val ciphersResponse = CipherClient(credentials.accessToken).getAll()
+                val ciphersResponse = CipherClient(credentials.apiKey).getAll()
 
                 // insert ciphers into local database
                 for (cipher in ciphersResponse) {
@@ -183,7 +183,7 @@ fun DashboardScreen(
                                 screen = Screen.CipherView,
                                 arguments = listOf(
                                     Argument.CipherId to cipher.id.toString(),
-                                    Argument.EncryptionKey to encryptionKey
+                                    Argument.SecretKey to secretKey
                                 )
                             )
                         },
@@ -192,14 +192,14 @@ fun DashboardScreen(
                                 screen = Screen.CipherEdit,
                                 arguments = listOf(
                                     Argument.CipherId to cipher.id.toString(),
-                                    Argument.EncryptionKey to encryptionKey
+                                    Argument.SecretKey to secretKey
                                 )
                             )
                         },
                         itemDelete = { cipher ->
                             scope.launch(Dispatchers.IO) {
                                 try {
-                                    CipherClient(credentials.accessToken).delete(cipher.id)
+                                    CipherClient(credentials.apiKey).delete(cipher.id)
                                     repository.cipher.delete(cipher.id)
 
                                     ciphers = ciphers.filter { it.id != cipher.id }

@@ -45,7 +45,7 @@ import java.util.UUID
 @Composable
 fun CipherViewScreen(navController: NavController) {
     // get encryption key from navController
-    val encryptionKey = navController.getString(Argument.EncryptionKey)
+    val secretKey = navController.getString(Argument.SecretKey)
         ?: return
     // get cipher id from navController
     val cipherId = navController.getString(Argument.CipherId)
@@ -54,7 +54,7 @@ fun CipherViewScreen(navController: NavController) {
     // get cipher from repository
     val repository = Repository(context = LocalContext.current)
     val cipher = repository.cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
-    val cipherData = Cipher(cipher, encryptionKey).loginData!!
+    val cipherData = Cipher(cipher, secretKey).loginData!!
 
     Scaffold(
         topBar = {
@@ -70,7 +70,7 @@ fun CipherViewScreen(navController: NavController) {
                 navController.navigate(
                     screen = Screen.CipherEdit,
                     arguments = listOf(
-                        Argument.EncryptionKey to encryptionKey,
+                        Argument.SecretKey to secretKey,
                         Argument.CipherId to cipherId
                     )
                 )

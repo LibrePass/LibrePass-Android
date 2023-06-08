@@ -50,7 +50,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingsScreen(navController: NavController) {
     // get encryption key from navigation arguments
-    val encryptionKey = navController.getString(Argument.EncryptionKey)!!
+    val privateKey = navController.getString(Argument.PrivateKey)!!
 
     // get FragmentActivity from LocalContext
     val context = LocalContext.current as FragmentActivity
@@ -97,7 +97,7 @@ fun SettingsScreen(navController: NavController) {
             onAuthenticationSucceeded = { cipher ->
                 val encryptedData = KeyStoreUtils.encrypt(
                     cipher = cipher,
-                    data = encryptionKey
+                    data = privateKey
                 )
 
                 biometricEnabled = true
@@ -106,8 +106,8 @@ fun SettingsScreen(navController: NavController) {
                     repository.credentials.update(
                         credentials.copy(
                             biometricEnabled = true,
-                            biometricEncryptionKey = encryptedData.cipherText,
-                            biometricEncryptionKeyIV = encryptedData.initializationVector
+                            biometricProtectedPrivateKey = encryptedData.cipherText,
+                            biometricProtectedPrivateKeyIV = encryptedData.initializationVector
                         )
                     )
                 }

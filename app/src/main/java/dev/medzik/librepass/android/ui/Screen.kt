@@ -8,7 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument.CipherId
-import dev.medzik.librepass.android.ui.Argument.EncryptionKey
+import dev.medzik.librepass.android.ui.Argument.PrivateKey
+import dev.medzik.librepass.android.ui.Argument.SecretKey
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
 import dev.medzik.librepass.android.ui.screens.auth.LoginScreen
@@ -23,11 +24,13 @@ import java.util.UUID
 
 /**
  * Enum class for navigation between screens.
- * @property EncryptionKey Key used to encrypt/decrypt data.
- * @property CipherId Id of cipher. Used to get cipher from database.
+ * @property SecretKey key used to encrypt/decrypt data
+ * @property PrivateKey Curve25519 private key
+ * @property CipherId id of cipher, used to get cipher from database
  */
 enum class Argument {
-    EncryptionKey,
+    SecretKey,
+    PrivateKey,
     CipherId
 
     ;
@@ -59,10 +62,10 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
     Register("register"),
     Login("login"),
     Unlock("unlock"),
-    Dashboard("dashboard", listOf(EncryptionKey)),
-    CipherView("cipher-view", listOf(EncryptionKey, CipherId)),
-    CipherAdd("cipher-add", listOf(EncryptionKey)),
-    CipherEdit("cipher-edit", listOf(EncryptionKey, CipherId)),
+    Dashboard("dashboard", listOf(SecretKey, PrivateKey)),
+    CipherView("cipher-view", listOf(SecretKey, CipherId)),
+    CipherAdd("cipher-add", listOf(SecretKey)),
+    CipherEdit("cipher-edit", listOf(SecretKey, CipherId)),
     PasswordGenerator("password-generator")
 
     ;
@@ -145,7 +148,7 @@ fun LibrePassNavController() {
             val cipherId = navController.getString(CipherId)
                 ?: return@composable
             // get encryption key from nav controller
-            val encryptionKey = navController.getString(EncryptionKey)
+            val encryptionKey = navController.getString(CipherId)
                 ?: return@composable
 
             // get cipher from local database

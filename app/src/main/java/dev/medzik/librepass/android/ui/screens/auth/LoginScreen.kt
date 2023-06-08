@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import dev.medzik.libcrypto.AesCbc
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.Repository
@@ -38,6 +37,7 @@ import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.client.api.v1.AuthClient
+import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -77,29 +77,33 @@ fun LoginScreen(navController: NavController) {
 
         scope.launch(Dispatchers.IO) {
             try {
+                // get argon2id parameters
+                val argon2idParameters = authClient.getUserArgon2idParameters(email)
+
                 // compute base password hash
-                val basePassword = computeBasePasswordHash(
+                val basePasswordHash = computeBasePasswordHash(
                     password = password,
-                    email = email
-                ).toHexHash()
+                    email = email,
+                    parameters = argon2idParameters
+                )
 
                 // authenticate user and get credentials
                 val credentials = authClient.login(
                     email = email,
-                    password = password
+                    password = password,
+                    basePassword = basePasswordHash
                 )
-
-                // get argon2id parameters
-                val argon2idParameters = authClient.getUserArgon2idParameters(email)
 
                 // insert credentials into local database
                 repository.credentials.insert(
                     Credentials(
                         userId = credentials.userId,
                         email = email,
-                        accessToken = credentials.accessToken,
-                        encryptionKey = credentials.encryptionKey,
-                        // argon2id parameters
+                        apiKey = credentials.apiKey,
+                        // Curve25519 key pair
+                        publicKey = credentials.publicKey,
+                        protectedPrivateKey = credentials.protectedPrivateKey,
+                        // Argon2id parameters
                         memory = argon2idParameters.memory,
                         iterations = argon2idParameters.iterations,
                         parallelism = argon2idParameters.parallelism,
@@ -107,17 +111,23 @@ fun LoginScreen(navController: NavController) {
                     )
                 )
 
-                // decrypt encryption key
-                val encryptionKey = AesCbc.decrypt(
-                    credentials.encryptionKey,
-                    basePassword
+                // decrypt private key
+                val privateKey = credentials.decryptPrivateKey(basePasswordHash)
+
+                // calculate secret key
+                val secretKey = Cryptography.calculateSecretKey(
+                    privateKey = privateKey,
+                    publicKey = credentials.publicKey
                 )
 
                 // navigate to dashboard
                 scope.launch(Dispatchers.Main) {
                     navController.navigate(
                         screen = Screen.Dashboard,
-                        argument = Argument.EncryptionKey to encryptionKey,
+                        arguments = listOf(
+                            Argument.SecretKey to secretKey,
+                            Argument.PrivateKey to privateKey
+                        ),
                         disableBack = true
                     )
                 }

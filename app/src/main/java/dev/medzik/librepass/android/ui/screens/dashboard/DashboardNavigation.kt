@@ -15,7 +15,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -39,6 +38,8 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.android.utils.remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val titleId: Int) {
     Dashboard("dashboard", Icons.Default.Lock, R.string.DashboardBottomNav_Dashboard),
@@ -48,16 +49,15 @@ enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardNavigation(mainNavController: NavController) {
-    // get secret key from navController
     val secretKey = mainNavController.getString(Argument.SecretKey)
         ?: return
 
     val navController = rememberNavController()
 
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = rememberSnackbarHostState()
 
     // bottom sheet
-    var openBottomSheet by remember { mutableStateOf(false) }
+    var openBottomSheet by rememberLoadingState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var sheetContent by remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
 
@@ -144,8 +144,6 @@ fun DashboardBottomNavigationBar(navController: NavController, onItemSelected: (
             selectedItem = index
         }
     }
-
-    // TODO: save selectedItem and currentRoute after context.recreate()
 
     NavigationBar(
         tonalElevation = 0.dp

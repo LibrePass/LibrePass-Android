@@ -9,13 +9,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -37,6 +34,9 @@ import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.KeyStoreAlias
 import dev.medzik.librepass.android.utils.KeyStoreUtils
 import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.android.utils.remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
+import dev.medzik.librepass.android.utils.remember.rememberStringData
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
@@ -46,23 +46,19 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun UnlockScreen(navController: NavController) {
-    // get composable context
-    // must be FragmentActivity because of biometric prompt
+    // context must be FragmentActivity to show biometric prompt
     val context = LocalContext.current as FragmentActivity
 
-    // get credentials from database
+    val snackbarHostState = rememberSnackbarHostState()
+    val scope = rememberCoroutineScope()
+
+    // states
+    var loading by rememberLoadingState()
+    val password = rememberStringData()
+
+    // database repository
     val repository = Repository(context = context)
     val dbCredentials = repository.credentials.get()!!
-
-    // password state
-    val password = remember { mutableStateOf("") }
-    // loading state
-    var loading by remember { mutableStateOf(false) }
-
-    // snackbar state
-    val snackbarHostState = remember { SnackbarHostState() }
-    // coroutine scope
-    val scope = rememberCoroutineScope()
 
     fun onUnlock(password: String) {
         // disable button
@@ -120,7 +116,7 @@ fun UnlockScreen(navController: NavController) {
         showBiometricPrompt(
             context = context,
             cipher = KeyStoreUtils.getCipherForDecryption(
-                alias = KeyStoreAlias.ENCRYPTION_KEY.name,
+                alias = KeyStoreAlias.PRIVATE_KEY.name,
                 initializationVector = dbCredentials.biometricProtectedPrivateKeyIV!!
             ),
             onAuthenticationSucceeded = { cipher ->

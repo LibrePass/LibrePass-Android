@@ -39,6 +39,7 @@ import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.data.Settings
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.remember.rememberStringData
 import java.util.Random
 
 enum class PasswordType(val literals: String) {
@@ -50,11 +51,13 @@ enum class PasswordType(val literals: String) {
 
 @Composable
 fun PasswordGenerator(navController: NavController) {
-    // generated password
-    var password by remember { mutableStateOf("") }
+    val clipboardManager = LocalClipboardManager.current
+
+    var generatedPassword by rememberStringData()
 
     // database repository
     val repository = Repository(context = LocalContext.current)
+    // get settings from database or get default
     val settingsDb = repository.settings.get() ?: Settings()
 
     // generator options
@@ -62,9 +65,6 @@ fun PasswordGenerator(navController: NavController) {
     var withCapitalLetters by remember { mutableStateOf(settingsDb.passwordCapitalize) }
     var withNumbers by remember { mutableStateOf(settingsDb.passwordIncludeNumbers) }
     var withSymbols by remember { mutableStateOf(settingsDb.passwordIncludeSymbols) }
-
-    // clipboard manager
-    val clipboardManager = LocalClipboardManager.current
 
     @Composable
     fun TypeSwitcher(text: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
@@ -109,7 +109,7 @@ fun PasswordGenerator(navController: NavController) {
 
     // regenerate on options change
     LaunchedEffect(passwordLength, withCapitalLetters, withNumbers, withSymbols) {
-        password = generatePassword()
+        generatedPassword = generatePassword()
     }
 
     Scaffold(
@@ -129,12 +129,12 @@ fun PasswordGenerator(navController: NavController) {
         ) {
             Row {
                 OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
+                    value = generatedPassword,
+                    onValueChange = { generatedPassword = it },
                     trailingIcon = {
                         Row {
                             IconButton(
-                                onClick = { clipboardManager.setText(AnnotatedString(password)) }
+                                onClick = { clipboardManager.setText(AnnotatedString(generatedPassword)) }
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.ContentCopy,
@@ -143,7 +143,7 @@ fun PasswordGenerator(navController: NavController) {
                             }
 
                             IconButton(
-                                onClick = { password = generatePassword() }
+                                onClick = { generatedPassword = generatePassword() }
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Refresh,
@@ -257,7 +257,7 @@ fun PasswordGenerator(navController: NavController) {
                     .padding(horizontal = 90.dp)
                     .padding(top = 16.dp),
                 onClick = {
-                    navController.previousBackStackEntry?.savedStateHandle?.set("password", password)
+                    navController.previousBackStackEntry?.savedStateHandle?.set("password", generatedPassword)
                     navController.popBackStack()
                 }
             ) {

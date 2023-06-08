@@ -3,17 +3,13 @@ package dev.medzik.librepass.android.ui.screens.auth
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -36,6 +32,9 @@ import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.android.utils.remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
+import dev.medzik.librepass.android.utils.remember.rememberStringData
 import dev.medzik.librepass.client.api.v1.AuthClient
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
@@ -44,30 +43,25 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    // get composable context
     val context = LocalContext.current
 
-    // repository
-    val repository = Repository(context = context)
-
-    // login data
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    // loading state
-    var loading by remember { mutableStateOf(false) }
-
-    // coroutine scope
     val scope = rememberCoroutineScope()
-    // snackbar state
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = rememberSnackbarHostState()
+
+    // states
+    var loading by rememberLoadingState()
+    var email by rememberStringData()
+    var password by rememberStringData()
+
+    // database repository
+    val repository = Repository(context = context)
+    val credentialsDao = repository.credentials
 
     // API client
     val authClient = AuthClient()
 
-    /**
-     * Login user with given credentials and navigate to dashboard.
-     */
-    fun onLogin(email: String, password: String) {
+    // Login user with given credentials and navigate to dashboard.
+    fun submit(email: String, password: String) {
         if (email.isEmpty() || password.isEmpty()) {
             return
         }
@@ -95,7 +89,7 @@ fun LoginScreen(navController: NavController) {
                 )
 
                 // insert credentials into local database
-                repository.credentials.insert(
+                credentialsDao.insert(
                     Credentials(
                         userId = credentials.userId,
                         email = email,
@@ -148,7 +142,6 @@ fun LoginScreen(navController: NavController) {
                 }
             )
         },
-        modifier = Modifier.navigationBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
@@ -173,7 +166,7 @@ fun LoginScreen(navController: NavController) {
             )
 
             Button(
-                onClick = { onLogin(email, password) },
+                onClick = { submit(email, password) },
                 // disable button if email or password is empty or loading is in progress
                 enabled = email.isNotEmpty() && password.isNotEmpty() && !loading,
                 modifier = Modifier

@@ -31,9 +31,7 @@ import java.util.UUID
 enum class Argument {
     SecretKey,
     PrivateKey,
-    CipherId
-
-    ;
+    CipherId;
 
     /**
      * Get argument key (e.g. "{secretKey}").

@@ -28,10 +28,13 @@ class MainActivity : FragmentActivity() {
         // This will lay out our app behind the system bars (to make them transparent)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        // database
-        val repository = Repository(context = this)
-        val settings = repository.settings.get() ?: Settings()
+        // database repository
+        val repository = Repository(this)
+        // get settings or use default
+        val settings = repository.settings.get()
+            ?: Settings()
 
+        // theme settings
         val autoTheme = settings.theme == 0
         val darkTheme = settings.theme == 2
 

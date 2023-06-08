@@ -56,14 +56,14 @@ interface CipherDao {
      * @return The id of the inserted cipher.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(cipherTable: CipherTable)
+    fun insert(cipherTable: CipherTable)
 
     /**
      * Update a cipher.
      * @param cipherTable updated cipher
      */
     @Update
-    suspend fun update(cipherTable: CipherTable)
+    fun update(cipherTable: CipherTable)
 
     /**
      * Drop all ciphers owned by the given owner.

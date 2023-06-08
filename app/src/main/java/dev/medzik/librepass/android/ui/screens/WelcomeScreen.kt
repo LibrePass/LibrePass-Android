@@ -30,7 +30,6 @@ import dev.medzik.librepass.android.utils.navigation.navigate
  */
 @Composable
 fun WelcomeScreen(navController: NavController) {
-    // get composable context
     val context = LocalContext.current
 
     // get app icon
@@ -46,7 +45,6 @@ fun WelcomeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // show app icon
             Image(
                 painter = DrawablePainter(icon),
                 contentDescription = null,

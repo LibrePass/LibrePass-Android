@@ -86,7 +86,7 @@ fun UnlockScreen(navController: NavController) {
                     )
                 )
 
-                // decrypt encryption key
+                // decrypt secret key
                 privateKey = AES.decrypt(
                     AES.GCM,
                     basePassword.toHexHash(),

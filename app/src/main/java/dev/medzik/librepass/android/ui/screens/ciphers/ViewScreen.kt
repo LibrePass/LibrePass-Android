@@ -44,7 +44,7 @@ import java.util.UUID
 
 @Composable
 fun CipherViewScreen(navController: NavController) {
-    // get encryption key from navController
+    // get secret key from navController
     val secretKey = navController.getString(Argument.SecretKey)
         ?: return
     // get cipher id from navController

@@ -54,7 +54,7 @@ fun CipherAddEditView(
     navController: NavController,
     baseCipher: Cipher? = null
 ) {
-    // get encryption key from navController
+    // get secret key from navController
     val secretKey = navController.getString(Argument.SecretKey)
         ?: return
 

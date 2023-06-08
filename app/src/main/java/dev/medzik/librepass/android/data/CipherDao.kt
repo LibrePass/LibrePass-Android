@@ -14,7 +14,7 @@ import java.util.UUID
 interface CipherDao {
     /**
      * Get a cipher by id.
-     * @param id The id of the cipher.
+     * @param id cipher identifier
      * @return The cipher with the given id.
      */
     @Query("SELECT * FROM cipherTable WHERE id = :id")
@@ -22,7 +22,7 @@ interface CipherDao {
 
     /**
      * Get all ciphers.
-     * @param owner The owner of the ciphers.
+     * @param owner user identifier
      * @return All ciphers.
      */
     @Query("SELECT * FROM cipherTable WHERE owner = :owner")
@@ -30,7 +30,7 @@ interface CipherDao {
 
     /**
      * Get all ciphers ids.
-     * @param owner The owner of the ciphers.
+     * @param owner user identifier
      * @return All ciphers ids.
      */
     @Query("SELECT id FROM cipherTable WHERE owner = :owner")
@@ -38,21 +38,21 @@ interface CipherDao {
 
     /**
      * Delete a cipher by id.
-     * @param id The id of the cipher.
+     * @param id cipher identifier
      */
     @Query("DELETE FROM cipherTable WHERE id = :id")
     fun delete(id: UUID)
 
     /**
      * Delete ciphers by ids.
-     * @param ids The ids of the ciphers.
+     * @param ids cipher identifiers
      */
     @Query("DELETE FROM cipherTable WHERE id IN (:ids)")
     fun delete(ids: List<UUID>)
 
     /**
      * Insert a cipher. If the cipher already exists, replace it.
-     * @param cipherTable The cipher to be inserted.
+     * @param cipherTable cipher to be inserted
      * @return The id of the inserted cipher.
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -60,14 +60,14 @@ interface CipherDao {
 
     /**
      * Update a cipher.
-     * @param cipherTable The updated cipher.
+     * @param cipherTable updated cipher
      */
     @Update
     suspend fun update(cipherTable: CipherTable)
 
     /**
      * Drop all ciphers owned by the given owner.
-     * @param owner The owner of the ciphers.
+     * @param owner user identifier
      */
     @Query("DELETE FROM cipherTable WHERE owner = :owner")
     suspend fun drop(owner: UUID)

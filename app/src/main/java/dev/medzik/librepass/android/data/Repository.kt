@@ -3,9 +3,7 @@ package dev.medzik.librepass.android.data
 import android.content.Context
 
 /**
- * Repository interface.
- * @property credentials Credentials DAO.
- * @property cipher Cipher DAO.
+ * Repository interface provides access to the database DAOs.
  */
 interface RepositoryInterface {
     val credentials: CredentialsDao

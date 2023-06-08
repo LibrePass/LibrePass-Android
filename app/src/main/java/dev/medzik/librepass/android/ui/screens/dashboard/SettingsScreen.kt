@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen(navController: NavController) {
-    // get encryption key from navigation arguments
+    // get private key from navigation arguments
     val privateKey = navController.getString(Argument.PrivateKey)!!
 
     // get FragmentActivity from LocalContext

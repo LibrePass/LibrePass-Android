@@ -28,6 +28,7 @@
     <string name="Button_UseBiometric">Use biometric</string>
     <string name="Button_Save">Save</string>
     <string name="Button_Add">Add</string>
+    <string name="Button_AddField">Add field</string>
 
     <!-- Welcome screen -->
     <string name="WelcomeScreen_Title">Welcome to LibrePass</string>

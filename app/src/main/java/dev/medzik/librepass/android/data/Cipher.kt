@@ -19,7 +19,13 @@ class CipherTable(
     val owner: UUID,
     @field:TypeConverters(EncryptedCipherConverter::class)
     var encryptedCipher: EncryptedCipher
-)
+) {
+    constructor(encryptedCipher: EncryptedCipher) : this(
+        id = encryptedCipher.id,
+        owner = encryptedCipher.owner,
+        encryptedCipher = encryptedCipher
+    )
+}
 
 /**
  * EncryptedCipherConverter is a converter that converts an EncryptedCipher to a JSON string and vice versa.

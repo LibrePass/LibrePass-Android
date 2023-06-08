@@ -52,30 +52,27 @@ fun SettingsScreen(navController: NavController) {
     // get private key from navigation arguments
     val privateKey = navController.getString(Argument.PrivateKey)!!
 
-    // get FragmentActivity from LocalContext
+    // context must be FragmentActivity to show biometric prompt
     val context = LocalContext.current as FragmentActivity
 
-    // get credentials from local database
+    // get credentials and settings from database
     val repository = Repository(context = context)
     val credentials = repository.credentials.get()!!
     val settings = repository.settings.get() ?: Settings()
 
+    // insert default settings if not exists
     if (repository.settings.get() == null) {
         repository.settings.insert(settings)
     }
 
+    val scope = rememberCoroutineScope()
+
+    // states
     var biometricEnabled by remember { mutableStateOf(credentials.biometricEnabled) }
     var theme by remember { mutableIntStateOf(settings.theme) }
     var dynamicColor by remember { mutableStateOf(settings.dynamicColor) }
 
-    // coroutine scope
-    val scope = rememberCoroutineScope()
-
-    fun reloadActivity() = context.recreate()
-
-    /**
-     * Biometric checked event handler (enable/disable biometric authentication)
-     */
+    // Biometric checked event handler (enable/disable biometric authentication)
     fun biometricChecked() {
         if (biometricEnabled) {
             biometricEnabled = false
@@ -93,7 +90,7 @@ fun SettingsScreen(navController: NavController) {
 
         showBiometricPrompt(
             context = context,
-            cipher = KeyStoreUtils.getCipherForEncryption(KeyStoreAlias.ENCRYPTION_KEY.name),
+            cipher = KeyStoreUtils.getCipherForEncryption(KeyStoreAlias.PRIVATE_KEY.name),
             onAuthenticationSucceeded = { cipher ->
                 val encryptedData = KeyStoreUtils.encrypt(
                     cipher = cipher,
@@ -156,7 +153,7 @@ fun SettingsScreen(navController: NavController) {
         repository.settings.update(settings.copy(theme = id))
 
         // reload activity
-        reloadActivity()
+        context.recreate()
     }
 
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -251,7 +248,7 @@ fun SettingsScreen(navController: NavController) {
                         )
 
                         // restart activity to apply changes
-                        reloadActivity()
+                        context.recreate()
                     }
                 )
             }

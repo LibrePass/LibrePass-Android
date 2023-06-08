@@ -29,9 +29,8 @@ import dev.medzik.librepass.android.ui.composables.CipherListItem
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.client.api.v1.CipherClient
-import dev.medzik.librepass.client.errors.ApiException
-import dev.medzik.librepass.client.errors.ClientException
 import dev.medzik.librepass.types.cipher.Cipher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,27 +43,22 @@ fun DashboardScreen(
     closeBottomSheet: () -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
-    // get secret key from navController
     val secretKey = navController.getString(Argument.SecretKey)
         ?: return
 
-    // get composable context
     val context = LocalContext.current
 
-    // database
+    val scope = rememberCoroutineScope()
+
+    // states
+    var refreshing by rememberLoadingState()
+    var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
+
+    // database repository
     val repository = Repository(context = context)
     val credentials = repository.credentials.get()!!
 
-    // coroutines scope
-    val scope = rememberCoroutineScope()
-
-    // remember state
-    var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
-    var refreshing by remember { mutableStateOf(false) }
-
-    /**
-     * Get ciphers from local repository and update UI
-     */
+    // Get ciphers from local repository and update UI
     fun updateLocalCiphers() {
         // get ciphers from local database
         val dbCiphers = repository.cipher.getAll(credentials.userId)
@@ -76,10 +70,7 @@ fun DashboardScreen(
         ciphers = decryptedCiphers.sortedBy { it.loginData!!.name }
     }
 
-    /**
-     * Update ciphers from API and local database and update UI
-     */
-    @Throws(ClientException::class, ApiException::class)
+    // Update ciphers from API and local database and update UI
     fun updateCiphers() = scope.launch(Dispatchers.IO) {
         // set loading state to true
         refreshing = true

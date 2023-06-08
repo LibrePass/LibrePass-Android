@@ -44,15 +44,15 @@ import java.util.UUID
 
 @Composable
 fun CipherViewScreen(navController: NavController) {
-    // get secret key from navController
     val secretKey = navController.getString(Argument.SecretKey)
         ?: return
-    // get cipher id from navController
     val cipherId = navController.getString(Argument.CipherId)
         ?: return
 
-    // get cipher from repository
+    // database repository
     val repository = Repository(context = LocalContext.current)
+
+    // get cipher from local database
     val cipher = repository.cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
     val cipherData = Cipher(cipher, secretKey).loginData!!
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -196,12 +197,50 @@ fun CipherAddEditView(
             }
 
             CipherGroup(stringResource(id = R.string.CipherField_Group_Website)) {
-                TextInputFieldBase(
-                    label = stringResource(id = R.string.CipherField_URL),
-                    modifier = Modifier.fillMaxWidth(),
-                    value = cipherData.uris?.firstOrNull(),
-                    onValueChange = { cipherData = cipherData.copy(uris = listOf(it)) }
-                )
+                // show field for each uri
+                cipherData.uris?.forEachIndexed { index, uri ->
+                    TextInputFieldBase(
+                        label = stringResource(id = R.string.CipherField_URL) + " ${index + 1}",
+                        modifier = Modifier.fillMaxWidth(),
+                        value = uri,
+                        onValueChange = {
+                            cipherData = cipherData.copy(
+                                uris = cipherData.uris.orEmpty().toMutableList().apply {
+                                    this[index] = it
+                                }
+                            )
+                        },
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                cipherData = cipherData.copy(
+                                    uris = cipherData.uris.orEmpty().toMutableList().apply {
+                                        this.removeAt(index)
+                                    }
+                                )
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    )
+                }
+
+                // button for adding more fields
+                Button(
+                    onClick = {
+                        cipherData = cipherData.copy(
+                            uris = cipherData.uris.orEmpty() + ""
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 60.dp)
+                        .padding(top = 8.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.Button_AddField))
+                }
             }
 
             CipherGroup(stringResource(id = R.string.CipherField_Group_Other)) {

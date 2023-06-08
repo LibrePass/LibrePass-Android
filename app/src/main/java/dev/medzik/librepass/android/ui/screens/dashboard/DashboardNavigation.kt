@@ -42,15 +42,13 @@ import dev.medzik.librepass.android.utils.navigation.navigate
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val titleId: Int) {
     Dashboard("dashboard", Icons.Default.Lock, R.string.DashboardBottomNav_Dashboard),
-
-//    Generator("generator", Icons.Default.Refresh, "Generator"),
     Settings("settings", Icons.Default.Settings, R.string.DashboardBottomNav_Settings)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardNavigation(mainNavController: NavController) {
-    // get encryption key from navController
+    // get secret key from navController
     val secretKey = mainNavController.getString(Argument.SecretKey)
         ?: return
 
@@ -112,10 +110,6 @@ fun DashboardNavigation(mainNavController: NavController) {
                         snackbarHostState = snackbarHostState
                     )
                 }
-//                composable(DashboardNavigationItem.Generator.route) {
-//                    // TODO
-//                    GeneratorScreen()
-//                }
                 composable(DashboardNavigationItem.Settings.route) {
                     SettingsScreen(navController = mainNavController)
                 }
@@ -136,16 +130,10 @@ fun DashboardNavigation(mainNavController: NavController) {
     }
 }
 
-// @Composable
-// fun GeneratorScreen() {
-//    Text(text = "Generator")
-// }
-
 @Composable
 fun DashboardBottomNavigationBar(navController: NavController, onItemSelected: (Int) -> Unit) {
     val items = listOf(
         DashboardNavigationItem.Dashboard,
-//        DashboardNavigationItem.Generator,
         DashboardNavigationItem.Settings
     )
     var selectedItem by rememberSaveable { mutableIntStateOf(0) }

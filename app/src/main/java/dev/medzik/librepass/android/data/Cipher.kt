@@ -11,9 +11,6 @@ import java.util.UUID
 /**
  * CipherTable is a table that stores encrypted ciphers.
  * It is such as a cache to avoid pointlessly downloading the same data from the server and working offline.
- * @param id The id of the cipher.
- * @param owner The id of the owner of the cipher.
- * @param encryptedCipher The encrypted cipher. It is encrypted with the user's encryption key. It is stored as a JSON string.
  */
 @Entity
 class CipherTable(

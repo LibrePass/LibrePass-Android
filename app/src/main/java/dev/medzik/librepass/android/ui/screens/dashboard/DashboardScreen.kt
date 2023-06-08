@@ -44,7 +44,7 @@ fun DashboardScreen(
     closeBottomSheet: () -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
-    // get encryption key from navController
+    // get secret key from navController
     val secretKey = navController.getString(Argument.SecretKey)
         ?: return
 

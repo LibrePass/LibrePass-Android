@@ -21,19 +21,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.data.Settings
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import java.util.Random
@@ -50,12 +53,15 @@ fun PasswordGenerator(navController: NavController) {
     // generated password
     var password by remember { mutableStateOf("") }
 
-    // TODO: save to preferences
+    // database repository
+    val repository = Repository(context = LocalContext.current)
+    val settingsDb = repository.settings.get() ?: Settings()
+
     // generator options
-    var passwordLength by remember { mutableLongStateOf(10L) }
-    var withCapitalLetters by remember { mutableStateOf(true) }
-    var withNumbers by remember { mutableStateOf(true) }
-    var withSymbols by remember { mutableStateOf(true) }
+    var passwordLength by remember { mutableIntStateOf(settingsDb.passwordLength) }
+    var withCapitalLetters by remember { mutableStateOf(settingsDb.passwordCapitalize) }
+    var withNumbers by remember { mutableStateOf(settingsDb.passwordIncludeNumbers) }
+    var withSymbols by remember { mutableStateOf(settingsDb.passwordIncludeSymbols) }
 
     // clipboard manager
     val clipboardManager = LocalClipboardManager.current
@@ -164,17 +170,42 @@ fun PasswordGenerator(navController: NavController) {
                         .padding(end = 8.dp),
                     label = { Text(text = stringResource(id = R.string.PasswordGenerator_Length)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                    onValueChange = { if (it.length in 1..3 && it.toLong() <= 256) passwordLength = it.toLong() }
+                    onValueChange = {
+                        if (it.length in 1..3 && it.toInt() <= 256) {
+                            passwordLength = it.toInt()
+
+                            // update in settings
+                            repository.settings.update(settingsDb.copy(passwordLength = it.toInt()))
+                        }
+                    }
                 )
 
                 // - and + buttons
-                IconButton(onClick = { if (passwordLength > 1) passwordLength-- }) {
+                IconButton(
+                    onClick = {
+                        if (passwordLength > 1) {
+                            passwordLength--
+
+                            // update in settings
+                            repository.settings.update(settingsDb.copy(passwordLength = passwordLength))
+                        }
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Default.Remove,
                         contentDescription = null
                     )
                 }
-                IconButton(onClick = { if (passwordLength < 256) passwordLength++ }) {
+                IconButton(
+                    onClick = {
+                        if (passwordLength < 256) {
+                            passwordLength++
+
+                            // update in settings
+                            repository.settings.update(settingsDb.copy(passwordLength = passwordLength))
+                        }
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = null
@@ -186,24 +217,39 @@ fun PasswordGenerator(navController: NavController) {
             TypeSwitcher(
                 text = stringResource(id = R.string.PasswordGenerator_CapitalLetters),
                 checked = withCapitalLetters,
-                onCheckedChange = { withCapitalLetters = it }
+                onCheckedChange = {
+                    withCapitalLetters = it
+
+                    // update in settings
+                    repository.settings.update(settingsDb.copy(passwordCapitalize = it))
+                }
             )
 
             // Numeric switch
             TypeSwitcher(
                 text = stringResource(id = R.string.PasswordGenerator_Numbers),
                 checked = withNumbers,
-                onCheckedChange = { withNumbers = it }
+                onCheckedChange = {
+                    withNumbers = it
+
+                    // update in settings
+                    repository.settings.update(settingsDb.copy(passwordIncludeNumbers = it))
+                }
             )
 
             // Symbols switch
             TypeSwitcher(
                 text = stringResource(id = R.string.PasswordGenerator_Symbols),
                 checked = withSymbols,
-                onCheckedChange = { withSymbols = it }
+                onCheckedChange = {
+                    withSymbols = it
+
+                    // update in settings
+                    repository.settings.update(settingsDb.copy(passwordIncludeSymbols = it))
+                }
             )
 
-            // submit button
+            // Submit button
             Button(
                 // center horizontally
                 modifier = Modifier

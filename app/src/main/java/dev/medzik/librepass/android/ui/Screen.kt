@@ -36,14 +36,14 @@ enum class Argument {
     ;
 
     /**
-     * Get argument key (e.g. "{encryptionKey}").
+     * Get argument key (e.g. "{secretKey}").
      * Used to fill route with argument.
      * @see fill
      */
     val key get() = "{${name.lowercase()}}"
 
     /**
-     * Get argument name (e.g. "encryptionKey").
+     * Get argument name (e.g. "secretKey").
      * Used to get argument from [NavController].
      * @see NavController.getString
      */
@@ -71,7 +71,7 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
     ;
 
     /**
-     * Get the route with arguments (e.g. "dashboard/{encryptionKey}").
+     * Get the route with arguments (e.g. "dashboard/{secretKey}").
      * The arguments must be filled [fill] if you want to change the screen.
      * @see fill
      */
@@ -147,8 +147,8 @@ fun LibrePassNavController() {
             // get cipher id nav controller
             val cipherId = navController.getString(CipherId)
                 ?: return@composable
-            // get encryption key from nav controller
-            val encryptionKey = navController.getString(CipherId)
+            // get secret key from nav controller
+            val secretKey = navController.getString(SecretKey)
                 ?: return@composable
 
             // get cipher from local database
@@ -156,7 +156,7 @@ fun LibrePassNavController() {
                 ?: return@composable
 
             // decrypt cipher
-            val cipher = Cipher(cipherTable.encryptedCipher, encryptionKey)
+            val cipher = Cipher(cipherTable.encryptedCipher, secretKey)
 
             CipherAddEditView(navController = navController, baseCipher = cipher)
         }

@@ -19,3 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Keep Curve25519 methods (I don't know why this is needed but it crashes without it)
+-keep class org.whispersystems.curve25519.** { *; }

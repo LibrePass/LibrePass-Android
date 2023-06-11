@@ -12,7 +12,6 @@ data class Credentials(
 
     val apiKey: String,
     val publicKey: String,
-    val protectedPrivateKey: String,
 
     val lastSync: Long? = null,
 

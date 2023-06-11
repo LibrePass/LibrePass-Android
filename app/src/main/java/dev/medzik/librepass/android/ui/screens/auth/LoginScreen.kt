@@ -36,8 +36,7 @@ import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.remember.rememberStringData
 import dev.medzik.librepass.client.api.v1.AuthClient
-import dev.medzik.librepass.client.utils.Cryptography
-import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
+import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -75,7 +74,7 @@ fun LoginScreen(navController: NavController) {
                 val argon2idParameters = authClient.getUserArgon2idParameters(email)
 
                 // compute base password hash
-                val basePasswordHash = computeBasePasswordHash(
+                val passwordHash = computePasswordHash(
                     password = password,
                     email = email,
                     parameters = argon2idParameters
@@ -84,8 +83,7 @@ fun LoginScreen(navController: NavController) {
                 // authenticate user and get credentials
                 val credentials = authClient.login(
                     email = email,
-                    password = password,
-                    basePassword = basePasswordHash
+                    passwordHash = passwordHash
                 )
 
                 // insert credentials into local database
@@ -94,9 +92,7 @@ fun LoginScreen(navController: NavController) {
                         userId = credentials.userId,
                         email = email,
                         apiKey = credentials.apiKey,
-                        // Curve25519 key pair
                         publicKey = credentials.publicKey,
-                        protectedPrivateKey = credentials.protectedPrivateKey,
                         // Argon2id parameters
                         memory = argon2idParameters.memory,
                         iterations = argon2idParameters.iterations,
@@ -105,22 +101,13 @@ fun LoginScreen(navController: NavController) {
                     )
                 )
 
-                // decrypt private key
-                val privateKey = credentials.decryptPrivateKey(basePasswordHash)
-
-                // calculate secret key
-                val secretKey = Cryptography.calculateSecretKey(
-                    privateKey = privateKey,
-                    publicKey = credentials.publicKey
-                )
-
                 // navigate to dashboard
                 scope.launch(Dispatchers.Main) {
                     navController.navigate(
                         screen = Screen.Dashboard,
                         arguments = listOf(
-                            Argument.SecretKey to secretKey,
-                            Argument.PrivateKey to privateKey
+                            Argument.SecretKey to credentials.secretKey,
+                            Argument.PrivateKey to credentials.privateKey
                         ),
                         disableBack = true
                     )

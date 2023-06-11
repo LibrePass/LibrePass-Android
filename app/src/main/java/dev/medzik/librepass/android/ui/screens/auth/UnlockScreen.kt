@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import dev.medzik.libcrypto.AES
+import dev.medzik.libcrypto.Curve25519
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
@@ -39,7 +39,7 @@ import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.remember.rememberStringData
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.utils.Cryptography
-import dev.medzik.librepass.client.utils.Cryptography.computeBasePasswordHash
+import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import dev.medzik.librepass.types.api.auth.UserArgon2idParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -71,7 +71,7 @@ fun UnlockScreen(navController: NavController) {
                 loading = true
 
                 // compute base password hash
-                val basePassword = computeBasePasswordHash(
+                val passwordHash = computePasswordHash(
                     password = password,
                     email = dbCredentials.email,
                     parameters = UserArgon2idParameters(
@@ -82,18 +82,19 @@ fun UnlockScreen(navController: NavController) {
                     )
                 )
 
-                // decrypt secret key
-                privateKey = AES.decrypt(
-                    AES.GCM,
-                    basePassword.toHexHash(),
-                    dbCredentials.protectedPrivateKey
-                )
+                val keyPair = Curve25519.fromPrivateKey(passwordHash.toHexHash())
+
+                if (keyPair.publicKey != dbCredentials.publicKey) {
+                    throw EncryptException("Invalid password")
+                }
+
+                privateKey = keyPair.privateKey
             } catch (e: EncryptException) {
                 // if password is invalid
                 loading = false
                 snackbarHostState.showSnackbar(context.getString(R.string.Error_InvalidCredentials))
             } finally {
-                val secretKey = Cryptography.calculateSecretKey(privateKey, dbCredentials.publicKey)
+                val secretKey = Cryptography.computeSharedKey(privateKey, dbCredentials.publicKey)
 
                 // run only if loading is true (if no error occurred)
                 if (loading) {
@@ -125,7 +126,7 @@ fun UnlockScreen(navController: NavController) {
                     data = dbCredentials.biometricProtectedPrivateKey!!
                 )
 
-                val secretKey = Cryptography.calculateSecretKey(privateKey, dbCredentials.publicKey)
+                val secretKey = Cryptography.computeSharedKey(privateKey, dbCredentials.publicKey)
 
                 scope.launch(Dispatchers.IO) {
                     scope.launch(Dispatchers.Main) {

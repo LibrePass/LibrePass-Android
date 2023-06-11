@@ -10,7 +10,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        mavenLocal()
+        maven {
+            name = "medzik"
+            url = uri("https://maven.medzik.dev/snapshots")
+        }
     }
 }
 

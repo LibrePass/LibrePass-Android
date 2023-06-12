@@ -21,7 +21,7 @@ espresso-core = "3.5.1"
 com-android-application = "8.1.0-beta04"
 org-jetbrains-kotlin-android = "1.8.21"
 google-ksp = "1.8.21-1.0.11"
-gradle-ktlint = "11.3.2"
+gradle-ktlint = "11.4.0"
 
 [libraries]
 # androidx

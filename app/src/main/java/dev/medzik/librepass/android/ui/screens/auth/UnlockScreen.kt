@@ -22,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import dev.medzik.libcrypto.Curve25519
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
@@ -40,6 +39,7 @@ import dev.medzik.librepass.android.utils.remember.rememberStringData
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
+import dev.medzik.librepass.client.utils.Cryptography.generateKeyPairFromPrivate
 import dev.medzik.librepass.types.api.auth.UserArgon2idParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -82,7 +82,7 @@ fun UnlockScreen(navController: NavController) {
                     )
                 )
 
-                val keyPair = Curve25519.fromPrivateKey(passwordHash.toHexHash())
+                val keyPair = generateKeyPairFromPrivate(passwordHash)
 
                 if (keyPair.publicKey != dbCredentials.publicKey) {
                     throw EncryptException("Invalid password")

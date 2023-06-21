@@ -1,0 +1,8 @@
+#!/bin/bash
+
+FILES=$(git diff --cached --name-only --diff-filter=ACM "*.kt")
+if [ -n "$FILES" ]
+then
+    ktlint --format $FILES
+    echo "$FILES" | xargs git add
+fi

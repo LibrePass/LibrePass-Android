@@ -1,5 +1,6 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -68,6 +69,8 @@ fun RegisterScreen(navController: NavController) {
 
                 // navigate to login
                 scope.launch(Dispatchers.Main) {
+                    Toast.makeText(context, R.string.Success_Registration_Please_Verify, Toast.LENGTH_LONG).show()
+
                     navController.navigate(
                         screen = Screen.Login,
                         disableBack = true

@@ -73,6 +73,9 @@
     <string name="PasswordGenerator_Symbols">Symbole</string>
     <string name="PasswordGenerator_Submit">Potwierdź</string>
 
+    <!-- Success Messages -->
+    <string name="Success_Registration_Please_Verify">Zweryfikuj swój adres e-mail</string>
+
     <!-- Error Messages -->
     <string name="Error_NetworkError">Błąd sieci</string>
     <string name="Error_InvalidCredentials">Nieprawidłowe dane uwierzytelniające</string>

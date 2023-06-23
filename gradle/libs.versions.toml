@@ -21,7 +21,6 @@ espresso-core = "3.5.1"
 com-android-application = "8.1.0-beta05"
 org-jetbrains-kotlin-android = "1.8.21"
 google-ksp = "1.8.21-1.0.11"
-gradle-ktlint = "11.3.2"
 
 [libraries]
 # androidx
@@ -70,6 +69,5 @@ com-android-application = { id = "com.android.application", version.ref = "com-a
 com-android-library = { id = "com.android.library", version.ref = "com-android-application" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 com-google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
-org-jlleitschuh-gradle-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "gradle-ktlint" }
 
 [bundles]

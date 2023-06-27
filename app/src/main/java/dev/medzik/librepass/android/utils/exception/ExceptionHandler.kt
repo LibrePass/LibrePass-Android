@@ -48,8 +48,7 @@ fun Exception.handle(context: Context, snackbar: SnackbarHostState) {
         // handle api exceptions
         is ApiException -> {
             GlobalScope.launch {
-                // TODO: better message
-                snackbar.showSnackbar(message)
+                snackbar.showSnackbar(getTranslatedErrorMessage(context))
             }
         }
 

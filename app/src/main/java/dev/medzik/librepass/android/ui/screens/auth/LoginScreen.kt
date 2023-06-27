@@ -70,14 +70,13 @@ fun LoginScreen(navController: NavController) {
 
         scope.launch(Dispatchers.IO) {
             try {
-                // get argon2id parameters
-                val argon2idParameters = authClient.getUserArgon2idParameters(email)
+                val preLogin = authClient.preLogin(email)
 
                 // compute base password hash
                 val passwordHash = computePasswordHash(
                     password = password,
                     email = email,
-                    parameters = argon2idParameters
+                    argon2Function = preLogin.toArgon2()
                 )
 
                 // authenticate user and get credentials
@@ -92,12 +91,12 @@ fun LoginScreen(navController: NavController) {
                         userId = credentials.userId,
                         email = email,
                         apiKey = credentials.apiKey,
-                        publicKey = credentials.publicKey,
+                        publicKey = credentials.keyPair.publicKey,
                         // Argon2id parameters
-                        memory = argon2idParameters.memory,
-                        iterations = argon2idParameters.iterations,
-                        parallelism = argon2idParameters.parallelism,
-                        version = argon2idParameters.version
+                        memory = preLogin.memory,
+                        iterations = preLogin.iterations,
+                        parallelism = preLogin.parallelism,
+                        version = preLogin.version
                     )
                 )
 
@@ -107,7 +106,7 @@ fun LoginScreen(navController: NavController) {
                         screen = Screen.Dashboard,
                         arguments = listOf(
                             Argument.SecretKey to credentials.secretKey,
-                            Argument.PrivateKey to credentials.privateKey
+                            Argument.PrivateKey to credentials.keyPair.privateKey
                         ),
                         disableBack = true
                     )

@@ -22,6 +22,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import dev.medzik.libcrypto.Argon2
+import dev.medzik.libcrypto.Argon2Type
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
@@ -40,7 +42,6 @@ import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import dev.medzik.librepass.client.utils.Cryptography.generateKeyPairFromPrivate
-import dev.medzik.librepass.types.api.auth.UserArgon2idParameters
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -74,11 +75,13 @@ fun UnlockScreen(navController: NavController) {
                 val passwordHash = computePasswordHash(
                     password = password,
                     email = dbCredentials.email,
-                    parameters = UserArgon2idParameters(
-                        memory = dbCredentials.memory,
-                        iterations = dbCredentials.iterations,
-                        parallelism = dbCredentials.parallelism,
-                        version = dbCredentials.version
+                    argon2Function = Argon2(
+                        32,
+                        dbCredentials.parallelism,
+                        dbCredentials.memory,
+                        dbCredentials.iterations,
+                        Argon2Type.ID,
+                        dbCredentials.version,
                     )
                 )
 

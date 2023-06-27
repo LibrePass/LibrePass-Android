@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.gson.Gson
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
@@ -47,7 +48,6 @@ import dev.medzik.librepass.types.cipher.EncryptedCipher
 import dev.medzik.librepass.types.cipher.data.CipherLoginData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
 import java.util.UUID
 
 @Composable
@@ -86,7 +86,7 @@ fun CipherAddEditView(
     navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("cipher")?.observeForever {
         val currentPassword = cipherData.password
 
-        cipherData = Json.decodeFromString(CipherLoginData.serializer(), it)
+        cipherData = Gson().fromJson(it, CipherLoginData::class.java)
         cipherData = cipherData.copy(password = currentPassword)
     }
 
@@ -178,7 +178,7 @@ fun CipherAddEditView(
                             // save cipher data as json to navController
                             navController.currentBackStackEntry?.savedStateHandle?.set(
                                 "cipher",
-                                Json.encodeToString(CipherLoginData.serializer(), cipherData)
+                                Gson().toJson(cipherData)
                             )
 
                             navController.navigate(Screen.PasswordGenerator)

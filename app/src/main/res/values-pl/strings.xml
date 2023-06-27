@@ -81,4 +81,12 @@
     <string name="Error_InvalidCredentials">Nieprawidłowe dane uwierzytelniające</string>
     <string name="Error_EncryptionError">Błąd szyfrowania/deszyfrowania</string>
     <string name="Error_UnknownError">Nieznany błąd</string>
+
+    <!-- API Error Messages -->
+    <string name="API_Error_INVALID_CREDENTIALS">Nieprawidłowe dane uwierzytelniające</string>
+    <string name="API_Error_RE_LOGIN_REQUIRED">Wymagane ponowne logowanie</string>
+    <string name="API_Error_EMAIL_NOT_VERIFIED">Proszę zweryfikować swój adres e-mail</string>
+    <string name="API_Error_TOO_MANY_REQUESTS">Zbyt wiele żądań</string>
+    <string name="API_Error_DATABASE_DUPLICATED_KEY">Powtórzony klucz w bazie danych serwera</string>
+    <string name="API_Error_UNEXPECTED_SERVER_ERROR">Niespodziewany błąd serwera</string>
 </resources>

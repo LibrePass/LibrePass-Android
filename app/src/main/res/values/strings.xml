@@ -84,4 +84,12 @@
     <string name="Error_InvalidCredentials">Invalid credentials</string>
     <string name="Error_EncryptionError">Encryption/Decryption error</string>
     <string name="Error_UnknownError">Unknown error</string>
+
+    <!-- API Error Messages -->
+    <string name="API_Error_INVALID_CREDENTIALS">Invalid credentials</string>
+    <string name="API_Error_RE_LOGIN_REQUIRED">Re-login required</string>
+    <string name="API_Error_EMAIL_NOT_VERIFIED">Please verify your email address</string>
+    <string name="API_Error_TOO_MANY_REQUESTS">Too many requests</string>
+    <string name="API_Error_DATABASE_DUPLICATED_KEY">Duplicated key in server database</string>
+    <string name="API_Error_UNEXPECTED_SERVER_ERROR">Unexpected server error</string>
 </resources>

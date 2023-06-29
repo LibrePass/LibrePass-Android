@@ -1,7 +1,9 @@
 [versions]
 biometric-ktx = "1.2.0-alpha05"
+commons-codec = "1.16.0"
 core-ktx = "1.10.1"
 activity-compose = "1.7.2"
+datastore = "1.1.0-alpha04"
 material3 = "1.2.0-alpha03"
 appcompat = "1.6.1"
 annotation = "1.6.0"
@@ -25,6 +27,8 @@ google-ksp = "1.8.21-1.0.11"
 [libraries]
 # androidx
 androidx-biometric-ktx = { module = "androidx.biometric:biometric-ktx", version.ref = "biometric-ktx" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 ui = { group = "androidx.compose.ui", name = "ui" }

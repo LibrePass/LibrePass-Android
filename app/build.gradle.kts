@@ -96,7 +96,8 @@ dependencies {
     implementation(libs.androidx.biometric.ktx)
 
     implementation(project(":crypto-utils"))
-    implementation("androidx.datastore:datastore-preferences:1.1.0-alpha04")
+    implementation(libs.androidx.datastore.preferences)
+    implementation(project(":material3-pullrefresh"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

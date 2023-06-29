@@ -29,7 +29,6 @@ import com.google.gson.Gson
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
-import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
@@ -37,7 +36,7 @@ import dev.medzik.librepass.android.ui.composables.common.TextInputFieldBase
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.navigation.getString
+import dev.medzik.librepass.android.utils.getSecretKeyFromDataStore
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
@@ -55,10 +54,10 @@ fun CipherAddEditView(
     navController: NavController,
     baseCipher: Cipher? = null
 ) {
-    val secretKey = navController.getString(Argument.SecretKey)
-        ?: return
-
     val context = LocalContext.current
+
+    val secretKey = context.getSecretKeyFromDataStore()
+        ?: return
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = rememberSnackbarHostState()

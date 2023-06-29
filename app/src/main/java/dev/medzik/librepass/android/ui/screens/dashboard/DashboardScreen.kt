@@ -21,17 +21,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import dev.medzik.android.cryptoutils.DataStoreUtils.readEncrypted
+import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
+import dev.medzik.librepass.android.utils.DS_SECRET_KEY
+import dev.medzik.librepass.android.utils.dataStoreSecrets
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
+import dev.medzik.librepass.types.cipher.CipherType
+import dev.medzik.librepass.types.cipher.data.CipherLoginData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -43,7 +48,7 @@ fun DashboardScreen(
     closeBottomSheet: () -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
-    val secretKey = navController.getString(Argument.SecretKey)
+    val secretKey = LocalContext.current.dataStoreSecrets.readEncrypted(DS_SECRET_KEY)
         ?: return
 
     val context = LocalContext.current
@@ -64,7 +69,20 @@ fun DashboardScreen(
         val dbCiphers = repository.cipher.getAll(credentials.userId)
 
         // decrypt ciphers
-        val decryptedCiphers = dbCiphers.map { Cipher(it.encryptedCipher, secretKey) }
+        val decryptedCiphers = dbCiphers.map {
+            try {
+                Cipher(it.encryptedCipher, secretKey)
+            } catch (e: EncryptException) {
+                Cipher(
+                    id = it.encryptedCipher.id,
+                    owner = it.encryptedCipher.owner,
+                    type = CipherType.Login,
+                    loginData = CipherLoginData(
+                        name = "Encryption error"
+                    )
+                )
+            }
+        }
 
         // sort ciphers by name and update UI
         ciphers = decryptedCiphers.sortedBy { it.loginData!!.name }
@@ -172,19 +190,13 @@ fun DashboardScreen(
                         itemClick = { cipher ->
                             navController.navigate(
                                 screen = Screen.CipherView,
-                                arguments = listOf(
-                                    Argument.CipherId to cipher.id.toString(),
-                                    Argument.SecretKey to secretKey
-                                )
+                                argument = Argument.CipherId to cipher.id.toString()
                             )
                         },
                         itemEdit = { cipher ->
                             navController.navigate(
                                 screen = Screen.CipherEdit,
-                                arguments = listOf(
-                                    Argument.CipherId to cipher.id.toString(),
-                                    Argument.SecretKey to secretKey
-                                )
+                                argument = Argument.CipherId to cipher.id.toString()
                             )
                         },
                         itemDelete = { cipher ->

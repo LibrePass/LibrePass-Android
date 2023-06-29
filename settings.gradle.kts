@@ -19,3 +19,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "LibrePass"
 include(":app")
+include(":crypto-utils")

@@ -95,6 +95,9 @@ dependencies {
     // biometric
     implementation(libs.androidx.biometric.ktx)
 
+    implementation(project(":crypto-utils"))
+    implementation("androidx.datastore:datastore-preferences:1.1.0-alpha04")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
@@ -37,6 +38,7 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.getSecretKeyFromDataStore
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.types.cipher.Cipher
@@ -44,17 +46,39 @@ import java.util.UUID
 
 @Composable
 fun CipherViewScreen(navController: NavController) {
-    val secretKey = navController.getString(Argument.SecretKey)
-        ?: return
     val cipherId = navController.getString(Argument.CipherId)
         ?: return
 
+    val context = LocalContext.current
+
+    val secretKey = context.getSecretKeyFromDataStore()
+        ?: return
+
     // database repository
-    val repository = Repository(context = LocalContext.current)
+    val repository = Repository(context)
 
     // get cipher from local database
     val cipher = repository.cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
-    val cipherData = Cipher(cipher, secretKey).loginData!!
+    val cipherData = try {
+        Cipher(cipher, secretKey).loginData!!
+    } catch (e: EncryptException) {
+        Scaffold(
+            topBar = {
+                TopBar(
+                    title = "Error",
+                    navigationIcon = {
+                        TopBarBackIcon(navController = navController)
+                    }
+                )
+            }
+        ) { innerPadding ->
+            Column(modifier = Modifier.padding(innerPadding)) {
+                Text(e.message ?: "Unknown encryption error")
+            }
+        }
+
+        return
+    }
 
     Scaffold(
         topBar = {
@@ -69,10 +93,7 @@ fun CipherViewScreen(navController: NavController) {
             FloatingActionButton(onClick = {
                 navController.navigate(
                     screen = Screen.CipherEdit,
-                    arguments = listOf(
-                        Argument.SecretKey to secretKey,
-                        Argument.CipherId to cipherId
-                    )
+                    argument = Argument.CipherId to cipherId
                 )
             }) {
                 Icon(

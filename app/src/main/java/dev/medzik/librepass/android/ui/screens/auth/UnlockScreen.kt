@@ -22,18 +22,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import dev.medzik.android.cryptoutils.DataStoreUtils.writeEncrypted
+import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Argon2Type
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
-import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
+import dev.medzik.librepass.android.utils.DS_PRIVATE_KEY
+import dev.medzik.librepass.android.utils.DS_SECRET_KEY
 import dev.medzik.librepass.android.utils.KeyStoreAlias
-import dev.medzik.librepass.android.utils.KeyStoreUtils
+import dev.medzik.librepass.android.utils.dataStoreSecrets
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
@@ -99,15 +102,14 @@ fun UnlockScreen(navController: NavController) {
             } finally {
                 val secretKey = Cryptography.computeSharedKey(privateKey, dbCredentials.publicKey)
 
+                context.dataStoreSecrets.writeEncrypted(DS_PRIVATE_KEY, privateKey)
+                context.dataStoreSecrets.writeEncrypted(DS_SECRET_KEY, secretKey)
+
                 // run only if loading is true (if no error occurred)
                 if (loading) {
                     scope.launch(Dispatchers.Main) {
                         navController.navigate(
                             screen = Screen.Dashboard,
-                            arguments = listOf(
-                                Argument.SecretKey to secretKey,
-                                Argument.PrivateKey to privateKey
-                            ),
                             disableBack = true
                         )
                     }
@@ -119,30 +121,23 @@ fun UnlockScreen(navController: NavController) {
     fun showBiometric() {
         showBiometricPrompt(
             context = context,
-            cipher = KeyStoreUtils.getCipherForDecryption(
+            cipher = KeyStoreUtils.initCipherForDecryption(
                 alias = KeyStoreAlias.PRIVATE_KEY.name,
-                initializationVector = dbCredentials.biometricProtectedPrivateKeyIV!!
+                initializationVector = dbCredentials.biometricProtectedPrivateKeyIV!!,
+                requireAuthentication = true
             ),
             onAuthenticationSucceeded = { cipher ->
-                val privateKey = KeyStoreUtils.decrypt(
-                    cipher = cipher,
-                    data = dbCredentials.biometricProtectedPrivateKey!!
-                )
+                val privateKey = KeyStoreUtils.decrypt(cipher, dbCredentials.biometricProtectedPrivateKey!!)
 
                 val secretKey = Cryptography.computeSharedKey(privateKey, dbCredentials.publicKey)
 
-                scope.launch(Dispatchers.IO) {
-                    scope.launch(Dispatchers.Main) {
-                        navController.navigate(
-                            screen = Screen.Dashboard,
-                            arguments = listOf(
-                                Argument.SecretKey to secretKey,
-                                Argument.PrivateKey to privateKey
-                            ),
-                            disableBack = true
-                        )
-                    }
-                }
+                context.dataStoreSecrets.writeEncrypted(DS_PRIVATE_KEY, privateKey)
+                context.dataStoreSecrets.writeEncrypted(DS_SECRET_KEY, secretKey)
+
+                navController.navigate(
+                    screen = Screen.Dashboard,
+                    disableBack = true
+                )
             },
             onAuthenticationFailed = { }
         )

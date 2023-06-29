@@ -14,7 +14,6 @@ import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.InvertColors
 import androidx.compose.material.icons.outlined.LightMode
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -35,25 +34,23 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavController
+import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.data.Settings
-import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.composables.Group
 import dev.medzik.librepass.android.utils.KeyStoreAlias
-import dev.medzik.librepass.android.utils.KeyStoreUtils
-import dev.medzik.librepass.android.utils.navigation.getString
+import dev.medzik.librepass.android.utils.getPrivateKeyFromDataStore
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsScreen(navController: NavController) {
-    // get private key from navigation arguments
-    val privateKey = navController.getString(Argument.PrivateKey)!!
-
+fun SettingsScreen() {
     // context must be FragmentActivity to show biometric prompt
     val context = LocalContext.current as FragmentActivity
+
+    val privateKey = context.getPrivateKeyFromDataStore()
+        ?: return
 
     // get credentials and settings from database
     val repository = Repository(context = context)
@@ -90,7 +87,7 @@ fun SettingsScreen(navController: NavController) {
 
         showBiometricPrompt(
             context = context,
-            cipher = KeyStoreUtils.getCipherForEncryption(KeyStoreAlias.PRIVATE_KEY.name),
+            cipher = KeyStoreUtils.initCipherForEncryption(KeyStoreAlias.PRIVATE_KEY.name, true),
             onAuthenticationSucceeded = { cipher ->
                 val encryptedData = KeyStoreUtils.encrypt(
                     cipher = cipher,

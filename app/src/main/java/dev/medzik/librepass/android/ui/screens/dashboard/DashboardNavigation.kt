@@ -26,17 +26,19 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dev.medzik.android.cryptoutils.DataStoreUtils.readEncrypted
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.TopBar
-import dev.medzik.librepass.android.utils.navigation.getString
+import dev.medzik.librepass.android.utils.DS_SECRET_KEY
+import dev.medzik.librepass.android.utils.dataStoreSecrets
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
@@ -49,7 +51,7 @@ enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardNavigation(mainNavController: NavController) {
-    val secretKey = mainNavController.getString(Argument.SecretKey)
+    val secretKey = LocalContext.current.dataStoreSecrets.readEncrypted(DS_SECRET_KEY)
         ?: return
 
     val navController = rememberNavController()
@@ -83,10 +85,7 @@ fun DashboardNavigation(mainNavController: NavController) {
             if (currentScreenId == 0) {
                 FloatingActionButton(
                     onClick = {
-                        mainNavController.navigate(
-                            screen = Screen.CipherAdd,
-                            argument = Argument.SecretKey to secretKey
-                        )
+                        mainNavController.navigate(Screen.CipherAdd)
                     }
                 ) {
                     Icon(Icons.Default.Add, contentDescription = null)
@@ -111,7 +110,7 @@ fun DashboardNavigation(mainNavController: NavController) {
                     )
                 }
                 composable(DashboardNavigationItem.Settings.route) {
-                    SettingsScreen(navController = mainNavController)
+                    SettingsScreen()
                 }
             }
         }

@@ -8,8 +8,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument.CipherId
-import dev.medzik.librepass.android.ui.Argument.PrivateKey
-import dev.medzik.librepass.android.ui.Argument.SecretKey
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
 import dev.medzik.librepass.android.ui.screens.auth.LoginScreen
@@ -18,19 +16,16 @@ import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
+import dev.medzik.librepass.android.utils.getSecretKeyFromDataStore
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
 /**
  * Enum class for navigation between screens.
- * @property SecretKey key used to encrypt/decrypt data
- * @property PrivateKey Curve25519 private key
  * @property CipherId id of cipher, used to get cipher from database
  */
 enum class Argument {
-    SecretKey,
-    PrivateKey,
     CipherId;
 
     /**
@@ -60,10 +55,10 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
     Register("register"),
     Login("login"),
     Unlock("unlock"),
-    Dashboard("dashboard", listOf(SecretKey, PrivateKey)),
-    CipherView("cipher-view", listOf(SecretKey, CipherId)),
-    CipherAdd("cipher-add", listOf(SecretKey)),
-    CipherEdit("cipher-edit", listOf(SecretKey, CipherId)),
+    Dashboard("dashboard"),
+    CipherView("cipher-view", listOf(CipherId)),
+    CipherAdd("cipher-add"),
+    CipherEdit("cipher-edit", listOf(CipherId)),
     PasswordGenerator("password-generator")
 
     ;
@@ -112,7 +107,17 @@ fun LibrePassNavController() {
 
     val repository = Repository(context = LocalContext.current)
 
-    NavHost(navController = navController, startDestination = repository.credentials.get()?.let { Screen.Unlock.get } ?: Screen.Welcome.get) {
+    val secretKey = LocalContext.current.getSecretKeyFromDataStore()
+
+    NavHost(
+        navController = navController,
+        startDestination = repository.credentials.get()?.let {
+            if (secretKey != null)
+                Screen.Dashboard.get
+            else
+                Screen.Unlock.get
+        } ?: Screen.Welcome.get
+    ) {
         composable(Screen.Welcome.get) {
             WelcomeScreen(navController = navController)
         }
@@ -142,19 +147,13 @@ fun LibrePassNavController() {
         }
 
         composable(Screen.CipherEdit.get) {
-            // get cipher id nav controller
             val cipherId = navController.getString(CipherId)
                 ?: return@composable
-            // get secret key from nav controller
-            val secretKey = navController.getString(SecretKey)
-                ?: return@composable
 
-            // get cipher from local database
             val cipherTable = repository.cipher.get(UUID.fromString(cipherId))
                 ?: return@composable
 
-            // decrypt cipher
-            val cipher = Cipher(cipherTable.encryptedCipher, secretKey)
+            val cipher = Cipher(cipherTable.encryptedCipher, secretKey!!)
 
             CipherAddEditView(navController = navController, baseCipher = cipher)
         }

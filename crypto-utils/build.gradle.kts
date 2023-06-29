@@ -23,6 +23,6 @@ android {
 }
 
 dependencies {
-    implementation("commons-codec:commons-codec:1.16.0")
-    implementation("androidx.datastore:datastore-preferences:1.1.0-alpha04")
+    implementation(libs.commons.codec)
+    implementation(libs.androidx.datastore.preferences)
 }

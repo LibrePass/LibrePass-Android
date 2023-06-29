@@ -21,7 +21,7 @@ espresso-core = "3.5.1"
 
 # plugins
 com-android-application = "8.1.0-rc01"
-org-jetbrains-kotlin-android = "1.8.21"
+org-jetbrains-kotlin-android = "1.8.22"
 google-ksp = "1.8.21-1.0.11"
 
 [libraries]

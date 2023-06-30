@@ -35,11 +35,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.Repository
-import dev.medzik.librepass.android.data.Settings
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.DataStoreKey
+import dev.medzik.librepass.android.utils.readKeyFromDataStore
 import dev.medzik.librepass.android.utils.remember.rememberStringData
+import dev.medzik.librepass.android.utils.writeKeyToDataStore
 import java.util.Random
 
 enum class PasswordType(val literals: String) {
@@ -51,20 +52,16 @@ enum class PasswordType(val literals: String) {
 
 @Composable
 fun PasswordGenerator(navController: NavController) {
+    val context = LocalContext.current
     val clipboardManager = LocalClipboardManager.current
 
     var generatedPassword by rememberStringData()
 
-    // database repository
-    val repository = Repository(context = LocalContext.current)
-    // get settings from database or get default
-    val settingsDb = repository.settings.get() ?: Settings()
-
     // generator options
-    var passwordLength by remember { mutableIntStateOf(settingsDb.passwordLength) }
-    var withCapitalLetters by remember { mutableStateOf(settingsDb.passwordCapitalize) }
-    var withNumbers by remember { mutableStateOf(settingsDb.passwordIncludeNumbers) }
-    var withSymbols by remember { mutableStateOf(settingsDb.passwordIncludeSymbols) }
+    var passwordLength by remember { mutableIntStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordLength)) }
+    var withCapitalLetters by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordCapitalize)) }
+    var withNumbers by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordIncludeNumbers)) }
+    var withSymbols by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordIncludeSymbols)) }
 
     @Composable
     fun TypeSwitcher(text: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
@@ -171,12 +168,8 @@ fun PasswordGenerator(navController: NavController) {
                     label = { Text(text = stringResource(id = R.string.PasswordGenerator_Length)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     onValueChange = {
-                        if (it.length in 1..3 && it.toInt() <= 256) {
-                            passwordLength = it.toInt()
-
-                            // update in settings
-                            repository.settings.update(settingsDb.copy(passwordLength = it.toInt()))
-                        }
+                        if (it.length in 1..3 && it.toInt() <= 256)
+                            context.writeKeyToDataStore(DataStoreKey.PasswordLength, it.toInt())
                     }
                 )
 
@@ -185,9 +178,7 @@ fun PasswordGenerator(navController: NavController) {
                     onClick = {
                         if (passwordLength > 1) {
                             passwordLength--
-
-                            // update in settings
-                            repository.settings.update(settingsDb.copy(passwordLength = passwordLength))
+                            context.writeKeyToDataStore(DataStoreKey.PasswordLength, passwordLength)
                         }
                     }
                 ) {
@@ -200,9 +191,7 @@ fun PasswordGenerator(navController: NavController) {
                     onClick = {
                         if (passwordLength < 256) {
                             passwordLength++
-
-                            // update in settings
-                            repository.settings.update(settingsDb.copy(passwordLength = passwordLength))
+                            context.writeKeyToDataStore(DataStoreKey.PasswordLength, passwordLength)
                         }
                     }
                 ) {
@@ -219,9 +208,7 @@ fun PasswordGenerator(navController: NavController) {
                 checked = withCapitalLetters,
                 onCheckedChange = {
                     withCapitalLetters = it
-
-                    // update in settings
-                    repository.settings.update(settingsDb.copy(passwordCapitalize = it))
+                    context.writeKeyToDataStore(DataStoreKey.PasswordCapitalize, it)
                 }
             )
 
@@ -231,9 +218,7 @@ fun PasswordGenerator(navController: NavController) {
                 checked = withNumbers,
                 onCheckedChange = {
                     withNumbers = it
-
-                    // update in settings
-                    repository.settings.update(settingsDb.copy(passwordIncludeNumbers = it))
+                    context.writeKeyToDataStore(DataStoreKey.PasswordIncludeNumbers, it)
                 }
             )
 
@@ -243,9 +228,7 @@ fun PasswordGenerator(navController: NavController) {
                 checked = withSymbols,
                 onCheckedChange = {
                     withSymbols = it
-
-                    // update in settings
-                    repository.settings.update(settingsDb.copy(passwordIncludeSymbols = it))
+                    context.writeKeyToDataStore(DataStoreKey.PasswordIncludeSymbols, it)
                 }
             )
 

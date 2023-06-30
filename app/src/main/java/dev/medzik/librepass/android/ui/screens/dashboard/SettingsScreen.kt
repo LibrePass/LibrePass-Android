@@ -40,7 +40,7 @@ import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.data.Settings
 import dev.medzik.librepass.android.ui.composables.Group
 import dev.medzik.librepass.android.utils.KeyStoreAlias
-import dev.medzik.librepass.android.utils.getPrivateKeyFromDataStore
+import dev.medzik.librepass.android.utils.getUserSecretsSync
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import kotlinx.coroutines.launch
 
@@ -49,7 +49,7 @@ fun SettingsScreen() {
     // context must be FragmentActivity to show biometric prompt
     val context = LocalContext.current as FragmentActivity
 
-    val privateKey = context.getPrivateKeyFromDataStore()
+    val userSecrets = context.getUserSecretsSync()
         ?: return
 
     // get credentials and settings from database
@@ -91,7 +91,7 @@ fun SettingsScreen() {
             onAuthenticationSucceeded = { cipher ->
                 val encryptedData = KeyStoreUtils.encrypt(
                     cipher = cipher,
-                    data = privateKey
+                    data = userSecrets.privateKey
                 )
 
                 biometricEnabled = true

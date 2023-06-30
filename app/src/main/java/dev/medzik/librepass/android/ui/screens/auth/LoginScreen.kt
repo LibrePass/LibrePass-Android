@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import dev.medzik.android.cryptoutils.DataStoreUtils.writeEncrypted
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.Repository
@@ -30,14 +29,13 @@ import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
-import dev.medzik.librepass.android.utils.DS_PRIVATE_KEY
-import dev.medzik.librepass.android.utils.DS_SECRET_KEY
-import dev.medzik.librepass.android.utils.dataStoreSecrets
+import dev.medzik.librepass.android.utils.UserDataStoreSecrets
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.remember.rememberStringData
+import dev.medzik.librepass.android.utils.writeUserSecrets
 import dev.medzik.librepass.client.api.v1.AuthClient
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
@@ -103,8 +101,12 @@ fun LoginScreen(navController: NavController) {
                     )
                 )
 
-                context.dataStoreSecrets.writeEncrypted(DS_PRIVATE_KEY, credentials.keyPair.privateKey)
-                context.dataStoreSecrets.writeEncrypted(DS_SECRET_KEY, credentials.secretKey)
+                context.writeUserSecrets(
+                    UserDataStoreSecrets(
+                        privateKey = credentials.keyPair.privateKey,
+                        secretKey = credentials.secretKey
+                    )
+                )
 
                 // navigate to dashboard
                 scope.launch(Dispatchers.Main) {

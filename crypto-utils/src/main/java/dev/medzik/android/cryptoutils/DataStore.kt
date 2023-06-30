@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 
 object DataStoreUtils {
     /**
@@ -14,8 +13,8 @@ object DataStoreUtils {
      * @param key the key to read from the data store
      * @return key value or null if it does not exist
      */
-    inline fun <reified T> DataStore<Preferences>.read(key: Preferences.Key<T>): T? {
-        return runBlocking { data.map { it[key] }.first() }
+    suspend inline fun <reified T> DataStore<Preferences>.read(key: Preferences.Key<T>): T? {
+        return data.map { it[key] }.first()
     }
 
     /**
@@ -23,11 +22,16 @@ object DataStoreUtils {
      * @param key the key to write to the data store
      * @param value key value to write
      */
-    inline fun <reified T> DataStore<Preferences>.write(key: Preferences.Key<T>, value: T) {
-        runBlocking { edit { it[key] = value } }
+    suspend inline fun <reified T> DataStore<Preferences>.write(key: Preferences.Key<T>, value: T) {
+        edit { it[key] = value }
     }
 
-    fun DataStore<Preferences>.readEncrypted(storeKey: String): String? {
+    /**
+     * Reads and decrypts the encrypted key from the data store.
+     * @param storeKey the key to read from the data store
+     * @return key value or null if it does not exist
+     */
+    suspend fun DataStore<Preferences>.readEncrypted(storeKey: String): String? {
         val cipherTextStore = stringPreferencesKey("$storeKey/encrypted")
         val ivStore = stringPreferencesKey("$storeKey/iv")
 
@@ -38,7 +42,12 @@ object DataStoreUtils {
         return KeyStoreUtils.decrypt(cipher, cipherText)
     }
 
-    fun DataStore<Preferences>.writeEncrypted(storeKey: String, value: String) {
+    /**
+     * Encrypts and writes the key to the data store.
+     * @param storeKey the key to write to the data store
+     * @param value key value to write
+     */
+    suspend fun DataStore<Preferences>.writeEncrypted(storeKey: String, value: String) {
         val cipherTextStore = stringPreferencesKey("$storeKey/encrypted")
         val ivStore = stringPreferencesKey("$storeKey/iv")
 

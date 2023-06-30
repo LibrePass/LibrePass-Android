@@ -21,16 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import dev.medzik.android.cryptoutils.DataStoreUtils.readEncrypted
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
-import dev.medzik.librepass.android.utils.DS_SECRET_KEY
-import dev.medzik.librepass.android.utils.dataStoreSecrets
 import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.getUserSecretsSync
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.client.api.v1.CipherClient
@@ -48,10 +46,10 @@ fun DashboardScreen(
     closeBottomSheet: () -> Unit,
     snackbarHostState: SnackbarHostState
 ) {
-    val secretKey = LocalContext.current.dataStoreSecrets.readEncrypted(DS_SECRET_KEY)
-        ?: return
-
     val context = LocalContext.current
+
+    val userSecrets = context.getUserSecretsSync()
+        ?: return
 
     val scope = rememberCoroutineScope()
 
@@ -71,7 +69,7 @@ fun DashboardScreen(
         // decrypt ciphers
         val decryptedCiphers = dbCiphers.map {
             try {
-                Cipher(it.encryptedCipher, secretKey)
+                Cipher(it.encryptedCipher, userSecrets.secretKey)
             } catch (e: EncryptException) {
                 Cipher(
                     id = it.encryptedCipher.id,

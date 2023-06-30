@@ -22,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import dev.medzik.android.cryptoutils.DataStoreUtils.writeEncrypted
 import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Argon2Type
@@ -33,20 +32,20 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
-import dev.medzik.librepass.android.utils.DS_PRIVATE_KEY
-import dev.medzik.librepass.android.utils.DS_SECRET_KEY
 import dev.medzik.librepass.android.utils.KeyStoreAlias
-import dev.medzik.librepass.android.utils.dataStoreSecrets
+import dev.medzik.librepass.android.utils.UserDataStoreSecrets
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.remember.rememberStringData
 import dev.medzik.librepass.android.utils.showBiometricPrompt
+import dev.medzik.librepass.android.utils.writeUserSecrets
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import dev.medzik.librepass.client.utils.Cryptography.generateKeyPairFromPrivate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun UnlockScreen(navController: NavController) {
@@ -102,8 +101,12 @@ fun UnlockScreen(navController: NavController) {
             } finally {
                 val secretKey = Cryptography.computeSharedKey(privateKey, dbCredentials.publicKey)
 
-                context.dataStoreSecrets.writeEncrypted(DS_PRIVATE_KEY, privateKey)
-                context.dataStoreSecrets.writeEncrypted(DS_SECRET_KEY, secretKey)
+                context.writeUserSecrets(
+                    UserDataStoreSecrets(
+                        privateKey = privateKey,
+                        secretKey = secretKey
+                    )
+                )
 
                 // run only if loading is true (if no error occurred)
                 if (loading) {
@@ -131,8 +134,14 @@ fun UnlockScreen(navController: NavController) {
 
                 val secretKey = Cryptography.computeSharedKey(privateKey, dbCredentials.publicKey)
 
-                context.dataStoreSecrets.writeEncrypted(DS_PRIVATE_KEY, privateKey)
-                context.dataStoreSecrets.writeEncrypted(DS_SECRET_KEY, secretKey)
+                runBlocking {
+                    context.writeUserSecrets(
+                        UserDataStoreSecrets(
+                            privateKey = privateKey,
+                            secretKey = secretKey
+                        )
+                    )
+                }
 
                 navController.navigate(
                     screen = Screen.Dashboard,

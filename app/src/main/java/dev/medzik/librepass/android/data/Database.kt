@@ -6,14 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Credentials::class, CipherTable::class, Settings::class],
+    entities = [Credentials::class, CipherTable::class],
     version = 1,
     exportSchema = false
 )
 abstract class LibrePassDatabase : RoomDatabase() {
     abstract fun credentialsDao(): CredentialsDao
     abstract fun cipherDao(): CipherDao
-    abstract fun settingsDao(): SettingsDao
 }
 
 /**

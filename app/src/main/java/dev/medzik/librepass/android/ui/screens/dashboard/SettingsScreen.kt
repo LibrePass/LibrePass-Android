@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -37,11 +36,13 @@ import androidx.fragment.app.FragmentActivity
 import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
-import dev.medzik.librepass.android.data.Settings
 import dev.medzik.librepass.android.ui.composables.Group
+import dev.medzik.librepass.android.utils.DataStoreKey
 import dev.medzik.librepass.android.utils.KeyStoreAlias
 import dev.medzik.librepass.android.utils.getUserSecretsSync
+import dev.medzik.librepass.android.utils.readKeyFromDataStore
 import dev.medzik.librepass.android.utils.showBiometricPrompt
+import dev.medzik.librepass.android.utils.writeKeyToDataStore
 import kotlinx.coroutines.launch
 
 @Composable
@@ -55,19 +56,13 @@ fun SettingsScreen() {
     // get credentials and settings from database
     val repository = Repository(context = context)
     val credentials = repository.credentials.get()!!
-    val settings = repository.settings.get() ?: Settings()
-
-    // insert default settings if not exists
-    if (repository.settings.get() == null) {
-        repository.settings.insert(settings)
-    }
 
     val scope = rememberCoroutineScope()
 
     // states
     var biometricEnabled by remember { mutableStateOf(credentials.biometricEnabled) }
-    var theme by remember { mutableIntStateOf(settings.theme) }
-    var dynamicColor by remember { mutableStateOf(settings.dynamicColor) }
+    var theme = context.readKeyFromDataStore(DataStoreKey.Theme)
+    var dynamicColor = context.readKeyFromDataStore(DataStoreKey.DynamicColor)
 
     // Biometric checked event handler (enable/disable biometric authentication)
     fun biometricChecked() {
@@ -145,9 +140,7 @@ fun SettingsScreen() {
         // close theme selector
         themeSelectorExpanded = false
 
-        // save theme to database
-        theme = id
-        repository.settings.update(settings.copy(theme = id))
+        context.writeKeyToDataStore(DataStoreKey.Theme, id)
 
         // reload activity
         context.recreate()
@@ -236,13 +229,7 @@ fun SettingsScreen() {
                     text = stringResource(id = R.string.Settings_MaterialYou),
                     checked = dynamicColor,
                     onCheckedChange = {
-                        dynamicColor = it
-
-                        repository.settings.update(
-                            settings.copy(
-                                dynamicColor = it
-                            )
-                        )
+                        context.writeKeyToDataStore(DataStoreKey.DynamicColor, it)
 
                         // restart activity to apply changes
                         context.recreate()

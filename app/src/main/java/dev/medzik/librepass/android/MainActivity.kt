@@ -10,10 +10,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
-import dev.medzik.librepass.android.data.Repository
-import dev.medzik.librepass.android.data.Settings
 import dev.medzik.librepass.android.ui.LibrePassNavController
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
+import dev.medzik.librepass.android.utils.DataStoreKey
+import dev.medzik.librepass.android.utils.readKeyFromDataStore
 
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,20 +28,14 @@ class MainActivity : FragmentActivity() {
         // This will lay out our app behind the system bars (to make them transparent)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        // database repository
-        val repository = Repository(this)
-        // get settings or use default
-        val settings = repository.settings.get()
-            ?: Settings()
-
-        // theme settings
-        val autoTheme = settings.theme == 0
-        val darkTheme = settings.theme == 2
+        val theme = this.readKeyFromDataStore(DataStoreKey.Theme)
+        val autoTheme = theme == 0
+        val darkTheme = theme == 2
 
         setContent {
             LibrePassTheme(
                 darkTheme = darkTheme || (autoTheme && isSystemInDarkTheme()),
-                dynamicColor = settings.dynamicColor
+                dynamicColor = this.readKeyFromDataStore(DataStoreKey.DynamicColor)
             ) {
                 Surface(
                     color = MaterialTheme.colorScheme.background,

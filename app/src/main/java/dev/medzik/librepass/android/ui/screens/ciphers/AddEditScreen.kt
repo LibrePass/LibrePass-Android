@@ -36,7 +36,7 @@ import dev.medzik.librepass.android.ui.composables.common.TextInputFieldBase
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.getSecretKeyFromDataStore
+import dev.medzik.librepass.android.utils.getUserSecretsSync
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
@@ -56,7 +56,7 @@ fun CipherAddEditView(
 ) {
     val context = LocalContext.current
 
-    val secretKey = context.getSecretKeyFromDataStore()
+    val userSecrets = context.getUserSecretsSync()
         ?: return
 
     val scope = rememberCoroutineScope()
@@ -105,7 +105,7 @@ fun CipherAddEditView(
 
         scope.launch(Dispatchers.IO) {
             // encrypt cipher
-            val encryptedCipher = EncryptedCipher(cipher, secretKey)
+            val encryptedCipher = EncryptedCipher(cipher, userSecrets.secretKey)
 
             try {
                 // insert or update cipher on server

@@ -16,7 +16,7 @@ import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
-import dev.medzik.librepass.android.utils.getSecretKeyFromDataStore
+import dev.medzik.librepass.android.utils.getUserSecretsSync
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
@@ -105,14 +105,16 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
 fun LibrePassNavController() {
     val navController = rememberNavController()
 
-    val repository = Repository(context = LocalContext.current)
+    val context = LocalContext.current
 
-    val secretKey = LocalContext.current.getSecretKeyFromDataStore()
+    val repository = Repository(context)
+
+    val userSecrets = context.getUserSecretsSync()
 
     NavHost(
         navController = navController,
         startDestination = repository.credentials.get()?.let {
-            if (secretKey != null)
+            if (userSecrets != null)
                 Screen.Dashboard.get
             else
                 Screen.Unlock.get
@@ -153,7 +155,7 @@ fun LibrePassNavController() {
             val cipherTable = repository.cipher.get(UUID.fromString(cipherId))
                 ?: return@composable
 
-            val cipher = Cipher(cipherTable.encryptedCipher, secretKey!!)
+            val cipher = Cipher(cipherTable.encryptedCipher, userSecrets!!.secretKey)
 
             CipherAddEditView(navController = navController, baseCipher = cipher)
         }

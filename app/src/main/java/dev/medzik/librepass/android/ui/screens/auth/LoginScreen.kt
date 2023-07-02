@@ -22,7 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
-import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
@@ -48,16 +48,12 @@ fun LoginScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
     val snackbarHostState = rememberSnackbarHostState()
 
-    // states
     var loading by rememberLoadingState()
     var email by rememberStringData()
     var password by rememberStringData()
 
-    // database repository
-    val repository = Repository(context = context)
-    val credentialsDao = repository.credentials
+    val credentialsRepository = context.getRepository().credentials
 
-    // API client
     val authClient = AuthClient()
 
     // Login user with given credentials and navigate to dashboard.
@@ -87,7 +83,7 @@ fun LoginScreen(navController: NavController) {
                 )
 
                 // insert credentials into local database
-                credentialsDao.insert(
+                credentialsRepository.insert(
                     Credentials(
                         userId = credentials.userId,
                         email = email,

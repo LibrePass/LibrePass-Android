@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.data.CipherTable
-import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
@@ -58,7 +58,7 @@ fun DashboardScreen(
     var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
 
     // database repository
-    val repository = Repository(context = context)
+    val repository = context.getRepository()
     val credentials = repository.credentials.get()!!
 
     // Get ciphers from local repository and update UI

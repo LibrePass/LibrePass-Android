@@ -28,7 +28,7 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
-import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
@@ -61,19 +61,15 @@ fun CipherAddEditView(
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = rememberSnackbarHostState()
-
-    // states
     var loading by rememberLoadingState()
     var cipherData by remember {
         mutableStateOf(baseCipher?.loginData ?: CipherLoginData(name = ""))
     }
 
-    // database repository
-    val repository = Repository(context = context)
+    val repository = context.getRepository()
     val credentials = repository.credentials.get()!!
-    val cipherDao = repository.cipher
+    val cipherRepository = repository.cipher
 
-    // API client
     val cipherClient = CipherClient(credentials.apiKey)
 
     // observe username and password from navController
@@ -109,19 +105,17 @@ fun CipherAddEditView(
 
             try {
                 // insert or update cipher on server
-                if (baseCipher == null) {
+                if (baseCipher == null)
                     cipherClient.insert(encryptedCipher)
-                } else {
+                else
                     cipherClient.update(encryptedCipher)
-                }
 
                 // insert or update cipher in local database
                 val cipherTable = CipherTable(encryptedCipher)
-                if (baseCipher == null) {
-                    cipherDao.insert(cipherTable)
-                } else {
-                    cipherDao.update(cipherTable)
-                }
+                if (baseCipher == null)
+                    cipherRepository.insert(cipherTable)
+                else
+                    cipherRepository.update(cipherTable)
 
                 // go back
                 scope.launch(Dispatchers.Main) { navController.popBackStack() }

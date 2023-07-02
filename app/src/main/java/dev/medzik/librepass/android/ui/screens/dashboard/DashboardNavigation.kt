@@ -52,7 +52,7 @@ fun DashboardNavigation(mainNavController: NavController) {
     val snackbarHostState = rememberSnackbarHostState()
 
     // bottom sheet
-    var openBottomSheet by rememberLoadingState()
+    var openSheet by rememberLoadingState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var sheetContent by remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
 
@@ -96,9 +96,9 @@ fun DashboardNavigation(mainNavController: NavController) {
                         navController = mainNavController,
                         openBottomSheet = {
                             sheetContent = it
-                            openBottomSheet = true
+                            openSheet = true
                         },
-                        closeBottomSheet = { openBottomSheet = false },
+                        closeBottomSheet = { openSheet = false },
                         snackbarHostState = snackbarHostState
                     )
                 }
@@ -110,11 +110,11 @@ fun DashboardNavigation(mainNavController: NavController) {
     }
 
     // bottom sheet
-    if (openBottomSheet) {
+    if (openSheet) {
         ModalBottomSheet(
             // TODO: I don't know if this is how it's done but it works
             tonalElevation = 3.dp,
-            onDismissRequest = { openBottomSheet = false },
+            onDismissRequest = { openSheet = false },
             sheetState = sheetState
         ) {
             sheetContent()

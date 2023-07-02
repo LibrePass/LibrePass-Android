@@ -28,14 +28,14 @@ class MainActivity : FragmentActivity() {
         // This will lay out our app behind the system bars (to make them transparent)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        val theme = this.readKeyFromDataStore(DataStoreKey.Theme)
+        val theme = readKeyFromDataStore(DataStoreKey.Theme)
         val autoTheme = theme == 0
         val darkTheme = theme == 2
 
         setContent {
             LibrePassTheme(
                 darkTheme = darkTheme || (autoTheme && isSystemInDarkTheme()),
-                dynamicColor = this.readKeyFromDataStore(DataStoreKey.DynamicColor)
+                dynamicColor = readKeyFromDataStore(DataStoreKey.DynamicColor)
             ) {
                 Surface(
                     color = MaterialTheme.colorScheme.background,

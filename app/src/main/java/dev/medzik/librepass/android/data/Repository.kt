@@ -20,3 +20,8 @@ class Repository(context: Context) : RepositoryInterface {
     override val credentials = database.credentialsDao()
     override val cipher = database.cipherDao()
 }
+
+/**
+ * Get the repository that provides access to the database.
+ */
+fun Context.getRepository() = Repository(this)

@@ -6,7 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument.CipherId
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
@@ -23,20 +23,19 @@ import java.util.UUID
 
 /**
  * Enum class for navigation between screens.
- * @property CipherId id of cipher, used to get cipher from database
  */
 enum class Argument {
     CipherId;
 
     /**
-     * Get argument key (e.g. "{secretKey}").
+     * Get argument key (e.g. "{cipherid}").
      * Used to fill route with argument.
      * @see fill
      */
     val key get() = "{${name.lowercase()}}"
 
     /**
-     * Get argument name (e.g. "secretKey").
+     * Get argument name (e.g. "cipherid").
      * Used to get argument from [NavController].
      * @see NavController.getString
      */
@@ -59,12 +58,10 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
     CipherView("cipher-view", listOf(CipherId)),
     CipherAdd("cipher-add"),
     CipherEdit("cipher-edit", listOf(CipherId)),
-    PasswordGenerator("password-generator")
-
-    ;
+    PasswordGenerator("password-generator");
 
     /**
-     * Get the route with arguments (e.g. "dashboard/{secretKey}").
+     * Get the route with arguments (e.g. "dashboard/{cipherid}").
      * The arguments must be filled [fill] if you want to change the screen.
      * @see fill
      */
@@ -98,17 +95,12 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
     }
 }
 
-/**
- * Navigation controller for LibrePass. Handles navigation between screens. Uses [NavHost] to navigate.
- */
 @Composable
 fun LibrePassNavController() {
+    val context = LocalContext.current
     val navController = rememberNavController()
 
-    val context = LocalContext.current
-
-    val repository = Repository(context)
-
+    val repository = context.getRepository()
     val userSecrets = context.getUserSecretsSync()
 
     NavHost(

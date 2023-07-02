@@ -27,7 +27,7 @@ import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Argon2Type
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
@@ -55,13 +55,10 @@ fun UnlockScreen(navController: NavController) {
     val snackbarHostState = rememberSnackbarHostState()
     val scope = rememberCoroutineScope()
 
-    // states
     var loading by rememberLoadingState()
     val password = rememberStringData()
 
-    // database repository
-    val repository = Repository(context = context)
-    val dbCredentials = repository.credentials.get()!!
+    val credentials = context.getRepository().credentials.get()!!
 
     fun onUnlock(password: String) {
         // disable button
@@ -76,20 +73,20 @@ fun UnlockScreen(navController: NavController) {
                 // compute base password hash
                 val passwordHash = computePasswordHash(
                     password = password,
-                    email = dbCredentials.email,
+                    email = credentials.email,
                     argon2Function = Argon2(
                         32,
-                        dbCredentials.parallelism,
-                        dbCredentials.memory,
-                        dbCredentials.iterations,
+                        credentials.parallelism,
+                        credentials.memory,
+                        credentials.iterations,
                         Argon2Type.ID,
-                        dbCredentials.version,
+                        credentials.version,
                     )
                 )
 
                 val keyPair = generateKeyPairFromPrivate(passwordHash)
 
-                if (keyPair.publicKey != dbCredentials.publicKey) {
+                if (keyPair.publicKey != credentials.publicKey) {
                     throw EncryptException("Invalid password")
                 }
 
@@ -99,7 +96,7 @@ fun UnlockScreen(navController: NavController) {
                 loading = false
                 snackbarHostState.showSnackbar(context.getString(R.string.Error_InvalidCredentials))
             } finally {
-                val secretKey = Cryptography.computeSharedKey(privateKey, dbCredentials.publicKey)
+                val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 
                 context.writeUserSecrets(
                     UserDataStoreSecrets(
@@ -126,13 +123,13 @@ fun UnlockScreen(navController: NavController) {
             context = context,
             cipher = KeyStoreUtils.initCipherForDecryption(
                 alias = KeyStoreAlias.PRIVATE_KEY.name,
-                initializationVector = dbCredentials.biometricProtectedPrivateKeyIV!!,
+                initializationVector = credentials.biometricProtectedPrivateKeyIV!!,
                 requireAuthentication = true
             ),
             onAuthenticationSucceeded = { cipher ->
-                val privateKey = KeyStoreUtils.decrypt(cipher, dbCredentials.biometricProtectedPrivateKey!!)
+                val privateKey = KeyStoreUtils.decrypt(cipher, credentials.biometricProtectedPrivateKey!!)
 
-                val secretKey = Cryptography.computeSharedKey(privateKey, dbCredentials.publicKey)
+                val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 
                 runBlocking {
                     context.writeUserSecrets(
@@ -153,7 +150,7 @@ fun UnlockScreen(navController: NavController) {
     }
 
     LaunchedEffect(scope) {
-        if (dbCredentials.biometricEnabled) {
+        if (credentials.biometricEnabled) {
             showBiometric()
         }
     }
@@ -194,7 +191,7 @@ fun UnlockScreen(navController: NavController) {
                 }
             }
 
-            if (dbCredentials.biometricEnabled) {
+            if (credentials.biometricEnabled) {
                 OutlinedButton(
                     onClick = { showBiometric() },
                     modifier = Modifier

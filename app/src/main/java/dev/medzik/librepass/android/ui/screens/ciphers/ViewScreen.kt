@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherGroup
@@ -54,14 +54,12 @@ fun CipherViewScreen(navController: NavController) {
     val userSecrets = context.getUserSecretsSync()
         ?: return
 
-    // database repository
-    val repository = Repository(context)
-
     // get cipher from local database
-    val cipher = repository.cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
+    val cipher = context.getRepository().cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
     val cipherData = try {
         Cipher(cipher, userSecrets.secretKey).loginData!!
     } catch (e: EncryptException) {
+        // Handle decryption error
         Scaffold(
             topBar = {
                 TopBar(

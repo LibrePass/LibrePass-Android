@@ -83,10 +83,6 @@ private val darkColorScheme = darkColorScheme(
     scrim = md_theme_dark_scrim
 )
 
-/**
- * The default LibrePass theme. This theme is used by all of the screens within the app.
- * The theme colors are dynamically updated based on the system theme (Android 12+ only).
- */
 @Composable
 fun LibrePassTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -120,11 +116,6 @@ fun LibrePassTheme(
             darkIcons = useDarkIcons,
             navigationBarContrastEnforced = false
         )
-
-//        systemUiController.setSystemBarsColor(
-//            color = colorScheme.background,
-//            darkIcons = useDarkIcons
-//        )
 
         onDispose {}
     }

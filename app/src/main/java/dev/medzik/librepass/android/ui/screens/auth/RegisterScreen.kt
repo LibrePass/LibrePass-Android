@@ -44,7 +44,6 @@ fun RegisterScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
     val snackbarHostState = rememberSnackbarHostState()
 
-    // states
     var loading by rememberLoadingState()
     var email by rememberStringData()
     var password by rememberStringData()
@@ -55,7 +54,6 @@ fun RegisterScreen(navController: NavController) {
     val isEmailError = email.isNotEmpty() && !email.contains("@")
     val isPasswordError = password.isNotEmpty() && password.length < 8
 
-    // API client
     val authClient = AuthClient()
 
     // Register user with given credentials and navigate to login screen.

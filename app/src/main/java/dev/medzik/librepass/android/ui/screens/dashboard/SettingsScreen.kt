@@ -36,7 +36,7 @@ import androidx.fragment.app.FragmentActivity
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.composables.Group
 import dev.medzik.librepass.android.utils.DataStoreKey
 import dev.medzik.librepass.android.utils.KeyStoreAlias
@@ -51,19 +51,16 @@ fun SettingsScreen() {
     // context must be FragmentActivity to show biometric prompt
     val context = LocalContext.current as FragmentActivity
 
-    val userSecrets = context.getUserSecretsSync()
-        ?: return
+    val userSecrets = context.getUserSecretsSync() ?: return
 
-    // get credentials and settings from database
-    val repository = Repository(context = context)
+    val repository = context.getRepository()
     val credentials = repository.credentials.get()!!
 
     val scope = rememberCoroutineScope()
 
-    // states
     var biometricEnabled by remember { mutableStateOf(credentials.biometricEnabled) }
-    var theme = context.readKeyFromDataStore(DataStoreKey.Theme)
-    var dynamicColor = context.readKeyFromDataStore(DataStoreKey.DynamicColor)
+    val theme = context.readKeyFromDataStore(DataStoreKey.Theme)
+    val dynamicColor = context.readKeyFromDataStore(DataStoreKey.DynamicColor)
 
     // Biometric checked event handler (enable/disable biometric authentication)
     fun biometricChecked() {

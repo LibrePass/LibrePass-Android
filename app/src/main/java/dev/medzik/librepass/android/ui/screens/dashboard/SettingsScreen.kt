@@ -33,6 +33,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
+import com.jakewharton.processphoenix.ProcessPhoenix
 import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Repository
@@ -137,13 +138,10 @@ fun SettingsScreen() {
     var themeSelectorExpanded by remember { mutableStateOf(false) }
 
     fun changeTheme(id: Int) {
-        // close theme selector
-        themeSelectorExpanded = false
-
         context.writeKeyToDataStore(DataStoreKey.Theme, id)
 
-        // reload activity
-        context.recreate()
+        // restart application to apply changes
+        ProcessPhoenix.triggerRebirth(context)
     }
 
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -231,8 +229,8 @@ fun SettingsScreen() {
                     onCheckedChange = {
                         context.writeKeyToDataStore(DataStoreKey.DynamicColor, it)
 
-                        // restart activity to apply changes
-                        context.recreate()
+                        // restart application to apply changes
+                        ProcessPhoenix.triggerRebirth(context)
                     }
                 )
             }

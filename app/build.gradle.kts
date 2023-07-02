@@ -15,7 +15,6 @@ android {
         versionCode = System.getenv("LIBREPASS_APP_VERSION_CODE")?.toInt() ?: 1
         versionName = System.getenv("LIBREPASS_APP_VERSION_NAME") ?: "0.0.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -73,37 +72,34 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.annotation)
     implementation(libs.androidx.material.icons.extended)
-
-    // google accompanist
-    implementation(libs.accompanist.systemuicontroller)
-    implementation(libs.accompanist.drawablepainter)
-
-    // kotlin
-    implementation(libs.kotlinx.coroutines.android)
-
-    // librepass client
-    implementation(libs.librepass.client)
+    implementation(libs.androidx.biometric.ktx)
 
     // room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-
-    // navigation
     implementation(libs.androidx.navigation.compose)
 
-    // biometric
-    implementation(libs.androidx.biometric.ktx)
+    // google accompanist
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.accompanist.drawablepainter)
 
+    // kotlin coroutines
+    implementation(libs.kotlinx.coroutines.android)
+
+    // librepass client
+    implementation(libs.librepass.client)
+
+    // crypto utils for KeyStore and DataStore
     implementation(project(":crypto-utils"))
     implementation(libs.androidx.datastore.preferences)
+
+    // PullRefresh for material3
     implementation(project(":material3-pullrefresh"))
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.ui.test.junit4)
+    // A library for restarting applications, such as after changing the theme in the settings.
+    implementation(libs.process.phoenix)
+
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 }

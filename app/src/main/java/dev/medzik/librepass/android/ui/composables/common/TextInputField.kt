@@ -37,20 +37,22 @@ fun TextInputField(
         label = { Text(label) },
         maxLines = 1,
         singleLine = true,
-        visualTransformation = if (hidden && hiddenState.value) {
-            PasswordVisualTransformation()
-        } else {
-            VisualTransformation.None
-        },
+        visualTransformation = (
+            if (hidden && hiddenState.value)
+                PasswordVisualTransformation()
+            else
+                VisualTransformation.None
+            ),
         trailingIcon = {
             if (hidden) {
                 IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                     Icon(
-                        imageVector = if (hiddenState.value) {
-                            Icons.Filled.Visibility
-                        } else {
-                            Icons.Filled.VisibilityOff
-                        },
+                        imageVector = (
+                            if (hiddenState.value)
+                                Icons.Filled.Visibility
+                            else
+                                Icons.Filled.VisibilityOff
+                            ),
                         contentDescription = null
                     )
                 }
@@ -92,21 +94,23 @@ fun TextInputFieldBase(
         onValueChange = onValueChange,
         label = { Text(label) },
         singleLine = singleLine,
-        visualTransformation = if (hidden && hiddenState.value) {
-            PasswordVisualTransformation()
-        } else {
-            VisualTransformation.None
-        },
+        visualTransformation = (
+            if (hidden && hiddenState.value)
+                PasswordVisualTransformation()
+            else
+                VisualTransformation.None
+            ),
         trailingIcon = {
             Row {
                 if (hidden) {
                     IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                         Icon(
-                            imageVector = if (hiddenState.value) {
-                                Icons.Filled.Visibility
-                            } else {
-                                Icons.Filled.VisibilityOff
-                            },
+                            imageVector = (
+                                if (hiddenState.value)
+                                    Icons.Filled.Visibility
+                                else
+                                    Icons.Filled.VisibilityOff
+                                ),
                             contentDescription = null
                         )
                     }

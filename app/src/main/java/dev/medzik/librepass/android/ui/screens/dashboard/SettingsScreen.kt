@@ -38,11 +38,10 @@ import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.composables.Group
+import dev.medzik.librepass.android.utils.Biometric
 import dev.medzik.librepass.android.utils.DataStoreKey
-import dev.medzik.librepass.android.utils.KeyStoreAlias
 import dev.medzik.librepass.android.utils.getUserSecretsSync
 import dev.medzik.librepass.android.utils.readKeyFromDataStore
-import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.android.utils.writeKeyToDataStore
 import kotlinx.coroutines.launch
 
@@ -78,9 +77,12 @@ fun SettingsScreen() {
             return
         }
 
-        showBiometricPrompt(
+        Biometric.showBiometricPrompt(
             context = context,
-            cipher = KeyStoreUtils.initCipherForEncryption(KeyStoreAlias.PRIVATE_KEY.name, true),
+            cipher = KeyStoreUtils.initCipherForEncryption(
+                Biometric.PrivateKeyAlias,
+                true
+            ),
             onAuthenticationSucceeded = { cipher ->
                 val encryptedData = KeyStoreUtils.encrypt(
                     cipher = cipher,
@@ -144,7 +146,7 @@ fun SettingsScreen() {
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
         item {
             Group(
-                name = stringResource(id = R.string.Settings_Group_Appearance)
+                name = stringResource(R.string.Settings_Group_Appearance)
             ) {
                 Box(
                     modifier = Modifier
@@ -161,7 +163,7 @@ fun SettingsScreen() {
                         )
 
                         Text(
-                            text = stringResource(id = R.string.Settings_Theme),
+                            text = stringResource(R.string.Settings_Theme),
                             modifier = Modifier.weight(1f)
                         )
 
@@ -171,9 +173,9 @@ fun SettingsScreen() {
                         ) {
                             Text(
                                 when (theme) {
-                                    0 -> stringResource(id = R.string.Settings_SystemDefault)
-                                    1 -> stringResource(id = R.string.Settings_Light)
-                                    2 -> stringResource(id = R.string.Settings_Dark)
+                                    0 -> stringResource(R.string.Settings_SystemDefault)
+                                    1 -> stringResource(R.string.Settings_Light)
+                                    2 -> stringResource(R.string.Settings_Dark)
                                     // never happens
                                     else -> ""
                                 }
@@ -186,7 +188,7 @@ fun SettingsScreen() {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             DropdownMenuItem(
-                                text = { Text(stringResource(id = R.string.Settings_SystemDefault)) },
+                                text = { Text(stringResource(R.string.Settings_SystemDefault)) },
                                 onClick = { changeTheme(0) },
                                 leadingIcon = {
                                     Icon(
@@ -196,7 +198,7 @@ fun SettingsScreen() {
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text(stringResource(id = R.string.Settings_Light)) },
+                                text = { Text(stringResource(R.string.Settings_Light)) },
                                 onClick = { changeTheme(1) },
                                 leadingIcon = {
                                     Icon(
@@ -206,7 +208,7 @@ fun SettingsScreen() {
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text(stringResource(id = R.string.Settings_Dark)) },
+                                text = { Text(stringResource(R.string.Settings_Dark)) },
                                 onClick = { changeTheme(2) },
                                 leadingIcon = {
                                     Icon(
@@ -221,7 +223,7 @@ fun SettingsScreen() {
 
                 SettingsSwitcher(
                     icon = Icons.Default.ColorLens,
-                    text = stringResource(id = R.string.Settings_MaterialYou),
+                    text = stringResource(R.string.Settings_MaterialYou),
                     checked = dynamicColor,
                     onCheckedChange = {
                         context.writeKeyToDataStore(DataStoreKey.DynamicColor, it)
@@ -235,11 +237,11 @@ fun SettingsScreen() {
 
         item {
             Group(
-                name = stringResource(id = R.string.Settings_Group_Security)
+                name = stringResource(R.string.Settings_Group_Security)
             ) {
                 SettingsSwitcher(
                     icon = Icons.Default.Fingerprint,
-                    text = stringResource(id = R.string.Settings_BiometricUnlock),
+                    text = stringResource(R.string.Settings_BiometricUnlock),
                     checked = biometricEnabled,
                     onCheckedChange = { biometricChecked() }
                 )

@@ -27,9 +27,6 @@ class CipherTable(
     )
 }
 
-/**
- * EncryptedCipherConverter is a converter that converts an EncryptedCipher to a JSON string and vice versa.
- */
 class EncryptedCipherConverter {
     @TypeConverter
     fun fromEncryptedCipher(encryptedCipher: EncryptedCipher): String {

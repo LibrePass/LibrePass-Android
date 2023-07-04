@@ -58,7 +58,12 @@ fun CipherListItem(
         }
     }
 
-    Card(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+    Card(
+        modifier = Modifier.padding(
+            horizontal = 16.dp,
+            vertical = 8.dp
+        )
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -89,11 +94,11 @@ fun CipherListItem(
                 )
 
                 if (cipher.loginData!!.username != null) {
-                    val username = if (cipher.loginData!!.username!!.length > 20) {
-                        cipher.loginData!!.username!!.substring(0, 20) + "..."
-                    } else {
-                        cipher.loginData!!.username!!
-                    }
+                    val username =
+                        if (cipher.loginData!!.username!!.length > 20)
+                            cipher.loginData!!.username!!.substring(0, 20) + "..."
+                        else
+                            cipher.loginData!!.username!!
 
                     Text(
                         text = username,
@@ -130,7 +135,7 @@ fun CipherListItemSheetContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.CipherBottomSheet_View),
+                text = stringResource(R.string.CipherBottomSheet_View),
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
         }
@@ -144,7 +149,7 @@ fun CipherListItemSheetContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.CipherBottomSheet_Edit),
+                text = stringResource(R.string.CipherBottomSheet_Edit),
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
         }
@@ -158,7 +163,7 @@ fun CipherListItemSheetContent(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.CipherBottomSheet_Delete),
+                text = stringResource(R.string.CipherBottomSheet_Delete),
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
         }

@@ -32,13 +32,12 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
-import dev.medzik.librepass.android.utils.KeyStoreAlias
+import dev.medzik.librepass.android.utils.Biometric
+import dev.medzik.librepass.android.utils.Navigation.navigate
+import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
+import dev.medzik.librepass.android.utils.Remember.rememberStringData
 import dev.medzik.librepass.android.utils.UserDataStoreSecrets
-import dev.medzik.librepass.android.utils.navigation.navigate
-import dev.medzik.librepass.android.utils.remember.rememberLoadingState
-import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
-import dev.medzik.librepass.android.utils.remember.rememberStringData
-import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.android.utils.writeUserSecrets
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
@@ -86,9 +85,8 @@ fun UnlockScreen(navController: NavController) {
 
                 val keyPair = generateKeyPairFromPrivate(passwordHash)
 
-                if (keyPair.publicKey != credentials.publicKey) {
+                if (keyPair.publicKey != credentials.publicKey)
                     throw EncryptException("Invalid password")
-                }
 
                 privateKey = keyPair.privateKey
             } catch (e: EncryptException) {
@@ -119,10 +117,10 @@ fun UnlockScreen(navController: NavController) {
     }
 
     fun showBiometric() {
-        showBiometricPrompt(
+        Biometric.showBiometricPrompt(
             context = context,
             cipher = KeyStoreUtils.initCipherForDecryption(
-                alias = KeyStoreAlias.PRIVATE_KEY.name,
+                alias = Biometric.PrivateKeyAlias,
                 initializationVector = credentials.biometricProtectedPrivateKeyIV!!,
                 requireAuthentication = true
             ),
@@ -150,14 +148,13 @@ fun UnlockScreen(navController: NavController) {
     }
 
     LaunchedEffect(scope) {
-        if (credentials.biometricEnabled) {
+        if (credentials.biometricEnabled)
             showBiometric()
-        }
     }
 
     Scaffold(
         topBar = {
-            TopBar(title = stringResource(id = R.string.TopBar_Unlock))
+            TopBar(title = stringResource(R.string.TopBar_Unlock))
         },
         modifier = Modifier.navigationBarsPadding(),
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -169,7 +166,7 @@ fun UnlockScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = stringResource(id = R.string.InputField_Password),
+                label = stringResource(R.string.InputField_Password),
                 value = password.value,
                 onValueChange = { password.value = it },
                 hidden = true,
@@ -184,11 +181,10 @@ fun UnlockScreen(navController: NavController) {
                     .padding(top = 8.dp)
                     .padding(horizontal = 80.dp)
             ) {
-                if (loading) {
+                if (loading)
                     LoadingIndicator(animating = true)
-                } else {
-                    Text(text = stringResource(id = R.string.Button_Unlock))
-                }
+                else
+                    Text(stringResource(R.string.Button_Unlock))
             }
 
             if (credentials.biometricEnabled) {
@@ -199,7 +195,7 @@ fun UnlockScreen(navController: NavController) {
                         .padding(top = 8.dp)
                         .padding(horizontal = 80.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.Button_UseBiometric))
+                    Text(stringResource(R.string.Button_UseBiometric))
                 }
             }
         }

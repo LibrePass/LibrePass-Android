@@ -35,9 +35,9 @@ import androidx.navigation.compose.rememberNavController
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.TopBar
-import dev.medzik.librepass.android.utils.navigation.navigate
-import dev.medzik.librepass.android.utils.remember.rememberLoadingState
-import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
+import dev.medzik.librepass.android.utils.Navigation.navigate
+import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val titleId: Int) {
     Dashboard("dashboard", Icons.Default.Lock, R.string.DashboardBottomNav_Dashboard),
@@ -54,7 +54,7 @@ fun DashboardNavigation(mainNavController: NavController) {
     // bottom sheet
     var openSheet by rememberLoadingState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var sheetContent by remember { mutableStateOf<@Composable () -> Unit>({ Text("") }) } // text because without it animation is not working
+    var sheetContent by remember { mutableStateOf<@Composable () -> Unit>({}) }
 
     var currentScreenId by rememberSaveable { mutableIntStateOf(0) }
 
@@ -143,8 +143,8 @@ fun DashboardBottomNavigationBar(navController: NavController, onItemSelected: (
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 alwaysShowLabel = true,
-                icon = { Icon(item.icon, contentDescription = stringResource(id = item.titleId)) },
-                label = { Text(stringResource(id = item.titleId)) },
+                icon = { Icon(item.icon, contentDescription = stringResource(item.titleId)) },
+                label = { Text(stringResource(item.titleId)) },
                 selected = selectedItem == index,
                 onClick = {
                     onItemSelected(index)

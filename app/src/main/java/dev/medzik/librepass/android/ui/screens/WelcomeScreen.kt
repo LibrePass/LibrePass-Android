@@ -22,7 +22,7 @@ import com.google.accompanist.drawablepainter.DrawablePainter
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.TopBarTwoColor
-import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.android.utils.Navigation.navigate
 
 /**
  * Welcome screen shows app icon, welcome text and two buttons to login and register.

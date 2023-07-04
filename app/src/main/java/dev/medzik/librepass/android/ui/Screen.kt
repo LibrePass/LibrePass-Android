@@ -16,8 +16,8 @@ import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
+import dev.medzik.librepass.android.utils.Navigation.getString
 import dev.medzik.librepass.android.utils.getUserSecretsSync
-import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
@@ -66,11 +66,9 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
      * @see fill
      */
     val get get() =
-        if (arguments != null) {
+        if (arguments != null)
             "$route/${arguments.joinToString("/") { it.key }}"
-        } else {
-            route // if no arguments, return route without arguments
-        }
+        else route // if no arguments, return route without arguments
 
     /**
      * Fill route with arguments for navigation controller.
@@ -81,15 +79,12 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
      */
     @Throws(IllegalArgumentException::class)
     fun fill(vararg arguments: Pair<Argument, String>): String {
-        if (arguments.size != (this.arguments?.size ?: 0)) {
+        if (arguments.size != (this.arguments?.size ?: 0))
             throw IllegalArgumentException("Invalid number of arguments. Expected ${this.arguments?.size}, got ${arguments.size}")
-        }
 
-        var route = this.get
-
-        for (argument in arguments) {
+        var route = get
+        for (argument in arguments)
             route = route.replace(argument.first.key, argument.second)
-        }
 
         return route
     }

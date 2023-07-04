@@ -37,5 +37,7 @@ fun Group(
 
     content()
 
-    Spacer(modifier = Modifier.padding(bottom = 16.dp))
+    Spacer(
+        modifier = Modifier.padding(bottom = 16.dp)
+    )
 }

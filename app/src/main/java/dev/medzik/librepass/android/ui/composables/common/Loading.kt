@@ -62,9 +62,9 @@ fun LoadingIndicator(
     indicatorSpacing: Dp = 4.dp
 ) {
     val animatedValues = List(3) { index ->
-        var animatedValue by remember(key1 = animating) { mutableFloatStateOf(0f) }
+        var animatedValue by remember(animating) { mutableFloatStateOf(0f) }
 
-        LaunchedEffect(key1 = animating) {
+        LaunchedEffect(animating) {
             if (animating) {
                 animate(
                     initialValue = 8 / 2f,
@@ -81,7 +81,10 @@ fun LoadingIndicator(
         animatedValue
     }
 
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         animatedValues.forEach { animatedValue ->
             LoadingDot(
                 modifier = Modifier

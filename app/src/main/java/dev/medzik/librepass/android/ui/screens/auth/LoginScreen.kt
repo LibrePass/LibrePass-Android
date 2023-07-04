@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.UserSecretsStore
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
@@ -29,13 +30,12 @@ import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
+import dev.medzik.librepass.android.utils.DataStoreUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
-import dev.medzik.librepass.android.utils.UserDataStoreSecrets
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.writeUserSecrets
 import dev.medzik.librepass.client.api.v1.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -85,12 +85,10 @@ fun LoginScreen(navController: NavController) {
                     )
                 )
 
-                context.writeUserSecrets(
-                    UserDataStoreSecrets(
-                        privateKey = credentials.keyPair.privateKey,
-                        secretKey = credentials.secretKey
-                    )
-                )
+                UserSecretsStore = DataStoreUserSecrets(
+                    privateKey = credentials.keyPair.privateKey,
+                    secretKey = credentials.secretKey
+                ).save(context)
 
                 // navigate to dashboard
                 scope.launch(Dispatchers.Main) {

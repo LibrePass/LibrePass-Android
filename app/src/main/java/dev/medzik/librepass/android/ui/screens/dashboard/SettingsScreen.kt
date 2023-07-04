@@ -39,10 +39,10 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.composables.Group
 import dev.medzik.librepass.android.utils.Biometric
+import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
+import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
+import dev.medzik.librepass.android.utils.DataStore.writeKeyToDataStore
 import dev.medzik.librepass.android.utils.DataStoreKey
-import dev.medzik.librepass.android.utils.getUserSecretsSync
-import dev.medzik.librepass.android.utils.readKeyFromDataStore
-import dev.medzik.librepass.android.utils.writeKeyToDataStore
 import kotlinx.coroutines.launch
 
 @Composable
@@ -50,7 +50,7 @@ fun SettingsScreen() {
     // context must be FragmentActivity to show biometric prompt
     val context = LocalContext.current as FragmentActivity
 
-    val userSecrets = context.getUserSecretsSync() ?: return
+    val userSecrets = context.getUserSecrets() ?: return
 
     val repository = context.getRepository()
     val credentials = repository.credentials.get()!!

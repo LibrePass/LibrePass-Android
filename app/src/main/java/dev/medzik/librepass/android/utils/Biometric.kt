@@ -5,48 +5,35 @@ import androidx.fragment.app.FragmentActivity
 import dev.medzik.librepass.android.R
 import javax.crypto.Cipher
 
-/**
- * Show biometric prompt and call [onAuthenticationSucceeded] if authentication succeeded
- * or [onAuthenticationFailed] if authentication failed.
- * @param context [FragmentActivity] context
- * @param cipher [Cipher] to use for authentication (should be initialized) (see [KeyStoreUtils])
- * @param onAuthenticationSucceeded callback called when authentication succeeded
- * @param onAuthenticationFailed callback called when authentication failed
- * @see BiometricPrompt
- */
-fun showBiometricPrompt(
-    context: FragmentActivity,
-    cipher: Cipher,
-    onAuthenticationSucceeded: (Cipher) -> Unit,
-    onAuthenticationFailed: () -> Unit
-) {
-    val promptInfo = BiometricPrompt.PromptInfo.Builder()
-        .setTitle(context.getString(R.string.BiometricUnlock_Title))
-        .setSubtitle(context.getString(R.string.BiometricUnlock_Subtitle))
-        .setNegativeButtonText(context.getString(R.string.BiometricUnlock_Button_UsePassword))
-        .build()
+object Biometric {
+    fun showBiometricPrompt(
+        context: FragmentActivity,
+        cipher: Cipher,
+        onAuthenticationSucceeded: (Cipher) -> Unit,
+        onAuthenticationFailed: () -> Unit
+    ) {
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(context.getString(R.string.BiometricUnlock_Title))
+            .setSubtitle(context.getString(R.string.BiometricUnlock_Subtitle))
+            .setNegativeButtonText(context.getString(R.string.BiometricUnlock_Button_UsePassword))
+            .build()
 
-    val biometricPrompt = BiometricPrompt(
-        context,
-        object : BiometricPrompt.AuthenticationCallback() {
-            override fun onAuthenticationError(
-                errorCode: Int,
-                errString: CharSequence
-            ) {
-                onAuthenticationFailed()
+        val biometricPrompt = BiometricPrompt(
+            context,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) =
+                    onAuthenticationFailed()
+
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) =
+                    onAuthenticationSucceeded(result.cryptoObject?.cipher!!)
+
+                override fun onAuthenticationFailed() =
+                    onAuthenticationFailed()
             }
+        )
 
-            override fun onAuthenticationSucceeded(
-                result: BiometricPrompt.AuthenticationResult
-            ) {
-                onAuthenticationSucceeded(result.cryptoObject?.cipher!!)
-            }
+        biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+    }
 
-            override fun onAuthenticationFailed() {
-                onAuthenticationFailed()
-            }
-        }
-    )
-
-    biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+    const val PrivateKeyAlias = "private_key"
 }

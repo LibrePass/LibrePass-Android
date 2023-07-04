@@ -35,11 +35,11 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputFieldBase
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.Navigation.navigate
+import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.getUserSecretsSync
-import dev.medzik.librepass.android.utils.navigation.navigate
-import dev.medzik.librepass.android.utils.remember.rememberLoadingState
-import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -117,7 +117,6 @@ fun CipherAddEditView(
                 else
                     cipherRepository.update(cipherTable)
 
-                // go back
                 scope.launch(Dispatchers.Main) { navController.popBackStack() }
             } catch (e: Exception) {
                 loading = false
@@ -129,7 +128,7 @@ fun CipherAddEditView(
     Scaffold(
         topBar = {
             TopBar(
-                title = baseCipher?.loginData?.name ?: stringResource(id = R.string.TopBar_AddNewCipher),
+                title = baseCipher?.loginData?.name ?: stringResource(R.string.TopBar_AddNewCipher),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         },
@@ -142,15 +141,15 @@ fun CipherAddEditView(
                 .verticalScroll(rememberScrollState())
         ) {
             TextInputFieldBase(
-                label = stringResource(id = R.string.CipherField_Name),
+                label = stringResource(R.string.CipherField_Name),
                 modifier = Modifier.fillMaxWidth(),
                 value = cipherData.name,
                 onValueChange = { cipherData = cipherData.copy(name = it) }
             )
 
-            CipherGroup(stringResource(id = R.string.CipherField_Group_Login)) {
+            CipherGroup(stringResource(R.string.CipherField_Group_Login)) {
                 TextInputFieldBase(
-                    label = stringResource(id = R.string.CipherField_Username),
+                    label = stringResource(R.string.CipherField_Username),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
@@ -159,7 +158,7 @@ fun CipherAddEditView(
                 )
 
                 TextInputFieldBase(
-                    label = stringResource(id = R.string.CipherField_Password),
+                    label = stringResource(R.string.CipherField_Password),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
@@ -185,11 +184,11 @@ fun CipherAddEditView(
                 )
             }
 
-            CipherGroup(stringResource(id = R.string.CipherField_Group_Website)) {
+            CipherGroup(stringResource(R.string.CipherField_Group_Website)) {
                 // show field for each uri
                 cipherData.uris?.forEachIndexed { index, uri ->
                     TextInputFieldBase(
-                        label = stringResource(id = R.string.CipherField_URL) + " ${index + 1}",
+                        label = stringResource(R.string.CipherField_URL) + " ${index + 1}",
                         modifier = Modifier.fillMaxWidth(),
                         value = uri,
                         onValueChange = {
@@ -228,13 +227,13 @@ fun CipherAddEditView(
                         .padding(horizontal = 60.dp)
                         .padding(top = 8.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.Button_AddField))
+                    Text(stringResource(R.string.Button_AddField))
                 }
             }
 
-            CipherGroup(stringResource(id = R.string.CipherField_Group_Other)) {
+            CipherGroup(stringResource(R.string.CipherField_Group_Other)) {
                 TextInputFieldBase(
-                    label = stringResource(id = R.string.CipherField_Notes),
+                    label = stringResource(R.string.CipherField_Notes),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = false,
                     value = cipherData.notes,
@@ -253,9 +252,7 @@ fun CipherAddEditView(
                 if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
-                    Text(
-                        text = stringResource(id = baseCipher?.let { R.string.Button_Save } ?: R.string.Button_Add)
-                    )
+                    Text(stringResource(baseCipher?.let { R.string.Button_Save } ?: R.string.Button_Add))
                 }
             }
         }

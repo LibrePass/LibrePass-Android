@@ -37,10 +37,10 @@ import androidx.navigation.NavController
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
+import dev.medzik.librepass.android.utils.DataStore.writeKeyToDataStore
 import dev.medzik.librepass.android.utils.DataStoreKey
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
-import dev.medzik.librepass.android.utils.readKeyFromDataStore
-import dev.medzik.librepass.android.utils.writeKeyToDataStore
 import java.util.Random
 
 enum class PasswordType(val literals: String) {

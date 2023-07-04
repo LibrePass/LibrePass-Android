@@ -35,11 +35,11 @@ import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputFieldBase
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.getUserSecretsSync
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -56,7 +56,7 @@ fun CipherAddEditView(
 ) {
     val context = LocalContext.current
 
-    val userSecrets = context.getUserSecretsSync()
+    val userSecrets = context.getUserSecrets()
         ?: return
 
     val scope = rememberCoroutineScope()

@@ -27,18 +27,18 @@ import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Argon2Type
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.UserSecretsStore
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.common.LoadingIndicator
 import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.utils.Biometric
+import dev.medzik.librepass.android.utils.DataStoreUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
-import dev.medzik.librepass.android.utils.UserDataStoreSecrets
-import dev.medzik.librepass.android.utils.writeUserSecrets
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import dev.medzik.librepass.client.utils.Cryptography.generateKeyPairFromPrivate
@@ -96,12 +96,10 @@ fun UnlockScreen(navController: NavController) {
             } finally {
                 val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 
-                context.writeUserSecrets(
-                    UserDataStoreSecrets(
-                        privateKey = privateKey,
-                        secretKey = secretKey
-                    )
-                )
+                UserSecretsStore = DataStoreUserSecrets(
+                    privateKey = privateKey,
+                    secretKey = secretKey
+                ).save(context)
 
                 // run only if loading is true (if no error occurred)
                 if (loading) {
@@ -130,12 +128,10 @@ fun UnlockScreen(navController: NavController) {
                 val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 
                 runBlocking {
-                    context.writeUserSecrets(
-                        UserDataStoreSecrets(
-                            privateKey = privateKey,
-                            secretKey = secretKey
-                        )
-                    )
+                    UserSecretsStore = DataStoreUserSecrets(
+                        privateKey = privateKey,
+                        secretKey = secretKey
+                    ).save(context)
                 }
 
                 navController.navigate(

@@ -16,8 +16,8 @@ import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
+import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.getString
-import dev.medzik.librepass.android.utils.getUserSecretsSync
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
@@ -96,7 +96,7 @@ fun LibrePassNavController() {
     val navController = rememberNavController()
 
     val repository = context.getRepository()
-    val userSecrets = context.getUserSecretsSync()
+    val userSecrets = context.getUserSecrets()
 
     NavHost(
         navController = navController,

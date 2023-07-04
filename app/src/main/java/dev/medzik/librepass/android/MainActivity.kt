@@ -12,30 +12,41 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import dev.medzik.librepass.android.ui.LibrePassNavController
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
+import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
 import dev.medzik.librepass.android.utils.DataStoreKey
-import dev.medzik.librepass.android.utils.readKeyFromDataStore
+import dev.medzik.librepass.android.utils.DataStoreUserSecrets
+import kotlinx.coroutines.runBlocking
+
+lateinit var UserSecretsStore: DataStoreUserSecrets
 
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Handle uncaught exceptions
+        // handle uncaught exceptions
         Thread.setDefaultUncaughtExceptionHandler { _, e ->
             Log.e("LibrePass", "Uncaught exception", e)
             finish()
         }
 
-        // This will lay out our app behind the system bars (to make them transparent)
+        // this will lay out our app behind the system bars (to make them transparent)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        val theme = readKeyFromDataStore(DataStoreKey.Theme)
+        val context = this
+
+        // init datastore
+        runBlocking { UserSecretsStore = DataStoreUserSecrets.init(context) }
+
+        // get app theme settings
+        val dynamicColor = runBlocking { context.readKeyFromDataStore(DataStoreKey.DynamicColor) }
+        val theme = runBlocking { context.readKeyFromDataStore(DataStoreKey.Theme) }
         val autoTheme = theme == 0
         val darkTheme = theme == 2
 
         setContent {
             LibrePassTheme(
                 darkTheme = darkTheme || (autoTheme && isSystemInDarkTheme()),
-                dynamicColor = readKeyFromDataStore(DataStoreKey.DynamicColor)
+                dynamicColor = dynamicColor
             ) {
                 Surface(
                     color = MaterialTheme.colorScheme.background,

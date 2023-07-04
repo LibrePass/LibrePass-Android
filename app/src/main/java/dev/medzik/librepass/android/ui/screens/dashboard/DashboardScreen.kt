@@ -27,10 +27,10 @@ import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherListItem
+import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.getUserSecretsSync
 import dev.medzik.librepass.client.api.v1.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -48,7 +48,7 @@ fun DashboardScreen(
 ) {
     val context = LocalContext.current
 
-    val userSecrets = context.getUserSecretsSync()
+    val userSecrets = context.getUserSecrets()
         ?: return
 
     val scope = rememberCoroutineScope()

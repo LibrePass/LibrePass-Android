@@ -38,9 +38,9 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
+import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.getString
 import dev.medzik.librepass.android.utils.Navigation.navigate
-import dev.medzik.librepass.android.utils.getUserSecretsSync
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
@@ -51,7 +51,7 @@ fun CipherViewScreen(navController: NavController) {
 
     val context = LocalContext.current
 
-    val userSecrets = context.getUserSecretsSync()
+    val userSecrets = context.getUserSecrets()
         ?: return
 
     // get cipher from local database

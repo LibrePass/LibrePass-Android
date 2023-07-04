@@ -29,15 +29,14 @@ import dev.medzik.librepass.android.ui.composables.common.TextInputField
 import dev.medzik.librepass.android.ui.composables.common.TopBar
 import dev.medzik.librepass.android.ui.composables.common.TopBarBackIcon
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
+import dev.medzik.librepass.android.utils.Navigation.navigate
+import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
+import dev.medzik.librepass.android.utils.Remember.rememberStringData
 import dev.medzik.librepass.android.utils.UserDataStoreSecrets
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.navigation.navigate
-import dev.medzik.librepass.android.utils.remember.rememberLoadingState
-import dev.medzik.librepass.android.utils.remember.rememberSnackbarHostState
-import dev.medzik.librepass.android.utils.remember.rememberStringData
 import dev.medzik.librepass.android.utils.writeUserSecrets
 import dev.medzik.librepass.client.api.v1.AuthClient
-import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -58,31 +57,20 @@ fun LoginScreen(navController: NavController) {
 
     // Login user with given credentials and navigate to dashboard.
     fun submit(email: String, password: String) {
-        if (email.isEmpty() || password.isEmpty()) {
+        if (email.isEmpty() || password.isEmpty())
             return
-        }
 
-        // set loading state
         loading = true
 
         scope.launch(Dispatchers.IO) {
             try {
                 val preLogin = authClient.preLogin(email)
 
-                // compute base password hash
-                val passwordHash = computePasswordHash(
-                    password = password,
-                    email = email,
-                    argon2Function = preLogin.toArgon2()
-                )
-
-                // authenticate user and get credentials
                 val credentials = authClient.login(
                     email = email,
-                    passwordHash = passwordHash
+                    password = password
                 )
 
-                // insert credentials into local database
                 credentialsRepository.insert(
                     Credentials(
                         userId = credentials.userId,
@@ -124,7 +112,7 @@ fun LoginScreen(navController: NavController) {
             TopBar(
                 title = stringResource(id = R.string.TopBar_Login),
                 navigationIcon = {
-                    TopBarBackIcon(navController = navController)
+                    TopBarBackIcon(navController)
                 }
             )
         },
@@ -137,14 +125,14 @@ fun LoginScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = stringResource(id = R.string.InputField_Email),
+                label = stringResource(R.string.InputField_Email),
                 value = email,
                 onValueChange = { email = it },
                 keyboardType = KeyboardType.Email
             )
 
             TextInputField(
-                label = stringResource(id = R.string.InputField_Password),
+                label = stringResource(R.string.InputField_Password),
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,
@@ -163,7 +151,7 @@ fun LoginScreen(navController: NavController) {
                 if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
-                    Text(text = stringResource(id = R.string.Button_Login))
+                    Text(stringResource(R.string.Button_Login))
                 }
             }
         }

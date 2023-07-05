@@ -68,6 +68,19 @@
     <string name="Settings_MaterialYou" translatable="false">Material You (Android 12+)</string>
     <string name="Settings_Group_Security">Security</string>
     <string name="Settings_BiometricUnlock">Unlock with biometrics</string>
+    <string name="Settings_Vault_Timeout_Modal_Title">Vault timeout</string>
+    <string name="Settings_Vault_Timeout_Instant">Instant</string>
+    <string name="Settings_Vault_Timeout_Never">Never</string>
+
+    <!-- Time -->
+    <plurals name="Time_Minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="Time_Hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
 
     <!-- Password Generator -->
     <string name="PasswordGenerator_Length">Length</string>

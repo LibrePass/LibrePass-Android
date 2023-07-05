@@ -65,6 +65,23 @@
     <string name="Settings_Dark">Ciemny</string>
     <string name="Settings_Group_Security">Zabezpieczenia</string>
     <string name="Settings_BiometricUnlock">Odblokowanie biometryczne</string>
+    <string name="Settings_Vault_Timeout_Modal_Title">Limit czasu sejfu</string>
+    <string name="Settings_Vault_Timeout_Instant">Natychmiast</string>
+    <string name="Settings_Vault_Timeout_Never">Nigdy</string>
+
+    <!-- Time -->
+    <plurals name="Time_Minutes">
+        <item quantity="one">%d minuta</item>
+        <item quantity="few">%d minuty</item>
+        <item quantity="many">%d minut</item>
+        <item quantity="other">%d minut</item>
+    </plurals>
+    <plurals name="Time_Hours">
+        <item quantity="one">%d godzina</item>
+        <item quantity="few">%d godziny</item>
+        <item quantity="many">%d godzin</item>
+        <item quantity="other">%d godziny</item>
+    </plurals>
 
     <!-- Password Generator -->
     <string name="PasswordGenerator_Length">Długość</string>

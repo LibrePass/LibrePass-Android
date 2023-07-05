@@ -26,25 +26,29 @@ class DataStoreUserSecrets(
         private const val SecretKeyStoreKey = "secret_key"
 
         suspend fun init(context: Context): DataStoreUserSecrets {
-            val expiresTime = context.readKeyFromDataStore(DataStoreKey.VaultExpiresAt)
-            val currentTime = System.currentTimeMillis()
-            val vaultTimeout = context.readKeyFromDataStore(DataStoreKey.VaultTimeout)
+            try {
+                val expiresTime = context.readKeyFromDataStore(DataStoreKey.VaultExpiresAt)
+                val currentTime = System.currentTimeMillis()
+                val vaultTimeout = context.readKeyFromDataStore(DataStoreKey.VaultTimeout)
 
-            // check if vault has expired
-            if (vaultTimeout > 0 && currentTime > expiresTime)
+                // check if vault has expired
+                if (vaultTimeout > 0 && currentTime > expiresTime)
+                    throw Exception("Secrets expired")
+
+                // check if vault timeout is instant
+                if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds)
+                    throw Exception("Secrets expired")
+
+                val newExpiresTime = currentTime + (vaultTimeout * 1000 * 1000)
+                context.writeKeyToDataStore(DataStoreKey.VaultExpiresAt, newExpiresTime)
+
+                return DataStoreUserSecrets(
+                    privateKey = context.dataStore.readEncrypted(PrivateKeyStoreKey) ?: "",
+                    secretKey = context.dataStore.readEncrypted(SecretKeyStoreKey) ?: ""
+                )
+            } catch (e: Exception) {
                 return DataStoreUserSecrets(privateKey = "", secretKey = "")
-
-            // check if vault timeout is instant
-            if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds)
-                return DataStoreUserSecrets(privateKey = "", secretKey = "")
-
-            val newExpiresTime = currentTime + (vaultTimeout * 1000 * 1000)
-            context.writeKeyToDataStore(DataStoreKey.VaultExpiresAt, newExpiresTime)
-
-            return DataStoreUserSecrets(
-                privateKey = context.dataStore.readEncrypted(PrivateKeyStoreKey) ?: "",
-                secretKey = context.dataStore.readEncrypted(SecretKeyStoreKey) ?: ""
-            )
+            }
         }
     }
 

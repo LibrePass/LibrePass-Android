@@ -284,7 +284,7 @@ fun SettingsScreen() {
                         return when (value) {
                             VaultTimeoutValues.INSTANT -> stringResource(R.string.Settings_Vault_Timeout_Instant)
                             VaultTimeoutValues.ONE_MINUTE -> resources.getQuantityString(R.plurals.Time_Minutes, 1, 1)
-                            VaultTimeoutValues.FIVE_MINUTES -> resources.getQuantityString(R.plurals.Time_Minutes, 5, 15)
+                            VaultTimeoutValues.FIVE_MINUTES -> resources.getQuantityString(R.plurals.Time_Minutes, 5, 5)
                             VaultTimeoutValues.FIFTEEN_MINUTES -> resources.getQuantityString(R.plurals.Time_Minutes, 15, 15)
                             VaultTimeoutValues.THIRTY_MINUTES -> resources.getQuantityString(R.plurals.Time_Minutes, 30, 30)
                             VaultTimeoutValues.ONE_HOUR -> resources.getQuantityString(R.plurals.Time_Hours, 1, 1)

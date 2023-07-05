@@ -60,5 +60,8 @@ class MainActivity : FragmentActivity() {
 
     override fun onStop() {
         super.onStop()
+
+        val context = this
+        runBlocking { UserSecretsStore.save(context) }
     }
 }

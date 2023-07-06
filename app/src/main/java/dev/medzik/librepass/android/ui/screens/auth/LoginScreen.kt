@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -24,6 +23,7 @@ import dev.medzik.android.composables.LoadingIndicator
 import dev.medzik.android.composables.TextInputField
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
+import dev.medzik.android.composables.res.Text
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.UserSecretsStore
 import dev.medzik.librepass.android.data.Credentials
@@ -108,7 +108,7 @@ fun LoginScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(id = R.string.TopBar_Login),
+                title = stringResource(R.string.TopBar_Login),
                 navigationIcon = {
                     TopBarBackIcon(navController)
                 }
@@ -149,7 +149,7 @@ fun LoginScreen(navController: NavController) {
                 if (loading) {
                     LoadingIndicator(animating = true)
                 } else {
-                    Text(stringResource(R.string.Button_Login))
+                    Text(R.string.Button_Login)
                 }
             }
         }

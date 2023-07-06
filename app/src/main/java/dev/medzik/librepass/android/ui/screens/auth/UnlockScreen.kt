@@ -9,7 +9,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +24,7 @@ import androidx.navigation.NavController
 import dev.medzik.android.composables.LoadingIndicator
 import dev.medzik.android.composables.TextInputField
 import dev.medzik.android.composables.TopBar
+import dev.medzik.android.composables.res.Text
 import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Argon2Type
@@ -55,7 +55,7 @@ fun UnlockScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     var loading by rememberLoadingState()
-    val password = rememberStringData()
+    var password by rememberStringData()
 
     val credentials = context.getRepository().credentials.get()!!
 
@@ -163,15 +163,15 @@ fun UnlockScreen(navController: NavController) {
         ) {
             TextInputField(
                 label = stringResource(R.string.InputField_Password),
-                value = password.value,
-                onValueChange = { password.value = it },
+                value = password,
+                onValueChange = { password = it },
                 hidden = true,
                 keyboardType = KeyboardType.Password
             )
 
             Button(
-                onClick = { onUnlock(password.value) },
-                enabled = password.value.isNotEmpty() && !loading,
+                onClick = { onUnlock(password) },
+                enabled = password.isNotEmpty() && !loading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
@@ -180,7 +180,7 @@ fun UnlockScreen(navController: NavController) {
                 if (loading)
                     LoadingIndicator(animating = true)
                 else
-                    Text(stringResource(R.string.Button_Unlock))
+                    Text(R.string.Button_Unlock)
             }
 
             if (credentials.biometricEnabled) {
@@ -191,7 +191,7 @@ fun UnlockScreen(navController: NavController) {
                         .padding(top = 8.dp)
                         .padding(horizontal = 80.dp)
                 ) {
-                    Text(stringResource(R.string.Button_UseBiometric))
+                    Text(R.string.Button_UseBiometric)
                 }
             }
         }

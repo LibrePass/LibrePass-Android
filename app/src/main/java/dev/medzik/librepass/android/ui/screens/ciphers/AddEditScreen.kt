@@ -13,7 +13,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +29,7 @@ import dev.medzik.android.composables.LoadingIndicator
 import dev.medzik.android.composables.TextInputFieldBase
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
+import dev.medzik.android.composables.res.Text
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
@@ -147,7 +147,7 @@ fun CipherAddEditView(
                 onValueChange = { cipherData = cipherData.copy(name = it) }
             )
 
-            CipherGroup(stringResource(R.string.CipherField_Group_Login)) {
+            CipherGroup(R.string.CipherField_Group_Login) {
                 TextInputFieldBase(
                     label = stringResource(R.string.CipherField_Username),
                     modifier = Modifier
@@ -184,7 +184,7 @@ fun CipherAddEditView(
                 )
             }
 
-            CipherGroup(stringResource(R.string.CipherField_Group_Website)) {
+            CipherGroup(R.string.CipherField_Group_Website) {
                 // show field for each uri
                 cipherData.uris?.forEachIndexed { index, uri ->
                     TextInputFieldBase(
@@ -227,11 +227,11 @@ fun CipherAddEditView(
                         .padding(horizontal = 60.dp)
                         .padding(top = 8.dp)
                 ) {
-                    Text(stringResource(R.string.Button_AddField))
+                    Text(R.string.Button_AddField)
                 }
             }
 
-            CipherGroup(stringResource(R.string.CipherField_Group_Other)) {
+            CipherGroup(R.string.CipherField_Group_Other) {
                 TextInputFieldBase(
                     label = stringResource(R.string.CipherField_Notes),
                     modifier = Modifier.fillMaxWidth(),
@@ -249,11 +249,10 @@ fun CipherAddEditView(
                     .padding(top = 16.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading) {
+                if (loading)
                     LoadingIndicator(animating = true)
-                } else {
-                    Text(stringResource(baseCipher?.let { R.string.Button_Save } ?: R.string.Button_Add))
-                }
+                else
+                    Text(baseCipher?.let { R.string.Button_Save } ?: R.string.Button_Add)
             }
         }
     }

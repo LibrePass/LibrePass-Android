@@ -2,7 +2,6 @@ package dev.medzik.librepass.android.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -22,33 +21,22 @@ import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
 /**
- * Enum class for navigation between screens.
+ * Screen arguments.
  */
 enum class Argument {
     CipherId;
 
     /**
      * Get argument key (e.g. "{cipherid}").
-     * Used to fill route with argument.
-     * @see fill
      */
     val key get() = "{${name.lowercase()}}"
 
     /**
      * Get argument name (e.g. "cipherid").
-     * Used to get argument from [NavController].
-     * @see NavController.getString
      */
     val get get() = name.lowercase()
 }
 
-/**
- * Enum class for navigation between screens.
- * @property route Route to screen.
- * @property arguments List of arguments to fill route with. If null, route will not be filled.
- * @see Argument
- * @see fill
- */
 enum class Screen(private val route: String, private val arguments: List<Argument>? = null) {
     Welcome("welcome"),
     Register("register"),
@@ -62,7 +50,7 @@ enum class Screen(private val route: String, private val arguments: List<Argumen
 
     /**
      * Get the route with arguments (e.g. "dashboard/{cipherid}").
-     * The arguments must be filled [fill] if you want to change the screen.
+     * The arguments must be filled [fill] if you want navigate to the route.
      * @see fill
      */
     val get get() =

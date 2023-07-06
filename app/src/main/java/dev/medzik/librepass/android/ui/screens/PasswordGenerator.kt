@@ -1,5 +1,6 @@
 package dev.medzik.librepass.android.ui.screens
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +18,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
+import dev.medzik.android.composables.res.Text
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
 import dev.medzik.librepass.android.utils.DataStore.writeKeyToDataStore
@@ -64,7 +65,11 @@ fun PasswordGenerator(navController: NavController) {
     var withSymbols by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordIncludeSymbols)) }
 
     @Composable
-    fun TypeSwitcher(text: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
+    fun TypeSwitcher(
+        @StringRes text: Int,
+        checked: Boolean,
+        onCheckedChange: (Boolean) -> Unit
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -163,7 +168,7 @@ fun PasswordGenerator(navController: NavController) {
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 8.dp),
-                    label = { Text(text = stringResource(R.string.PasswordGenerator_Length)) },
+                    label = { Text(R.string.PasswordGenerator_Length) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     onValueChange = {
                         if (it.length in 1..3 && it.toInt() <= 256)
@@ -202,7 +207,7 @@ fun PasswordGenerator(navController: NavController) {
 
             // Capital letters switch
             TypeSwitcher(
-                text = stringResource(R.string.PasswordGenerator_CapitalLetters),
+                text = R.string.PasswordGenerator_CapitalLetters,
                 checked = withCapitalLetters,
                 onCheckedChange = {
                     withCapitalLetters = it
@@ -212,7 +217,7 @@ fun PasswordGenerator(navController: NavController) {
 
             // Numeric switch
             TypeSwitcher(
-                text = stringResource(R.string.PasswordGenerator_Numbers),
+                text = R.string.PasswordGenerator_Numbers,
                 checked = withNumbers,
                 onCheckedChange = {
                     withNumbers = it
@@ -222,7 +227,7 @@ fun PasswordGenerator(navController: NavController) {
 
             // Symbols switch
             TypeSwitcher(
-                text = stringResource(R.string.PasswordGenerator_Symbols),
+                text = R.string.PasswordGenerator_Symbols,
                 checked = withSymbols,
                 onCheckedChange = {
                     withSymbols = it
@@ -242,7 +247,7 @@ fun PasswordGenerator(navController: NavController) {
                     navController.popBackStack()
                 }
             ) {
-                Text(text = stringResource(R.string.PasswordGenerator_Submit))
+                Text(R.string.PasswordGenerator_Submit)
             }
         }
     }

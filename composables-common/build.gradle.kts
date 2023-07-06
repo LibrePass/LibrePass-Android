@@ -30,14 +30,10 @@ android {
 }
 
 dependencies {
-    implementation(libs.core.ktx)
-    implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.ui)
-    implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
-    implementation(libs.appcompat)
     implementation(libs.annotation)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.compose)

@@ -1,5 +1,6 @@
 package dev.medzik.librepass.android.ui.screens.dashboard
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import com.jakewharton.processphoenix.ProcessPhoenix
+import dev.medzik.android.composables.res.Text
 import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
@@ -121,7 +123,7 @@ fun SettingsScreen() {
     @Composable
     fun SettingsSwitcher(
         icon: ImageVector,
-        text: String,
+        @StringRes text: Int,
         checked: Boolean,
         onCheckedChange: (Boolean) -> Unit
     ) {
@@ -158,9 +160,7 @@ fun SettingsScreen() {
 
     LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
         item {
-            Group(
-                name = stringResource(R.string.Settings_Group_Appearance)
-            ) {
+            Group(R.string.Settings_Group_Appearance) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -176,7 +176,7 @@ fun SettingsScreen() {
                         )
 
                         Text(
-                            text = stringResource(R.string.Settings_Theme),
+                            text = R.string.Settings_Theme,
                             modifier = Modifier.weight(1f)
                         )
 
@@ -186,11 +186,11 @@ fun SettingsScreen() {
                         ) {
                             Text(
                                 when (theme) {
-                                    0 -> stringResource(R.string.Settings_SystemDefault)
-                                    1 -> stringResource(R.string.Settings_Light)
-                                    2 -> stringResource(R.string.Settings_Dark)
+                                    0 -> R.string.Settings_SystemDefault
+                                    1 -> R.string.Settings_Light
+                                    2 -> R.string.Settings_Dark
                                     // never happens
-                                    else -> ""
+                                    else -> throw UnsupportedOperationException()
                                 }
                             )
                         }
@@ -201,7 +201,7 @@ fun SettingsScreen() {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.Settings_SystemDefault)) },
+                                text = { Text(R.string.Settings_SystemDefault) },
                                 onClick = { changeTheme(0) },
                                 leadingIcon = {
                                     Icon(
@@ -211,7 +211,7 @@ fun SettingsScreen() {
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.Settings_Light)) },
+                                text = { Text(R.string.Settings_Light) },
                                 onClick = { changeTheme(1) },
                                 leadingIcon = {
                                     Icon(
@@ -221,7 +221,7 @@ fun SettingsScreen() {
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.Settings_Dark)) },
+                                text = { Text(R.string.Settings_Dark) },
                                 onClick = { changeTheme(2) },
                                 leadingIcon = {
                                     Icon(
@@ -236,7 +236,7 @@ fun SettingsScreen() {
 
                 SettingsSwitcher(
                     icon = Icons.Default.ColorLens,
-                    text = stringResource(R.string.Settings_MaterialYou),
+                    text = R.string.Settings_MaterialYou,
                     checked = dynamicColor,
                     onCheckedChange = {
                         context.writeKeyToDataStore(DataStoreKey.DynamicColor, it)
@@ -249,12 +249,10 @@ fun SettingsScreen() {
         }
 
         item {
-            Group(
-                name = stringResource(R.string.Settings_Group_Security)
-            ) {
+            Group(R.string.Settings_Group_Security) {
                 SettingsSwitcher(
                     icon = Icons.Default.Fingerprint,
-                    text = stringResource(R.string.Settings_BiometricUnlock),
+                    text = R.string.Settings_BiometricUnlock,
                     checked = biometricEnabled,
                     onCheckedChange = { biometricChecked() }
                 )
@@ -275,7 +273,7 @@ fun SettingsScreen() {
                     )
 
                     Text(
-                        text = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
+                        text = R.string.Settings_Vault_Timeout_Modal_Title,
                         modifier = Modifier.weight(1f)
                     )
 

@@ -73,12 +73,12 @@ dependencies {
     implementation(libs.annotation)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.biometric.ktx)
+    implementation(libs.androidx.navigation.compose)
 
     // room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.navigation.compose)
 
     // google accompanist
     implementation(libs.accompanist.systemuicontroller)
@@ -96,6 +96,8 @@ dependencies {
 
     // PullRefresh for material3
     implementation(project(":material3-pullrefresh"))
+
+    implementation(project(":composables-common"))
 
     // A library for restarting applications, such as after changing the theme in the settings.
     implementation(libs.process.phoenix)

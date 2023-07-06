@@ -19,9 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.drawablepainter.DrawablePainter
+import dev.medzik.android.composables.TopBarTwoColor
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.ui.composables.common.TopBarTwoColor
 import dev.medzik.librepass.android.utils.Navigation.navigate
 
 @Composable

@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -61,7 +62,6 @@ import kotlinx.coroutines.launch
 fun SettingsScreen() {
     // context must be FragmentActivity to show biometric prompt
     val context = LocalContext.current as FragmentActivity
-    val resources = context.resources
 
     val userSecrets = context.getUserSecrets() ?: return
 
@@ -283,11 +283,11 @@ fun SettingsScreen() {
                     fun getTranslatedTimeoutValue(value: VaultTimeoutValues): String {
                         return when (value) {
                             VaultTimeoutValues.INSTANT -> stringResource(R.string.Settings_Vault_Timeout_Instant)
-                            VaultTimeoutValues.ONE_MINUTE -> resources.getQuantityString(R.plurals.Time_Minutes, 1, 1)
-                            VaultTimeoutValues.FIVE_MINUTES -> resources.getQuantityString(R.plurals.Time_Minutes, 5, 5)
-                            VaultTimeoutValues.FIFTEEN_MINUTES -> resources.getQuantityString(R.plurals.Time_Minutes, 15, 15)
-                            VaultTimeoutValues.THIRTY_MINUTES -> resources.getQuantityString(R.plurals.Time_Minutes, 30, 30)
-                            VaultTimeoutValues.ONE_HOUR -> resources.getQuantityString(R.plurals.Time_Hours, 1, 1)
+                            VaultTimeoutValues.ONE_MINUTE -> pluralStringResource(R.plurals.Time_Minutes, 1, 1)
+                            VaultTimeoutValues.FIVE_MINUTES -> pluralStringResource(R.plurals.Time_Minutes, 5, 5)
+                            VaultTimeoutValues.FIFTEEN_MINUTES -> pluralStringResource(R.plurals.Time_Minutes, 15, 15)
+                            VaultTimeoutValues.THIRTY_MINUTES -> pluralStringResource(R.plurals.Time_Minutes, 30, 30)
+                            VaultTimeoutValues.ONE_HOUR -> pluralStringResource(R.plurals.Time_Hours, 1, 1)
                             VaultTimeoutValues.NEVER -> stringResource(R.string.Settings_Vault_Timeout_Never)
                         }
                     }

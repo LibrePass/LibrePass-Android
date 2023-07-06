@@ -21,3 +21,4 @@ rootProject.name = "LibrePass"
 include(":app")
 include(":crypto-utils")
 include(":material3-pullrefresh")
+include(":composables-common")

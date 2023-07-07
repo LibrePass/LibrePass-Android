@@ -60,7 +60,7 @@ fun RegisterScreen(navController: NavController) {
 
         scope.launch(Dispatchers.IO) {
             try {
-                authClient.register(email, password)
+                authClient.register(email, password, passwordHint)
 
                 // navigate to login
                 scope.launch(Dispatchers.Main) {

@@ -33,7 +33,7 @@ import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
 import dev.medzik.librepass.android.utils.Toast.showToast
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.client.api.v1.AuthClient
+import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

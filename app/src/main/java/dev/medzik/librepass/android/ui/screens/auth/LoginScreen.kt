@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -33,7 +32,6 @@ import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.DataStoreUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
-import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.client.api.AuthClient
@@ -45,7 +43,6 @@ fun LoginScreen(navController: NavController) {
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
-    val snackbarHostState = rememberSnackbarHostState()
 
     var loading by rememberLoadingState()
     var email by rememberStringData()
@@ -100,7 +97,7 @@ fun LoginScreen(navController: NavController) {
             } catch (e: Exception) {
                 loading = false
 
-                e.handle(context, snackbarHostState)
+                e.handle(context)
             }
         }
     }
@@ -113,8 +110,7 @@ fun LoginScreen(navController: NavController) {
                     TopBarBackIcon(navController)
                 }
             )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier

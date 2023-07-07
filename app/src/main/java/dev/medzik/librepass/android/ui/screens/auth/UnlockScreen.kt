@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,8 +36,8 @@ import dev.medzik.librepass.android.utils.Biometric
 import dev.medzik.librepass.android.utils.DataStoreUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
-import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
+import dev.medzik.librepass.android.utils.Toast.showToast
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import dev.medzik.librepass.client.utils.Cryptography.generateKeyPairFromPrivate
@@ -51,7 +50,6 @@ fun UnlockScreen(navController: NavController) {
     // context must be FragmentActivity to show biometric prompt
     val context = LocalContext.current as FragmentActivity
 
-    val snackbarHostState = rememberSnackbarHostState()
     val scope = rememberCoroutineScope()
 
     var loading by rememberLoadingState()
@@ -92,7 +90,7 @@ fun UnlockScreen(navController: NavController) {
             } catch (e: EncryptException) {
                 // if password is invalid
                 loading = false
-                snackbarHostState.showSnackbar(context.getString(R.string.Error_InvalidCredentials))
+                context.showToast(R.string.Error_InvalidCredentials)
             } finally {
                 val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 
@@ -152,8 +150,7 @@ fun UnlockScreen(navController: NavController) {
         topBar = {
             TopBar(title = stringResource(R.string.TopBar_Unlock))
         },
-        modifier = Modifier.navigationBarsPadding(),
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        modifier = Modifier.navigationBarsPadding()
     ) { innerPadding ->
         Column(
             modifier = Modifier

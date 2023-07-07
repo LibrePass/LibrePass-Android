@@ -12,7 +12,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +37,6 @@ import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
-import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
@@ -60,7 +58,6 @@ fun CipherAddEditView(
         ?: return
 
     val scope = rememberCoroutineScope()
-    val snackbarHostState = rememberSnackbarHostState()
     var loading by rememberLoadingState()
     var cipherData by remember {
         mutableStateOf(baseCipher?.loginData ?: CipherLoginData(name = ""))
@@ -120,7 +117,7 @@ fun CipherAddEditView(
                 scope.launch(Dispatchers.Main) { navController.popBackStack() }
             } catch (e: Exception) {
                 loading = false
-                e.handle(context, snackbarHostState)
+                e.handle(context)
             }
         }
     }
@@ -131,8 +128,7 @@ fun CipherAddEditView(
                 title = baseCipher?.loginData?.name ?: stringResource(R.string.TopBar_AddNewCipher),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier

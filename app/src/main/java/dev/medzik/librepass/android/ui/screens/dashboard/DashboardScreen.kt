@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.pullrefresh.PullRefreshIndicator
 import androidx.compose.material3.pullrefresh.pullRefresh
 import androidx.compose.material3.pullrefresh.rememberPullRefreshState
@@ -43,8 +42,7 @@ import java.util.Date
 fun DashboardScreen(
     navController: NavController,
     openBottomSheet: (sheetContent: @Composable () -> Unit) -> Unit,
-    closeBottomSheet: () -> Unit,
-    snackbarHostState: SnackbarHostState
+    closeBottomSheet: () -> Unit
 ) {
     val context = LocalContext.current
 
@@ -139,7 +137,7 @@ fun DashboardScreen(
                 }
             }
         } catch (e: Exception) {
-            e.handle(context, snackbarHostState)
+            e.handle(context)
         } finally {
             // get cipher from local repository and update UI
             updateLocalCiphers()
@@ -205,7 +203,7 @@ fun DashboardScreen(
 
                                     ciphers = ciphers.filter { it.id != cipher.id }
                                 } catch (e: Exception) {
-                                    e.handle(context, snackbarHostState)
+                                    e.handle(context)
                                 }
                             }
                         }

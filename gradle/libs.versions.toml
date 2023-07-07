@@ -15,15 +15,15 @@ navigation-compose = "2.6.0"
 compose-bom = "2023.06.01"
 process-phoenix = "2.1.2"
 room = "2.5.2"
-compose-compiler = "1.4.7"
+compose-compiler = "1.4.8"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 
 # plugins
 com-android-application = "8.1.0-rc01"
-org-jetbrains-kotlin-android = "1.8.21"
-google-ksp = "1.8.21-1.0.11"
+org-jetbrains-kotlin-android = "1.8.22"
+google-ksp = "1.8.22-1.0.11"
 
 [libraries]
 # androidx

@@ -90,6 +90,8 @@ dependencies {
     // librepass client
     implementation(libs.librepass.client)
 
+    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+
     // crypto utils for KeyStore and DataStore
     implementation(project(":crypto-utils"))
     implementation(libs.androidx.datastore.preferences)

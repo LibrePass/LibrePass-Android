@@ -31,7 +31,7 @@ import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.client.api.v1.CipherClient
+import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.librepass.types.cipher.data.CipherLoginData

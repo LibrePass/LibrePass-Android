@@ -14,7 +14,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -37,7 +36,6 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
-import dev.medzik.librepass.android.utils.Remember.rememberSnackbarHostState
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val titleId: Int) {
     Dashboard("dashboard", Icons.Default.Lock, R.string.DashboardBottomNav_Dashboard),
@@ -48,8 +46,6 @@ enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val
 @Composable
 fun DashboardNavigation(mainNavController: NavController) {
     val navController = rememberNavController()
-
-    val snackbarHostState = rememberSnackbarHostState()
 
     // bottom sheet
     var openSheet by rememberLoadingState()
@@ -84,8 +80,7 @@ fun DashboardNavigation(mainNavController: NavController) {
                     Icon(Icons.Default.Add, contentDescription = null)
                 }
             }
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        }
     ) { innerPadding ->
         Box(
             modifier = Modifier.padding(innerPadding)
@@ -98,8 +93,7 @@ fun DashboardNavigation(mainNavController: NavController) {
                             sheetContent = it
                             openSheet = true
                         },
-                        closeBottomSheet = { openSheet = false },
-                        snackbarHostState = snackbarHostState
+                        closeBottomSheet = { openSheet = false }
                     )
                 }
                 composable(DashboardNavigationItem.Settings.route) {

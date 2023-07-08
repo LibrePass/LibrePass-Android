@@ -25,11 +25,11 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 }
 
 dependencies {
-    implementation(libs.appcompat)
-    implementation(libs.material3)
+    compileOnly(libs.androidx.appcompat)
+    compileOnly(libs.androidx.material3)
 }

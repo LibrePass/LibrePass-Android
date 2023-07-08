@@ -50,7 +50,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     packaging {
@@ -61,49 +61,39 @@ android {
 }
 
 dependencies {
-    // androidx
-    implementation(libs.core.ktx)
-    implementation(libs.activity.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
-    implementation(libs.appcompat)
-    implementation(libs.annotation)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.annotation)
+
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.biometric.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.datastore.preferences)
 
-    // room
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    // google accompanist
-    implementation(libs.accompanist.systemuicontroller)
-    implementation(libs.accompanist.drawablepainter)
+    implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.google.accompanist.drawablepainter)
 
-    // kotlin coroutines
     implementation(libs.kotlinx.coroutines.android)
 
-    // librepass client
     implementation(libs.librepass.client)
 
-    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+    implementation(libs.process.phoenix)
+    implementation(libs.coil.compose)
 
-    // crypto utils for KeyStore and DataStore
     implementation(project(":crypto-utils"))
-    implementation(libs.androidx.datastore.preferences)
-
-    // PullRefresh for material3
     implementation(project(":material3-pullrefresh"))
-
     implementation(project(":composables-common"))
 
-    // A library for restarting applications, such as after changing the theme in the settings.
-    implementation(libs.process.phoenix)
-
-    debugImplementation(libs.ui.tooling)
-    debugImplementation(libs.ui.test.manifest)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }

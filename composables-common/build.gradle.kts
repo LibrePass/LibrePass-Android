@@ -25,16 +25,16 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 }
 
 dependencies {
-    implementation(platform(libs.compose.bom))
-    implementation(libs.ui)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
-    implementation(libs.annotation)
+    compileOnly(platform(libs.androidx.compose.bom))
+    compileOnly(libs.androidx.ui)
+    compileOnly(libs.androidx.ui.tooling.preview)
+    compileOnly(libs.androidx.material3)
+    compileOnly(libs.androidx.annotation)
+    compileOnly(libs.androidx.navigation.compose)
     implementation(libs.androidx.material.icons.extended)
-    implementation(libs.androidx.navigation.compose)
 }

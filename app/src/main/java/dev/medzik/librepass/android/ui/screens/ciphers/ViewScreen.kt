@@ -80,9 +80,7 @@ fun CipherViewScreen(navController: NavController) {
         topBar = {
             TopBar(
                 title = cipherData.name,
-                navigationIcon = {
-                    TopBarBackIcon(navController = navController)
-                }
+                navigationIcon = { TopBarBackIcon(navController) }
             )
         },
         floatingActionButton = {

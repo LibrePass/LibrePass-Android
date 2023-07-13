@@ -77,8 +77,7 @@ fun LoginScreen(navController: NavController) {
                         // Argon2id parameters
                         memory = preLogin.memory,
                         iterations = preLogin.iterations,
-                        parallelism = preLogin.parallelism,
-                        version = preLogin.version
+                        parallelism = preLogin.parallelism
                     )
                 )
 

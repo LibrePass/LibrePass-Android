@@ -16,7 +16,7 @@ commons-codec = "1.16.0"
 google-accompanist = "0.31.5-beta"
 jakewharton-process-phoenix = "2.1.2"
 kotlinx-coroutines-android = "1.7.2"
-librepass-client = "0.1.0-SNAPSHOT-04"
+librepass-client = "0.1.0-SNAPSHOT-05"
 process-phoenix = "2.1.2"
 
 # plugins

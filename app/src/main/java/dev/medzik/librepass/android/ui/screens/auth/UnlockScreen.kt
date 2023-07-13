@@ -26,7 +26,6 @@ import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.res.Text
 import dev.medzik.android.cryptoutils.KeyStoreUtils
 import dev.medzik.libcrypto.Argon2
-import dev.medzik.libcrypto.Argon2Type
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.UserSecretsStore
@@ -75,9 +74,7 @@ fun UnlockScreen(navController: NavController) {
                         32,
                         credentials.parallelism,
                         credentials.memory,
-                        credentials.iterations,
-                        Argon2Type.ID,
-                        credentials.version,
+                        credentials.iterations
                     )
                 )
 

@@ -20,8 +20,6 @@ import androidx.compose.material.icons.outlined.InvertColors
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -73,11 +71,10 @@ fun SettingsScreen() {
     val scope = rememberCoroutineScope()
 
     var biometricEnabled by remember { mutableStateOf(credentials.biometricEnabled) }
-    val theme = context.readKeyFromDataStore(DataStoreKey.Theme)
     val dynamicColor = context.readKeyFromDataStore(DataStoreKey.DynamicColor)
 
     // Biometric checked event handler (enable/disable biometric authentication)
-    fun biometricChecked() {
+    fun showBiometricPrompt() {
         if (biometricEnabled) {
             biometricEnabled = false
 
@@ -149,16 +146,133 @@ fun SettingsScreen() {
         }
     }
 
-    var themeSelectorExpanded by remember { mutableStateOf(false) }
+    var showThemeSwitcherDialog by remember { mutableStateOf(false) }
 
-    fun changeTheme(id: Int) {
-        context.writeKeyToDataStore(DataStoreKey.Theme, id)
+    @Composable
+    fun ThemeSwitcherDialog() {
+        AlertDialog(
+            onDismissRequest = { showThemeSwitcherDialog = false }
+        ) {
+            Surface(
+                shape = AlertDialogDefaults.shape,
+                tonalElevation = AlertDialogDefaults.TonalElevation,
+            ) {
+                Box(
+                    modifier = Modifier.padding(all = 24.dp)
+                ) {
+                    Column {
+                        Text(
+                            text = stringResource(R.string.Settings_Theme),
+                            fontWeight = FontWeight.Black,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
 
-        // restart application to apply changes
-        ProcessPhoenix.triggerRebirth(context)
+                        for (theme in listOf(0, 1, 2)) {
+                            Box(
+                                modifier = Modifier.clickable {
+                                    context.writeKeyToDataStore(DataStoreKey.Theme, theme)
+
+                                    // restart application to apply changes
+                                    ProcessPhoenix.triggerRebirth(context)
+                                }
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp)
+                                        .fillMaxWidth(),
+                                ) {
+                                    Icon(
+                                        when (theme) {
+                                            0 -> Icons.Outlined.InvertColors
+                                            1 -> Icons.Outlined.LightMode
+                                            2 -> Icons.Outlined.DarkMode
+                                            // never happens
+                                            else -> throw UnsupportedOperationException()
+                                        },
+                                        contentDescription = null
+                                    )
+
+                                    Text(
+                                        modifier = Modifier
+                                            .padding(start = 12.dp)
+                                            .fillMaxWidth(),
+                                        text = when (theme) {
+                                            0 -> R.string.Settings_SystemDefault
+                                            1 -> R.string.Settings_Light
+                                            2 -> R.string.Settings_Dark
+                                            // never happens
+                                            else -> throw UnsupportedOperationException()
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
+    @Composable
+    fun getTranslatedTimeoutValue(value: VaultTimeoutValues): String {
+        return when (value) {
+            VaultTimeoutValues.INSTANT -> stringResource(R.string.Settings_Vault_Timeout_Instant)
+            VaultTimeoutValues.ONE_MINUTE -> pluralStringResource(R.plurals.Time_Minutes, 1, 1)
+            VaultTimeoutValues.FIVE_MINUTES -> pluralStringResource(R.plurals.Time_Minutes, 5, 5)
+            VaultTimeoutValues.FIFTEEN_MINUTES -> pluralStringResource(R.plurals.Time_Minutes, 15, 15)
+            VaultTimeoutValues.THIRTY_MINUTES -> pluralStringResource(R.plurals.Time_Minutes, 30, 30)
+            VaultTimeoutValues.ONE_HOUR -> pluralStringResource(R.plurals.Time_Hours, 1, 1)
+            VaultTimeoutValues.NEVER -> stringResource(R.string.Settings_Vault_Timeout_Never)
+        }
+    }
+
+    var showVaultTimeoutDialog by remember { mutableStateOf(false) }
+    var vaultTimeout by remember { mutableIntStateOf(context.readKeyFromDataStore(DataStoreKey.VaultTimeout)) }
+
+    @Composable
+    fun VaultTimeoutDialog() {
+        AlertDialog(
+            onDismissRequest = { showVaultTimeoutDialog = false }
+        ) {
+            Surface(
+                shape = AlertDialogDefaults.shape,
+                tonalElevation = AlertDialogDefaults.TonalElevation,
+            ) {
+                Box(
+                    modifier = Modifier.padding(all = 24.dp)
+                ) {
+                    Column {
+                        Text(
+                            text = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
+                            fontWeight = FontWeight.Black,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+
+                        for (value in VaultTimeoutValues.values()) {
+                            Box(
+                                modifier = Modifier.clickable {
+                                    vaultTimeout = value.seconds
+                                    context.writeKeyToDataStore(DataStoreKey.VaultTimeout, value.seconds)
+                                    showVaultTimeoutDialog = false
+                                }
+                            ) {
+                                Text(
+                                    text = getTranslatedTimeoutValue(value),
+                                    modifier = Modifier
+                                        .padding(vertical = 12.dp)
+                                        .fillMaxWidth()
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    LazyColumn(
+        modifier = Modifier.padding(horizontal = 16.dp)
+    ) {
         item {
             Group(R.string.Settings_Group_Appearance) {
                 Box(
@@ -175,13 +289,15 @@ fun SettingsScreen() {
                             modifier = Modifier.padding(end = 16.dp)
                         )
 
+                        val theme = context.readKeyFromDataStore(DataStoreKey.Theme)
+
                         Text(
                             text = R.string.Settings_Theme,
                             modifier = Modifier.weight(1f)
                         )
 
                         TextButton(
-                            onClick = { themeSelectorExpanded = true },
+                            onClick = { showThemeSwitcherDialog = true },
                             modifier = Modifier.padding(start = 16.dp)
                         ) {
                             Text(
@@ -195,41 +311,8 @@ fun SettingsScreen() {
                             )
                         }
 
-                        DropdownMenu(
-                            expanded = themeSelectorExpanded,
-                            onDismissRequest = { themeSelectorExpanded = false },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text(R.string.Settings_SystemDefault) },
-                                onClick = { changeTheme(0) },
-                                leadingIcon = {
-                                    Icon(
-                                        Icons.Outlined.InvertColors,
-                                        contentDescription = null
-                                    )
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(R.string.Settings_Light) },
-                                onClick = { changeTheme(1) },
-                                leadingIcon = {
-                                    Icon(
-                                        Icons.Outlined.LightMode,
-                                        contentDescription = null
-                                    )
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(R.string.Settings_Dark) },
-                                onClick = { changeTheme(2) },
-                                leadingIcon = {
-                                    Icon(
-                                        Icons.Outlined.DarkMode,
-                                        contentDescription = null
-                                    )
-                                }
-                            )
+                        if (showThemeSwitcherDialog) {
+                            ThemeSwitcherDialog()
                         }
                     }
                 }
@@ -254,16 +337,13 @@ fun SettingsScreen() {
                     icon = Icons.Default.Fingerprint,
                     text = R.string.Settings_BiometricUnlock,
                     checked = biometricEnabled,
-                    onCheckedChange = { biometricChecked() }
+                    onCheckedChange = { showBiometricPrompt() }
                 )
-
-                var showTimerDialog by remember { mutableStateOf(false) }
-                var vaultTimeout by remember { mutableIntStateOf(context.readKeyFromDataStore(DataStoreKey.VaultTimeout)) }
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable { showTimerDialog = true }
+                        .clickable { showVaultTimeoutDialog = true }
                         .padding(vertical = 12.dp)
                 ) {
                     Icon(
@@ -277,19 +357,6 @@ fun SettingsScreen() {
                         modifier = Modifier.weight(1f)
                     )
 
-                    @Composable
-                    fun getTranslatedTimeoutValue(value: VaultTimeoutValues): String {
-                        return when (value) {
-                            VaultTimeoutValues.INSTANT -> stringResource(R.string.Settings_Vault_Timeout_Instant)
-                            VaultTimeoutValues.ONE_MINUTE -> pluralStringResource(R.plurals.Time_Minutes, 1, 1)
-                            VaultTimeoutValues.FIVE_MINUTES -> pluralStringResource(R.plurals.Time_Minutes, 5, 5)
-                            VaultTimeoutValues.FIFTEEN_MINUTES -> pluralStringResource(R.plurals.Time_Minutes, 15, 15)
-                            VaultTimeoutValues.THIRTY_MINUTES -> pluralStringResource(R.plurals.Time_Minutes, 30, 30)
-                            VaultTimeoutValues.ONE_HOUR -> pluralStringResource(R.plurals.Time_Hours, 1, 1)
-                            VaultTimeoutValues.NEVER -> stringResource(R.string.Settings_Vault_Timeout_Never)
-                        }
-                    }
-
                     Text(
                         modifier = Modifier.padding(start = 16.dp),
                         color = MaterialTheme.colorScheme.primary,
@@ -297,45 +364,8 @@ fun SettingsScreen() {
                         text = getTranslatedTimeoutValue(VaultTimeoutValues.fromSeconds(vaultTimeout))
                     )
 
-                    if (showTimerDialog) {
-                        AlertDialog(
-                            onDismissRequest = { showTimerDialog = false },
-                            content = {
-                                Surface(
-                                    shape = AlertDialogDefaults.shape,
-                                    tonalElevation = AlertDialogDefaults.TonalElevation,
-                                ) {
-                                    Box(
-                                        modifier = Modifier.padding(all = 24.dp)
-                                    ) {
-                                        Column {
-                                            Text(
-                                                text = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
-                                                fontWeight = FontWeight.Black,
-                                                modifier = Modifier.padding(bottom = 8.dp)
-                                            )
-
-                                            for (value in VaultTimeoutValues.values()) {
-                                                Box(
-                                                    modifier = Modifier.clickable {
-                                                        vaultTimeout = value.seconds
-                                                        context.writeKeyToDataStore(DataStoreKey.VaultTimeout, value.seconds)
-                                                        showTimerDialog = false
-                                                    }
-                                                ) {
-                                                    Text(
-                                                        text = getTranslatedTimeoutValue(value),
-                                                        modifier = Modifier
-                                                            .padding(vertical = 12.dp)
-                                                            .fillMaxWidth()
-                                                    )
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        )
+                    if (showVaultTimeoutDialog) {
+                        VaultTimeoutDialog()
                     }
                 }
             }

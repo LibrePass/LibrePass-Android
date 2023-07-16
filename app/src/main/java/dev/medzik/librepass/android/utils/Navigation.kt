@@ -1,6 +1,7 @@
 package dev.medzik.librepass.android.utils
 
 import androidx.navigation.NavController
+import androidx.navigation.NavOptionsBuilder
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 
@@ -45,16 +46,17 @@ object Navigation {
     fun NavController.navigate(
         screen: Screen,
         argument: Pair<Argument, String>,
-        disableBack: Boolean = false
+        disableBack: Boolean = false,
+        options: (NavOptionsBuilder.() -> Unit)? = null
     ) {
         navigate(
             route = screen.fill(argument),
             builder = {
-                if (disableBack) {
-                    popUpTo(graph.startDestinationId) {
-                        inclusive = true
-                    }
-                }
+                if (disableBack)
+                    popUpTo(graph.startDestinationId) { inclusive = true }
+
+                if (options != null)
+                    options()
             }
         )
     }
@@ -66,16 +68,17 @@ object Navigation {
      */
     fun NavController.navigate(
         screen: Screen,
-        disableBack: Boolean = false
+        disableBack: Boolean = false,
+        options: (NavOptionsBuilder.() -> Unit)? = null
     ) {
         navigate(
             route = screen.fill(),
             builder = {
-                if (disableBack) {
-                    popUpTo(graph.startDestinationId) {
-                        inclusive = true
-                    }
-                }
+                if (disableBack)
+                    popUpTo(graph.startDestinationId) { inclusive = true }
+
+                if (options != null)
+                    options()
             }
         )
     }

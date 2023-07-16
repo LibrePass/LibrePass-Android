@@ -1,19 +1,13 @@
 package dev.medzik.librepass.android.ui.composables
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreHoriz
@@ -32,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -132,44 +125,6 @@ fun CipherListItem(
                 Icon(Icons.Default.MoreHoriz, contentDescription = null)
             }
         }
-    }
-}
-
-@Composable
-fun imageFromURL() {
-    // on below line we are creating a column,
-    Column(
-        // in this column we are adding modifier
-        // to fill max size, mz height and max width
-        modifier = Modifier
-            .fillMaxSize()
-            .fillMaxHeight()
-            .fillMaxWidth()
-            // on below line we are adding
-            // padding from all sides.
-            .padding(10.dp),
-        // on below line we are adding vertical
-        // and horizontal arrangement.
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // on below line we are adding image for our image view.
-        Image(
-            // on below line we are adding the image url
-            // from which we will  be loading our image.
-            painter = rememberAsyncImagePainter("https://media.geeksforgeeks.org/wp-content/uploads/20210101144014/gfglogo.png"),
-
-            // on below line we are adding content
-            // description for our image.
-            contentDescription = "gfg image",
-
-            // on below line we are adding modifier for our
-            // image as wrap content for height and width.
-            modifier = Modifier
-                .wrapContentSize()
-                .wrapContentHeight()
-                .wrapContentWidth()
-        )
     }
 }
 

@@ -68,7 +68,10 @@ fun RegisterScreen(navController: NavController) {
 
                     navController.navigate(
                         screen = Screen.Login,
-                        disableBack = true
+                        options = {
+                            // disable back to this page
+                            popUpTo(Screen.Register.get) { inclusive = true }
+                        }
                     )
                 }
             } catch (e: Exception) {

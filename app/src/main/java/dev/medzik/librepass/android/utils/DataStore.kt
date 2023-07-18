@@ -31,7 +31,7 @@ class DataStoreUserSecrets(
                 val currentTime = System.currentTimeMillis()
                 val vaultTimeout = context.readKeyFromDataStore(DataStoreKey.VaultTimeout)
 
-                // check if vault has expired
+                // check if the vault has expired
                 if (vaultTimeout > 0 && currentTime > expiresTime)
                     throw Exception("Secrets expired")
 
@@ -65,22 +65,39 @@ class DataStoreUserSecrets(
 
 object DataStore {
     fun Context.getUserSecrets(): DataStoreUserSecrets? {
-        return if (UserSecretsStore.privateKey.isBlank() || UserSecretsStore.secretKey.isBlank())
-            null
-        else UserSecretsStore
+        fun checkIfExists(userSecrets: DataStoreUserSecrets): Boolean {
+            return !(userSecrets.privateKey.isBlank() || userSecrets.secretKey.isBlank())
+        }
+
+        // check if secrets exist in UserSecretsStore
+        if (checkIfExists(UserSecretsStore))
+            return UserSecretsStore
+
+        // check if secrets exist in DataStore
+        val context = this
+        val dataStoreUserSecrets = runBlocking { DataStoreUserSecrets.init(context) }
+        if (checkIfExists(dataStoreUserSecrets)) {
+            // save secrets to in-memory global variable UserSecretsStore
+            UserSecretsStore = dataStoreUserSecrets
+            // return secrets from data store
+            return dataStoreUserSecrets
+        }
+
+        // if secrets don't exist in UserSecretsStore and DataStore, return null
+        return null
     }
 
     inline fun <reified T> Context.readKeyFromDataStore(key: DataStoreKey<T>): T {
-        return runBlocking { dataStore.read(key.preferencesKey) } ?: key.default
+        return runBlocking { dataStore.read(key.preferenceKey) } ?: key.default
     }
 
     inline fun <reified T> Context.writeKeyToDataStore(key: DataStoreKey<T>, value: T) {
-        runBlocking { dataStore.write(key.preferencesKey, value) }
+        runBlocking { dataStore.write(key.preferenceKey, value) }
     }
 }
 
 sealed class DataStoreKey<T>(
-    val preferencesKey: Preferences.Key<T>,
+    val preferenceKey: Preferences.Key<T>,
     val default: T
 ) {
     object DynamicColor : DataStoreKey<Boolean>(
@@ -90,7 +107,7 @@ sealed class DataStoreKey<T>(
 
     object Theme : DataStoreKey<Int>(
         intPreferencesKey("theme"),
-        0
+        ThemeValues.SYSTEM.ordinal
     )
 
     object PasswordLength : DataStoreKey<Int>(
@@ -122,6 +139,12 @@ sealed class DataStoreKey<T>(
         longPreferencesKey("vault_expires_at"),
         System.currentTimeMillis(),
     )
+}
+
+enum class ThemeValues {
+    SYSTEM,
+    LIGHT,
+    DARK
 }
 
 enum class VaultTimeoutValues(val seconds: Int) {

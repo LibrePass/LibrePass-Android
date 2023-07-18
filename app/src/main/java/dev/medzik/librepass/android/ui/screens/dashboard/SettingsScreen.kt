@@ -54,6 +54,7 @@ import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
 import dev.medzik.librepass.android.utils.DataStore.writeKeyToDataStore
 import dev.medzik.librepass.android.utils.DataStoreKey
+import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
 import kotlinx.coroutines.launch
 
@@ -183,9 +184,9 @@ fun SettingsScreen() {
                                 ) {
                                     Icon(
                                         when (theme) {
-                                            0 -> Icons.Outlined.InvertColors
-                                            1 -> Icons.Outlined.LightMode
-                                            2 -> Icons.Outlined.DarkMode
+                                            ThemeValues.SYSTEM.ordinal -> Icons.Outlined.InvertColors
+                                            ThemeValues.LIGHT.ordinal -> Icons.Outlined.LightMode
+                                            ThemeValues.DARK.ordinal -> Icons.Outlined.DarkMode
                                             // never happens
                                             else -> throw UnsupportedOperationException()
                                         },
@@ -302,9 +303,9 @@ fun SettingsScreen() {
                         ) {
                             Text(
                                 when (theme) {
-                                    0 -> R.string.Settings_SystemDefault
-                                    1 -> R.string.Settings_Light
-                                    2 -> R.string.Settings_Dark
+                                    ThemeValues.SYSTEM.ordinal -> R.string.Settings_SystemDefault
+                                    ThemeValues.LIGHT.ordinal -> R.string.Settings_Light
+                                    ThemeValues.DARK.ordinal -> R.string.Settings_Dark
                                     // never happens
                                     else -> throw UnsupportedOperationException()
                                 }

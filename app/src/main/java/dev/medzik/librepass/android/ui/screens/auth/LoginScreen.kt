@@ -24,7 +24,6 @@ import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
 import dev.medzik.android.composables.res.Text
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.UserSecretsStore
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
@@ -52,7 +51,6 @@ fun LoginScreen(navController: NavController) {
 
     val authClient = AuthClient()
 
-    // Login user with given credentials and navigate to dashboard.
     fun submit(email: String, password: String) {
         if (email.isEmpty() || password.isEmpty())
             return
@@ -68,6 +66,7 @@ fun LoginScreen(navController: NavController) {
                     password = password
                 )
 
+                // save credentials
                 credentialsRepository.insert(
                     Credentials(
                         userId = credentials.userId,
@@ -81,7 +80,8 @@ fun LoginScreen(navController: NavController) {
                     )
                 )
 
-                UserSecretsStore = DataStoreUserSecrets(
+                // save secrets in encrypted datastore
+                DataStoreUserSecrets(
                     privateKey = credentials.keyPair.privateKey,
                     secretKey = credentials.secretKey
                 ).save(context)
@@ -95,7 +95,6 @@ fun LoginScreen(navController: NavController) {
                 }
             } catch (e: Exception) {
                 loading = false
-
                 e.handle(context)
             }
         }
@@ -141,11 +140,10 @@ fun LoginScreen(navController: NavController) {
                     .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading) {
+                if (loading)
                     LoadingIndicator(animating = true)
-                } else {
+                else
                     Text(R.string.Button_Login)
-                }
             }
         }
     }

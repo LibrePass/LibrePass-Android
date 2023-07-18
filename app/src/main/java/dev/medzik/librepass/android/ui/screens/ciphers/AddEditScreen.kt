@@ -71,16 +71,22 @@ fun CipherAddEditView(
 
     // observe username and password from navController
     // used to get password from password generator
-    navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("password")?.observeForever {
-        cipherData = cipherData.copy(password = it)
-    }
+    navController
+        .currentBackStackEntry
+        ?.savedStateHandle
+        ?.getLiveData<String>("password")?.observeForever {
+            cipherData = cipherData.copy(password = it)
+        }
     // observe for cipher from backstack
-    navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("cipher")?.observeForever {
-        val currentPassword = cipherData.password
+    navController
+        .currentBackStackEntry
+        ?.savedStateHandle
+        ?.getLiveData<String>("cipher")?.observeForever {
+            val currentPassword = cipherData.password
 
-        cipherData = Gson().fromJson(it, CipherLoginData::class.java)
-        cipherData = cipherData.copy(password = currentPassword)
-    }
+            cipherData = Gson().fromJson(it, CipherLoginData::class.java)
+            cipherData = cipherData.copy(password = currentPassword)
+        }
 
     // Insert or update cipher
     fun submit() {
@@ -122,10 +128,19 @@ fun CipherAddEditView(
         }
     }
 
+    @Composable
+    fun topBarTitle(): String {
+        if (baseCipher == null) return stringResource(R.string.TopBar_AddNewCipher)
+
+        return if (cipherData.name.length > 16)
+            cipherData.name.substring(0, 16) + "..."
+        else cipherData.name
+    }
+
     Scaffold(
         topBar = {
             TopBar(
-                title = baseCipher?.loginData?.name ?: stringResource(R.string.TopBar_AddNewCipher),
+                title = topBarTitle(),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }

@@ -85,9 +85,6 @@ fun PasswordGenerator(navController: NavController) {
         }
     }
 
-    /**
-     * Generates password based on selected options and returns it.
-     */
     fun generatePassword(): String {
         var letters = PasswordType.LOWERCASE.literals
 

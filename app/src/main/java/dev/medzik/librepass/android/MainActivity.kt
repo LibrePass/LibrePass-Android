@@ -10,11 +10,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
-import dev.medzik.librepass.android.ui.LibrePassNavController
+import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
 import dev.medzik.librepass.android.utils.DataStoreKey
 import dev.medzik.librepass.android.utils.DataStoreUserSecrets
+import dev.medzik.librepass.android.utils.ThemeValues
 import kotlinx.coroutines.runBlocking
 
 lateinit var UserSecretsStore: DataStoreUserSecrets
@@ -40,8 +41,8 @@ class MainActivity : FragmentActivity() {
         // get app theme settings
         val dynamicColor = runBlocking { context.readKeyFromDataStore(DataStoreKey.DynamicColor) }
         val theme = runBlocking { context.readKeyFromDataStore(DataStoreKey.Theme) }
-        val autoTheme = theme == 0
-        val darkTheme = theme == 2
+        val autoTheme = theme == ThemeValues.SYSTEM.ordinal
+        val darkTheme = theme == ThemeValues.DARK.ordinal
 
         setContent {
             LibrePassTheme(
@@ -52,7 +53,7 @@ class MainActivity : FragmentActivity() {
                     color = MaterialTheme.colorScheme.background,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    LibrePassNavController()
+                    LibrePassNavigation()
                 }
             }
         }

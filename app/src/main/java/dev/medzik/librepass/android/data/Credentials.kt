@@ -10,6 +10,7 @@ data class Credentials(
     val userId: UUID,
     val email: String,
 
+    val apiUrl: String? = null,
     val apiKey: String,
     val publicKey: String,
 

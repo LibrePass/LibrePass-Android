@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.librepass.android.data.getRepository
-import dev.medzik.librepass.android.ui.Argument.CipherId
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
 import dev.medzik.librepass.android.ui.screens.auth.LoginScreen
@@ -20,111 +19,95 @@ import dev.medzik.librepass.android.utils.Navigation.getString
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
-/**
- * Screen arguments.
- */
 enum class Argument {
-    CipherId;
-
-    /**
-     * Get argument key (e.g. "{cipherid}").
-     */
-    val key get() = "{${name.lowercase()}}"
-
-    /**
-     * Get argument name (e.g. "cipherid").
-     */
-    val get get() = name.lowercase()
+    CipherId
 }
 
-enum class Screen(private val route: String, private val arguments: List<Argument>? = null) {
-    Welcome("welcome"),
-    Register("register"),
-    Login("login"),
-    Unlock("unlock"),
-    Dashboard("dashboard"),
-    CipherView("cipher-view", listOf(CipherId)),
-    CipherAdd("cipher-add"),
-    CipherEdit("cipher-edit", listOf(CipherId)),
-    PasswordGenerator("password-generator");
+enum class Screen(private val argument: Argument? = null) {
+    Welcome,
 
-    /**
-     * Get the route with arguments (e.g. "dashboard/{cipherid}").
-     * The arguments must be filled [fill] if you want navigate to the route.
-     * @see fill
-     */
-    val get get() =
-        if (arguments != null)
-            "$route/${arguments.joinToString("/") { it.key }}"
-        else route // if no arguments, return route without arguments
+    Register,
+    Login,
 
-    /**
-     * Fill route with arguments for navigation controller.
-     * @param arguments List of arguments to fill route with.
-     * @return Filled route.
-     * @throws IllegalArgumentException If number of arguments is not equal to number of arguments in route.
-     * @see Argument
-     */
-    @Throws(IllegalArgumentException::class)
-    fun fill(vararg arguments: Pair<Argument, String>): String {
-        if (arguments.size != (this.arguments?.size ?: 0))
-            throw IllegalArgumentException("Invalid number of arguments. Expected ${this.arguments?.size}, got ${arguments.size}")
+    Unlock,
+    Dashboard,
+    CipherView(Argument.CipherId),
+    CipherAdd,
+    CipherEdit(Argument.CipherId),
+    PasswordGenerator;
 
-        var route = get
-        for (argument in arguments)
-            route = route.replace(argument.first.key, argument.second)
+    val route = if (argument != null) "$name/{${argument.name}}" else name
 
-        return route
+    fun fill(argumentPair: Pair<Argument, String>? = null): String {
+        val arg = argumentPair?.first
+        val value = argumentPair?.second
+
+        if (arg != argument)
+            throw IllegalArgumentException("Invalid arguments. Expected ${this.argument?.name}, got $arg")
+
+        return when (argumentPair) {
+            null -> route
+            else -> route.replace("{${arg!!.name}}", value!!)
+        }
     }
 }
 
 @Composable
-fun LibrePassNavController() {
+fun LibrePassNavigation() {
     val context = LocalContext.current
+
     val navController = rememberNavController()
 
     val repository = context.getRepository()
     val userSecrets = context.getUserSecrets()
 
+    fun getStartRoute(): String {
+        // if a user is not logged in, show welcome screen
+        repository.credentials.get()
+            ?: return Screen.Welcome.route
+
+        // if user secrets are not set, show unlock screen
+        userSecrets
+            ?: return Screen.Unlock.route
+
+        // else where the user secrets are set, show dashboard screen
+        return Screen.Dashboard.route
+    }
+
     NavHost(
         navController = navController,
-        startDestination = repository.credentials.get()?.let {
-            if (userSecrets != null)
-                Screen.Dashboard.get
-            else
-                Screen.Unlock.get
-        } ?: Screen.Welcome.get
+        startDestination = getStartRoute()
     ) {
-        composable(Screen.Welcome.get) {
-            WelcomeScreen(navController = navController)
+        composable(Screen.Welcome.route) {
+            WelcomeScreen(navController)
         }
 
-        composable(Screen.Register.get) {
-            RegisterScreen(navController = navController)
+        composable(Screen.Register.route) {
+            RegisterScreen(navController)
         }
 
-        composable(Screen.Login.get) {
-            LoginScreen(navController = navController)
+        composable(Screen.Login.route) {
+            LoginScreen(navController)
         }
 
-        composable(Screen.Unlock.get) {
-            UnlockScreen(navController = navController)
+        composable(Screen.Unlock.route) {
+            UnlockScreen(navController)
         }
 
-        composable(Screen.Dashboard.get) {
+        composable(Screen.Dashboard.route) {
             DashboardNavigation(mainNavController = navController)
         }
 
-        composable(Screen.CipherView.get) {
+        composable(Screen.CipherView.route) {
             CipherViewScreen(navController = navController)
         }
 
-        composable(Screen.CipherAdd.get) {
+        composable(Screen.CipherAdd.route) {
             CipherAddEditView(navController = navController)
         }
 
-        composable(Screen.CipherEdit.get) {
-            val cipherId = navController.getString(CipherId)
+        composable(Screen.CipherEdit.route) {
+            val cipherId = navController.getString(Argument.CipherId)
                 ?: return@composable
 
             val cipherTable = repository.cipher.get(UUID.fromString(cipherId))
@@ -135,8 +118,8 @@ fun LibrePassNavController() {
             CipherAddEditView(navController = navController, baseCipher = cipher)
         }
 
-        composable(Screen.PasswordGenerator.get) {
-            PasswordGenerator(navController = navController)
+        composable(Screen.PasswordGenerator.route) {
+            PasswordGenerator(navController)
         }
     }
 }

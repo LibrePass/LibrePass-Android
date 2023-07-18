@@ -2,6 +2,8 @@ package dev.medzik.android.cryptoutils
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import dev.medzik.libcrypto.AES
+import dev.medzik.libcrypto.EncryptException
 import org.apache.commons.codec.binary.Hex
 import java.security.KeyStore
 import javax.crypto.Cipher
@@ -9,11 +11,14 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
-object KeyStoreUtils {
+/**
+ * Android KeyStore utility class for encrypting and decrypting data.
+ */
+object KeyStore {
     /**
-     * Initializes cipher for encryption.
-     * @param alias secret key alias in key store
-     * @param requireAuthentication if authentication is required for key store e.g. using biometric authentication
+     * Initialize cipher for encryption.
+     * @param alias secret key alias in android keystore
+     * @param requireAuthentication true if authentication is required, for example, using biometric
      * @return initialized cipher
      */
     fun initCipherForEncryption(
@@ -26,10 +31,10 @@ object KeyStoreUtils {
     }
 
     /**
-     * Initializes cipher for decryption.
+     * Initialize cipher for decryption.
      * @param initializationVector AES initialization vector
      * @param alias secret key alias in key store
-     * @param requireAuthentication if authentication is required for key store e.g. using biometric authentication
+     * @param requireAuthentication true if authentication is required, for example, using biometric
      * @return initialized cipher
      */
     fun initCipherForDecryption(
@@ -41,47 +46,56 @@ object KeyStoreUtils {
         cipher.init(
             Cipher.DECRYPT_MODE,
             getOrGenerateSecretKey(alias, requireAuthentication),
-            GCMParameterSpec(128, Hex.decodeHex(initializationVector))
+            GCMParameterSpec(128, Hex.decodeHex(initializationVector.toCharArray()))
         )
         return cipher
     }
 
     /**
-     * Encrypts data with specified cipher.
+     * Encrypt data with specified cipher.
      * @param cipher cipher to use for encryption
      * @param data data to encrypt
      * @return cipher text and initialization vector
      */
     fun encrypt(cipher: Cipher, data: String): CipherText =
         CipherText(
-            cipherText = Hex.encodeHexString(cipher.doFinal(data.toByteArray())),
-            initializationVector = Hex.encodeHexString(cipher.iv)
+            cipherText = String(Hex.encodeHex(cipher.doFinal(data.toByteArray()))),
+            initializationVector = String(Hex.encodeHex(cipher.iv))
         )
 
     /**
-     * Decrypts data with specified cipher.
+     * Decrypt data with specified cipher.
      * @param cipher cipher to use for decryption
      * @param cipherText cipher text to decrypt
      * @return decrypted data
      */
-    fun decrypt(cipher: Cipher, cipherText: String): String =
-        String(cipher.doFinal(Hex.decodeHex(cipherText)))
+    @Throws(EncryptException::class)
+    fun decrypt(cipher: Cipher, cipherText: String): String {
+        try {
+            return String(cipher.doFinal(Hex.decodeHex(cipherText.toCharArray())))
+        } catch (e: Exception) {
+            throw EncryptException(e)
+        }
+    }
+
+    /**
+     * Delete keystore alias.
+     * @param alias secret key alias in key store to delete
+     */
+    fun deleteAlias(alias: String) {
+        val keyStore = getKeyStore()
+        keyStore.deleteEntry(alias)
+    }
 
     private fun getCipher(): Cipher =
-        Cipher.getInstance(
-            KeyProperties.KEY_ALGORITHM_AES + "/" +
-                KeyProperties.BLOCK_MODE_GCM + "/" +
-                KeyProperties.ENCRYPTION_PADDING_NONE
-        )
+        Cipher.getInstance(AES.AesType.GCM.mode)
 
     private fun getOrGenerateSecretKey(
         alias: String,
         requireAuthentication: Boolean
     ): SecretKey {
-        return if (secretKeyExists(alias))
-            getSecretKey(alias)
-        else
-            generateSecretKey(alias, requireAuthentication)
+        return if (secretKeyExists(alias)) getSecretKey(alias)
+        else generateSecretKey(alias, requireAuthentication)
     }
 
     private fun secretKeyExists(alias: String): Boolean =
@@ -109,6 +123,11 @@ object KeyStoreUtils {
     private fun getKeyStore(): KeyStore =
         KeyStore.getInstance("AndroidKeyStore").apply { load(null) }
 
+    /**
+     * Encrypted data.
+     * @property cipherText cipher text
+     * @property initializationVector initialization vector
+     */
     data class CipherText(
         val cipherText: String,
         val initializationVector: String

@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dev.medzik.android.composables.res.Text
-import dev.medzik.android.cryptoutils.KeyStoreUtils
+import dev.medzik.android.cryptoutils.KeyStore
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.composables.Group
@@ -92,12 +92,12 @@ fun SettingsScreen() {
 
         Biometric.showBiometricPrompt(
             context = context,
-            cipher = KeyStoreUtils.initCipherForEncryption(
+            cipher = KeyStore.initCipherForEncryption(
                 Biometric.PrivateKeyAlias,
                 true
             ),
             onAuthenticationSucceeded = { cipher ->
-                val encryptedData = KeyStoreUtils.encrypt(
+                val encryptedData = KeyStore.encrypt(
                     cipher = cipher,
                     data = userSecrets.privateKey
                 )

@@ -6,10 +6,10 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import dev.medzik.android.cryptoutils.DataStoreUtils.read
-import dev.medzik.android.cryptoutils.DataStoreUtils.readEncrypted
-import dev.medzik.android.cryptoutils.DataStoreUtils.write
-import dev.medzik.android.cryptoutils.DataStoreUtils.writeEncrypted
+import dev.medzik.android.cryptoutils.DataStore.read
+import dev.medzik.android.cryptoutils.DataStore.readEncrypted
+import dev.medzik.android.cryptoutils.DataStore.write
+import dev.medzik.android.cryptoutils.DataStore.writeEncrypted
 import dev.medzik.librepass.android.UserSecretsStore
 import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
 import dev.medzik.librepass.android.utils.DataStore.writeKeyToDataStore
@@ -24,6 +24,7 @@ class DataStoreUserSecrets(
     companion object {
         private const val PrivateKeyStoreKey = "private_key"
         private const val SecretKeyStoreKey = "secret_key"
+        private const val KeyStoreAlias = "librepass_datastore_secrets"
 
         suspend fun init(context: Context): DataStoreUserSecrets {
             try {
@@ -43,8 +44,10 @@ class DataStoreUserSecrets(
                 context.writeKeyToDataStore(DataStoreKey.VaultExpiresAt, newExpiresTime)
 
                 return DataStoreUserSecrets(
-                    privateKey = context.dataStore.readEncrypted(PrivateKeyStoreKey) ?: "",
-                    secretKey = context.dataStore.readEncrypted(SecretKeyStoreKey) ?: ""
+                    privateKey = context.dataStore.readEncrypted(KeyStoreAlias, PrivateKeyStoreKey)
+                        ?: "",
+                    secretKey = context.dataStore.readEncrypted(KeyStoreAlias, SecretKeyStoreKey)
+                        ?: ""
                 )
             } catch (e: Exception) {
                 return DataStoreUserSecrets(privateKey = "", secretKey = "")
@@ -53,8 +56,8 @@ class DataStoreUserSecrets(
     }
 
     suspend fun save(context: Context): DataStoreUserSecrets {
-        context.dataStore.writeEncrypted(PrivateKeyStoreKey, privateKey)
-        context.dataStore.writeEncrypted(SecretKeyStoreKey, secretKey)
+        context.dataStore.writeEncrypted(KeyStoreAlias, PrivateKeyStoreKey, privateKey)
+        context.dataStore.writeEncrypted(KeyStoreAlias, SecretKeyStoreKey, secretKey)
         val currentTime = System.currentTimeMillis()
         val vaultTimeout = context.readKeyFromDataStore(DataStoreKey.VaultTimeout)
         val newExpiresTime = currentTime + (vaultTimeout * 1000 * 1000)

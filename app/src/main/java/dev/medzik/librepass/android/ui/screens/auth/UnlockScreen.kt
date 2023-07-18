@@ -24,7 +24,7 @@ import dev.medzik.android.composables.LoadingIndicator
 import dev.medzik.android.composables.TextInputField
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.res.Text
-import dev.medzik.android.cryptoutils.KeyStoreUtils
+import dev.medzik.android.cryptoutils.KeyStore
 import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
@@ -112,13 +112,14 @@ fun UnlockScreen(navController: NavController) {
     fun showBiometric() {
         Biometric.showBiometricPrompt(
             context = context,
-            cipher = KeyStoreUtils.initCipherForDecryption(
+            cipher = KeyStore.initCipherForDecryption(
                 alias = Biometric.PrivateKeyAlias,
                 initializationVector = credentials.biometricProtectedPrivateKeyIV!!,
                 requireAuthentication = true
             ),
             onAuthenticationSucceeded = { cipher ->
-                val privateKey = KeyStoreUtils.decrypt(cipher, credentials.biometricProtectedPrivateKey!!)
+                val privateKey =
+                    KeyStore.decrypt(cipher, credentials.biometricProtectedPrivateKey!!)
 
                 val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 

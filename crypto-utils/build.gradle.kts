@@ -24,4 +24,5 @@ android {
 dependencies {
     implementation(libs.commons.codec)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.libcrypto)
 }

@@ -4,57 +4,95 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import dev.medzik.libcrypto.AES
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
-object DataStoreUtils {
+object DataStore {
     /**
-     * Reads the key from the data store.
-     * @param key the key to read from the data store
-     * @return key value or null if it does not exist
+     * Read data from [DataStore].
+     * @param preferenceKey Preference key to read
+     * @return Value of preference or null if no preference
      */
-    suspend inline fun <reified T> DataStore<Preferences>.read(key: Preferences.Key<T>): T? {
-        return data.map { it[key] }.first()
+    suspend inline fun <reified T> DataStore<Preferences>.read(preferenceKey: Preferences.Key<T>): T? {
+        return data.map { it[preferenceKey] }.first()
     }
 
     /**
-     * Writes the key to the data store.
-     * @param key the key to write to the data store
-     * @param value key value to write
+     * Write data to [DataStore].
+     * @param preferenceKey Preference key to write
+     * @param value Value to write
      */
-    suspend inline fun <reified T> DataStore<Preferences>.write(key: Preferences.Key<T>, value: T) {
-        edit { it[key] = value }
+    suspend inline fun <reified T> DataStore<Preferences>.write(
+        preferenceKey: Preferences.Key<T>,
+        value: T
+    ) {
+        edit { it[preferenceKey] = value }
     }
 
     /**
-     * Reads and decrypts the encrypted key from the data store.
-     * @param storeKey the key to read from the data store
-     * @return key value or null if it does not exist
+     * Delete data from [DataStore].
+     * @param preferenceKey Preference key to delete
      */
-    suspend fun DataStore<Preferences>.readEncrypted(storeKey: String): String? {
-        val cipherTextStore = stringPreferencesKey("$storeKey/encrypted")
-        val ivStore = stringPreferencesKey("$storeKey/iv")
-
-        val cipherText = read(cipherTextStore) ?: return null
-        val iv = read(ivStore) ?: return null
-
-        val cipher = KeyStoreUtils.initCipherForDecryption(iv, "librepass_secrets", false)
-        return KeyStoreUtils.decrypt(cipher, cipherText)
+    suspend inline fun <reified T> DataStore<Preferences>.delete(preferenceKey: Preferences.Key<T>) {
+        edit { it.remove(preferenceKey) }
     }
 
     /**
-     * Encrypts and writes the key to the data store.
-     * @param storeKey the key to write to the data store
-     * @param value key value to write
+     * Read encrypted data from [DataStore].
+     * @param keyStoreAlias secret key alias in android keystore
+     * @param preferenceKey preference key to read
+     * @return Value of preference or null if no preference
      */
-    suspend fun DataStore<Preferences>.writeEncrypted(storeKey: String, value: String) {
-        val cipherTextStore = stringPreferencesKey("$storeKey/encrypted")
-        val ivStore = stringPreferencesKey("$storeKey/iv")
+    suspend fun DataStore<Preferences>.readEncrypted(
+        keyStoreAlias: String,
+        preferenceKey: String
+    ): String? {
+        val cipherTextStore = stringPreferencesKey("$preferenceKey/encrypted")
 
-        val cipher = KeyStoreUtils.initCipherForEncryption("librepass_secrets", false)
-        val cipherData = KeyStoreUtils.encrypt(cipher, value)
+        // read cipher text from datastore
+        val cipherTextWithIV = read(cipherTextStore) ?: return null
 
-        write(cipherTextStore, cipherData.cipherText)
-        write(ivStore, cipherData.initializationVector)
+        // get IV length in hex string
+        val ivLength = AES.AesType.GCM.ivLength * 2
+
+        // extract IV and Cipher Text from hex string
+        val iv = cipherTextWithIV.substring(0, ivLength)
+        val cipherText = cipherTextWithIV.substring(ivLength)
+
+        // decrypt cipher text
+        val cipher = KeyStore.initCipherForDecryption(iv, keyStoreAlias, false)
+        return KeyStore.decrypt(cipher, cipherText)
+    }
+
+    /**
+     * Write encrypted data to [DataStore].
+     * @param keyStoreAlias secret key alias in android keystore
+     * @param preferenceKey preference key to write
+     * @param value Value to write
+     */
+    suspend fun DataStore<Preferences>.writeEncrypted(
+        keyStoreAlias: String,
+        preferenceKey: String,
+        value: String
+    ) {
+        val cipherTextStore = stringPreferencesKey("$preferenceKey/encrypted")
+
+        // encrypt value
+        val cipher = KeyStore.initCipherForEncryption(keyStoreAlias, false)
+        val cipherData = KeyStore.encrypt(cipher, value)
+
+        // write encrypted value to datastore
+        val cipherText = cipherData.initializationVector + cipherData.cipherText
+        write(cipherTextStore, cipherText)
+    }
+
+    /**
+     * Delete encrypted data from [DataStore].
+     * @param preferenceKey preference key to delete
+     */
+    suspend fun DataStore<Preferences>.deleteEncrypted(preferenceKey: String) {
+        val cipherTextStore = stringPreferencesKey("$preferenceKey/encrypted")
+        delete(cipherTextStore)
     }
 }

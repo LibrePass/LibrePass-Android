@@ -16,6 +16,7 @@ commons-codec = "1.16.0"
 google-accompanist = "0.31.5-beta"
 jakewharton-process-phoenix = "2.1.2"
 kotlinx-coroutines-android = "1.7.2"
+libcrypto = "0.5.3"
 librepass-client = "0.1.0-SNAPSHOT-05"
 process-phoenix = "2.1.2"
 
@@ -49,6 +50,7 @@ commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons
 google-accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "google-accompanist" }
 google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
+libcrypto = { module = "dev.medzik:libcrypto", version.ref = "libcrypto" }
 librepass-client = { module = "dev.medzik.librepass:client", version.ref = "librepass-client" }
 process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "jakewharton-process-phoenix" }
 

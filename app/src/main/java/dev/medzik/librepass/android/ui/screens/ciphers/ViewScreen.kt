@@ -54,32 +54,26 @@ fun CipherViewScreen(navController: NavController) {
     val userSecrets = context.getUserSecrets()
         ?: return
 
-    // get cipher from local database
     val cipher = context.getRepository().cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
     val cipherData = try {
         Cipher(cipher, userSecrets.secretKey).loginData!!
     } catch (e: EncryptException) {
-        // Handle decryption error
-        Scaffold(
-            topBar = {
-                TopBar(
-                    title = "Error",
-                    navigationIcon = { TopBarBackIcon(navController) }
-                )
-            }
-        ) { innerPadding ->
-            Column(modifier = Modifier.padding(innerPadding)) {
-                Text(e.message ?: "Unknown encryption error")
-            }
-        }
-
+        // handle decryption error
+        DecryptionError(navController, e)
         return
+    }
+
+    @Composable
+    fun topBarTitle(): String {
+        return if (cipherData.name.length > 16)
+            cipherData.name.substring(0, 16) + "..."
+        else cipherData.name
     }
 
     Scaffold(
         topBar = {
             TopBar(
-                title = cipherData.name,
+                title = topBarTitle(),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         },
@@ -214,6 +208,22 @@ fun CipherField(
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun DecryptionError(navController: NavController, e: EncryptException) {
+    Scaffold(
+        topBar = {
+            TopBar(
+                title = "Error",
+                navigationIcon = { TopBarBackIcon(navController) }
+            )
+        }
+    ) { innerPadding ->
+        Column(modifier = Modifier.padding(innerPadding)) {
+            Text(e.message ?: "Unknown encryption error")
         }
     }
 }

@@ -70,7 +70,7 @@ fun RegisterScreen(navController: NavController) {
                         screen = Screen.Login,
                         options = {
                             // disable back to this page
-                            popUpTo(Screen.Register.get) { inclusive = true }
+                            popUpTo(Screen.Register.route) { inclusive = true }
                         }
                     )
                 }

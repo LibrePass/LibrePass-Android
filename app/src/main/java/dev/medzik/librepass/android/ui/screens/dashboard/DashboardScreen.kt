@@ -59,9 +59,8 @@ fun DashboardScreen(
     val repository = context.getRepository()
     val credentials = repository.credentials.get()!!
 
-    // Get ciphers from local repository and update UI
+    // get ciphers from local repository and update UI
     fun updateLocalCiphers() {
-        // get ciphers from local database
         val dbCiphers = repository.cipher.getAll(credentials.userId)
 
         // decrypt ciphers

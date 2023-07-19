@@ -12,7 +12,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -103,10 +102,8 @@ fun LoginScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(R.string.TopBar_Login),
-                navigationIcon = {
-                    TopBarBackIcon(navController)
-                }
+                title = R.string.TopBar_Login,
+                navigationIcon = { TopBarBackIcon(navController) }
             )
         }
     ) { innerPadding ->
@@ -117,14 +114,14 @@ fun LoginScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = stringResource(R.string.InputField_Email),
+                label = R.string.InputField_Email,
                 value = email,
                 onValueChange = { email = it },
                 keyboardType = KeyboardType.Email
             )
 
             TextInputField(
-                label = stringResource(R.string.InputField_Password),
+                label = R.string.InputField_Password,
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,

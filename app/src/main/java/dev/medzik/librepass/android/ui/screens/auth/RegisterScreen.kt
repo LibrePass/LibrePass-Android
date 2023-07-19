@@ -85,7 +85,7 @@ fun RegisterScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(R.string.TopBar_Register),
+                title = R.string.TopBar_Register,
                 navigationIcon = {
                     TopBarBackIcon(navController)
                 }
@@ -99,7 +99,7 @@ fun RegisterScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = stringResource(R.string.InputField_Email),
+                label = R.string.InputField_Email,
                 value = email,
                 onValueChange = { email = it },
                 isError = isEmailError,
@@ -108,7 +108,7 @@ fun RegisterScreen(navController: NavController) {
             )
 
             TextInputField(
-                label = stringResource(R.string.InputField_Password),
+                label = R.string.InputField_Password,
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,
@@ -118,7 +118,7 @@ fun RegisterScreen(navController: NavController) {
             )
 
             TextInputField(
-                label = stringResource(R.string.InputField_ConfirmPassword),
+                label = R.string.InputField_ConfirmPassword,
                 value = configPassword,
                 onValueChange = { configPassword = it },
                 hidden = true,
@@ -136,7 +136,7 @@ fun RegisterScreen(navController: NavController) {
 
             Button(
                 onClick = { submit(email, password) },
-                // disable button if there are any errors or loading is in progress
+                // disable button if there are any errors or loading is in progresses
                 enabled = !isEmailError && !isPasswordError && configPassword == password && !loading,
                 modifier = Modifier
                     .fillMaxWidth()

@@ -32,15 +32,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
+import dev.medzik.android.composables.settings.SettingsGroup
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.getString
 import dev.medzik.librepass.android.utils.Navigation.navigate
+import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
+import dev.medzik.librepass.android.utils.shortenName
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
@@ -63,17 +65,10 @@ fun CipherViewScreen(navController: NavController) {
         return
     }
 
-    @Composable
-    fun topBarTitle(): String {
-        return if (cipherData.name.length > 16)
-            cipherData.name.substring(0, 16) + "..."
-        else cipherData.name
-    }
-
     Scaffold(
         topBar = {
             TopBar(
-                title = topBarTitle(),
+                title = shortenName(cipherData.name, SHORTEN_NAME_LENGTH),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         },
@@ -106,7 +101,7 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.username.isNullOrEmpty() || !cipherData.password.isNullOrEmpty()) {
                 item {
-                    CipherGroup(stringResource(R.string.CipherField_Group_Login)) {
+                    SettingsGroup(stringResource(R.string.CipherField_Group_Login)) {
                         CipherField(
                             title = stringResource(R.string.CipherField_Username),
                             value = cipherData.username,
@@ -124,7 +119,7 @@ fun CipherViewScreen(navController: NavController) {
 
             item {
                 if (!cipherData.uris.isNullOrEmpty()) {
-                    CipherGroup(stringResource(R.string.CipherField_Group_Website)) {
+                    SettingsGroup(stringResource(R.string.CipherField_Group_Website)) {
                         cipherData.uris?.forEachIndexed { index, it ->
                             CipherField(
                                 title = stringResource(R.string.CipherField_URL) + " ${index + 1}",
@@ -138,7 +133,7 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.notes.isNullOrEmpty()) {
                 item {
-                    CipherGroup(stringResource(R.string.CipherField_Group_Other)) {
+                    SettingsGroup(stringResource(R.string.CipherField_Group_Other)) {
                         CipherField(
                             title = stringResource(R.string.CipherField_Notes),
                             value = cipherData.notes,

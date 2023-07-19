@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,7 +17,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import dev.medzik.android.composables.LoadingIndicator
+import dev.medzik.android.composables.LoadingButton
 import dev.medzik.android.composables.TextInputField
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.res.Text
@@ -159,18 +158,16 @@ fun UnlockScreen(navController: NavController) {
                 keyboardType = KeyboardType.Password
             )
 
-            Button(
+            LoadingButton(
+                loading = loading,
                 onClick = { onUnlock(password) },
-                enabled = password.isNotEmpty() && !loading,
+                enabled = password.isNotEmpty(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .padding(horizontal = 80.dp)
             ) {
-                if (loading)
-                    LoadingIndicator(animating = true)
-                else
-                    Text(R.string.Button_Unlock)
+                Text(R.string.Button_Unlock)
             }
 
             if (credentials.biometricEnabled) {

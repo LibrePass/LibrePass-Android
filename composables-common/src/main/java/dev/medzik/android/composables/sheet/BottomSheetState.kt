@@ -13,7 +13,7 @@ fun rememberBottomSheetState() = remember { BottomSheetState() }
 
 class BottomSheetState {
     @OptIn(ExperimentalMaterial3Api::class)
-    internal val sheetState = SheetState(skipPartiallyExpanded = false)
+    internal val sheetState = SheetState(skipPartiallyExpanded = true)
     internal var expanded by mutableStateOf(false)
 
     @OptIn(ExperimentalMaterial3Api::class)

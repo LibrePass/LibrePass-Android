@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import dev.medzik.android.composables.LoadingIndicator
+import dev.medzik.android.composables.LoadingButton
 import dev.medzik.android.composables.TextInputField
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
@@ -128,19 +127,16 @@ fun LoginScreen(navController: NavController) {
                 keyboardType = KeyboardType.Password
             )
 
-            Button(
+            LoadingButton(
+                loading = loading,
                 onClick = { submit(email, password) },
-                // disable button if email or password is empty or loading is in progress
-                enabled = email.isNotEmpty() && password.isNotEmpty() && !loading,
+                enabled = email.isNotEmpty() && password.isNotEmpty(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading)
-                    LoadingIndicator(animating = true)
-                else
-                    Text(R.string.Button_Login)
+                Text(R.string.Button_Login)
             }
         }
     }

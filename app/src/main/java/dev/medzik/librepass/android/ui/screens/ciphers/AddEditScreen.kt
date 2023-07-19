@@ -29,15 +29,17 @@ import dev.medzik.android.composables.TextInputFieldBase
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
 import dev.medzik.android.composables.res.Text
+import dev.medzik.android.composables.settings.SettingsGroup
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.ui.composables.CipherGroup
 import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
+import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.shortenName
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -132,9 +134,7 @@ fun CipherAddEditView(
     fun topBarTitle(): String {
         if (baseCipher == null) return stringResource(R.string.TopBar_AddNewCipher)
 
-        return if (cipherData.name.length > 16)
-            cipherData.name.substring(0, 16) + "..."
-        else cipherData.name
+        return shortenName(baseCipher.loginData!!.name, SHORTEN_NAME_LENGTH)
     }
 
     Scaffold(
@@ -152,15 +152,17 @@ fun CipherAddEditView(
                 .verticalScroll(rememberScrollState())
         ) {
             TextInputFieldBase(
-                label = stringResource(R.string.CipherField_Name),
-                modifier = Modifier.fillMaxWidth(),
+                label = R.string.CipherField_Name,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
                 value = cipherData.name,
                 onValueChange = { cipherData = cipherData.copy(name = it) }
             )
 
-            CipherGroup(R.string.CipherField_Group_Login) {
+            SettingsGroup(R.string.CipherField_Group_Login) {
                 TextInputFieldBase(
-                    label = stringResource(R.string.CipherField_Username),
+                    label = R.string.CipherField_Username,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
@@ -169,7 +171,7 @@ fun CipherAddEditView(
                 )
 
                 TextInputFieldBase(
-                    label = stringResource(R.string.CipherField_Password),
+                    label = R.string.CipherField_Password,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
@@ -195,7 +197,7 @@ fun CipherAddEditView(
                 )
             }
 
-            CipherGroup(R.string.CipherField_Group_Website) {
+            SettingsGroup(R.string.CipherField_Group_Website) {
                 // show field for each uri
                 cipherData.uris?.forEachIndexed { index, uri ->
                     TextInputFieldBase(
@@ -242,9 +244,9 @@ fun CipherAddEditView(
                 }
             }
 
-            CipherGroup(R.string.CipherField_Group_Other) {
+            SettingsGroup(R.string.CipherField_Group_Other) {
                 TextInputFieldBase(
-                    label = stringResource(R.string.CipherField_Notes),
+                    label = R.string.CipherField_Notes,
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = false,
                     value = cipherData.notes,

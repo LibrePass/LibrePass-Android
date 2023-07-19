@@ -9,7 +9,6 @@ import androidx.compose.material3.pullrefresh.PullRefreshIndicator
 import androidx.compose.material3.pullrefresh.pullRefresh
 import androidx.compose.material3.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,7 +24,7 @@ import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.ui.composables.CipherListItem
+import dev.medzik.librepass.android.ui.composables.CipherCard
 import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
@@ -39,11 +38,7 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
-fun DashboardScreen(
-    navController: NavController,
-    openBottomSheet: (sheetContent: @Composable () -> Unit) -> Unit,
-    closeBottomSheet: () -> Unit
-) {
+fun DashboardScreen(navController: NavController) {
     val context = LocalContext.current
 
     val userSecrets = context.getUserSecrets()
@@ -100,14 +95,14 @@ fun DashboardScreen(
                 // get ciphers from API
                 val syncResponse = CipherClient(credentials.apiKey).sync(Date(lastSync * 1000))
 
-                // delete ciphers from local database that are not in API response
+                // delete ciphers from the local database that are not in API response
                 for (cipher in cachedCiphers) {
                     if (cipher !in syncResponse.ids) {
                         repository.cipher.delete(cipher)
                     }
                 }
 
-                // update ciphers in local database
+                // update ciphers in the local database
                 for (cipher in syncResponse.ciphers) {
                     repository.cipher.insert(
                         CipherTable(
@@ -124,7 +119,7 @@ fun DashboardScreen(
                 // get all ciphers from API
                 val ciphersResponse = CipherClient(credentials.apiKey).getAll()
 
-                // insert ciphers into local database
+                // insert ciphers into the local database
                 for (cipher in ciphersResponse) {
                     repository.cipher.insert(
                         CipherTable(
@@ -146,23 +141,15 @@ fun DashboardScreen(
         }
     }
 
-    // load ciphers from local database on start
+    // load ciphers from cache on start
     LaunchedEffect(scope) {
-        // get ciphers from local database and update UI
+        // get ciphers from the local database and update UI
         updateLocalCiphers()
 
         // update ciphers from API and update UI
         // and show loading indicator while updating
         // after local ciphers are loaded to prevent empty screen
         updateCiphers()
-    }
-
-    // close bottom sheet on navigation change
-    // to prevent bugs/crashes
-    DisposableEffect(Unit) {
-        onDispose {
-            scope.launch { closeBottomSheet() }
-        }
     }
 
     // refresh ciphers on pull to refresh
@@ -178,23 +165,21 @@ fun DashboardScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(ciphers.size) { index ->
-                    CipherListItem(
+                    CipherCard(
                         cipher = ciphers[index],
-                        openBottomSheet = openBottomSheet,
-                        closeBottomSheet = closeBottomSheet,
-                        itemClick = { cipher ->
+                        onClick = { cipher ->
                             navController.navigate(
                                 screen = Screen.CipherView,
                                 argument = Argument.CipherId to cipher.id.toString()
                             )
                         },
-                        itemEdit = { cipher ->
+                        onEdit = { cipher ->
                             navController.navigate(
                                 screen = Screen.CipherEdit,
                                 argument = Argument.CipherId to cipher.id.toString()
                             )
                         },
-                        itemDelete = { cipher ->
+                        onDelete = { cipher ->
                             scope.launch(Dispatchers.IO) {
                                 try {
                                     CipherClient(credentials.apiKey).delete(cipher.id)
@@ -210,7 +195,7 @@ fun DashboardScreen(
                 }
             }
 
-            // pull to refresh indicator must be aligned to top
+            // pull to refresh indicator must be aligned to the top
             PullRefreshIndicator(
                 refreshing = refreshing,
                 state = pullRefreshState,

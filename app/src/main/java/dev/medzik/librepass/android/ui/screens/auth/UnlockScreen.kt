@@ -3,7 +3,6 @@ package dev.medzik.librepass.android.ui.screens.auth
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
@@ -15,7 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
@@ -145,10 +143,7 @@ fun UnlockScreen(navController: NavController) {
     }
 
     Scaffold(
-        topBar = {
-            TopBar(title = stringResource(R.string.TopBar_Unlock))
-        },
-        modifier = Modifier.navigationBarsPadding()
+        topBar = { TopBar(R.string.TopBar_Unlock) },
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -157,7 +152,7 @@ fun UnlockScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = stringResource(R.string.InputField_Password),
+                label = R.string.InputField_Password,
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,

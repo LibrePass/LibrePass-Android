@@ -1,6 +1,5 @@
 package dev.medzik.librepass.android.ui.screens
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,6 +35,7 @@ import androidx.navigation.NavController
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
 import dev.medzik.android.composables.res.Text
+import dev.medzik.android.composables.settings.SettingsSwitcher
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
 import dev.medzik.librepass.android.utils.DataStore.writeKeyToDataStore
@@ -63,27 +62,6 @@ fun PasswordGenerator(navController: NavController) {
     var withCapitalLetters by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordCapitalize)) }
     var withNumbers by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordIncludeNumbers)) }
     var withSymbols by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordIncludeSymbols)) }
-
-    @Composable
-    fun TypeSwitcher(
-        @StringRes text: Int,
-        checked: Boolean,
-        onCheckedChange: (Boolean) -> Unit
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = text,
-                modifier = Modifier.weight(1f)
-            )
-
-            Switch(
-                checked = checked,
-                onCheckedChange = onCheckedChange
-            )
-        }
-    }
 
     fun generatePassword(): String {
         var letters = PasswordType.LOWERCASE.literals
@@ -203,7 +181,7 @@ fun PasswordGenerator(navController: NavController) {
             }
 
             // Capital letters switch
-            TypeSwitcher(
+            SettingsSwitcher(
                 text = R.string.PasswordGenerator_CapitalLetters,
                 checked = withCapitalLetters,
                 onCheckedChange = {
@@ -213,7 +191,7 @@ fun PasswordGenerator(navController: NavController) {
             )
 
             // Numeric switch
-            TypeSwitcher(
+            SettingsSwitcher(
                 text = R.string.PasswordGenerator_Numbers,
                 checked = withNumbers,
                 onCheckedChange = {
@@ -223,7 +201,7 @@ fun PasswordGenerator(navController: NavController) {
             )
 
             // Symbols switch
-            TypeSwitcher(
+            SettingsSwitcher(
                 text = R.string.PasswordGenerator_Symbols,
                 checked = withSymbols,
                 onCheckedChange = {

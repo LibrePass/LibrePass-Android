@@ -1,5 +1,6 @@
 package dev.medzik.android.composables
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 
@@ -30,6 +32,19 @@ fun TopBar(
                 style = MaterialTheme.typography.titleLarge
             )
         },
+        navigationIcon = navigationIcon,
+        actions = actions
+    )
+}
+
+@Composable
+fun TopBar(
+    @StringRes title: Int,
+    navigationIcon: @Composable (() -> Unit) = {},
+    actions: @Composable (RowScope.() -> Unit) = {}
+) {
+    TopBar(
+        title = stringResource(title),
         navigationIcon = navigationIcon,
         actions = actions
     )

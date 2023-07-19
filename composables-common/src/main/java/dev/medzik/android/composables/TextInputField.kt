@@ -1,5 +1,6 @@
 package dev.medzik.android.composables
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -77,6 +79,27 @@ fun TextInputField(
 }
 
 @Composable
+fun TextInputField(
+    @StringRes label: Int,
+    hidden: Boolean = false,
+    value: String?,
+    onValueChange: (String) -> Unit,
+    isError: Boolean = false,
+    errorMessage: String = "",
+    keyboardType: KeyboardType = KeyboardType.Text
+) {
+    TextInputField(
+        label = stringResource(label),
+        hidden = hidden,
+        value = value,
+        onValueChange = onValueChange,
+        isError = isError,
+        errorMessage = errorMessage,
+        keyboardType = keyboardType
+    )
+}
+
+@Composable
 fun TextInputFieldBase(
     label: String,
     modifier: Modifier = Modifier,
@@ -123,5 +146,28 @@ fun TextInputFieldBase(
             keyboardType = keyboardType
         ),
         modifier = modifier
+    )
+}
+
+@Composable
+fun TextInputFieldBase(
+    @StringRes label: Int,
+    modifier: Modifier = Modifier,
+    hidden: Boolean = false,
+    value: String?,
+    onValueChange: (String) -> Unit,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    singleLine: Boolean = true,
+    trailingIcon: @Composable () -> Unit = {}
+) {
+    TextInputFieldBase(
+        label = stringResource(label),
+        modifier = modifier,
+        hidden = hidden,
+        value = value,
+        onValueChange = onValueChange,
+        keyboardType = keyboardType,
+        singleLine = singleLine,
+        trailingIcon = trailingIcon
     )
 }

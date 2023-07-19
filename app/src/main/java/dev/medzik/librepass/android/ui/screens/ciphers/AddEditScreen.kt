@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
-import dev.medzik.android.composables.LoadingIndicator
+import dev.medzik.android.composables.LoadingButton
 import dev.medzik.android.composables.TextInputFieldBase
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
@@ -254,18 +254,16 @@ fun CipherAddEditView(
                 )
             }
 
-            Button(
+            LoadingButton(
+                loading = loading,
                 onClick = { submit() },
-                enabled = cipherData.name.isNotEmpty() && !loading,
+                enabled = cipherData.name.isNotEmpty(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                if (loading)
-                    LoadingIndicator(animating = true)
-                else
-                    Text(baseCipher?.let { R.string.Button_Save } ?: R.string.Button_Add)
+                Text(baseCipher?.let { R.string.Button_Save } ?: R.string.Button_Add)
             }
         }
     }

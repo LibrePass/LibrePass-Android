@@ -30,6 +30,7 @@ import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
 import dev.medzik.librepass.android.utils.Toast.showToast
 import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.runGC
 import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,13 +47,9 @@ fun RegisterScreen(navController: NavController) {
     var configPassword by rememberStringData()
     var passwordHint by rememberStringData()
 
-    // error states
-    val isEmailError = email.isNotEmpty() && !email.contains("@")
-    val isPasswordError = password.isNotEmpty() && password.length < 8
-
     val authClient = AuthClient()
 
-    // Register user with given credentials and navigate to login screen.
+    // Register user with given credentials and navigate to log in screen.
     fun submit(email: String, password: String) {
         // disable button
         loading = true
@@ -60,6 +57,9 @@ fun RegisterScreen(navController: NavController) {
         scope.launch(Dispatchers.IO) {
             try {
                 authClient.register(email, password, passwordHint)
+
+                // run gc cycle after computing password hash
+                runGC()
 
                 // navigate to login
                 scope.launch(Dispatchers.Main) {
@@ -101,7 +101,7 @@ fun RegisterScreen(navController: NavController) {
                 label = R.string.InputField_Email,
                 value = email,
                 onValueChange = { email = it },
-                isError = isEmailError,
+                isError = email.isNotEmpty() && !email.contains("@"),
                 errorMessage = stringResource(R.string.Error_InvalidEmail),
                 keyboardType = KeyboardType.Email
             )
@@ -111,7 +111,7 @@ fun RegisterScreen(navController: NavController) {
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,
-                isError = isPasswordError,
+                isError = password.isNotEmpty() && password.length < 8,
                 errorMessage = stringResource(R.string.Error_InvalidPasswordTooShort),
                 keyboardType = KeyboardType.Password
             )
@@ -136,10 +136,7 @@ fun RegisterScreen(navController: NavController) {
             LoadingButton(
                 loading = loading,
                 onClick = { submit(email, password) },
-                enabled = (
-                    email.isNotEmpty() && password.isNotEmpty() &&
-                        !isEmailError && !isPasswordError && configPassword == password
-                    ),
+                enabled = email.contains("@") && password.length >= 8,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)

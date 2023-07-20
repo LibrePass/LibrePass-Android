@@ -31,6 +31,7 @@ import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
 import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.runGC
 import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,6 +64,9 @@ fun LoginScreen(navController: NavController) {
                     email = email,
                     password = password
                 )
+
+                // run gc cycle after computing password hash
+                runGC()
 
                 // save credentials
                 credentialsRepository.insert(

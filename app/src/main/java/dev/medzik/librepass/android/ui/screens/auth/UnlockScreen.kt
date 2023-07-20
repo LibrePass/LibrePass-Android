@@ -34,6 +34,7 @@ import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
 import dev.medzik.librepass.android.utils.Toast.showToast
+import dev.medzik.librepass.android.utils.runGC
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import dev.medzik.librepass.client.utils.Cryptography.generateKeyPairFromPrivate
@@ -81,6 +82,9 @@ fun UnlockScreen(navController: NavController) {
                     throw EncryptException("Invalid password")
 
                 privateKey = keyPair.privateKey
+
+                // run gc cycle after computing password hash
+                runGC()
             } catch (e: EncryptException) {
                 // if password is invalid
                 loading = false

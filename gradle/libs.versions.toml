@@ -21,7 +21,7 @@ librepass-client = "0.1.0-SNAPSHOT-05"
 process-phoenix = "2.1.2"
 
 # plugins
-com-android-application = "8.1.0-rc01"
+com-android-application = "8.1.0"
 google-ksp = "1.8.22-1.0.11"
 org-jetbrains-kotlin-android = "1.8.22"
 

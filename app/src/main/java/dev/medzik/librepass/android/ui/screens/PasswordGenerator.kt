@@ -146,8 +146,14 @@ fun PasswordGenerator(navController: NavController) {
                     label = { Text(R.string.PasswordGenerator_Length) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     onValueChange = {
-                        if (it.length in 1..3 && it.toInt() <= 256)
-                            context.writeKeyToDataStore(DataStoreKey.PasswordLength, it.toInt())
+                        try {
+                            if (it.length in 1..3 && it.toInt() <= 256) {
+                                passwordLength = it.toInt()
+                                context.writeKeyToDataStore(DataStoreKey.PasswordLength, it.toInt())
+                            }
+                        } catch (e: NumberFormatException) {
+                            // ignore, just do not update input value
+                        }
                     }
                 )
 

@@ -1,0 +1,10 @@
+With LibrePass, convenience and security go hand in hand. Through LibrePass, your passwords are secure while you have easy access to them.
+
+<br><b>Features:</b>
+
+- Password encryption
+- Password generator
+- Material You theme
+- Written in native Kotlin
+- Various settings options
+- And more with incoming updates!

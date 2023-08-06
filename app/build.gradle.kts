@@ -13,7 +13,7 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = System.getenv("LIBREPASS_APP_VERSION_CODE")?.toInt() ?: 1
-        versionName = System.getenv("LIBREPASS_APP_VERSION_NAME") ?: "0.0.0"
+        versionName = System.getenv("LIBREPASS_APP_VERSION_NAME") ?: "1.0.0-alpha01"
 
         vectorDrawables {
             useSupportLibrary = true

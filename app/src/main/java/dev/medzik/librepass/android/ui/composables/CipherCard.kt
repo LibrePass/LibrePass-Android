@@ -74,7 +74,7 @@ fun CipherCard(
             val domain = getDomain()
             if (domain != null) {
                 AsyncImage(
-                    model = "https://librepass-api.medzik.dev/api/cipher/icon?domain=$domain",
+                    model = "https://api.librepass.medzik.dev/api/cipher/icon?domain=$domain",
                     contentDescription = null,
                     error = rememberVectorPainter(Icons.Default.Person),
                     modifier = Modifier.size(24.dp)

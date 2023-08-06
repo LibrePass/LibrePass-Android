@@ -47,31 +47,31 @@ jobs:
           name: apk
           path: release/*
 
-    release:
-      runs-on: ubuntu-latest
-      needs: build
+  release:
+    runs-on: ubuntu-latest
+    needs: build
 
-      steps:
-        - name: Download APK from build
-          uses: actions/download-artifact@v1
-          with:
-            name: apk
+    steps:
+      - name: Download APK from build
+        uses: actions/download-artifact@v1
+        with:
+          name: apk
 
-        - name: Create release
-          uses: softprops/action-gh-release@v0.1.15
-          if: github.event.inputs.isMock != 'mock'
-          with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            prerelease: false
-            tag_name: ${{ github.ref }}
-            draft: true
-            fail_on_unmatched_files: true
-            name: ${{ github.ref }} Release
-            body: |
-              <!-- Write summary here -->
-              ---
-              ## Features
-              ## Changes
-              ## Bug Fixes
-              ## Internal Changes
-            files: apk/*
+      - name: Create release
+        uses: softprops/action-gh-release@v0.1.15
+        if: github.event.inputs.isMock != 'mock'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          tag_name: ${{ github.ref }}
+          draft: true
+          fail_on_unmatched_files: true
+          name: ${{ github.ref }} Release
+          body: |
+            <!-- Write summary here -->
+            ---
+            ## Features
+            ## Changes
+            ## Bug Fixes
+            ## Internal Changes
+          files: apk/*

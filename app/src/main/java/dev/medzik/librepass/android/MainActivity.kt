@@ -69,7 +69,12 @@ class MainActivity : FragmentActivity() {
         val repository = this.getRepository()
         if (repository.credentials.get() == null) return
 
-        SecretStore.save(this, UserSecretsStore)
+        val vaultTimeout = this.readKey(StoreKey.VaultTimeout)
+        if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds) {
+            SecretStore.delete(this)
+        } else {
+            SecretStore.save(this, UserSecretsStore)
+        }
     }
 
     /**

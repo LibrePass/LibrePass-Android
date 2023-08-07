@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import dev.medzik.android.cryptoutils.DataStore.deleteEncrypted
 import dev.medzik.android.cryptoutils.DataStore.read
 import dev.medzik.android.cryptoutils.DataStore.readEncrypted
 import dev.medzik.android.cryptoutils.DataStore.write
@@ -72,6 +73,15 @@ object SecretStore {
         }
 
         return runBlocking { saveUserSecrets() }
+    }
+
+    fun delete(context: Context) {
+        val clearUserSecrets = suspend {
+            context.dataStore.deleteEncrypted(UserSecrets.PrivateKeyStoreKey)
+            context.dataStore.deleteEncrypted(UserSecrets.SecretKeyStoreKey)
+        }
+
+        return runBlocking { clearUserSecrets() }
     }
 
     fun Context.getUserSecrets(): UserSecrets? {

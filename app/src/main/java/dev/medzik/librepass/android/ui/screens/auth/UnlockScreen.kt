@@ -29,11 +29,12 @@ import dev.medzik.librepass.android.UserSecretsStore
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.Biometric
-import dev.medzik.librepass.android.utils.DataStoreUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
+import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.Toast.showToast
+import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.runGC
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
@@ -92,10 +93,13 @@ fun UnlockScreen(navController: NavController) {
             } finally {
                 val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 
-                UserSecretsStore = DataStoreUserSecrets(
-                    privateKey = privateKey,
-                    secretKey = secretKey
-                ).save(context)
+                UserSecretsStore = SecretStore.save(
+                    context,
+                    UserSecrets(
+                        privateKey = privateKey,
+                        secretKey = secretKey
+                    )
+                )
 
                 // run only if loading is true (if no error occurred)
                 if (loading) {
@@ -125,10 +129,13 @@ fun UnlockScreen(navController: NavController) {
                 val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 
                 runBlocking {
-                    UserSecretsStore = DataStoreUserSecrets(
-                        privateKey = privateKey,
-                        secretKey = secretKey
-                    ).save(context)
+                    UserSecretsStore = SecretStore.save(
+                        context,
+                        UserSecrets(
+                            privateKey = privateKey,
+                            secretKey = secretKey
+                        )
+                    )
                 }
 
                 navController.navigate(

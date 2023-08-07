@@ -2,9 +2,12 @@ package dev.medzik.librepass.android.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dev.medzik.android.composables.LifecycleEffect
+import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
@@ -14,8 +17,8 @@ import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
-import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.getString
+import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
@@ -57,6 +60,10 @@ fun LibrePassNavigation() {
     val context = LocalContext.current
 
     val navController = rememberNavController()
+
+    LifecycleEffect(Lifecycle.Event.ON_RESUME) {
+        (context as MainActivity).onResume(navController)
+    }
 
     val repository = context.getRepository()
     val userSecrets = context.getUserSecrets()

@@ -10,15 +10,20 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavController
+import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
+import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
-import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
-import dev.medzik.librepass.android.utils.DataStoreKey
-import dev.medzik.librepass.android.utils.DataStoreUserSecrets
+import dev.medzik.librepass.android.utils.Navigation.navigate
+import dev.medzik.librepass.android.utils.SecretStore
+import dev.medzik.librepass.android.utils.SecretStore.readKey
+import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
-import kotlinx.coroutines.runBlocking
+import dev.medzik.librepass.android.utils.UserSecrets
+import dev.medzik.librepass.android.utils.VaultTimeoutValues
 
-lateinit var UserSecretsStore: DataStoreUserSecrets
+lateinit var UserSecretsStore: UserSecrets
 
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,14 +38,12 @@ class MainActivity : FragmentActivity() {
         // this will lay out our app behind the system bars (to make them transparent)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        val context = this
-
         // init datastore
-        runBlocking { UserSecretsStore = DataStoreUserSecrets.init(context) }
+        UserSecretsStore = SecretStore.initialize(this)
 
         // get app theme settings
-        val dynamicColor = runBlocking { context.readKeyFromDataStore(DataStoreKey.DynamicColor) }
-        val theme = runBlocking { context.readKeyFromDataStore(DataStoreKey.Theme) }
+        val dynamicColor = this.readKey(StoreKey.DynamicColor)
+        val theme = this.readKey(StoreKey.Theme)
         val autoTheme = theme == ThemeValues.SYSTEM.ordinal
         val darkTheme = theme == ThemeValues.DARK.ordinal
 
@@ -59,10 +62,33 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
 
-        val context = this
-        runBlocking { UserSecretsStore.save(context) }
+        // check if user is logged
+        val repository = this.getRepository()
+        if (repository.credentials.get() == null) return
+
+        SecretStore.save(this, UserSecretsStore)
+    }
+
+    /**
+     * @see [LibrePassNavigation]
+     */
+    fun onResume(navController: NavController) {
+        // check if user is logged
+        val repository = this.getRepository()
+        if (repository.credentials.get() == null) return
+
+        val vaultTimeout = this.readKey(StoreKey.VaultTimeout)
+        val expiresTime = this.readKey(StoreKey.VaultExpiresAt)
+        val currentTime = System.currentTimeMillis()
+
+        // check if the vault has expired
+        if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds ||
+            (vaultTimeout != VaultTimeoutValues.NEVER.seconds && currentTime > expiresTime)
+        ) {
+            navController.navigate(Screen.Unlock)
+        }
     }
 }

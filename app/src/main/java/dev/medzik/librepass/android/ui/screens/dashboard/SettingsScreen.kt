@@ -37,10 +37,10 @@ import dev.medzik.android.cryptoutils.KeyStore
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.utils.Biometric
-import dev.medzik.librepass.android.utils.DataStore.getUserSecrets
-import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
-import dev.medzik.librepass.android.utils.DataStore.writeKeyToDataStore
-import dev.medzik.librepass.android.utils.DataStoreKey
+import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
+import dev.medzik.librepass.android.utils.SecretStore.readKey
+import dev.medzik.librepass.android.utils.SecretStore.writeKey
+import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
 import kotlinx.coroutines.launch
@@ -58,7 +58,7 @@ fun SettingsScreen() {
     val scope = rememberCoroutineScope()
 
     var biometricEnabled by remember { mutableStateOf(credentials.biometricEnabled) }
-    val dynamicColor = context.readKeyFromDataStore(DataStoreKey.DynamicColor)
+    val dynamicColor = context.readKey(StoreKey.DynamicColor)
 
     // Biometric checked event handler (enable/disable biometric authentication)
     fun showBiometricPrompt() {
@@ -122,7 +122,7 @@ fun SettingsScreen() {
                     return stringResource(themeRes)
                 }
 
-                val theme = context.readKeyFromDataStore(DataStoreKey.Theme)
+                val theme = context.readKey(StoreKey.Theme)
                 val themeDialogState = rememberDialogState()
 
                 SettingsProperty(
@@ -137,7 +137,7 @@ fun SettingsScreen() {
                     title = R.string.Settings_Theme,
                     items = listOf(0, 1, 2),
                     onSelected = {
-                        context.writeKeyToDataStore(DataStoreKey.Theme, it)
+                        context.writeKey(StoreKey.Theme, it)
 
                         // restart application to apply changes
                         ProcessPhoenix.triggerRebirth(context)
@@ -173,7 +173,7 @@ fun SettingsScreen() {
                     text = R.string.Settings_MaterialYou,
                     checked = dynamicColor,
                     onCheckedChange = {
-                        context.writeKeyToDataStore(DataStoreKey.DynamicColor, it)
+                        context.writeKey(StoreKey.DynamicColor, it)
 
                         // restart application to apply changes
                         ProcessPhoenix.triggerRebirth(context)
@@ -193,11 +193,7 @@ fun SettingsScreen() {
 
                 val timerDialogState = rememberDialogState()
                 var vaultTimeout by remember {
-                    mutableIntStateOf(
-                        context.readKeyFromDataStore(
-                            DataStoreKey.VaultTimeout
-                        )
-                    )
+                    mutableIntStateOf(context.readKey(StoreKey.VaultTimeout))
                 }
 
                 @Composable
@@ -255,7 +251,7 @@ fun SettingsScreen() {
                     items = VaultTimeoutValues.values().asList(),
                     onSelected = {
                         vaultTimeout = it.seconds
-                        context.writeKeyToDataStore(DataStoreKey.VaultTimeout, it.seconds)
+                        context.writeKey(StoreKey.VaultTimeout, it.seconds)
                     }
                 ) {
                     Text(

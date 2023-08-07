@@ -37,10 +37,10 @@ import dev.medzik.android.composables.TopBarBackIcon
 import dev.medzik.android.composables.res.Text
 import dev.medzik.android.composables.settings.SettingsSwitcher
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.utils.DataStore.readKeyFromDataStore
-import dev.medzik.librepass.android.utils.DataStore.writeKeyToDataStore
-import dev.medzik.librepass.android.utils.DataStoreKey
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
+import dev.medzik.librepass.android.utils.SecretStore.readKey
+import dev.medzik.librepass.android.utils.SecretStore.writeKey
+import dev.medzik.librepass.android.utils.StoreKey
 import java.util.Random
 
 enum class PasswordType(val literals: String) {
@@ -58,10 +58,10 @@ fun PasswordGenerator(navController: NavController) {
     var generatedPassword by rememberStringData()
 
     // generator options
-    var passwordLength by remember { mutableIntStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordLength)) }
-    var withCapitalLetters by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordCapitalize)) }
-    var withNumbers by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordIncludeNumbers)) }
-    var withSymbols by remember { mutableStateOf(context.readKeyFromDataStore(DataStoreKey.PasswordIncludeSymbols)) }
+    var passwordLength by remember { mutableIntStateOf(context.readKey(StoreKey.PasswordLength)) }
+    var withCapitalLetters by remember { mutableStateOf(context.readKey(StoreKey.PasswordCapitalize)) }
+    var withNumbers by remember { mutableStateOf(context.readKey(StoreKey.PasswordIncludeNumbers)) }
+    var withSymbols by remember { mutableStateOf(context.readKey(StoreKey.PasswordIncludeSymbols)) }
 
     fun generatePassword(): String {
         var letters = PasswordType.LOWERCASE.literals
@@ -149,7 +149,7 @@ fun PasswordGenerator(navController: NavController) {
                         try {
                             if (it.length in 1..3 && it.toInt() <= 256) {
                                 passwordLength = it.toInt()
-                                context.writeKeyToDataStore(DataStoreKey.PasswordLength, it.toInt())
+                                context.writeKey(StoreKey.PasswordLength, it.toInt())
                             }
                         } catch (e: NumberFormatException) {
                             // ignore, just do not update input value
@@ -162,7 +162,7 @@ fun PasswordGenerator(navController: NavController) {
                     onClick = {
                         if (passwordLength > 1) {
                             passwordLength--
-                            context.writeKeyToDataStore(DataStoreKey.PasswordLength, passwordLength)
+                            context.writeKey(StoreKey.PasswordLength, passwordLength)
                         }
                     }
                 ) {
@@ -175,7 +175,7 @@ fun PasswordGenerator(navController: NavController) {
                     onClick = {
                         if (passwordLength < 256) {
                             passwordLength++
-                            context.writeKeyToDataStore(DataStoreKey.PasswordLength, passwordLength)
+                            context.writeKey(StoreKey.PasswordLength, passwordLength)
                         }
                     }
                 ) {
@@ -192,7 +192,7 @@ fun PasswordGenerator(navController: NavController) {
                 checked = withCapitalLetters,
                 onCheckedChange = {
                     withCapitalLetters = it
-                    context.writeKeyToDataStore(DataStoreKey.PasswordCapitalize, it)
+                    context.writeKey(StoreKey.PasswordCapitalize, it)
                 }
             )
 
@@ -202,7 +202,7 @@ fun PasswordGenerator(navController: NavController) {
                 checked = withNumbers,
                 onCheckedChange = {
                     withNumbers = it
-                    context.writeKeyToDataStore(DataStoreKey.PasswordIncludeNumbers, it)
+                    context.writeKey(StoreKey.PasswordIncludeNumbers, it)
                 }
             )
 
@@ -212,7 +212,7 @@ fun PasswordGenerator(navController: NavController) {
                 checked = withSymbols,
                 onCheckedChange = {
                     withSymbols = it
-                    context.writeKeyToDataStore(DataStoreKey.PasswordIncludeSymbols, it)
+                    context.writeKey(StoreKey.PasswordIncludeSymbols, it)
                 }
             )
 

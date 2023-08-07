@@ -88,6 +88,8 @@ class MainActivity : FragmentActivity() {
         if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds ||
             (vaultTimeout != VaultTimeoutValues.NEVER.seconds && currentTime > expiresTime)
         ) {
+            SecretStore.delete(this)
+
             navController.navigate(Screen.Unlock)
         }
     }

@@ -26,10 +26,11 @@ import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
-import dev.medzik.librepass.android.utils.DataStoreUserSecrets
 import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
+import dev.medzik.librepass.android.utils.SecretStore
+import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.runGC
 import dev.medzik.librepass.client.api.AuthClient
@@ -83,10 +84,13 @@ fun LoginScreen(navController: NavController) {
                 )
 
                 // save secrets in encrypted datastore
-                DataStoreUserSecrets(
-                    privateKey = credentials.keyPair.privateKey,
-                    secretKey = credentials.secretKey
-                ).save(context)
+                SecretStore.save(
+                    context,
+                    UserSecrets(
+                        privateKey = credentials.keyPair.privateKey,
+                        secretKey = credentials.secretKey
+                    )
+                )
 
                 // navigate to dashboard
                 scope.launch(Dispatchers.Main) {

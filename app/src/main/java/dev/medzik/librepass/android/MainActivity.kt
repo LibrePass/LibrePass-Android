@@ -23,9 +23,9 @@ import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
 
-lateinit var UserSecretsStore: UserSecrets
-
 class MainActivity : FragmentActivity() {
+    lateinit var userSecrets: UserSecrets
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,7 +39,7 @@ class MainActivity : FragmentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         // init datastore
-        UserSecretsStore = SecretStore.initialize(this)
+        userSecrets = SecretStore.initialize(this)
 
         // get app theme settings
         val dynamicColor = this.readKey(StoreKey.DynamicColor)
@@ -73,7 +73,7 @@ class MainActivity : FragmentActivity() {
         if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds) {
             SecretStore.delete(this)
         } else {
-            SecretStore.save(this, UserSecretsStore)
+            SecretStore.save(this, userSecrets)
         }
     }
 

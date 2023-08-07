@@ -25,7 +25,6 @@ import dev.medzik.android.cryptoutils.KeyStore
 import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.UserSecretsStore
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.Biometric
@@ -41,7 +40,6 @@ import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import dev.medzik.librepass.client.utils.Cryptography.generateKeyPairFromPrivate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @Composable
 fun UnlockScreen(navController: NavController) {
@@ -58,8 +56,6 @@ fun UnlockScreen(navController: NavController) {
     fun onUnlock(password: String) {
         // disable button
         loading = true
-
-        lateinit var privateKey: String
 
         scope.launch(Dispatchers.IO) {
             try {
@@ -82,21 +78,16 @@ fun UnlockScreen(navController: NavController) {
                 if (keyPair.publicKey != credentials.publicKey)
                     throw EncryptException("Invalid password")
 
-                privateKey = keyPair.privateKey
-
                 // run gc cycle after computing password hash
                 runGC()
-            } catch (e: EncryptException) {
-                // if password is invalid
-                loading = false
-                context.showToast(R.string.Error_InvalidCredentials)
-            } finally {
-                val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 
-                UserSecretsStore = SecretStore.save(
+                val secretKey =
+                    Cryptography.computeSharedKey(keyPair.privateKey, credentials.publicKey)
+
+                SecretStore.save(
                     context,
                     UserSecrets(
-                        privateKey = privateKey,
+                        privateKey = keyPair.privateKey,
                         secretKey = secretKey
                     )
                 )
@@ -110,6 +101,10 @@ fun UnlockScreen(navController: NavController) {
                         )
                     }
                 }
+            } catch (e: EncryptException) {
+                // if password is invalid
+                loading = false
+                context.showToast(R.string.Error_InvalidCredentials)
             }
         }
     }
@@ -128,15 +123,13 @@ fun UnlockScreen(navController: NavController) {
 
                 val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
 
-                runBlocking {
-                    UserSecretsStore = SecretStore.save(
-                        context,
-                        UserSecrets(
-                            privateKey = privateKey,
-                            secretKey = secretKey
-                        )
+                SecretStore.save(
+                    context,
+                    UserSecrets(
+                        privateKey = privateKey,
+                        secretKey = secretKey
                     )
-                }
+                )
 
                 navController.navigate(
                     screen = Screen.Dashboard,

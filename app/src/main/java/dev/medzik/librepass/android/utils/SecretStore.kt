@@ -11,7 +11,7 @@ import dev.medzik.android.cryptoutils.DataStore.read
 import dev.medzik.android.cryptoutils.DataStore.readEncrypted
 import dev.medzik.android.cryptoutils.DataStore.write
 import dev.medzik.android.cryptoutils.DataStore.writeEncrypted
-import dev.medzik.librepass.android.UserSecretsStore
+import dev.medzik.librepass.android.MainActivity
 import kotlinx.coroutines.runBlocking
 
 val Context.dataStore by preferencesDataStore(name = "librepass")
@@ -76,6 +76,9 @@ object SecretStore {
             userSecrets
         }
 
+        // save changes in-memory variable
+        (context as MainActivity).userSecrets = userSecrets
+
         return runBlocking { saveUserSecrets() }
     }
 
@@ -85,29 +88,20 @@ object SecretStore {
             context.dataStore.deleteEncrypted(UserSecrets.SecretKeyStoreKey)
         }
 
+        // clear data from in-memory variable
+        (context as MainActivity).userSecrets = UserSecrets("", "")
+
         return runBlocking { clearUserSecrets() }
     }
 
     fun Context.getUserSecrets(): UserSecrets? {
-        fun checkIfExists(userSecrets: UserSecrets): Boolean {
-            return !(userSecrets.privateKey.isBlank() || userSecrets.secretKey.isBlank())
-        }
+        // get secrets from in-memory variable
+        val userSecrets = (this as MainActivity).userSecrets
 
-        // check if secrets exist in UserSecretsStore
-        if (checkIfExists(UserSecretsStore))
-            return UserSecretsStore
+        if (userSecrets.privateKey.isBlank() || userSecrets.secretKey.isBlank())
+            return null
 
-        // check if secrets exist in DataStore
-        val dataStoreUserSecrets = initialize(this)
-        if (checkIfExists(dataStoreUserSecrets)) {
-            // save secrets to in-memory global variable UserSecretsStore
-            UserSecretsStore = dataStoreUserSecrets
-            // return secrets from data store
-            return dataStoreUserSecrets
-        }
-
-        // if secrets don't exist in UserSecretsStore and DataStore, return null
-        return null
+        return userSecrets
     }
 }
 

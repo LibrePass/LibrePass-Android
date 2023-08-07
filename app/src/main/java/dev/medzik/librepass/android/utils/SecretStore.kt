@@ -65,9 +65,13 @@ object SecretStore {
             )
 
             val vaultTimeout = context.readKey(StoreKey.VaultTimeout)
-            val currentTime = System.currentTimeMillis()
-            val newExpiresTime = currentTime + (vaultTimeout * 1000)
-            context.writeKey(StoreKey.VaultExpiresAt, newExpiresTime)
+            if (vaultTimeout != VaultTimeoutValues.INSTANT.seconds &&
+                vaultTimeout != VaultTimeoutValues.NEVER.seconds
+            ) {
+                val currentTime = System.currentTimeMillis()
+                val newExpiresTime = currentTime + (vaultTimeout * 1000)
+                context.writeKey(StoreKey.VaultExpiresAt, newExpiresTime)
+            }
 
             userSecrets
         }

@@ -32,6 +32,7 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SHORTEN_USERNAME_LENGTH
 import dev.medzik.librepass.android.utils.shortenName
+import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import kotlinx.coroutines.launch
 
@@ -74,7 +75,7 @@ fun CipherCard(
             val domain = getDomain()
             if (domain != null) {
                 AsyncImage(
-                    model = "https://api.librepass.medzik.dev/api/cipher/icon?domain=$domain",
+                    model = CipherClient.getFavicon(domain = domain),
                     contentDescription = null,
                     error = rememberVectorPainter(Icons.Default.Person),
                     modifier = Modifier.size(24.dp)

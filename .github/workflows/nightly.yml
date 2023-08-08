@@ -26,8 +26,8 @@ jobs:
 
       - name: Setup app version
         run: |
-          echo "LIBREPASS_APP_VERSION_CODE=$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
-          echo "LIBREPASS_APP_VERSION_NAME=0.0.0-nightly+git-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          sed -i 's/versionCode = [0-9]\+/versionCode = $GITHUB_RUN_NUMBER/' app/build.gradle.kts
+          sed -i 's/versionName = "[^"]\+"/versionName = "0.0.0-nightly+git-$(git rev-parse --short HEAD)"/' app/build.gradle.kts
 
       - name: Build with Gradle
         run: ./gradlew build

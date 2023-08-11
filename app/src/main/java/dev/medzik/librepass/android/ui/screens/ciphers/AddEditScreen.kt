@@ -40,6 +40,7 @@ import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.shortenName
+import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -69,7 +70,10 @@ fun CipherAddEditView(
     val credentials = repository.credentials.get()!!
     val cipherRepository = repository.cipher
 
-    val cipherClient = CipherClient(credentials.apiKey)
+    val cipherClient = CipherClient(
+        apiKey = credentials.apiKey,
+        apiUrl = credentials.apiUrl ?: Server.PRODUCTION
+    )
 
     // observe username and password from navController
     // used to get password from password generator

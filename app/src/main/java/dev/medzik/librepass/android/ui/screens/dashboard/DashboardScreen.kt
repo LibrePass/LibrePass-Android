@@ -29,6 +29,7 @@ import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -53,6 +54,11 @@ fun DashboardScreen(navController: NavController) {
     // database repository
     val repository = context.getRepository()
     val credentials = repository.credentials.get()!!
+
+    val cipherClient = CipherClient(
+        apiKey = credentials.apiKey,
+        apiUrl = credentials.apiUrl ?: Server.PRODUCTION
+    )
 
     // get ciphers from local repository and update UI
     fun updateLocalCiphers() {
@@ -93,7 +99,7 @@ fun DashboardScreen(navController: NavController) {
                 repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
 
                 // get ciphers from API
-                val syncResponse = CipherClient(credentials.apiKey).sync(Date(lastSync * 1000))
+                val syncResponse = cipherClient.sync(Date(lastSync * 1000))
 
                 // delete ciphers from the local database that are not in API response
                 for (cipher in cachedCiphers) {
@@ -117,7 +123,7 @@ fun DashboardScreen(navController: NavController) {
                 repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
 
                 // get all ciphers from API
-                val ciphersResponse = CipherClient(credentials.apiKey).getAll()
+                val ciphersResponse = cipherClient.getAll()
 
                 // insert ciphers into the local database
                 for (cipher in ciphersResponse) {
@@ -182,7 +188,7 @@ fun DashboardScreen(navController: NavController) {
                         onDelete = { cipher ->
                             scope.launch(Dispatchers.IO) {
                                 try {
-                                    CipherClient(credentials.apiKey).delete(cipher.id)
+                                    cipherClient.delete(cipher.id)
                                     repository.cipher.delete(cipher.id)
 
                                     ciphers = ciphers.filter { it.id != cipher.id }

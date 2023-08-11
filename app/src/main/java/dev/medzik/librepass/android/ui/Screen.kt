@@ -11,6 +11,7 @@ import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
+import dev.medzik.librepass.android.ui.screens.auth.AddCustomServer
 import dev.medzik.librepass.android.ui.screens.auth.LoginScreen
 import dev.medzik.librepass.android.ui.screens.auth.RegisterScreen
 import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
@@ -31,6 +32,7 @@ enum class Screen(private val argument: Argument? = null) {
 
     Register,
     Login,
+    AddCustomServer,
 
     Unlock,
     Dashboard,
@@ -95,6 +97,10 @@ fun LibrePassNavigation() {
 
         composable(Screen.Login.route) {
             LoginScreen(navController)
+        }
+
+        composable(Screen.AddCustomServer.route) {
+            AddCustomServer(navController)
         }
 
         composable(Screen.Unlock.route) {

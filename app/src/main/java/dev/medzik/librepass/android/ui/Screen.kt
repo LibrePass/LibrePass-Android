@@ -126,7 +126,7 @@ fun LibrePassNavigation() {
             val cipherTable = repository.cipher.get(UUID.fromString(cipherId))
                 ?: return@composable
 
-            val cipher = Cipher(cipherTable.encryptedCipher, userSecrets!!.secretKey)
+            val cipher = Cipher(cipherTable.encryptedCipher, context.getUserSecrets()!!.secretKey)
 
             CipherAddEditView(navController = navController, baseCipher = cipher)
         }

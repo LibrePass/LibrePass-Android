@@ -1,0 +1,2 @@
+- Added support for self-hosted servers.
+- Added translations for the German language.

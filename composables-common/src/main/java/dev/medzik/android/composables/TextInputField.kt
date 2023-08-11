@@ -28,10 +28,29 @@ fun TextInputField(
     value: String?,
     onValueChange: (String) -> Unit,
     isError: Boolean = false,
-    errorMessage: String = "",
+    errorMessage: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
     val hiddenState = remember { mutableStateOf(hidden) }
+
+    var supportingText:
+        @Composable()
+        (() -> Unit)? = null
+
+    if (errorMessage != null) {
+        supportingText = if (isError) {
+            {
+                Text(
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        } else {
+            {
+                Text(text = "")
+            }
+        }
+    }
 
     OutlinedTextField(
         value = value ?: "",
@@ -60,16 +79,7 @@ fun TextInputField(
                 }
             }
         },
-        supportingText = {
-            if (isError) {
-                Text(
-                    text = errorMessage,
-                    color = MaterialTheme.colorScheme.error
-                )
-            } else {
-                Text(text = "")
-            }
-        },
+        supportingText = supportingText,
         isError = isError,
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType
@@ -85,7 +95,7 @@ fun TextInputField(
     value: String?,
     onValueChange: (String) -> Unit,
     isError: Boolean = false,
-    errorMessage: String = "",
+    errorMessage: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
     TextInputField(

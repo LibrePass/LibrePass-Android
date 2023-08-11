@@ -1,16 +1,21 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,6 +25,8 @@ import dev.medzik.android.composables.LoadingButton
 import dev.medzik.android.composables.TextInputField
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
+import dev.medzik.android.composables.dialog.PickerDialog
+import dev.medzik.android.composables.dialog.rememberDialogState
 import dev.medzik.android.composables.res.Text
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
@@ -30,9 +37,12 @@ import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
 import dev.medzik.librepass.android.utils.SecretStore
+import dev.medzik.librepass.android.utils.SecretStore.readKey
+import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.runGC
+import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,12 +56,13 @@ fun LoginScreen(navController: NavController) {
     var loading by rememberLoadingState()
     var email by rememberStringData()
     var password by rememberStringData()
+    var server by rememberStringData(Server.PRODUCTION)
 
     val credentialsRepository = context.getRepository().credentials
 
-    val authClient = AuthClient()
-
     fun submit(email: String, password: String) {
+        val authClient = AuthClient(apiUrl = server)
+
         if (email.isEmpty() || password.isEmpty())
             return
 
@@ -74,6 +85,7 @@ fun LoginScreen(navController: NavController) {
                     Credentials(
                         userId = credentials.userId,
                         email = email,
+                        apiUrl = if (server == Server.PRODUCTION) null else server,
                         apiKey = credentials.apiKey,
                         publicKey = credentials.keyPair.publicKey,
                         // Argon2id parameters
@@ -135,16 +147,80 @@ fun LoginScreen(navController: NavController) {
                 keyboardType = KeyboardType.Password
             )
 
+            val serverChoiceDialog = rememberDialogState()
+
+            @Composable
+            fun getServerName(server: String): String {
+                return when (server) {
+                    Server.PRODUCTION -> {
+                        stringResource(R.string.Server_Choice_Dialog_Official)
+                    }
+
+                    Server.TEST -> {
+                        stringResource(R.string.Server_Choice_Dialog_Testing)
+                    }
+
+                    else -> server
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .clickable { serverChoiceDialog.show() }
+            ) {
+                Text(
+                    text = "Server: ",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                )
+
+                Text(
+                    text = getServerName(server),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
             LoadingButton(
                 loading = loading,
                 onClick = { submit(email, password) },
                 enabled = email.isNotEmpty() && password.isNotEmpty(),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp)
                     .padding(horizontal = 40.dp)
             ) {
                 Text(R.string.Button_Login)
+            }
+
+            val servers = listOf(Server.PRODUCTION, Server.TEST)
+                .plus(context.readKey(StoreKey.CustomServers))
+                .plus("custom_server")
+
+            PickerDialog(
+                state = serverChoiceDialog,
+                title = R.string.Server_Choice_Dialog_Title,
+                items = servers,
+                onSelected = {
+                    if (it == "custom_server") {
+                        navController.navigate(Screen.AddCustomServer)
+                    } else server = it
+                }
+            ) {
+                val text = when (it) {
+                    "custom_server" -> {
+                        stringResource(R.string.Server_Choice_Dialog_Add_Custom)
+                    }
+
+                    else -> getServerName(it)
+                }
+
+                Text(
+                    text = text,
+                    modifier = Modifier
+                        .padding(vertical = 12.dp)
+                        .fillMaxWidth()
+                )
             }
         }
     }

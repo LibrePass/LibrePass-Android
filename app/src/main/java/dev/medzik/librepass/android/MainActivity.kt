@@ -4,10 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
@@ -52,12 +48,7 @@ class MainActivity : FragmentActivity() {
                 darkTheme = darkTheme || (autoTheme && isSystemInDarkTheme()),
                 dynamicColor = dynamicColor
             ) {
-                Surface(
-                    color = MaterialTheme.colorScheme.background,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    LibrePassNavigation()
-                }
+                LibrePassNavigation()
             }
         }
     }

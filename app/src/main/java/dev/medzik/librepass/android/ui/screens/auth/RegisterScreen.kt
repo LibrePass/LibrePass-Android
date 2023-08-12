@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -24,7 +25,6 @@ import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
 import dev.medzik.android.composables.dialog.PickerDialog
 import dev.medzik.android.composables.dialog.rememberDialogState
-import dev.medzik.android.composables.res.Text
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.Navigation.navigate
@@ -161,13 +161,13 @@ fun RegisterScreen(navController: NavController) {
                     .padding(vertical = 8.dp)
                     .clickable { serverChoiceDialog.show() }
             ) {
-                androidx.compose.material3.Text(
+                Text(
                     text = "Server: ",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
 
-                androidx.compose.material3.Text(
+                Text(
                     text = getServerName(server),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.primary
@@ -182,7 +182,7 @@ fun RegisterScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(horizontal = 40.dp)
             ) {
-                Text(R.string.Button_Register)
+                Text(stringResource(R.string.Button_Register))
             }
 
             val servers = listOf(Server.PRODUCTION, Server.TEST)
@@ -207,7 +207,7 @@ fun RegisterScreen(navController: NavController) {
                     else -> getServerName(it)
                 }
 
-                androidx.compose.material3.Text(
+                Text(
                     text = text,
                     modifier = Modifier
                         .padding(vertical = 12.dp)

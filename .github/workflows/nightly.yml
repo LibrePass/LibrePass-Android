@@ -59,7 +59,7 @@ jobs:
 
     steps:
       - name: Download APK from build
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: apk
 

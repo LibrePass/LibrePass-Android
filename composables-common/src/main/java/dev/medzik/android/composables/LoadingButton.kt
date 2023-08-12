@@ -17,6 +17,8 @@ fun LoadingButton(
         enabled = enabled && !loading,
         modifier = modifier
     ) {
-        if (loading) LoadingIndicator(animating = true) else content()
+        if (loading)
+            LoadingIndicator(animating = true)
+        else content()
     }
 }

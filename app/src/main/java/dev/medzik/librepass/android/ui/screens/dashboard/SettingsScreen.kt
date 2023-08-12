@@ -127,7 +127,7 @@ fun SettingsScreen() {
 
                 SettingsProperty(
                     icon = Icons.Default.DarkMode,
-                    text = R.string.Settings_Theme,
+                    resId = R.string.Settings_Theme,
                     currentValue = getThemeTranslation(theme),
                     onClick = { themeDialogState.show() },
                 )
@@ -170,7 +170,7 @@ fun SettingsScreen() {
 
                 SettingsSwitcher(
                     icon = Icons.Default.ColorLens,
-                    text = R.string.Settings_MaterialYou,
+                    resId = R.string.Settings_MaterialYou,
                     checked = dynamicColor,
                     onCheckedChange = {
                         context.writeKey(StoreKey.DynamicColor, it)
@@ -186,7 +186,7 @@ fun SettingsScreen() {
             SettingsGroup(R.string.Settings_Group_Security) {
                 SettingsSwitcher(
                     icon = Icons.Default.Fingerprint,
-                    text = R.string.Settings_BiometricUnlock,
+                    resId = R.string.Settings_BiometricUnlock,
                     checked = biometricEnabled,
                     onCheckedChange = { showBiometricPrompt() }
                 )
@@ -236,7 +236,7 @@ fun SettingsScreen() {
 
                 SettingsProperty(
                     icon = Icons.Default.Timer,
-                    text = R.string.Settings_Vault_Timeout_Modal_Title,
+                    resId = R.string.Settings_Vault_Timeout_Modal_Title,
                     currentValue = getVaultTimeoutTranslation(
                         VaultTimeoutValues.fromSeconds(
                             vaultTimeout

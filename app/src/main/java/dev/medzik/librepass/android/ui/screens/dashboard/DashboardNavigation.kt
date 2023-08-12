@@ -22,11 +22,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dev.medzik.android.composables.ElevationTokens
 import dev.medzik.android.composables.TopBar
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
@@ -102,7 +102,7 @@ fun DashboardBottomNavigationBar(navController: NavController, onItemSelected: (
     }
 
     NavigationBar(
-        tonalElevation = 0.dp
+        tonalElevation = ElevationTokens.Level0
     ) {
         items.forEachIndexed { index, item ->
             NavigationBarItem(

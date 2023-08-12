@@ -25,7 +25,6 @@ import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
 import dev.medzik.android.composables.dialog.PickerDialog
 import dev.medzik.android.composables.dialog.rememberDialogState
-import dev.medzik.android.composables.res.Text
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.getRepository
@@ -187,7 +186,7 @@ fun LoginScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(horizontal = 40.dp)
             ) {
-                Text(R.string.Button_Login)
+                Text(stringResource(R.string.Button_Login))
             }
 
             val servers = listOf(Server.PRODUCTION, Server.TEST)

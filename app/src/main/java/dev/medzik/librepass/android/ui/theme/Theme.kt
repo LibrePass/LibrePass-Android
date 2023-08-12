@@ -1,14 +1,17 @@
 package dev.medzik.librepass.android.ui.theme
 
 import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -85,9 +88,9 @@ private val darkColorScheme = darkColorScheme(
 
 @Composable
 fun LibrePassTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean,
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -104,17 +107,11 @@ fun LibrePassTheme(
     val useDarkIcons = !darkTheme
 
     DisposableEffect(systemUiController, useDarkIcons) {
-        // Update all of the system bar colors to be transparent, and use
+        // Update all the system bar colors to be transparent, and use
         // dark icons if we're in light theme
-        systemUiController.setStatusBarColor(
+        systemUiController.setSystemBarsColor(
             color = Color.Transparent,
             darkIcons = useDarkIcons
-        )
-
-        systemUiController.setNavigationBarColor(
-            color = Color.Transparent,
-            darkIcons = useDarkIcons,
-            navigationBarContrastEnforced = false
         )
 
         onDispose {}
@@ -123,6 +120,13 @@ fun LibrePassTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
-    )
+    ) {
+        Surface(
+            color = MaterialTheme.colorScheme.background,
+            modifier = Modifier
+                .fillMaxSize()
+                .imePadding(),
+            content = content
+        )
+    }
 }

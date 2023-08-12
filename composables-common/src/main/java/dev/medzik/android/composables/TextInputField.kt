@@ -33,9 +33,7 @@ fun TextInputField(
 ) {
     val hiddenState = remember { mutableStateOf(hidden) }
 
-    var supportingText:
-        @Composable()
-        (() -> Unit)? = null
+    var supportingText: @Composable (() -> Unit)? = null
 
     if (errorMessage != null) {
         supportingText = if (isError) {

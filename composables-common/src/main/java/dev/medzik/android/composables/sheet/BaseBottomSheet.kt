@@ -1,24 +1,23 @@
 package dev.medzik.android.composables.sheet
 
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
+import dev.medzik.android.composables.ElevationTokens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BaseBottomSheet(
     state: BottomSheetState,
-    content: @Composable () -> Unit
+    content: @Composable (ColumnScope.() -> Unit)
 ) {
     if (state.expanded) {
         ModalBottomSheet(
-            // TODO: I don't know if this is how it's done but it works
-            tonalElevation = 3.dp,
+            tonalElevation = ElevationTokens.Level2,
             onDismissRequest = { state.expanded = false },
-            sheetState = state.sheetState
-        ) {
-            content()
-        }
+            sheetState = state.sheetState,
+            content = content
+        )
     }
 }

@@ -10,15 +10,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.drawablepainter.DrawablePainter
 import dev.medzik.android.composables.TopBarTwoColor
-import dev.medzik.android.composables.res.Text
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.Navigation.navigate
@@ -47,7 +48,7 @@ fun WelcomeScreen(navController: NavController) {
             )
 
             Text(
-                text = R.string.WelcomeScreen_Title,
+                text = stringResource(R.string.WelcomeScreen_Title),
                 modifier = Modifier.padding(top = 20.dp)
             )
 
@@ -58,7 +59,7 @@ fun WelcomeScreen(navController: NavController) {
                     .padding(horizontal = 90.dp)
                     .padding(top = 20.dp)
             ) {
-                Text(R.string.WelcomeScreen_Button_Register)
+                Text(stringResource(R.string.WelcomeScreen_Button_Register))
             }
 
             OutlinedButton(
@@ -68,7 +69,7 @@ fun WelcomeScreen(navController: NavController) {
                     .padding(horizontal = 90.dp)
                     .padding(top = 8.dp)
             ) {
-                Text(R.string.WelcomeScreen_Button_Login)
+                Text(stringResource(R.string.WelcomeScreen_Button_Login))
             }
         }
     }

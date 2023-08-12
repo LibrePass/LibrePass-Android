@@ -28,7 +28,7 @@ fun <T> PickerBottomSheet(
                             scope.launch { state.dismiss() }
                             onSelected(item)
                         }
-                        .padding(horizontal = 24.dp)
+                        .padding(horizontal = 24.dp),
                 ) {
                     content(item)
                 }

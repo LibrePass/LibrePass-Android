@@ -12,10 +12,6 @@ fun rememberDialogState() = remember { DialogState() }
 class DialogState {
     var isVisible by mutableStateOf(false)
 
-    fun toggle() {
-        isVisible = !isVisible
-    }
-
     fun dismiss() {
         isVisible = false
     }

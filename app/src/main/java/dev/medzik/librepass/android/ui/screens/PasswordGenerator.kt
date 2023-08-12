@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -34,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.res.Text
 import dev.medzik.android.composables.settings.SettingsSwitcher
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
@@ -143,7 +143,7 @@ fun PasswordGenerator(navController: NavController) {
                     modifier = Modifier
                         .weight(1f)
                         .padding(end = 8.dp),
-                    label = { Text(R.string.PasswordGenerator_Length) },
+                    label = { Text(stringResource(R.string.PasswordGenerator_Length)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     onValueChange = {
                         try {
@@ -188,7 +188,7 @@ fun PasswordGenerator(navController: NavController) {
 
             // Capital letters switch
             SettingsSwitcher(
-                text = R.string.PasswordGenerator_CapitalLetters,
+                resId = R.string.PasswordGenerator_CapitalLetters,
                 checked = withCapitalLetters,
                 onCheckedChange = {
                     withCapitalLetters = it
@@ -198,7 +198,7 @@ fun PasswordGenerator(navController: NavController) {
 
             // Numeric switch
             SettingsSwitcher(
-                text = R.string.PasswordGenerator_Numbers,
+                resId = R.string.PasswordGenerator_Numbers,
                 checked = withNumbers,
                 onCheckedChange = {
                     withNumbers = it
@@ -208,7 +208,7 @@ fun PasswordGenerator(navController: NavController) {
 
             // Symbols switch
             SettingsSwitcher(
-                text = R.string.PasswordGenerator_Symbols,
+                resId = R.string.PasswordGenerator_Symbols,
                 checked = withSymbols,
                 onCheckedChange = {
                     withSymbols = it
@@ -228,7 +228,7 @@ fun PasswordGenerator(navController: NavController) {
                     navController.popBackStack()
                 }
             ) {
-                Text(R.string.PasswordGenerator_Submit)
+                Text(stringResource(R.string.PasswordGenerator_Submit))
             }
         }
     }

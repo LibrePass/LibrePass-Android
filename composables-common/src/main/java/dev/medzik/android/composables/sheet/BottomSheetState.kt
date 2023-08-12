@@ -7,16 +7,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalDensity
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun rememberBottomSheetState() = remember { BottomSheetState() }
+fun rememberBottomSheetState(): BottomSheetState {
+    val sheetState = SheetState(skipPartiallyExpanded = true, density = LocalDensity.current)
+    return remember { BottomSheetState(sheetState) }
+}
 
-class BottomSheetState {
-    @OptIn(ExperimentalMaterial3Api::class)
-    internal val sheetState = SheetState(skipPartiallyExpanded = true)
+@OptIn(ExperimentalMaterial3Api::class)
+class BottomSheetState constructor(
+    internal val sheetState: SheetState
+) {
     internal var expanded by mutableStateOf(false)
 
-    @OptIn(ExperimentalMaterial3Api::class)
     suspend fun dismiss() {
         sheetState.hide()
         expanded = false

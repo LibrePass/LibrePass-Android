@@ -28,11 +28,11 @@ fun SettingsGroup(
 
 @Composable
 fun SettingsGroup(
-    @StringRes name: Int,
+    @StringRes resId: Int,
     content: @Composable () -> Unit
 ) {
     SettingsGroup(
-        name = stringResource(name),
+        name = stringResource(resId),
         content = content
     )
 }

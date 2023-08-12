@@ -5,18 +5,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.composables.LoadingButton
 import dev.medzik.android.composables.TextInputField
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.res.Text
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.Remember.rememberStringData
@@ -71,7 +72,7 @@ fun AddCustomServer(navController: NavController) {
                     .fillMaxWidth()
                     .padding(horizontal = 80.dp, vertical = 8.dp)
             ) {
-                Text(R.string.Button_Add)
+                Text(stringResource(R.string.Button_Add))
             }
         }
     }

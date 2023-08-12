@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +29,6 @@ import dev.medzik.android.composables.LoadingButton
 import dev.medzik.android.composables.TextInputFieldBase
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.res.Text
 import dev.medzik.android.composables.settings.SettingsGroup
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
@@ -244,7 +244,7 @@ fun CipherAddEditView(
                         .padding(horizontal = 60.dp)
                         .padding(top = 8.dp)
                 ) {
-                    Text(R.string.Button_AddField)
+                    Text(stringResource(R.string.Button_AddField))
                 }
             }
 
@@ -267,7 +267,12 @@ fun CipherAddEditView(
                     .padding(top = 16.dp)
                     .padding(horizontal = 40.dp)
             ) {
-                Text(baseCipher?.let { R.string.Button_Save } ?: R.string.Button_Add)
+                Text(
+                    stringResource(
+                        baseCipher?.let { R.string.Button_Save }
+                            ?: R.string.Button_Add
+                    )
+                )
             }
         }
     }

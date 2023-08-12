@@ -22,9 +22,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import dev.medzik.android.composables.res.Text
 import dev.medzik.android.composables.sheet.BottomSheetState
 import dev.medzik.android.composables.sheet.PickerBottomSheet
 import dev.medzik.android.composables.sheet.rememberBottomSheetState
@@ -148,7 +148,7 @@ fun CipherActionsSheet(
         }
     ) {
         Text(
-            text = it,
+            text = stringResource(it),
             modifier = Modifier
                 .padding(vertical = 12.dp)
                 .fillMaxWidth()

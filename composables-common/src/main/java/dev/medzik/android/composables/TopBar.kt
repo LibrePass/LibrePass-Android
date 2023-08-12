@@ -81,6 +81,7 @@ fun TopBarTwoColor(
             Row {
                 Text(
                     text = firstText,
+                    color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.titleLarge
                 )
 

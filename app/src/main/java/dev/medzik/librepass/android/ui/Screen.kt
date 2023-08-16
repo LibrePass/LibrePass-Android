@@ -18,6 +18,9 @@ import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherAddEditView
 import dev.medzik.librepass.android.ui.screens.ciphers.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
+import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsAccount
+import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsAppearance
+import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsSecurity
 import dev.medzik.librepass.android.utils.Navigation.getString
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.types.cipher.Cipher
@@ -39,7 +42,11 @@ enum class Screen(private val argument: Argument? = null) {
     CipherView(Argument.CipherId),
     CipherAdd,
     CipherEdit(Argument.CipherId),
-    PasswordGenerator;
+    PasswordGenerator,
+
+    SettingsAppearance,
+    SettingsSecurity,
+    SettingsAccount;
 
     val route = if (argument != null) "$name/{${argument.name}}" else name
 
@@ -133,6 +140,18 @@ fun LibrePassNavigation() {
 
         composable(Screen.PasswordGenerator.route) {
             PasswordGenerator(navController)
+        }
+
+        composable(Screen.SettingsAppearance.route) {
+            SettingsAppearance(navController)
+        }
+
+        composable(Screen.SettingsSecurity.route) {
+            SettingsSecurity(navController)
+        }
+
+        composable(Screen.SettingsAccount.route) {
+            SettingsAccount(navController)
         }
     }
 }

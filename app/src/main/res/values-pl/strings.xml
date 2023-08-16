@@ -69,6 +69,8 @@
     <string name="Settings_Vault_Timeout_Modal_Title">Limit czasu sejfu</string>
     <string name="Settings_Vault_Timeout_Instant">Natychmiast</string>
     <string name="Settings_Vault_Timeout_Never">Nigdy</string>
+    <string name="Settings_Group_Account">Konto</string>
+    <string name="Settings_Logout">Wyloguj się</string>
 
     <!-- Time -->
     <plurals name="Time_Minutes">

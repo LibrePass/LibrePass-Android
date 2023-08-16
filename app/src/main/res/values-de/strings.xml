@@ -71,6 +71,8 @@
     <string name="Settings_Vault_Timeout_Modal_Title">Tresor-Zeitlimit</string>
     <string name="Settings_Vault_Timeout_Instant">Sofort</string>
     <string name="Settings_Vault_Timeout_Never">Nie</string>
+    <string name="Settings_Group_Account">Konto</string>
+    <string name="Settings_Logout">Abmelden</string>
 
     <!-- Time -->
     <plurals name="Time_Minutes">

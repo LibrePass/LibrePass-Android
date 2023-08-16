@@ -30,6 +30,7 @@ import dev.medzik.android.composables.ElevationTokens
 import dev.medzik.android.composables.TopBar
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsScreen
 import dev.medzik.librepass.android.utils.Navigation.navigate
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val titleId: Int) {
@@ -79,7 +80,7 @@ fun DashboardNavigation(mainNavController: NavController) {
                     DashboardScreen(navController = mainNavController)
                 }
                 composable(DashboardNavigationItem.Settings.route) {
-                    SettingsScreen()
+                    SettingsScreen(navController = mainNavController)
                 }
             }
         }

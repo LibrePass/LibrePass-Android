@@ -72,6 +72,8 @@
     <string name="Settings_Vault_Timeout_Modal_Title">Vault timeout</string>
     <string name="Settings_Vault_Timeout_Instant">Instant</string>
     <string name="Settings_Vault_Timeout_Never">Never</string>
+    <string name="Settings_Group_Account">Account</string>
+    <string name="Settings_Logout">Log out</string>
 
     <!-- Time -->
     <plurals name="Time_Minutes">

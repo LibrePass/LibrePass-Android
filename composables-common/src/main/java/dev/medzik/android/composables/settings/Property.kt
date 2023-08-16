@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.dp
 fun SettingsProperty(
     @StringRes resId: Int,
     icon: ImageVector,
-    currentValue: String,
+    currentValue: String? = null,
     onClick: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .clickable { onClick() }
-            .padding(vertical = 12.dp)
+            .padding(horizontal = 16.dp, vertical = 16.dp)
     ) {
         Icon(
             imageVector = icon,
@@ -38,11 +38,13 @@ fun SettingsProperty(
             modifier = Modifier.weight(1f)
         )
 
-        Text(
-            text = currentValue,
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.labelLarge,
-            modifier = Modifier.padding(start = 16.dp)
-        )
+        if (currentValue != null) {
+            Text(
+                text = currentValue,
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelLarge,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+        }
     }
 }

@@ -25,6 +25,7 @@ import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
 import dev.medzik.android.composables.dialog.PickerDialog
 import dev.medzik.android.composables.dialog.rememberDialogState
+import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.Navigation.navigate
@@ -185,9 +186,12 @@ fun RegisterScreen(navController: NavController) {
                 Text(stringResource(R.string.Button_Register))
             }
 
-            val servers = listOf(Server.PRODUCTION, Server.TEST)
+            var servers = listOf(Server.PRODUCTION)
                 .plus(context.readKey(StoreKey.CustomServers))
                 .plus("custom_server")
+
+            if (BuildConfig.DEBUG)
+                servers = servers.plus(Server.TEST)
 
             PickerDialog(
                 state = serverChoiceDialog,

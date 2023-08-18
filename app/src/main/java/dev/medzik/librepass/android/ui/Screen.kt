@@ -21,8 +21,8 @@ import dev.medzik.librepass.android.ui.screens.dashboard.DashboardNavigation
 import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsAccount
 import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsAppearance
 import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsSecurity
-import dev.medzik.librepass.android.utils.Navigation.getString
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
+import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 

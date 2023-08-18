@@ -4,7 +4,7 @@ import android.content.Context
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.utils.Toast.showToast
+import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
 import kotlinx.coroutines.DelicateCoroutinesApi

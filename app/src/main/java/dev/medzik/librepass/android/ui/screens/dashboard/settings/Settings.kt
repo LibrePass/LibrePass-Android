@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import dev.medzik.android.composables.settings.PreferenceEntry
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.utils.Navigation.navigate
+import dev.medzik.librepass.android.utils.navigation.navigate
 
 @Composable
 fun SettingsScreen(navController: NavController) {

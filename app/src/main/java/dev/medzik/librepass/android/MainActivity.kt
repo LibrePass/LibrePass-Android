@@ -11,13 +11,13 @@ import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
-import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
+import dev.medzik.librepass.android.utils.navigation.navigate
 
 class MainActivity : FragmentActivity() {
     lateinit var userSecrets: UserSecrets

@@ -31,7 +31,7 @@ import dev.medzik.android.composables.TopBar
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsScreen
-import dev.medzik.librepass.android.utils.Navigation.navigate
+import dev.medzik.librepass.android.utils.navigation.navigate
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val titleId: Int) {
     Dashboard("dashboard", Icons.Default.Lock, R.string.DashboardBottomNav_Dashboard),

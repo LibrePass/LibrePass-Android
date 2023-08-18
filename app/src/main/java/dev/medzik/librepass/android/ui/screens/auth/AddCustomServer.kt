@@ -19,11 +19,11 @@ import dev.medzik.android.composables.TextInputField
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
-import dev.medzik.librepass.android.utils.Remember.rememberStringData
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.android.utils.rememberLoadingState
+import dev.medzik.librepass.android.utils.rememberStringData
 
 @Composable
 fun AddCustomServer(navController: NavController) {

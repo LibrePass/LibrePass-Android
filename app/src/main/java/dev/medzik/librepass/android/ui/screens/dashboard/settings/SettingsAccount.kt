@@ -15,7 +15,7 @@ import dev.medzik.android.composables.settings.SettingsProperty
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.utils.Navigation.navigate
+import dev.medzik.librepass.android.utils.navigation.navigate
 import kotlinx.coroutines.runBlocking
 
 @Composable

@@ -34,12 +34,12 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.utils.Navigation.navigate
-import dev.medzik.librepass.android.utils.Remember.rememberLoadingState
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.shortenName
+import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.android.utils.rememberLoadingState
+import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
@@ -138,7 +138,7 @@ fun CipherAddEditView(
     fun topBarTitle(): String {
         if (baseCipher == null) return stringResource(R.string.TopBar_AddNewCipher)
 
-        return shortenName(baseCipher.loginData!!.name, SHORTEN_NAME_LENGTH)
+        return baseCipher.loginData!!.name.shorten(SHORTEN_NAME_LENGTH)
     }
 
     Scaffold(

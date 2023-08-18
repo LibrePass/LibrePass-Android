@@ -6,6 +6,8 @@ import dev.medzik.librepass.android.R
 import javax.crypto.Cipher
 
 object Biometric {
+    const val PrivateKeyAlias = "private_key"
+
     fun showBiometricPrompt(
         context: FragmentActivity,
         cipher: Cipher,
@@ -34,6 +36,4 @@ object Biometric {
 
         biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
     }
-
-    const val PrivateKeyAlias = "private_key"
 }

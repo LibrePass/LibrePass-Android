@@ -31,7 +31,7 @@ import dev.medzik.android.composables.sheet.rememberBottomSheetState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SHORTEN_USERNAME_LENGTH
-import dev.medzik.librepass.android.utils.shortenName
+import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import kotlinx.coroutines.launch
@@ -94,14 +94,14 @@ fun CipherCard(
                     .weight(1f)
             ) {
                 Text(
-                    text = shortenName(cipherData.name, SHORTEN_NAME_LENGTH),
+                    text = cipherData.name.shorten(SHORTEN_NAME_LENGTH),
                     style = MaterialTheme.typography.titleMedium
                 )
 
                 val username = cipherData.username
                 if (username != null) {
                     Text(
-                        text = shortenName(username, SHORTEN_USERNAME_LENGTH),
+                        text = username.shorten(SHORTEN_USERNAME_LENGTH),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                     )

@@ -38,11 +38,11 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.utils.Navigation.getString
-import dev.medzik.librepass.android.utils.Navigation.navigate
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
-import dev.medzik.librepass.android.utils.shortenName
+import dev.medzik.librepass.android.utils.navigation.getString
+import dev.medzik.librepass.android.utils.navigation.navigate
+import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
@@ -68,7 +68,7 @@ fun CipherViewScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = shortenName(cipherData.name, SHORTEN_NAME_LENGTH),
+                title = cipherData.name.shorten(SHORTEN_NAME_LENGTH),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         },

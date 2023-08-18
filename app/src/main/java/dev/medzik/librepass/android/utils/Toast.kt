@@ -9,14 +9,15 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 @OptIn(DelicateCoroutinesApi::class)
-object Toast {
-    fun Context.showToast(text: String) {
-        val context = this
-        GlobalScope.launch(Dispatchers.Main) { Toast.makeText(context, text, Toast.LENGTH_LONG).show() }
-    }
+fun Context.showToast(text: String) {
+    val context = this
+    GlobalScope.launch(Dispatchers.Main) { Toast.makeText(context, text, Toast.LENGTH_LONG).show() }
+}
 
-    fun Context.showToast(@StringRes resId: Int) {
-        val context = this
-        GlobalScope.launch(Dispatchers.Main) { Toast.makeText(context, resId, Toast.LENGTH_LONG).show() }
+@OptIn(DelicateCoroutinesApi::class)
+fun Context.showToast(@StringRes resId: Int) {
+    val context = this
+    GlobalScope.launch(Dispatchers.Main) {
+        Toast.makeText(context, resId, Toast.LENGTH_LONG).show()
     }
 }

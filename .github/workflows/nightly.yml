@@ -62,6 +62,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: apk
+          path: apk
 
       - name: Delete tag and release
         uses: ClementTsang/delete-tag-and-release@v0.3.1

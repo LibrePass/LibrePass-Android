@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.FloatingActionButton
@@ -32,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
+import dev.medzik.android.composables.dialog.BaseDialog
+import dev.medzik.android.composables.dialog.rememberDialogState
 import dev.medzik.android.composables.settings.SettingsGroup
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
@@ -44,6 +47,8 @@ import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.types.cipher.Cipher
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.UUID
 
 @Composable
@@ -107,12 +112,69 @@ fun CipherViewScreen(navController: NavController) {
                             value = cipherData.username,
                             copy = true
                         )
+
+                        val passwordHistoryDialog = rememberDialogState()
+
                         CipherField(
                             title = stringResource(R.string.CipherField_Password),
                             value = cipherData.password,
                             copy = true,
-                            hidden = true
+                            hidden = true,
+                            customIcon = {
+                                if (cipherData.passwordHistory != null) {
+                                    IconButton(onClick = { passwordHistoryDialog.show() }) {
+                                        Icon(
+                                            imageVector = Icons.Default.History,
+                                            contentDescription = null
+                                        )
+                                    }
+                                }
+                            }
                         )
+
+                        BaseDialog(state = passwordHistoryDialog) {
+                            val clipboardManager = LocalClipboardManager.current
+                            val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+                            val passwords =
+                                (cipherData.passwordHistory ?: return@BaseDialog).asReversed()
+
+                            LazyColumn(modifier = Modifier.padding(horizontal = 24.dp)) {
+                                for (i in passwords.indices) {
+                                    item {
+                                        Row(modifier = Modifier.padding(vertical = 4.dp)) {
+                                            Column(
+                                                modifier = Modifier.weight(1f)
+                                            ) {
+                                                Text(
+                                                    text = parser.format(passwords[i].lastUsed),
+                                                    style = MaterialTheme.typography.titleSmall,
+                                                    color = MaterialTheme.colorScheme.onSurface.copy(
+                                                        alpha = 0.6f
+                                                    )
+                                                )
+
+                                                Text(
+                                                    text = passwords[i].password,
+                                                    style = MaterialTheme.typography.bodyMedium
+                                                )
+                                            }
+
+                                            IconButton(onClick = {
+                                                clipboardManager.setText(
+                                                    AnnotatedString(passwords[i].password)
+                                                )
+                                            }) {
+                                                Icon(
+                                                    imageVector = Icons.Default.ContentCopy,
+                                                    contentDescription = null
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -151,7 +213,8 @@ fun CipherField(
     title: String,
     value: String?,
     hidden: Boolean = false,
-    copy: Boolean = false
+    copy: Boolean = false,
+    customIcon: (@Composable () -> Unit)? = null
 ) {
     if (value.isNullOrEmpty()) return
 
@@ -186,10 +249,12 @@ fun CipherField(
         }
 
         Row {
+            if (customIcon != null) customIcon()
+
             if (hidden) {
                 IconButton(onClick = { hiddenState = !hiddenState }) {
                     Icon(
-                        imageVector = if (hiddenState) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                        imageVector = if (hiddenState) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                         contentDescription = null
                     )
                 }

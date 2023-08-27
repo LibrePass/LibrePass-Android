@@ -86,7 +86,10 @@ class MainActivity : FragmentActivity() {
         ) {
             SecretStore.delete(this)
 
-            navController.navigate(Screen.Unlock)
+            navController.navigate(
+                screen = Screen.Unlock,
+                disableBack = true
+            )
         }
     }
 }

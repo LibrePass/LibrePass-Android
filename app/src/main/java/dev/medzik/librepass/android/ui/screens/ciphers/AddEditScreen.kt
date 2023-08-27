@@ -46,8 +46,10 @@ import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.librepass.types.cipher.EncryptedCipher
 import dev.medzik.librepass.types.cipher.data.CipherLoginData
+import dev.medzik.librepass.types.cipher.data.PasswordHistory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Date
 import java.util.UUID
 
 @Composable
@@ -100,7 +102,7 @@ fun CipherAddEditView(
         loading = true
 
         // update existing cipher or create new one
-        val cipher = baseCipher?.copy(loginData = cipherData)
+        var cipher = baseCipher?.copy(loginData = cipherData)
             ?: Cipher(
                 id = UUID.randomUUID(),
                 owner = credentials.userId,
@@ -109,6 +111,21 @@ fun CipherAddEditView(
             )
 
         scope.launch(Dispatchers.IO) {
+            if (baseCipher != null) {
+                val basePassword = baseCipher.loginData!!.password
+                val newPassword = cipherData.password
+
+                if (basePassword != null && basePassword != newPassword) {
+                    val newList = mutableListOf<PasswordHistory>()
+                    val oldList = baseCipher.loginData!!.passwordHistory
+                    if (oldList != null) newList.addAll(oldList)
+
+                    newList.add(PasswordHistory(basePassword, Date()))
+
+                    cipher = cipher.copy(loginData = cipherData.copy(passwordHistory = newList))
+                }
+            }
+
             // encrypt cipher
             val encryptedCipher = EncryptedCipher(cipher, userSecrets.secretKey)
 
@@ -116,15 +133,13 @@ fun CipherAddEditView(
                 // insert or update cipher on server
                 if (baseCipher == null)
                     cipherClient.insert(encryptedCipher)
-                else
-                    cipherClient.update(encryptedCipher)
+                else cipherClient.update(encryptedCipher)
 
-                // insert or update cipher in local database
+                // insert or update cipher in a local database
                 val cipherTable = CipherTable(encryptedCipher)
                 if (baseCipher == null)
                     cipherRepository.insert(cipherTable)
-                else
-                    cipherRepository.update(cipherTable)
+                else cipherRepository.update(cipherTable)
 
                 scope.launch(Dispatchers.Main) { navController.popBackStack() }
             } catch (e: Exception) {

@@ -23,7 +23,7 @@ process-phoenix = "2.1.2"
 # plugins
 com-android-application = "8.1.1"
 google-ksp = "1.9.10-1.0.13"
-org-jetbrains-kotlin-android = "1.9.0"
+org-jetbrains-kotlin-android = "1.9.10"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity" }

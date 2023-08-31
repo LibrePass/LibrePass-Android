@@ -1,0 +1,5 @@
+- Fixed crashing in edit screen
+- Added padding for keyboard
+- Re-design settings screen
+- Added password history
+- Disable return to previous screen after vault is locked

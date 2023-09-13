@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "dev.medzik.librepass.android"
-    compileSdk = 34
+    compileSdk = libs.versions.android.sdk.compile.get().toInt()
 
     defaultConfig {
         applicationId = "dev.medzik.librepass.android"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = libs.versions.android.sdk.min.get().toInt()
+        targetSdk = libs.versions.android.sdk.target.get().toInt()
         versionCode = 4
         versionName = "1.0.0-alpha04"
 

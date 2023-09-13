@@ -5,10 +5,10 @@ plugins {
 
 android {
     namespace = "dev.medzik.android.composables"
-    compileSdk = 34
+    compileSdk = libs.versions.android.sdk.compile.get().toInt()
 
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.android.sdk.min.get().toInt()
     }
 
     compileOptions {

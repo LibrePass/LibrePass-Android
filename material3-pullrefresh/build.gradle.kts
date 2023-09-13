@@ -30,6 +30,6 @@ android {
 }
 
 dependencies {
-    compileOnly(libs.androidx.appcompat)
-    compileOnly(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.material3)
 }

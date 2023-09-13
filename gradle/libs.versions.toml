@@ -1,4 +1,10 @@
 [versions]
+# Android SDK
+android-sdk-min = "24"
+android-sdk-target = "34"
+android-sdk-compile = "34"
+
+# libs
 androidx-activity = "1.7.2"
 androidx-annotation = "1.7.0"
 androidx-appcompat = "1.6.1"

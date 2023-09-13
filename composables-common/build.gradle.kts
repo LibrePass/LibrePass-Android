@@ -30,11 +30,11 @@ android {
 }
 
 dependencies {
-    compileOnly(platform(libs.androidx.compose.bom))
-    compileOnly(libs.androidx.ui)
-    compileOnly(libs.androidx.ui.tooling.preview)
-    compileOnly(libs.androidx.material3)
-    compileOnly(libs.androidx.annotation)
-    compileOnly(libs.androidx.navigation.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material.icons.extended)
 }

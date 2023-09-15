@@ -167,7 +167,7 @@ fun LoginScreen(navController: NavController) {
                     .clickable { serverChoiceDialog.show() }
             ) {
                 Text(
-                    text = "Server: ",
+                    text = stringResource(R.string.Server_Add_InputField_Server),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )

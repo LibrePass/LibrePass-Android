@@ -163,7 +163,7 @@ fun RegisterScreen(navController: NavController) {
                     .clickable { serverChoiceDialog.show() }
             ) {
                 Text(
-                    text = stringResource(R.string.Server_Add_InputField_Server),
+                    text = stringResource(R.string.Server_AuthScreen_Server_Address) + ": ",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )

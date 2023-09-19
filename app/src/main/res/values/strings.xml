@@ -115,4 +115,10 @@
     <string name="Server_Choice_Dialog_Testing">Testing</string>
     <string name="Server_Choice_Dialog_Add_Custom">Add self-hosted</string>
     <string name="Server_Add_InputField_Server">Server address</string>
+    <string name="Server_AuthScreen_Server_Address">Server address</string>
+
+    <!-- Auth Screen Password Hint -->
+    <string name="Auth_Get_Password_Hint">Get password hint</string>
+    <string name="Toast_Enter_Email">Enter your email address</string>
+    <string name="Toast_Password_Hint_Sent">A password hint was sent to the email address</string>
 </resources>

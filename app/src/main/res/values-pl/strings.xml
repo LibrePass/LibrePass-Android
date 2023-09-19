@@ -116,4 +116,10 @@
     <string name="Server_Choice_Dialog_Testing">Testowy</string>
     <string name="Server_Choice_Dialog_Add_Custom">Dodaj samodzielnie hostowany</string>
     <string name="Server_Add_InputField_Server">Adres serwera</string>
+    <string name="Server_AuthScreen_Server_Address">Adres serwera</string>
+
+    <!-- Auth Screen Password Hint -->
+    <string name="Auth_Get_Password_Hint">Uzyskaj podpowiedź do hasła</string>
+    <string name="Toast_Enter_Email">Wpisz swój adres email</string>
+    <string name="Toast_Password_Hint_Sent">Na adres e-mail wysłano podpowiedź do hasła</string>
 </resources>

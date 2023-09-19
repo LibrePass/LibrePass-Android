@@ -39,6 +39,7 @@ import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.rememberStringData
 import dev.medzik.librepass.android.utils.runGC
+import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
@@ -136,6 +137,32 @@ fun LoginScreen(navController: NavController) {
                 keyboardType = KeyboardType.Email
             )
 
+            Text(
+                text = stringResource(R.string.Auth_Get_Password_Hint),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .clickable {
+                        val authClient = AuthClient(apiUrl = server)
+
+                        if (email.isEmpty()) {
+                            context.showToast(context.getString(R.string.Toast_Enter_Email))
+                            return@clickable
+                        }
+
+                        scope.launch(Dispatchers.IO) {
+                            try {
+                                authClient.requestPasswordHint(email)
+
+                                context.showToast(context.getString(R.string.Toast_Password_Hint_Sent))
+                            } catch (e: Exception) {
+                                e.handle(context)
+                            }
+                        }
+                    }
+            )
+
             TextInputField(
                 label = R.string.InputField_Password,
                 value = password,
@@ -167,7 +194,7 @@ fun LoginScreen(navController: NavController) {
                     .clickable { serverChoiceDialog.show() }
             ) {
                 Text(
-                    text = stringResource(R.string.Server_Add_InputField_Server),
+                    text = stringResource(R.string.Server_AuthScreen_Server_Address) + ": ",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )

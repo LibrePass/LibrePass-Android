@@ -29,7 +29,7 @@ import dev.medzik.android.composables.LoadingButton
 import dev.medzik.android.composables.TextInputFieldBase
 import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.settings.SettingsGroup
+import dev.medzik.android.composables.text.TextGroup
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
@@ -179,7 +179,7 @@ fun CipherAddEditView(
                 onValueChange = { cipherData = cipherData.copy(name = it) }
             )
 
-            SettingsGroup(R.string.CipherField_Group_Login) {
+            TextGroup(R.string.CipherField_Group_Login) {
                 TextInputFieldBase(
                     label = R.string.CipherField_Username,
                     modifier = Modifier
@@ -216,7 +216,7 @@ fun CipherAddEditView(
                 )
             }
 
-            SettingsGroup(R.string.CipherField_Group_Website) {
+            TextGroup(R.string.CipherField_Group_Website) {
                 // show field for each uri
                 cipherData.uris?.forEachIndexed { index, uri ->
                     TextInputFieldBase(
@@ -263,7 +263,7 @@ fun CipherAddEditView(
                 }
             }
 
-            SettingsGroup(R.string.CipherField_Group_Other) {
+            TextGroup(R.string.CipherField_Group_Other) {
                 TextInputFieldBase(
                     label = R.string.CipherField_Notes,
                     modifier = Modifier.fillMaxWidth(),

@@ -35,7 +35,7 @@ import dev.medzik.android.composables.TopBar
 import dev.medzik.android.composables.TopBarBackIcon
 import dev.medzik.android.composables.dialog.BaseDialog
 import dev.medzik.android.composables.dialog.rememberDialogState
-import dev.medzik.android.composables.settings.SettingsGroup
+import dev.medzik.android.composables.text.TextGroup
 import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
@@ -106,7 +106,7 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.username.isNullOrEmpty() || !cipherData.password.isNullOrEmpty()) {
                 item {
-                    SettingsGroup(stringResource(R.string.CipherField_Group_Login)) {
+                    TextGroup(stringResource(R.string.CipherField_Group_Login)) {
                         CipherField(
                             title = stringResource(R.string.CipherField_Username),
                             value = cipherData.username,
@@ -181,7 +181,7 @@ fun CipherViewScreen(navController: NavController) {
 
             item {
                 if (!cipherData.uris.isNullOrEmpty()) {
-                    SettingsGroup(stringResource(R.string.CipherField_Group_Website)) {
+                    TextGroup(stringResource(R.string.CipherField_Group_Website)) {
                         cipherData.uris?.forEachIndexed { index, it ->
                             CipherField(
                                 title = stringResource(R.string.CipherField_URL) + " ${index + 1}",
@@ -195,7 +195,7 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.notes.isNullOrEmpty()) {
                 item {
-                    SettingsGroup(stringResource(R.string.CipherField_Group_Other)) {
+                    TextGroup(stringResource(R.string.CipherField_Group_Other)) {
                         CipherField(
                             title = stringResource(R.string.CipherField_Notes),
                             value = cipherData.notes,

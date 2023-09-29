@@ -1,4 +1,4 @@
-package dev.medzik.android.composables.settings
+package dev.medzik.android.composables.text
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingsGroup(
+fun TextGroup(
     name: String,
     content: @Composable () -> Unit
 ) {
@@ -27,12 +27,12 @@ fun SettingsGroup(
 }
 
 @Composable
-fun SettingsGroup(
+fun TextGroup(
     @StringRes resId: Int,
     content: @Composable () -> Unit
 ) {
-    SettingsGroup(
+    TextGroup(
         name = stringResource(resId),
-        content = content
+        content
     )
 }

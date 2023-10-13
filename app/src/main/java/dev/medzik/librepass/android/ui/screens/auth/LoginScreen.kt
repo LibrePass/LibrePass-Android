@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.PickerDialog
+import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.R
@@ -35,7 +36,6 @@ import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.rememberStringData
 import dev.medzik.librepass.android.utils.showToast

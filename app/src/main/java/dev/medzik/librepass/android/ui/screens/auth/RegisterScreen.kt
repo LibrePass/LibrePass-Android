@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.PickerDialog
+import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
@@ -30,7 +31,6 @@ import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.rememberStringData
 import dev.medzik.librepass.android.utils.showToast
@@ -69,10 +69,7 @@ fun RegisterScreen(navController: NavController) {
 
                     navController.navigate(
                         screen = Screen.Login,
-                        options = {
-                            // disable back to this page
-                            popUpTo(Screen.Register.route) { inclusive = true }
-                        }
+                        disableBack = true
                     )
                 }
             } catch (e: Exception) {

@@ -1,10 +1,19 @@
 package dev.medzik.librepass.android.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.currentStateAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dev.medzik.android.components.NavArgument
+import dev.medzik.android.components.NavScreen
+import dev.medzik.android.components.getString
+import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
@@ -19,15 +28,14 @@ import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsAccoun
 import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsAppearance
 import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsSecurity
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
-import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.types.cipher.Cipher
 import java.util.UUID
 
-enum class Argument {
+enum class Argument : NavArgument {
     CipherId
 }
 
-enum class Screen(private val argument: Argument? = null) {
+enum class Screen(override val args: Array<NavArgument>? = null) : NavScreen {
     Welcome,
 
     Register,
@@ -36,29 +44,14 @@ enum class Screen(private val argument: Argument? = null) {
 
     Unlock,
     Dashboard,
-    CipherView(Argument.CipherId),
+    CipherView(arrayOf(Argument.CipherId)),
     CipherAdd,
-    CipherEdit(Argument.CipherId),
+    CipherEdit(arrayOf(Argument.CipherId)),
     PasswordGenerator,
 
     SettingsAppearance,
     SettingsSecurity,
-    SettingsAccount;
-
-    val route = if (argument != null) "$name/{${argument.name}}" else name
-
-    fun fill(argumentPair: Pair<Argument, String>? = null): String {
-        val arg = argumentPair?.first
-        val value = argumentPair?.second
-
-        if (arg != argument)
-            throw IllegalArgumentException("Invalid arguments. Expected ${this.argument?.name}, got $arg")
-
-        return when (argumentPair) {
-            null -> route
-            else -> route.replace("{${arg!!.name}}", value!!)
-        }
-    }
+    SettingsAccount
 }
 
 @Composable
@@ -67,17 +60,17 @@ fun LibrePassNavigation() {
 
     val navController = rememberNavController()
 
-//    val lifecycleOwner = LocalLifecycleOwner.current
-//    val lifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
-//    LaunchedEffect(lifecycleState) {
-//        when (lifecycleState) {
-//            Lifecycle.State.RESUMED -> {
-//                (context as MainActivity).onResume(navController)
-//            }
-//
-//            else -> {}
-//        }
-//    }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
+    LaunchedEffect(lifecycleState) {
+        when (lifecycleState) {
+            Lifecycle.State.RESUMED -> {
+                (context as MainActivity).onResume(navController)
+            }
+
+            else -> {}
+        }
+    }
 
     val repository = context.getRepository()
     val userSecrets = context.getUserSecrets()
@@ -85,53 +78,53 @@ fun LibrePassNavigation() {
     fun getStartRoute(): String {
         // if a user is not logged in, show welcome screen
         repository.credentials.get()
-            ?: return Screen.Welcome.route
+            ?: return Screen.Welcome.getRoute()
 
         // if user secrets are not set, show unlock screen
         userSecrets
-            ?: return Screen.Unlock.route
+            ?: return Screen.Unlock.getRoute()
 
         // else where the user secrets are set, show dashboard screen
-        return Screen.Dashboard.route
+        return Screen.Dashboard.getRoute()
     }
 
     NavHost(
         navController = navController,
         startDestination = getStartRoute()
     ) {
-        composable(Screen.Welcome.route) {
+        composable(Screen.Welcome.getRoute()) {
             WelcomeScreen(navController)
         }
 
-        composable(Screen.Register.route) {
+        composable(Screen.Register.getRoute()) {
             RegisterScreen(navController)
         }
 
-        composable(Screen.Login.route) {
+        composable(Screen.Login.getRoute()) {
             LoginScreen(navController)
         }
 
-        composable(Screen.AddCustomServer.route) {
+        composable(Screen.AddCustomServer.getRoute()) {
             AddCustomServer(navController)
         }
 
-        composable(Screen.Unlock.route) {
+        composable(Screen.Unlock.getRoute()) {
             UnlockScreen(navController)
         }
 
-        composable(Screen.Dashboard.route) {
+        composable(Screen.Dashboard.getRoute()) {
             DashboardNavigation(mainNavController = navController)
         }
 
-        composable(Screen.CipherView.route) {
+        composable(Screen.CipherView.getRoute()) {
             CipherViewScreen(navController = navController)
         }
 
-        composable(Screen.CipherAdd.route) {
+        composable(Screen.CipherAdd.getRoute()) {
             CipherAddEditView(navController = navController)
         }
 
-        composable(Screen.CipherEdit.route) {
+        composable(Screen.CipherEdit.getRoute()) {
             val cipherId = navController.getString(Argument.CipherId)
                 ?: return@composable
 
@@ -143,19 +136,19 @@ fun LibrePassNavigation() {
             CipherAddEditView(navController = navController, baseCipher = cipher)
         }
 
-        composable(Screen.PasswordGenerator.route) {
+        composable(Screen.PasswordGenerator.getRoute()) {
             PasswordGenerator(navController)
         }
 
-        composable(Screen.SettingsAppearance.route) {
+        composable(Screen.SettingsAppearance.getRoute()) {
             SettingsAppearance(navController)
         }
 
-        composable(Screen.SettingsSecurity.route) {
+        composable(Screen.SettingsSecurity.getRoute()) {
             SettingsSecurity(navController)
         }
 
-        composable(Screen.SettingsAccount.route) {
+        composable(Screen.SettingsAccount.getRoute()) {
             SettingsAccount(navController)
         }
     }

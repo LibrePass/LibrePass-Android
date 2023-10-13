@@ -7,6 +7,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import dev.medzik.android.components.navigate
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.Screen
@@ -17,7 +18,6 @@ import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
-import dev.medzik.librepass.android.utils.navigation.navigate
 
 class MainActivity : FragmentActivity() {
     lateinit var userSecrets: UserSecrets

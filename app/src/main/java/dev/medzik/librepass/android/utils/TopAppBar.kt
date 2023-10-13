@@ -1,10 +1,9 @@
-package dev.medzik.android.composables
+package dev.medzik.librepass.android.utils
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -14,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 
@@ -32,19 +30,6 @@ fun TopBar(
                 style = MaterialTheme.typography.titleLarge
             )
         },
-        navigationIcon = navigationIcon,
-        actions = actions
-    )
-}
-
-@Composable
-fun TopBar(
-    @StringRes title: Int,
-    navigationIcon: @Composable (() -> Unit) = {},
-    actions: @Composable (RowScope.() -> Unit) = {}
-) {
-    TopBar(
-        title = stringResource(title),
         navigationIcon = navigationIcon,
         actions = actions
     )
@@ -117,7 +102,7 @@ fun TopBarTwoColorPreview() {
 fun TopBarBackIcon(navController: NavController) {
     IconButton(onClick = { navController.popBackStack() }) {
         Icon(
-            imageVector = Icons.Default.ArrowBack,
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = null
         )
     }

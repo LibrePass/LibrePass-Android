@@ -18,23 +18,21 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import dev.medzik.android.composables.sheet.BottomSheetState
-import dev.medzik.android.composables.sheet.PickerBottomSheet
-import dev.medzik.android.composables.sheet.rememberBottomSheetState
+import dev.medzik.android.components.BottomSheetState
+import dev.medzik.android.components.PickerBottomSheet
+import dev.medzik.android.components.rememberBottomSheetState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SHORTEN_USERNAME_LENGTH
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -44,13 +42,9 @@ fun CipherCard(
     onEdit: (Cipher) -> Unit,
     onDelete: (Cipher) -> Unit
 ) {
-    val scope = rememberCoroutineScope()
-
     val sheetState = rememberBottomSheetState()
 
-    fun showMoreOptions() {
-        scope.launch { sheetState.expand() }
-    }
+    fun showMoreOptions() = sheetState.show()
 
     fun getDomain(): String? {
         val uris = cipher.loginData?.uris

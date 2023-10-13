@@ -12,12 +12,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import dev.medzik.android.components.PreferenceEntry
+import dev.medzik.android.components.navigate
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
-import dev.medzik.librepass.android.utils.navigation.navigate
 import kotlinx.coroutines.runBlocking
 
 @Composable

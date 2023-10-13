@@ -10,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import dev.medzik.android.components.PreferenceEntry
+import dev.medzik.android.components.navigate
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.utils.navigation.navigate
 
 @Composable
 fun SettingsScreen(navController: NavController) {

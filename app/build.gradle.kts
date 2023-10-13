@@ -83,6 +83,8 @@ dependencies {
     implementation(libs.process.phoenix)
 
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // for preview support
     debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.ui.tooling.preview)
 }

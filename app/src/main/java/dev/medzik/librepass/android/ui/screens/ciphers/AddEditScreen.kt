@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import com.google.gson.Gson
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.PreferenceGroupTitle
+import dev.medzik.android.components.navigate
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
@@ -37,7 +38,6 @@ import dev.medzik.librepass.android.utils.TextInputFieldBase
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.client.Server

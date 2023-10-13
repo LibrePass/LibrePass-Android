@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
+import dev.medzik.android.components.navigate
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Hex
@@ -34,7 +35,6 @@ import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.exception.EncryptException
-import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.rememberStringData
 import dev.medzik.librepass.android.utils.showToast

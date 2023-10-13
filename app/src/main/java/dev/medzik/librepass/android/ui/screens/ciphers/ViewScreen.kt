@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.components.BaseDialog
 import dev.medzik.android.components.PreferenceGroupTitle
+import dev.medzik.android.components.getString
+import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
@@ -42,8 +44,6 @@ import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
-import dev.medzik.librepass.android.utils.navigation.getString
-import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.types.cipher.Cipher
 import java.text.SimpleDateFormat
@@ -80,7 +80,7 @@ fun CipherViewScreen(navController: NavController) {
             FloatingActionButton(onClick = {
                 navController.navigate(
                     screen = Screen.CipherEdit,
-                    argument = Argument.CipherId to cipherId
+                    args = arrayOf(Argument.CipherId to cipherId)
                 )
             }) {
                 Icon(

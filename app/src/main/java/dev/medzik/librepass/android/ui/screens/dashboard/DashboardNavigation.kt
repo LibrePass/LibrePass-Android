@@ -26,11 +26,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import dev.medzik.android.composables.ElevationTokens
-import dev.medzik.android.composables.TopBar
+import dev.medzik.android.components.ElevationTokens
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.screens.dashboard.settings.SettingsScreen
+import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.navigation.navigate
 
 enum class DashboardNavigationItem(val route: String, val icon: ImageVector, val titleId: Int) {

@@ -2,12 +2,9 @@ package dev.medzik.librepass.android.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import dev.medzik.android.composables.LifecycleEffect
-import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.screens.PasswordGenerator
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
@@ -70,9 +67,17 @@ fun LibrePassNavigation() {
 
     val navController = rememberNavController()
 
-    LifecycleEffect(Lifecycle.Event.ON_RESUME) {
-        (context as MainActivity).onResume(navController)
-    }
+//    val lifecycleOwner = LocalLifecycleOwner.current
+//    val lifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
+//    LaunchedEffect(lifecycleState) {
+//        when (lifecycleState) {
+//            Lifecycle.State.RESUMED -> {
+//                (context as MainActivity).onResume(navController)
+//            }
+//
+//            else -> {}
+//        }
+//    }
 
     val repository = context.getRepository()
     val userSecrets = context.getUserSecrets()

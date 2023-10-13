@@ -33,13 +33,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.settings.SettingsSwitcher
+import dev.medzik.android.components.SwitcherPreference
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.android.utils.TopBar
+import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.rememberStringData
 import java.util.Random
 
@@ -187,8 +187,8 @@ fun PasswordGenerator(navController: NavController) {
             }
 
             // Capital letters switch
-            SettingsSwitcher(
-                resId = R.string.PasswordGenerator_CapitalLetters,
+            SwitcherPreference(
+                title = stringResource(R.string.PasswordGenerator_CapitalLetters),
                 checked = withCapitalLetters,
                 onCheckedChange = {
                     withCapitalLetters = it
@@ -197,8 +197,8 @@ fun PasswordGenerator(navController: NavController) {
             )
 
             // Numeric switch
-            SettingsSwitcher(
-                resId = R.string.PasswordGenerator_Numbers,
+            SwitcherPreference(
+                title = stringResource(R.string.PasswordGenerator_Numbers),
                 checked = withNumbers,
                 onCheckedChange = {
                     withNumbers = it
@@ -207,8 +207,8 @@ fun PasswordGenerator(navController: NavController) {
             )
 
             // Symbols switch
-            SettingsSwitcher(
-                resId = R.string.PasswordGenerator_Symbols,
+            SwitcherPreference(
+                title = stringResource(R.string.PasswordGenerator_Symbols),
                 checked = withSymbols,
                 onCheckedChange = {
                     withSymbols = it

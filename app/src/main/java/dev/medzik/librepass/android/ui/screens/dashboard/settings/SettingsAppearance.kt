@@ -20,17 +20,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.jakewharton.processphoenix.ProcessPhoenix
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.dialog.PickerDialog
-import dev.medzik.android.composables.dialog.rememberDialogState
-import dev.medzik.android.composables.settings.SettingsProperty
-import dev.medzik.android.composables.settings.SettingsSwitcher
+import dev.medzik.android.components.PickerDialog
+import dev.medzik.android.components.PropertyPreference
+import dev.medzik.android.components.SwitcherPreference
+import dev.medzik.android.components.rememberDialogState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
+import dev.medzik.librepass.android.utils.TopBar
+import dev.medzik.librepass.android.utils.TopBarBackIcon
 
 @Composable
 fun SettingsAppearance(navController: NavController) {
@@ -41,7 +41,7 @@ fun SettingsAppearance(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = R.string.Settings_Group_Appearance,
+                stringResource(R.string.Settings_Group_Appearance),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }
@@ -65,16 +65,16 @@ fun SettingsAppearance(navController: NavController) {
             val theme = context.readKey(StoreKey.Theme)
             val themeDialogState = rememberDialogState()
 
-            SettingsProperty(
-                icon = Icons.Default.DarkMode,
-                resId = R.string.Settings_Theme,
+            PropertyPreference(
+                title = stringResource(R.string.Settings_Theme),
+                icon = { Icon(Icons.Default.DarkMode, contentDescription = null) },
                 currentValue = getThemeTranslation(theme),
                 onClick = { themeDialogState.show() },
             )
 
             PickerDialog(
                 state = themeDialogState,
-                title = R.string.Settings_Theme,
+                title = stringResource(R.string.Settings_Theme),
                 items = listOf(0, 1, 2),
                 onSelected = {
                     context.writeKey(StoreKey.Theme, it)
@@ -108,9 +108,9 @@ fun SettingsAppearance(navController: NavController) {
                 }
             }
 
-            SettingsSwitcher(
-                icon = Icons.Default.ColorLens,
-                resId = R.string.Settings_MaterialYou,
+            SwitcherPreference(
+                title = stringResource(R.string.Settings_MaterialYou),
+                icon = { Icon(Icons.Default.ColorLens, contentDescription = null) },
                 checked = dynamicColor,
                 onCheckedChange = {
                     context.writeKey(StoreKey.DynamicColor, it)

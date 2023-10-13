@@ -2,12 +2,15 @@ package dev.medzik.librepass.android.utils
 
 import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.FragmentActivity
+import dev.medzik.android.crypto.KeyStoreAlias
 import dev.medzik.librepass.android.R
 import javax.crypto.Cipher
 
-object Biometric {
-    const val PrivateKeyAlias = "private_key"
+enum class BiometricAlias : KeyStoreAlias {
+    PrivateKey
+}
 
+object Biometric {
     fun showBiometricPrompt(
         context: FragmentActivity,
         cipher: Cipher,

@@ -1,8 +1,6 @@
 package dev.medzik.librepass.android.utils.exception
 
 import android.content.Context
-import dev.medzik.libcrypto.EncryptException
-import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.errors.ApiException
@@ -15,13 +13,14 @@ import kotlinx.coroutines.launch
  * Log exception if debugging is enabled.
  */
 fun Exception.debugLog() {
-    if (BuildConfig.DEBUG) {
-        printStackTrace()
-    }
+    // TODO
+//    if (BuildConfig.DEBUG) {
+    printStackTrace()
+//    }
 }
 
 /**
- * Handle exceptions. Show toast with error message.
+ * Handle exceptions. Show toast with an error message.
  * @param context The context to get string resources
  */
 @OptIn(DelicateCoroutinesApi::class)
@@ -59,3 +58,5 @@ fun Exception.handle(context: Context) {
         }
     }
 }
+
+class EncryptException(override val message: String) : Exception()

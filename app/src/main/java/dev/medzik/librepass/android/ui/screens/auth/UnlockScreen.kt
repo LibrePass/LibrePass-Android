@@ -19,26 +19,27 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
-import dev.medzik.android.composables.LoadingButton
-import dev.medzik.android.composables.TextInputField
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.cryptoutils.KeyStore
+import dev.medzik.android.components.LoadingButton
+import dev.medzik.android.crypto.KeyStore
 import dev.medzik.libcrypto.Argon2
-import dev.medzik.libcrypto.EncryptException
+import dev.medzik.libcrypto.Hex
+import dev.medzik.libcrypto.X25519
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.Biometric
+import dev.medzik.librepass.android.utils.BiometricAlias
 import dev.medzik.librepass.android.utils.SecretStore
+import dev.medzik.librepass.android.utils.TextInputField
+import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.UserSecrets
+import dev.medzik.librepass.android.utils.exception.EncryptException
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.rememberStringData
-import dev.medzik.librepass.android.utils.runGC
 import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
-import dev.medzik.librepass.client.utils.Cryptography.generateKeyPairFromPrivate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -74,22 +75,19 @@ fun UnlockScreen(navController: NavController) {
                     )
                 )
 
-                val keyPair = generateKeyPairFromPrivate(passwordHash)
+                val publicKey = X25519.publicFromPrivate(passwordHash.hash)
 
-                if (keyPair.publicKey != credentials.publicKey)
+                if (Hex.encode(publicKey) != credentials.publicKey)
                     throw EncryptException("Invalid password")
 
-                // run gc cycle after computing password hash
-                runGC()
-
                 val secretKey =
-                    Cryptography.computeSharedKey(keyPair.privateKey, credentials.publicKey)
+                    Cryptography.computeSharedKey(passwordHash.hash, Hex.decode(credentials.publicKey))
 
                 SecretStore.save(
                     context,
                     UserSecrets(
-                        privateKey = keyPair.privateKey,
-                        secretKey = secretKey
+                        privateKey = Hex.encode(passwordHash.hash),
+                        secretKey = Hex.encode(secretKey)
                     )
                 )
 
@@ -113,22 +111,22 @@ fun UnlockScreen(navController: NavController) {
     fun showBiometric() {
         Biometric.showBiometricPrompt(
             context = context,
-            cipher = KeyStore.initCipherForDecryption(
-                alias = Biometric.PrivateKeyAlias,
-                initializationVector = credentials.biometricProtectedPrivateKeyIV!!,
-                requireAuthentication = true
+            cipher = KeyStore.initForDecryption(
+                alias = BiometricAlias.PrivateKey,
+                initializationVector = Hex.decode(credentials.biometricProtectedPrivateKeyIV!!),
+                deviceAuthentication = true
             ),
             onAuthenticationSucceeded = { cipher ->
                 val privateKey =
                     KeyStore.decrypt(cipher, credentials.biometricProtectedPrivateKey!!)
 
-                val secretKey = Cryptography.computeSharedKey(privateKey, credentials.publicKey)
+                val secretKey = Cryptography.computeSharedKey(privateKey, Hex.decode(credentials.publicKey))
 
                 SecretStore.save(
                     context,
                     UserSecrets(
-                        privateKey = privateKey,
-                        secretKey = secretKey
+                        privateKey = Hex.encode(privateKey),
+                        secretKey = Hex.encode(secretKey)
                     )
                 )
 
@@ -142,12 +140,15 @@ fun UnlockScreen(navController: NavController) {
     }
 
     LaunchedEffect(scope) {
-        if (credentials.biometricEnabled)
-            showBiometric()
+        if (credentials.biometricEnabled) showBiometric()
     }
 
     Scaffold(
-        topBar = { TopBar(R.string.TopBar_Unlock) },
+        topBar = {
+            TopBar(
+                stringResource(R.string.TopBar_Unlock)
+            )
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -156,7 +157,7 @@ fun UnlockScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = R.string.InputField_Password,
+                label = stringResource(R.string.InputField_Password),
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,

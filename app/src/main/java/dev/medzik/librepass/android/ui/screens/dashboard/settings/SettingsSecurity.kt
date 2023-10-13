@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,21 +22,23 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.dialog.PickerDialog
-import dev.medzik.android.composables.dialog.rememberDialogState
-import dev.medzik.android.composables.settings.SettingsProperty
-import dev.medzik.android.composables.settings.SettingsSwitcher
-import dev.medzik.android.cryptoutils.KeyStore
+import dev.medzik.android.components.PickerDialog
+import dev.medzik.android.components.PropertyPreference
+import dev.medzik.android.components.SwitcherPreference
+import dev.medzik.android.components.rememberDialogState
+import dev.medzik.android.crypto.KeyStore
+import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.utils.Biometric
+import dev.medzik.librepass.android.utils.BiometricAlias
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.android.utils.TopBar
+import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
 import kotlinx.coroutines.launch
 
@@ -70,14 +73,14 @@ fun SettingsSecurity(navController: NavController) {
 
         Biometric.showBiometricPrompt(
             context = context as MainActivity,
-            cipher = KeyStore.initCipherForEncryption(
-                Biometric.PrivateKeyAlias,
-                true
+            cipher = KeyStore.initForEncryption(
+                BiometricAlias.PrivateKey,
+                deviceAuthentication = true
             ),
             onAuthenticationSucceeded = { cipher ->
                 val encryptedData = KeyStore.encrypt(
                     cipher = cipher,
-                    data = userSecrets.privateKey
+                    clearBytes = Hex.decode(userSecrets.privateKey)
                 )
 
                 biometricEnabled = true
@@ -137,7 +140,7 @@ fun SettingsSecurity(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = R.string.Settings_Group_Security,
+                stringResource(R.string.Settings_Group_Security),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }
@@ -145,16 +148,16 @@ fun SettingsSecurity(navController: NavController) {
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            SettingsSwitcher(
-                icon = Icons.Default.Fingerprint,
-                resId = R.string.Settings_BiometricUnlock,
+            SwitcherPreference(
+                title = stringResource(R.string.Settings_BiometricUnlock),
+                icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
                 checked = biometricEnabled,
                 onCheckedChange = { showBiometricPrompt() }
             )
 
-            SettingsProperty(
-                icon = Icons.Default.Timer,
-                resId = R.string.Settings_Vault_Timeout_Modal_Title,
+            PropertyPreference(
+                title = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
+                icon = { Icon(Icons.Default.Timer, contentDescription = null) },
                 currentValue = getVaultTimeoutTranslation(
                     VaultTimeoutValues.fromSeconds(
                         vaultTimeout
@@ -165,7 +168,7 @@ fun SettingsSecurity(navController: NavController) {
 
             PickerDialog(
                 state = timerDialogState,
-                title = R.string.Settings_Vault_Timeout_Modal_Title,
+                title = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
                 items = VaultTimeoutValues.values().asList(),
                 onSelected = {
                     vaultTimeout = it.seconds

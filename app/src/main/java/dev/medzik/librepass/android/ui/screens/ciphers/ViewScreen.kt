@@ -31,18 +31,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.dialog.BaseDialog
-import dev.medzik.android.composables.dialog.rememberDialogState
-import dev.medzik.android.composables.text.TextGroup
-import dev.medzik.libcrypto.EncryptException
+import dev.medzik.android.components.BaseDialog
+import dev.medzik.android.components.PreferenceGroupTitle
+import dev.medzik.android.components.rememberDialogState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
+import dev.medzik.librepass.android.utils.TopBar
+import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.navigation.getString
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.shorten
@@ -64,7 +63,7 @@ fun CipherViewScreen(navController: NavController) {
     val cipher = context.getRepository().cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
     val cipherData = try {
         Cipher(cipher, userSecrets.secretKey).loginData!!
-    } catch (e: EncryptException) {
+    } catch (e: Exception) {
         // handle decryption error
         DecryptionError(navController, e)
         return
@@ -106,70 +105,70 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.username.isNullOrEmpty() || !cipherData.password.isNullOrEmpty()) {
                 item {
-                    TextGroup(stringResource(R.string.CipherField_Group_Login)) {
-                        CipherField(
-                            title = stringResource(R.string.CipherField_Username),
-                            value = cipherData.username,
-                            copy = true
-                        )
+                    PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Login))
 
-                        val passwordHistoryDialog = rememberDialogState()
+                    CipherField(
+                        title = stringResource(R.string.CipherField_Username),
+                        value = cipherData.username,
+                        copy = true
+                    )
 
-                        CipherField(
-                            title = stringResource(R.string.CipherField_Password),
-                            value = cipherData.password,
-                            copy = true,
-                            hidden = true,
-                            customIcon = {
-                                if (cipherData.passwordHistory != null) {
-                                    IconButton(onClick = { passwordHistoryDialog.show() }) {
-                                        Icon(
-                                            imageVector = Icons.Default.History,
-                                            contentDescription = null
-                                        )
-                                    }
+                    val passwordHistoryDialog = rememberDialogState()
+
+                    CipherField(
+                        title = stringResource(R.string.CipherField_Password),
+                        value = cipherData.password,
+                        copy = true,
+                        hidden = true,
+                        customIcon = {
+                            if (cipherData.passwordHistory != null) {
+                                IconButton(onClick = { passwordHistoryDialog.show() }) {
+                                    Icon(
+                                        imageVector = Icons.Default.History,
+                                        contentDescription = null
+                                    )
                                 }
                             }
-                        )
+                        }
+                    )
 
-                        BaseDialog(state = passwordHistoryDialog) {
-                            val clipboardManager = LocalClipboardManager.current
-                            val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    BaseDialog(state = passwordHistoryDialog) {
+                        val clipboardManager = LocalClipboardManager.current
+                        val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-                            val passwords =
-                                (cipherData.passwordHistory ?: return@BaseDialog).asReversed()
+                        val passwords =
+                            (cipherData.passwordHistory ?: return@BaseDialog).asReversed()
 
-                            LazyColumn(modifier = Modifier.padding(horizontal = 24.dp)) {
-                                for (i in passwords.indices) {
-                                    item {
-                                        Row(modifier = Modifier.padding(vertical = 4.dp)) {
-                                            Column(
-                                                modifier = Modifier.weight(1f)
-                                            ) {
-                                                Text(
-                                                    text = parser.format(passwords[i].lastUsed),
-                                                    style = MaterialTheme.typography.titleSmall,
-                                                    color = MaterialTheme.colorScheme.onSurface.copy(
-                                                        alpha = 0.6f
-                                                    )
+                        LazyColumn(modifier = Modifier.padding(horizontal = 24.dp)) {
+                            for (i in passwords.indices) {
+                                item {
+                                    Row(modifier = Modifier.padding(vertical = 4.dp)) {
+                                        Column(
+                                            modifier = Modifier.weight(1f)
+                                        ) {
+                                            Text(
+                                                text = parser.format(passwords[i].lastUsed),
+                                                style = MaterialTheme.typography.titleSmall,
+                                                color = MaterialTheme.colorScheme.onSurface.copy(
+                                                    alpha = 0.6f
                                                 )
+                                            )
 
-                                                Text(
-                                                    text = passwords[i].password,
-                                                    style = MaterialTheme.typography.bodyMedium
-                                                )
-                                            }
+                                            Text(
+                                                text = passwords[i].password,
+                                                style = MaterialTheme.typography.bodyMedium
+                                            )
+                                        }
 
-                                            IconButton(onClick = {
-                                                clipboardManager.setText(
-                                                    AnnotatedString(passwords[i].password)
-                                                )
-                                            }) {
-                                                Icon(
-                                                    imageVector = Icons.Default.ContentCopy,
-                                                    contentDescription = null
-                                                )
-                                            }
+                                        IconButton(onClick = {
+                                            clipboardManager.setText(
+                                                AnnotatedString(passwords[i].password)
+                                            )
+                                        }) {
+                                            Icon(
+                                                imageVector = Icons.Default.ContentCopy,
+                                                contentDescription = null
+                                            )
                                         }
                                     }
                                 }
@@ -181,27 +180,27 @@ fun CipherViewScreen(navController: NavController) {
 
             item {
                 if (!cipherData.uris.isNullOrEmpty()) {
-                    TextGroup(stringResource(R.string.CipherField_Group_Website)) {
-                        cipherData.uris?.forEachIndexed { index, it ->
-                            CipherField(
-                                title = stringResource(R.string.CipherField_URL) + " ${index + 1}",
-                                value = it,
-                                copy = true
-                            )
-                        }
+                    PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Website))
+
+                    cipherData.uris?.forEachIndexed { index, it ->
+                        CipherField(
+                            title = stringResource(R.string.CipherField_URL) + " ${index + 1}",
+                            value = it,
+                            copy = true
+                        )
                     }
                 }
             }
 
             if (!cipherData.notes.isNullOrEmpty()) {
                 item {
-                    TextGroup(stringResource(R.string.CipherField_Group_Other)) {
-                        CipherField(
-                            title = stringResource(R.string.CipherField_Notes),
-                            value = cipherData.notes,
-                            copy = true
-                        )
-                    }
+                    PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Other))
+
+                    CipherField(
+                        title = stringResource(R.string.CipherField_Notes),
+                        value = cipherData.notes,
+                        copy = true
+                    )
                 }
             }
         }
@@ -273,11 +272,11 @@ fun CipherField(
 }
 
 @Composable
-fun DecryptionError(navController: NavController, e: EncryptException) {
+fun DecryptionError(navController: NavController, e: Exception) {
     Scaffold(
         topBar = {
             TopBar(
-                title = "Error",
+                "Error",
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }

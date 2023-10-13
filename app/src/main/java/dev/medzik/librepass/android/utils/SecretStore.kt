@@ -2,11 +2,13 @@ package dev.medzik.librepass.android.utils
 
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
-import dev.medzik.android.cryptoutils.DataStore.deleteEncrypted
-import dev.medzik.android.cryptoutils.DataStore.read
-import dev.medzik.android.cryptoutils.DataStore.readEncrypted
-import dev.medzik.android.cryptoutils.DataStore.write
-import dev.medzik.android.cryptoutils.DataStore.writeEncrypted
+import dev.medzik.android.crypto.DataStore.deleteEncrypted
+import dev.medzik.android.crypto.DataStore.read
+import dev.medzik.android.crypto.DataStore.readEncrypted
+import dev.medzik.android.crypto.DataStore.write
+import dev.medzik.android.crypto.DataStore.writeEncrypted
+import dev.medzik.android.crypto.KeyStoreAlias
+import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.MainActivity
 import kotlinx.coroutines.runBlocking
 
@@ -33,14 +35,18 @@ object SecretStore {
 
         val userSecrets = suspend {
             UserSecrets(
-                privateKey = context.dataStore.readEncrypted(
-                    UserSecrets.KeyStoreAlias,
-                    UserSecrets.PrivateKeyStoreKey
-                ) ?: "",
-                secretKey = context.dataStore.readEncrypted(
-                    UserSecrets.KeyStoreAlias,
-                    UserSecrets.SecretKeyStoreKey
-                ) ?: ""
+                privateKey = Hex.encode(
+                    context.dataStore.readEncrypted(
+                        KeyStore.DataStoreEncrypted,
+                        UserSecrets.PrivateKeyStoreKey
+                    ) ?: ByteArray(0)
+                ),
+                secretKey = Hex.encode(
+                    context.dataStore.readEncrypted(
+                        KeyStore.DataStoreEncrypted,
+                        UserSecrets.SecretKeyStoreKey
+                    ) ?: ByteArray(0)
+                )
             )
         }
 
@@ -50,14 +56,14 @@ object SecretStore {
     fun save(context: Context, userSecrets: UserSecrets): UserSecrets {
         val saveUserSecrets = suspend {
             context.dataStore.writeEncrypted(
-                UserSecrets.KeyStoreAlias,
+                KeyStore.DataStoreEncrypted,
                 UserSecrets.PrivateKeyStoreKey,
-                userSecrets.privateKey
+                Hex.decode(userSecrets.privateKey)
             )
             context.dataStore.writeEncrypted(
-                UserSecrets.KeyStoreAlias,
+                KeyStore.DataStoreEncrypted,
                 UserSecrets.SecretKeyStoreKey,
-                userSecrets.secretKey
+                Hex.decode(userSecrets.secretKey)
             )
 
             val vaultTimeout = context.readKey(StoreKey.VaultTimeout)
@@ -108,6 +114,9 @@ data class UserSecrets(
     companion object {
         const val PrivateKeyStoreKey = "private_key"
         const val SecretKeyStoreKey = "secret_key"
-        const val KeyStoreAlias = "librepass_datastore_secrets"
     }
+}
+
+enum class KeyStore : KeyStoreAlias {
+    DataStoreEncrypted,
 }

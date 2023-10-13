@@ -1,13 +1,7 @@
 package dev.medzik.librepass.android.ui.screens.dashboard
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.pullrefresh.PullRefreshIndicator
-import androidx.compose.material3.pullrefresh.pullRefresh
-import androidx.compose.material3.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,11 +9,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import dev.medzik.libcrypto.EncryptException
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
@@ -68,7 +60,7 @@ fun DashboardScreen(navController: NavController) {
         val decryptedCiphers = dbCiphers.map {
             try {
                 Cipher(it.encryptedCipher, userSecrets.secretKey)
-            } catch (e: EncryptException) {
+            } catch (e: Exception) {
                 Cipher(
                     id = it.encryptedCipher.id,
                     owner = it.encryptedCipher.owner,
@@ -158,55 +150,36 @@ fun DashboardScreen(navController: NavController) {
         updateCiphers()
     }
 
-    // refresh ciphers on pull to refresh
-    val pullRefreshState = rememberPullRefreshState(refreshing, ::updateCiphers)
-
-    Column(
+    LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
-        Box(
-            modifier = Modifier.pullRefresh(pullRefreshState)
-        ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(ciphers.size) { index ->
-                    CipherCard(
-                        cipher = ciphers[index],
-                        onClick = { cipher ->
-                            navController.navigate(
-                                screen = Screen.CipherView,
-                                argument = Argument.CipherId to cipher.id.toString()
-                            )
-                        },
-                        onEdit = { cipher ->
-                            navController.navigate(
-                                screen = Screen.CipherEdit,
-                                argument = Argument.CipherId to cipher.id.toString()
-                            )
-                        },
-                        onDelete = { cipher ->
-                            scope.launch(Dispatchers.IO) {
-                                try {
-                                    cipherClient.delete(cipher.id)
-                                    repository.cipher.delete(cipher.id)
-
-                                    ciphers = ciphers.filter { it.id != cipher.id }
-                                } catch (e: Exception) {
-                                    e.handle(context)
-                                }
-                            }
-                        }
+        items(ciphers.size) { index ->
+            CipherCard(
+                cipher = ciphers[index],
+                onClick = { cipher ->
+                    navController.navigate(
+                        screen = Screen.CipherView,
+                        argument = Argument.CipherId to cipher.id.toString()
                     )
-                }
-            }
+                },
+                onEdit = { cipher ->
+                    navController.navigate(
+                        screen = Screen.CipherEdit,
+                        argument = Argument.CipherId to cipher.id.toString()
+                    )
+                },
+                onDelete = { cipher ->
+                    scope.launch(Dispatchers.IO) {
+                        try {
+                            cipherClient.delete(cipher.id)
+                            repository.cipher.delete(cipher.id)
 
-            // pull to refresh indicator must be aligned to the top
-            PullRefreshIndicator(
-                refreshing = refreshing,
-                state = pullRefreshState,
-                modifier = Modifier.align(Alignment.TopCenter),
-                contentColor = MaterialTheme.colorScheme.primary
+                            ciphers = ciphers.filter { it.id != cipher.id }
+                        } catch (e: Exception) {
+                            e.handle(context)
+                        }
+                    }
+                }
             )
         }
     }

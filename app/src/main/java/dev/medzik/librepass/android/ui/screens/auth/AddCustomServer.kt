@@ -14,14 +14,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import dev.medzik.android.composables.LoadingButton
-import dev.medzik.android.composables.TextInputField
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.composables.TopBarBackIcon
+import dev.medzik.android.components.LoadingButton
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.android.utils.TextInputField
+import dev.medzik.librepass.android.utils.TopBar
+import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.rememberStringData
 
@@ -47,7 +47,7 @@ fun AddCustomServer(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = R.string.TopBar_AddCustomServer,
+                stringResource(R.string.TopBar_AddCustomServer),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }
@@ -59,7 +59,7 @@ fun AddCustomServer(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = R.string.Server_Add_InputField_Server,
+                label = stringResource(R.string.Server_Add_InputField_Server),
                 value = server,
                 onValueChange = { server = it }
             )

@@ -25,17 +25,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
-import dev.medzik.android.composables.LoadingButton
-import dev.medzik.android.composables.TextInputFieldBase
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.text.TextGroup
+import dev.medzik.android.components.LoadingButton
+import dev.medzik.android.components.PreferenceGroupTitle
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
+import dev.medzik.librepass.android.utils.TextInputFieldBase
+import dev.medzik.librepass.android.utils.TopBar
+import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.rememberLoadingState
@@ -171,7 +171,7 @@ fun CipherAddEditView(
                 .verticalScroll(rememberScrollState())
         ) {
             TextInputFieldBase(
-                label = R.string.CipherField_Name,
+                label = stringResource(R.string.CipherField_Name),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp),
@@ -179,36 +179,68 @@ fun CipherAddEditView(
                 onValueChange = { cipherData = cipherData.copy(name = it) }
             )
 
-            TextGroup(R.string.CipherField_Group_Login) {
-                TextInputFieldBase(
-                    label = R.string.CipherField_Username,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    value = cipherData.username,
-                    onValueChange = { cipherData = cipherData.copy(username = it) }
-                )
+            PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Login))
 
+            TextInputFieldBase(
+                label = stringResource(R.string.CipherField_Username),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                value = cipherData.username,
+                onValueChange = { cipherData = cipherData.copy(username = it) }
+            )
+
+            TextInputFieldBase(
+                label = stringResource(R.string.CipherField_Password),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                value = cipherData.password,
+                onValueChange = { cipherData = cipherData.copy(password = it) },
+                hidden = true,
+                trailingIcon = {
+                    IconButton(onClick = {
+                        // save cipher data as json to navController
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            "cipher",
+                            Gson().toJson(cipherData)
+                        )
+
+                        navController.navigate(Screen.PasswordGenerator)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = null
+                        )
+                    }
+                }
+            )
+
+            PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Website))
+
+            // show field for each uri
+            cipherData.uris?.forEachIndexed { index, uri ->
                 TextInputFieldBase(
-                    label = R.string.CipherField_Password,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    value = cipherData.password,
-                    onValueChange = { cipherData = cipherData.copy(password = it) },
-                    hidden = true,
+                    label = stringResource(R.string.CipherField_URL) + " ${index + 1}",
+                    modifier = Modifier.fillMaxWidth(),
+                    value = uri,
+                    onValueChange = {
+                        cipherData = cipherData.copy(
+                            uris = cipherData.uris.orEmpty().toMutableList().apply {
+                                this[index] = it
+                            }
+                        )
+                    },
                     trailingIcon = {
                         IconButton(onClick = {
-                            // save cipher data as json to navController
-                            navController.currentBackStackEntry?.savedStateHandle?.set(
-                                "cipher",
-                                Gson().toJson(cipherData)
+                            cipherData = cipherData.copy(
+                                uris = cipherData.uris.orEmpty().toMutableList().apply {
+                                    this.removeAt(index)
+                                }
                             )
-
-                            navController.navigate(Screen.PasswordGenerator)
                         }) {
                             Icon(
-                                imageVector = Icons.Default.Refresh,
+                                imageVector = Icons.Default.Delete,
                                 contentDescription = null
                             )
                         }
@@ -216,62 +248,30 @@ fun CipherAddEditView(
                 )
             }
 
-            TextGroup(R.string.CipherField_Group_Website) {
-                // show field for each uri
-                cipherData.uris?.forEachIndexed { index, uri ->
-                    TextInputFieldBase(
-                        label = stringResource(R.string.CipherField_URL) + " ${index + 1}",
-                        modifier = Modifier.fillMaxWidth(),
-                        value = uri,
-                        onValueChange = {
-                            cipherData = cipherData.copy(
-                                uris = cipherData.uris.orEmpty().toMutableList().apply {
-                                    this[index] = it
-                                }
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = {
-                                cipherData = cipherData.copy(
-                                    uris = cipherData.uris.orEmpty().toMutableList().apply {
-                                        this.removeAt(index)
-                                    }
-                                )
-                            }) {
-                                Icon(
-                                    imageVector = Icons.Default.Delete,
-                                    contentDescription = null
-                                )
-                            }
-                        }
+            // button for adding more fields
+            Button(
+                onClick = {
+                    cipherData = cipherData.copy(
+                        uris = cipherData.uris.orEmpty() + ""
                     )
-                }
-
-                // button for adding more fields
-                Button(
-                    onClick = {
-                        cipherData = cipherData.copy(
-                            uris = cipherData.uris.orEmpty() + ""
-                        )
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 60.dp)
-                        .padding(top = 8.dp)
-                ) {
-                    Text(stringResource(R.string.Button_AddField))
-                }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 60.dp)
+                    .padding(top = 8.dp)
+            ) {
+                Text(stringResource(R.string.Button_AddField))
             }
 
-            TextGroup(R.string.CipherField_Group_Other) {
-                TextInputFieldBase(
-                    label = R.string.CipherField_Notes,
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = false,
-                    value = cipherData.notes,
-                    onValueChange = { cipherData = cipherData.copy(notes = it) }
-                )
-            }
+            PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Other))
+
+            TextInputFieldBase(
+                label = stringResource(R.string.CipherField_Notes),
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = false,
+                value = cipherData.notes,
+                onValueChange = { cipherData = cipherData.copy(notes = it) }
+            )
 
             LoadingButton(
                 loading = loading,

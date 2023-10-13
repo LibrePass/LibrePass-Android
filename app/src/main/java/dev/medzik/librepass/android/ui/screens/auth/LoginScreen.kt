@@ -19,13 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import dev.medzik.android.composables.LoadingButton
-import dev.medzik.android.composables.TextInputField
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.dialog.PickerDialog
-import dev.medzik.android.composables.dialog.rememberDialogState
-import dev.medzik.librepass.android.BuildConfig
+import dev.medzik.android.components.LoadingButton
+import dev.medzik.android.components.PickerDialog
+import dev.medzik.android.components.rememberDialogState
+import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.getRepository
@@ -33,12 +30,14 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.android.utils.TextInputField
+import dev.medzik.librepass.android.utils.TopBar
+import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.rememberStringData
-import dev.medzik.librepass.android.utils.runGC
 import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
@@ -75,9 +74,6 @@ fun LoginScreen(navController: NavController) {
                     password = password
                 )
 
-                // run gc cycle after computing password hash
-                runGC()
-
                 // save credentials
                 credentialsRepository.insert(
                     Credentials(
@@ -85,7 +81,7 @@ fun LoginScreen(navController: NavController) {
                         email = email,
                         apiUrl = if (server == Server.PRODUCTION) null else server,
                         apiKey = credentials.apiKey,
-                        publicKey = credentials.keyPair.publicKey,
+                        publicKey = Hex.encode(credentials.publicKey),
                         // Argon2id parameters
                         memory = preLogin.memory,
                         iterations = preLogin.iterations,
@@ -97,7 +93,7 @@ fun LoginScreen(navController: NavController) {
                 SecretStore.save(
                     context,
                     UserSecrets(
-                        privateKey = credentials.keyPair.privateKey,
+                        privateKey = Hex.encode(credentials.privateKey),
                         secretKey = credentials.secretKey
                     )
                 )
@@ -119,7 +115,7 @@ fun LoginScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = R.string.TopBar_Login,
+                title = stringResource(R.string.TopBar_Login),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }
@@ -131,7 +127,7 @@ fun LoginScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = R.string.InputField_Email,
+                label = stringResource(R.string.InputField_Email),
                 value = email,
                 onValueChange = { email = it },
                 keyboardType = KeyboardType.Email
@@ -164,7 +160,7 @@ fun LoginScreen(navController: NavController) {
             )
 
             TextInputField(
-                label = R.string.InputField_Password,
+                label = stringResource(R.string.InputField_Password),
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,
@@ -217,16 +213,17 @@ fun LoginScreen(navController: NavController) {
                 Text(stringResource(R.string.Button_Login))
             }
 
-            var servers = listOf(Server.PRODUCTION)
+            val servers = listOf(Server.PRODUCTION)
                 .plus(context.readKey(StoreKey.CustomServers))
                 .plus("custom_server")
 
-            if (BuildConfig.DEBUG)
-                servers = servers.plus(Server.TEST)
+            // TODO
+//            if (BuildConfig.DEBUG)
+//                servers = servers.plus(Server.TEST)
 
             PickerDialog(
                 state = serverChoiceDialog,
-                title = R.string.Server_Choice_Dialog_Title,
+                title = stringResource(R.string.Server_Choice_Dialog_Title),
                 items = servers,
                 onSelected = {
                     if (it == "custom_server") {

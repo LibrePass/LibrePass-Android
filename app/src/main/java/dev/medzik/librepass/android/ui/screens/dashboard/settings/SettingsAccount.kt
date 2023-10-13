@@ -3,18 +3,20 @@ package dev.medzik.librepass.android.ui.screens.dashboard.settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.settings.SettingsProperty
+import dev.medzik.android.components.PreferenceEntry
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.utils.TopBar
+import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.navigation.navigate
 import kotlinx.coroutines.runBlocking
 
@@ -39,7 +41,7 @@ fun SettingsAccount(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = R.string.Settings_Group_Account,
+                title = stringResource(R.string.Settings_Group_Account),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }
@@ -47,9 +49,9 @@ fun SettingsAccount(navController: NavController) {
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            SettingsProperty(
-                icon = Icons.Default.Logout,
-                resId = R.string.Settings_Logout,
+            PreferenceEntry(
+                title = stringResource(R.string.Settings_Logout),
+                icon = { Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null) },
                 onClick = { logout() },
             )
         }

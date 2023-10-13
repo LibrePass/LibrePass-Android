@@ -19,22 +19,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import dev.medzik.android.composables.LoadingButton
-import dev.medzik.android.composables.TextInputField
-import dev.medzik.android.composables.TopBar
-import dev.medzik.android.composables.TopBarBackIcon
-import dev.medzik.android.composables.dialog.PickerDialog
-import dev.medzik.android.composables.dialog.rememberDialogState
-import dev.medzik.librepass.android.BuildConfig
+import dev.medzik.android.components.LoadingButton
+import dev.medzik.android.components.PickerDialog
+import dev.medzik.android.components.rememberDialogState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.android.utils.TextInputField
+import dev.medzik.librepass.android.utils.TopBar
+import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.navigation.navigate
 import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.rememberStringData
-import dev.medzik.librepass.android.utils.runGC
 import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
@@ -65,9 +63,6 @@ fun RegisterScreen(navController: NavController) {
             try {
                 authClient.register(email, password, passwordHint)
 
-                // run gc cycle after computing password hash
-                runGC()
-
                 // navigate to login
                 scope.launch(Dispatchers.Main) {
                     context.showToast(R.string.Success_Registration_Please_Verify)
@@ -91,7 +86,7 @@ fun RegisterScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = R.string.TopBar_Register,
+                title = stringResource(R.string.TopBar_Register),
                 navigationIcon = {
                     TopBarBackIcon(navController)
                 }
@@ -105,7 +100,7 @@ fun RegisterScreen(navController: NavController) {
                 .padding(horizontal = 16.dp)
         ) {
             TextInputField(
-                label = R.string.InputField_Email,
+                label = stringResource(R.string.InputField_Email),
                 value = email,
                 onValueChange = { email = it },
                 isError = email.isNotEmpty() && !email.contains("@"),
@@ -114,7 +109,7 @@ fun RegisterScreen(navController: NavController) {
             )
 
             TextInputField(
-                label = R.string.InputField_Password,
+                label = stringResource(R.string.InputField_Password),
                 value = password,
                 onValueChange = { password = it },
                 hidden = true,
@@ -124,7 +119,7 @@ fun RegisterScreen(navController: NavController) {
             )
 
             TextInputField(
-                label = R.string.InputField_ConfirmPassword,
+                label = stringResource(R.string.InputField_ConfirmPassword),
                 value = configPassword,
                 onValueChange = { configPassword = it },
                 hidden = true,
@@ -186,16 +181,17 @@ fun RegisterScreen(navController: NavController) {
                 Text(stringResource(R.string.Button_Register))
             }
 
-            var servers = listOf(Server.PRODUCTION)
+            val servers = listOf(Server.PRODUCTION)
                 .plus(context.readKey(StoreKey.CustomServers))
                 .plus("custom_server")
 
-            if (BuildConfig.DEBUG)
-                servers = servers.plus(Server.TEST)
+            // TODO
+//            if (BuildConfig.DEBUG)
+//                servers = servers.plus(Server.TEST)
 
             PickerDialog(
                 state = serverChoiceDialog,
-                title = R.string.Server_Choice_Dialog_Title,
+                title = stringResource(R.string.Server_Choice_Dialog_Title),
                 items = servers,
                 onSelected = {
                     if (it == "custom_server") {

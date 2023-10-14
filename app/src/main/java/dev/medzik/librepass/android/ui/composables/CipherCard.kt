@@ -106,10 +106,6 @@ fun CipherCard(
                 }
             }
 
-//            IconButton(onClick = { showMoreOptions() }) {
-//                Icon(Icons.Default.Search, contentDescription = null)
-//            }
-
             if (showCipherActions) {
                 IconButton(onClick = { showMoreOptions() }) {
                     Icon(Icons.Default.MoreHoriz, contentDescription = null)

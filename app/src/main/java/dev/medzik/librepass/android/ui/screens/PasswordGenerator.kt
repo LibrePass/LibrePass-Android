@@ -34,13 +34,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.components.SwitcherPreference
+import dev.medzik.android.components.rememberMutableString
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
-import dev.medzik.librepass.android.utils.rememberStringData
 import java.util.Random
 
 enum class PasswordType(val literals: String) {
@@ -55,7 +55,7 @@ fun PasswordGenerator(navController: NavController) {
     val context = LocalContext.current
     val clipboardManager = LocalClipboardManager.current
 
-    var generatedPassword by rememberStringData()
+    var generatedPassword by rememberMutableString()
 
     // generator options
     var passwordLength by remember { mutableIntStateOf(context.readKey(StoreKey.PasswordLength)) }

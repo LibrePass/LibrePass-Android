@@ -39,7 +39,7 @@ import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.UserSecrets
-import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
@@ -108,7 +108,7 @@ fun LoginScreen(navController: NavController) {
                 }
             } catch (e: Exception) {
                 loading = false
-                e.handle(context)
+                e.showErrorToast(context)
             }
         }
     }
@@ -154,7 +154,7 @@ fun LoginScreen(navController: NavController) {
 
                                 context.showToast(context.getString(R.string.Toast_Password_Hint_Sent))
                             } catch (e: Exception) {
-                                e.handle(context)
+                                e.showErrorToast(context)
                             }
                         }
                     }

@@ -7,12 +7,11 @@ import dev.medzik.android.crypto.DataStore.read
 import dev.medzik.android.crypto.DataStore.readEncrypted
 import dev.medzik.android.crypto.DataStore.write
 import dev.medzik.android.crypto.DataStore.writeEncrypted
-import dev.medzik.android.crypto.KeyStoreAlias
 import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.MainActivity
 import kotlinx.coroutines.runBlocking
 
-val Context.dataStore by preferencesDataStore(name = "librepass")
+val Context.dataStore by preferencesDataStore("librepass")
 
 object SecretStore {
     inline fun <reified T> Context.readKey(key: StoreKey<T>): T {
@@ -37,13 +36,13 @@ object SecretStore {
             UserSecrets(
                 privateKey = Hex.encode(
                     context.dataStore.readEncrypted(
-                        KeyStore.DataStoreEncrypted,
+                        KeyAlias.DataStoreEncrypted,
                         UserSecrets.PrivateKeyStoreKey
                     ) ?: ByteArray(0)
                 ),
                 secretKey = Hex.encode(
                     context.dataStore.readEncrypted(
-                        KeyStore.DataStoreEncrypted,
+                        KeyAlias.DataStoreEncrypted,
                         UserSecrets.SecretKeyStoreKey
                     ) ?: ByteArray(0)
                 )
@@ -56,12 +55,12 @@ object SecretStore {
     fun save(context: Context, userSecrets: UserSecrets): UserSecrets {
         val saveUserSecrets = suspend {
             context.dataStore.writeEncrypted(
-                KeyStore.DataStoreEncrypted,
+                KeyAlias.DataStoreEncrypted,
                 UserSecrets.PrivateKeyStoreKey,
                 Hex.decode(userSecrets.privateKey)
             )
             context.dataStore.writeEncrypted(
-                KeyStore.DataStoreEncrypted,
+                KeyAlias.DataStoreEncrypted,
                 UserSecrets.SecretKeyStoreKey,
                 Hex.decode(userSecrets.secretKey)
             )
@@ -115,8 +114,4 @@ data class UserSecrets(
         const val PrivateKeyStoreKey = "private_key"
         const val SecretKeyStoreKey = "secret_key"
     }
-}
-
-enum class KeyStore : KeyStoreAlias {
-    DataStoreEncrypted,
 }

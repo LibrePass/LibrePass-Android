@@ -20,7 +20,7 @@ import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherCard
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
-import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
@@ -129,7 +129,7 @@ fun DashboardScreen(navController: NavController) {
                 }
             }
         } catch (e: Exception) {
-            e.handle(context)
+            e.showErrorToast(context)
         } finally {
             // get cipher from local repository and update UI
             updateLocalCiphers()
@@ -176,7 +176,7 @@ fun DashboardScreen(navController: NavController) {
 
                             ciphers = ciphers.filter { it.id != cipher.id }
                         } catch (e: Exception) {
-                            e.handle(context)
+                            e.showErrorToast(context)
                         }
                     }
                 }

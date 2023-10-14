@@ -34,7 +34,7 @@ import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
-import dev.medzik.librepass.android.utils.exception.handle
+import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
@@ -75,8 +75,7 @@ fun RegisterScreen(navController: NavController) {
                 }
             } catch (e: Exception) {
                 loading = false
-
-                e.handle(context)
+                e.showErrorToast(context)
             }
         }
     }

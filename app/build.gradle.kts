@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.coil.compose)
     implementation(libs.google.accompanist.drawablepainter)
+    implementation(libs.google.accompanist.swiperefresh)
     implementation(libs.google.accompanist.systemuicontroller)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.librepass.client)

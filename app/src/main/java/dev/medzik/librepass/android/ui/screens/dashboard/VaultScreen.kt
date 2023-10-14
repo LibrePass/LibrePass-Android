@@ -12,6 +12,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.librepass.android.data.CipherTable
@@ -150,37 +152,44 @@ fun VaultScreen(navController: NavController) {
         updateCiphers()
     }
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
+    // Google has not yet added pull refresh to material3 for reasons unknown to me.
+    @Suppress("DEPRECATION")
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(refreshing),
+        onRefresh = { updateCiphers() },
     ) {
-        items(ciphers.size) { index ->
-            CipherCard(
-                cipher = ciphers[index],
-                onClick = { cipher ->
-                    navController.navigate(
-                        screen = Screen.CipherView,
-                        args = arrayOf(Argument.CipherId to cipher.id.toString())
-                    )
-                },
-                onEdit = { cipher ->
-                    navController.navigate(
-                        screen = Screen.CipherEdit,
-                        args = arrayOf(Argument.CipherId to cipher.id.toString())
-                    )
-                },
-                onDelete = { cipher ->
-                    scope.launch(Dispatchers.IO) {
-                        try {
-                            cipherClient.delete(cipher.id)
-                            repository.cipher.delete(cipher.id)
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            items(ciphers.size) { index ->
+                CipherCard(
+                    cipher = ciphers[index],
+                    onClick = { cipher ->
+                        navController.navigate(
+                            screen = Screen.CipherView,
+                            args = arrayOf(Argument.CipherId to cipher.id.toString())
+                        )
+                    },
+                    onEdit = { cipher ->
+                        navController.navigate(
+                            screen = Screen.CipherEdit,
+                            args = arrayOf(Argument.CipherId to cipher.id.toString())
+                        )
+                    },
+                    onDelete = { cipher ->
+                        scope.launch(Dispatchers.IO) {
+                            try {
+                                cipherClient.delete(cipher.id)
+                                repository.cipher.delete(cipher.id)
 
-                            ciphers = ciphers.filter { it.id != cipher.id }
-                        } catch (e: Exception) {
-                            e.showErrorToast(context)
+                                ciphers = ciphers.filter { it.id != cipher.id }
+                            } catch (e: Exception) {
+                                e.showErrorToast(context)
+                            }
                         }
                     }
-                }
-            )
+                )
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ package dev.medzik.librepass.android.ui.composables
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,7 +41,8 @@ fun CipherCard(
     cipher: Cipher,
     onClick: (Cipher) -> Unit,
     onEdit: (Cipher) -> Unit,
-    onDelete: (Cipher) -> Unit
+    onDelete: (Cipher) -> Unit,
+    showCipherActions: Boolean = true
 ) {
     val sheetState = rememberBottomSheetState()
 
@@ -63,8 +65,9 @@ fun CipherCard(
                     onClick = { onClick(cipher) },
                     onLongClick = { showMoreOptions() }
                 )
-                .padding(vertical = 8.dp, horizontal = 24.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .size(64.dp)
+                .padding(horizontal = 24.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             val domain = getDomain()
             if (domain != null) {
@@ -85,7 +88,8 @@ fun CipherCard(
                 modifier = Modifier
                     .padding(start = 16.dp)
                     .fillMaxSize()
-                    .weight(1f)
+                    .weight(1f),
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = cipherData.name.shorten(SHORTEN_NAME_LENGTH),
@@ -102,16 +106,22 @@ fun CipherCard(
                 }
             }
 
-            IconButton(onClick = { showMoreOptions() }) {
-                Icon(Icons.Default.MoreHoriz, contentDescription = null)
-            }
+//            IconButton(onClick = { showMoreOptions() }) {
+//                Icon(Icons.Default.Search, contentDescription = null)
+//            }
 
-            CipherActionsSheet(
-                state = sheetState,
-                onClick = { onClick(cipher) },
-                onEdit = { onEdit(cipher) },
-                onDelete = { onDelete(cipher) }
-            )
+            if (showCipherActions) {
+                IconButton(onClick = { showMoreOptions() }) {
+                    Icon(Icons.Default.MoreHoriz, contentDescription = null)
+                }
+
+                CipherActionsSheet(
+                    state = sheetState,
+                    onClick = { onClick(cipher) },
+                    onEdit = { onEdit(cipher) },
+                    onDelete = { onDelete(cipher) }
+                )
+            }
         }
     }
 }

@@ -59,7 +59,8 @@ sealed class StoreKey<T>(
 enum class ThemeValues {
     SYSTEM,
     LIGHT,
-    DARK
+    DARK,
+    BLACK
 }
 
 enum class VaultTimeoutValues(val seconds: Int) {

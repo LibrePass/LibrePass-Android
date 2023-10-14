@@ -15,6 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
+import dev.medzik.android.components.rememberMutableBoolean
+import dev.medzik.android.components.rememberMutableString
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
@@ -22,15 +24,13 @@ import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
-import dev.medzik.librepass.android.utils.rememberLoadingState
-import dev.medzik.librepass.android.utils.rememberStringData
 
 @Composable
 fun AddCustomServer(navController: NavController) {
     val context = LocalContext.current
 
-    var loading by rememberLoadingState()
-    var server by rememberStringData()
+    var loading by rememberMutableBoolean()
+    var server by rememberMutableString()
 
     fun submit(server: String) {
         loading = true

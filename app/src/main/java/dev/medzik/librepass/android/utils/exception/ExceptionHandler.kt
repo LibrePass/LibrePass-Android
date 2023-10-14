@@ -1,9 +1,9 @@
 package dev.medzik.librepass.android.utils.exception
 
 import android.content.Context
+import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
 import kotlinx.coroutines.DelicateCoroutinesApi

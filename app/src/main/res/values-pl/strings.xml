@@ -54,9 +54,9 @@
     <string name="CipherBottomSheet_Edit">Edytuj</string>
     <string name="CipherBottomSheet_Delete">Usuń</string>
 
-    <!-- Dashboard bottom navigation -->
-    <string name="DashboardBottomNav_Dashboard">Sejf</string>
-    <string name="DashboardBottomNav_Settings">Ustawienia</string>
+    <!-- Vault Dropdown Menu navigation -->
+    <string name="VaultDropdownMenuNav_Settings">Ustawienia</string>
+    <string name="VaultDropdownMenuNav_Lock">Zablokuj sejf</string>
 
     <!-- Settings -->
     <string name="Settings_Group_Appearance">Wygląd</string>

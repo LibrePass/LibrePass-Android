@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
-fun DashboardScreen(navController: NavController) {
+fun VaultScreen(navController: NavController) {
     val context = LocalContext.current
 
     val userSecrets = context.getUserSecrets()

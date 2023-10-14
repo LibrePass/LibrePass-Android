@@ -1,13 +1,10 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,8 +29,6 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.TextInputField
-import dev.medzik.librepass.android.utils.TopBar
-import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
@@ -80,135 +75,117 @@ fun RegisterScreen(navController: NavController) {
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                title = stringResource(R.string.TopBar_Register),
-                navigationIcon = {
-                    TopBarBackIcon(navController)
-                }
-            )
+    TextInputField(
+        label = stringResource(R.string.InputField_Email),
+        value = email,
+        onValueChange = { email = it },
+        isError = email.isNotEmpty() && !email.contains("@"),
+        errorMessage = stringResource(R.string.Error_InvalidEmail),
+        keyboardType = KeyboardType.Email
+    )
+
+    TextInputField(
+        label = stringResource(R.string.InputField_Password),
+        value = password,
+        onValueChange = { password = it },
+        hidden = true,
+        isError = password.isNotEmpty() && password.length < 8,
+        errorMessage = stringResource(R.string.Error_InvalidPasswordTooShort),
+        keyboardType = KeyboardType.Password
+    )
+
+    TextInputField(
+        label = stringResource(R.string.InputField_ConfirmPassword),
+        value = configPassword,
+        onValueChange = { configPassword = it },
+        hidden = true,
+        isError = configPassword.isNotEmpty() && configPassword != password,
+        errorMessage = stringResource(R.string.Error_PasswordsDoNotMatch),
+        keyboardType = KeyboardType.Password
+    )
+
+    TextInputField(
+        label = "${stringResource(R.string.InputField_PasswordHint)} (${stringResource(R.string.InputField_Optional)})",
+        value = passwordHint,
+        onValueChange = { passwordHint = it },
+        keyboardType = KeyboardType.Text
+    )
+
+    val serverChoiceDialog = rememberDialogState()
+
+    @Composable
+    fun getServerName(server: String): String {
+        return when (server) {
+            Server.PRODUCTION -> {
+                stringResource(R.string.Server_Choice_Dialog_Official)
+            }
+
+            Server.TEST -> {
+                stringResource(R.string.Server_Choice_Dialog_Testing)
+            }
+
+            else -> server
         }
-    ) { innerPadding ->
-        Column(
+    }
+
+    Row(
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .clickable { serverChoiceDialog.show() }
+    ) {
+        Text(
+            text = stringResource(R.string.Server_AuthScreen_Server_Address) + ": ",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+        )
+
+        Text(
+            text = getServerName(server),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+
+    LoadingButton(
+        loading = loading,
+        onClick = { submit(email, password) },
+        enabled = email.contains("@") && password.length >= 8,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp)
+    ) {
+        Text(stringResource(R.string.Button_Register))
+    }
+
+    var servers = listOf(Server.PRODUCTION)
+        .plus(context.readKey(StoreKey.CustomServers))
+        .plus("custom_server")
+
+    if (BuildConfig.DEBUG) servers = servers.plus(Server.TEST)
+
+    PickerDialog(
+        state = serverChoiceDialog,
+        title = stringResource(R.string.Server_Choice_Dialog_Title),
+        items = servers,
+        onSelected = {
+            if (it == "custom_server") {
+                navController.navigate(Screen.AddCustomServer)
+            } else server = it
+        }
+    ) {
+        val text = when (it) {
+            "custom_server" -> {
+                stringResource(R.string.Server_Choice_Dialog_Add_Custom)
+            }
+
+            else -> getServerName(it)
+        }
+
+        Text(
+            text = text,
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-        ) {
-            TextInputField(
-                label = stringResource(R.string.InputField_Email),
-                value = email,
-                onValueChange = { email = it },
-                isError = email.isNotEmpty() && !email.contains("@"),
-                errorMessage = stringResource(R.string.Error_InvalidEmail),
-                keyboardType = KeyboardType.Email
-            )
-
-            TextInputField(
-                label = stringResource(R.string.InputField_Password),
-                value = password,
-                onValueChange = { password = it },
-                hidden = true,
-                isError = password.isNotEmpty() && password.length < 8,
-                errorMessage = stringResource(R.string.Error_InvalidPasswordTooShort),
-                keyboardType = KeyboardType.Password
-            )
-
-            TextInputField(
-                label = stringResource(R.string.InputField_ConfirmPassword),
-                value = configPassword,
-                onValueChange = { configPassword = it },
-                hidden = true,
-                isError = configPassword.isNotEmpty() && configPassword != password,
-                errorMessage = stringResource(R.string.Error_PasswordsDoNotMatch),
-                keyboardType = KeyboardType.Password
-            )
-
-            TextInputField(
-                label = "${stringResource(R.string.InputField_PasswordHint)} (${stringResource(R.string.InputField_Optional)})",
-                value = passwordHint,
-                onValueChange = { passwordHint = it },
-                keyboardType = KeyboardType.Text
-            )
-
-            val serverChoiceDialog = rememberDialogState()
-
-            @Composable
-            fun getServerName(server: String): String {
-                return when (server) {
-                    Server.PRODUCTION -> {
-                        stringResource(R.string.Server_Choice_Dialog_Official)
-                    }
-
-                    Server.TEST -> {
-                        stringResource(R.string.Server_Choice_Dialog_Testing)
-                    }
-
-                    else -> server
-                }
-            }
-
-            Row(
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .clickable { serverChoiceDialog.show() }
-            ) {
-                Text(
-                    text = stringResource(R.string.Server_AuthScreen_Server_Address) + ": ",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
-
-                Text(
-                    text = getServerName(server),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            LoadingButton(
-                loading = loading,
-                onClick = { submit(email, password) },
-                enabled = email.contains("@") && password.length >= 8,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 40.dp)
-            ) {
-                Text(stringResource(R.string.Button_Register))
-            }
-
-            var servers = listOf(Server.PRODUCTION)
-                .plus(context.readKey(StoreKey.CustomServers))
-                .plus("custom_server")
-
-            if (BuildConfig.DEBUG) servers = servers.plus(Server.TEST)
-
-            PickerDialog(
-                state = serverChoiceDialog,
-                title = stringResource(R.string.Server_Choice_Dialog_Title),
-                items = servers,
-                onSelected = {
-                    if (it == "custom_server") {
-                        navController.navigate(Screen.AddCustomServer)
-                    } else server = it
-                }
-            ) {
-                val text = when (it) {
-                    "custom_server" -> {
-                        stringResource(R.string.Server_Choice_Dialog_Add_Custom)
-                    }
-
-                    else -> getServerName(it)
-                }
-
-                Text(
-                    text = text,
-                    modifier = Modifier
-                        .padding(vertical = 12.dp)
-                        .fillMaxWidth()
-                )
-            }
-        }
+                .padding(vertical = 12.dp)
+                .fillMaxWidth()
+        )
     }
 }

@@ -1,13 +1,11 @@
-package dev.medzik.librepass.android.ui.screens.dashboard.settings
+package dev.medzik.librepass.android.ui.screens.settings
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,7 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import dev.medzik.android.components.PickerDialog
 import dev.medzik.android.components.PropertyPreference
 import dev.medzik.android.components.SwitcherPreference
@@ -36,14 +33,12 @@ import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
-import dev.medzik.librepass.android.utils.TopBar
-import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsSecurity(navController: NavController) {
+fun SettingsSecurityScreen() {
     val context = LocalContext.current
 
     val userSecrets = context.getUserSecrets() ?: return
@@ -137,51 +132,38 @@ fun SettingsSecurity(navController: NavController) {
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                stringResource(R.string.Settings_Group_Security),
-                navigationIcon = { TopBarBackIcon(navController) }
-            )
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            SwitcherPreference(
-                title = stringResource(R.string.Settings_BiometricUnlock),
-                icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
-                checked = biometricEnabled,
-                onCheckedChange = { biometricHandler() }
-            )
+    SwitcherPreference(
+        title = stringResource(R.string.Settings_BiometricUnlock),
+        icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
+        checked = biometricEnabled,
+        onCheckedChange = { biometricHandler() }
+    )
 
-            PropertyPreference(
-                title = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
-                icon = { Icon(Icons.Default.Timer, contentDescription = null) },
-                currentValue = getVaultTimeoutTranslation(
-                    VaultTimeoutValues.fromSeconds(
-                        vaultTimeout
-                    )
-                ),
-                onClick = { timerDialogState.show() },
+    PropertyPreference(
+        title = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
+        icon = { Icon(Icons.Default.Timer, contentDescription = null) },
+        currentValue = getVaultTimeoutTranslation(
+            VaultTimeoutValues.fromSeconds(
+                vaultTimeout
             )
+        ),
+        onClick = { timerDialogState.show() },
+    )
 
-            PickerDialog(
-                state = timerDialogState,
-                title = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
-                items = VaultTimeoutValues.values().asList(),
-                onSelected = {
-                    vaultTimeout = it.seconds
-                    context.writeKey(StoreKey.VaultTimeout, it.seconds)
-                }
-            ) {
-                Text(
-                    text = getVaultTimeoutTranslation(it),
-                    modifier = Modifier
-                        .padding(vertical = 12.dp)
-                        .fillMaxWidth()
-                )
-            }
+    PickerDialog(
+        state = timerDialogState,
+        title = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
+        items = VaultTimeoutValues.values().asList(),
+        onSelected = {
+            vaultTimeout = it.seconds
+            context.writeKey(StoreKey.VaultTimeout, it.seconds)
         }
+    ) {
+        Text(
+            text = getVaultTimeoutTranslation(it),
+            modifier = Modifier
+                .padding(vertical = 12.dp)
+                .fillMaxWidth()
+        )
     }
 }

@@ -1,13 +1,9 @@
-package dev.medzik.librepass.android.ui.screens.dashboard.settings
+package dev.medzik.librepass.android.ui.screens.settings
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
@@ -16,12 +12,10 @@ import dev.medzik.android.components.navigate
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.utils.TopBar
-import dev.medzik.librepass.android.utils.TopBarBackIcon
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun SettingsAccount(navController: NavController) {
+fun SettingsAccountScreen(navController: NavController) {
     val context = LocalContext.current
 
     val repository = context.getRepository()
@@ -38,22 +32,9 @@ fun SettingsAccount(navController: NavController) {
         )
     }
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                title = stringResource(R.string.Settings_Group_Account),
-                navigationIcon = { TopBarBackIcon(navController) }
-            )
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            PreferenceEntry(
-                title = stringResource(R.string.Settings_Logout),
-                icon = { Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null) },
-                onClick = { logout() },
-            )
-        }
-    }
+    PreferenceEntry(
+        title = stringResource(R.string.Settings_Logout),
+        icon = { Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null) },
+        onClick = { logout() },
+    )
 }

@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens.ciphers
+package dev.medzik.librepass.android.ui.screens.dashboard
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

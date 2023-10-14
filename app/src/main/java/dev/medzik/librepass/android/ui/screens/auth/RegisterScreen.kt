@@ -23,6 +23,9 @@ import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.PickerDialog
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
+import dev.medzik.android.components.rememberMutableBoolean
+import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
@@ -32,9 +35,6 @@ import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.rememberLoadingState
-import dev.medzik.librepass.android.utils.rememberStringData
-import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
@@ -46,12 +46,12 @@ fun RegisterScreen(navController: NavController) {
 
     val scope = rememberCoroutineScope()
 
-    var loading by rememberLoadingState()
-    var email by rememberStringData()
-    var password by rememberStringData()
-    var configPassword by rememberStringData()
-    var passwordHint by rememberStringData()
-    var server by rememberStringData(Server.PRODUCTION)
+    var loading by rememberMutableBoolean()
+    var email by rememberMutableString()
+    var password by rememberMutableString()
+    var configPassword by rememberMutableString()
+    var passwordHint by rememberMutableString()
+    var server by rememberMutableString(Server.PRODUCTION)
 
     // Register user with given credentials and navigate to log in screen.
     fun submit(email: String, password: String) {

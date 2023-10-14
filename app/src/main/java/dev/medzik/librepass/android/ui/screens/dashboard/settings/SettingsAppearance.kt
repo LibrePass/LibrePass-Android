@@ -50,17 +50,15 @@ fun SettingsAppearance(navController: NavController) {
             modifier = Modifier.padding(innerPadding)
         ) {
             @Composable
-            fun getThemeTranslation(theme: Int): String {
-                val themeRes = when (theme) {
-                    ThemeValues.SYSTEM.ordinal -> R.string.Settings_SystemDefault
-                    ThemeValues.LIGHT.ordinal -> R.string.Settings_Light
-                    ThemeValues.DARK.ordinal -> R.string.Settings_Dark
-                    ThemeValues.BLACK.ordinal -> R.string.Settings_Black
-                    // never happens
-                    else -> throw UnsupportedOperationException()
-                }
-
-                return stringResource(themeRes)
+            fun getThemeTranslation(theme: ThemeValues): String {
+                return stringResource(
+                    when (theme) {
+                        ThemeValues.SYSTEM -> R.string.Settings_SystemDefault
+                        ThemeValues.LIGHT -> R.string.Settings_Light
+                        ThemeValues.DARK -> R.string.Settings_Dark
+                        ThemeValues.BLACK -> R.string.Settings_Black
+                    }
+                )
             }
 
             val theme = context.readKey(StoreKey.Theme)
@@ -69,7 +67,7 @@ fun SettingsAppearance(navController: NavController) {
             PropertyPreference(
                 title = stringResource(R.string.Settings_Theme),
                 icon = { Icon(Icons.Default.DarkMode, contentDescription = null) },
-                currentValue = getThemeTranslation(theme),
+                currentValue = getThemeTranslation(ThemeValues.values()[theme]),
                 onClick = { themeDialogState.show() },
             )
 
@@ -103,7 +101,7 @@ fun SettingsAppearance(navController: NavController) {
                         modifier = Modifier
                             .padding(start = 12.dp)
                             .fillMaxWidth(),
-                        text = getThemeTranslation(it.ordinal)
+                        text = getThemeTranslation(it)
                     )
                 }
             }

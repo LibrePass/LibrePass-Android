@@ -21,7 +21,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.navigate
+import dev.medzik.android.components.rememberMutableBoolean
+import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.crypto.KeyStore
+import dev.medzik.android.utils.showToast
 import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Hex
 import dev.medzik.libcrypto.X25519
@@ -35,9 +38,6 @@ import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.exception.EncryptException
-import dev.medzik.librepass.android.utils.rememberLoadingState
-import dev.medzik.librepass.android.utils.rememberStringData
-import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
@@ -50,8 +50,8 @@ fun UnlockScreen(navController: NavController) {
 
     val scope = rememberCoroutineScope()
 
-    var loading by rememberLoadingState()
-    var password by rememberStringData()
+    var loading by rememberMutableBoolean()
+    var password by rememberMutableString()
 
     val credentials = context.getRepository().credentials.get()!!
 

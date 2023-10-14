@@ -23,6 +23,9 @@ import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.PickerDialog
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
+import dev.medzik.android.components.rememberMutableBoolean
+import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.utils.showToast
 import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
@@ -37,9 +40,6 @@ import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.rememberLoadingState
-import dev.medzik.librepass.android.utils.rememberStringData
-import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
@@ -51,10 +51,10 @@ fun LoginScreen(navController: NavController) {
 
     val scope = rememberCoroutineScope()
 
-    var loading by rememberLoadingState()
-    var email by rememberStringData()
-    var password by rememberStringData()
-    var server by rememberStringData(Server.PRODUCTION)
+    var loading by rememberMutableBoolean()
+    var email by rememberMutableString()
+    var password by rememberMutableString()
+    var server by rememberMutableString(Server.PRODUCTION)
 
     val credentialsRepository = context.getRepository().credentials
 

@@ -1,0 +1,9 @@
+- Add button in AuthScreen to get password hint
+- Translate "server address" string in auth screens
+- Refactor application
+- Use material3 with dynamic colors in splash screen
+- Add Pure Black (AMOLED) theme
+- Refactor navigation logic
+- Add search bar
+- Add support for merging application data to prevent crashes
+- Add spacer on the floating action button to completely display the last entry

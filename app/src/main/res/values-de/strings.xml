@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">LibrePass</string>
-
     <!-- TopBar -->
     <string name="TopBar_Register">Registrieren</string>
     <string name="TopBar_Login">Anmelden</string>

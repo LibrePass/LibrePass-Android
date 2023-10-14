@@ -1,10 +1,7 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,8 +19,6 @@ import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.TextInputField
-import dev.medzik.librepass.android.utils.TopBar
-import dev.medzik.librepass.android.utils.TopBarBackIcon
 
 @Composable
 fun AddCustomServer(navController: NavController) {
@@ -44,36 +39,20 @@ fun AddCustomServer(navController: NavController) {
         loading = false
     }
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                stringResource(R.string.TopBar_AddCustomServer),
-                navigationIcon = { TopBarBackIcon(navController) }
-            )
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-        ) {
-            TextInputField(
-                label = stringResource(R.string.Server_Add_InputField_Server),
-                value = server,
-                onValueChange = { server = it }
-            )
+    TextInputField(
+        label = stringResource(R.string.Server_Add_InputField_Server),
+        value = server,
+        onValueChange = { server = it }
+    )
 
-            LoadingButton(
-                loading = loading,
-                onClick = { submit(server) },
-                enabled = server.isNotEmpty(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 80.dp, vertical = 8.dp)
-            ) {
-                Text(stringResource(R.string.Button_Add))
-            }
-        }
+    LoadingButton(
+        loading = loading,
+        onClick = { submit(server) },
+        enabled = server.isNotEmpty(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 80.dp, vertical = 8.dp)
+    ) {
+        Text(stringResource(R.string.Button_Add))
     }
 }

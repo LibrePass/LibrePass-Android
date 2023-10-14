@@ -24,6 +24,7 @@ import dev.medzik.android.components.PickerDialog
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.libcrypto.Hex
+import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.getRepository
@@ -213,13 +214,11 @@ fun LoginScreen(navController: NavController) {
                 Text(stringResource(R.string.Button_Login))
             }
 
-            val servers = listOf(Server.PRODUCTION)
+            var servers = listOf(Server.PRODUCTION)
                 .plus(context.readKey(StoreKey.CustomServers))
                 .plus("custom_server")
 
-            // TODO
-//            if (BuildConfig.DEBUG)
-//                servers = servers.plus(Server.TEST)
+            if (BuildConfig.DEBUG) servers = servers.plus(Server.TEST)
 
             PickerDialog(
                 state = serverChoiceDialog,

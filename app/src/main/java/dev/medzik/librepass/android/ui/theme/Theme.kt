@@ -89,11 +89,12 @@ private val darkColorScheme = darkColorScheme(
 @Composable
 fun LibrePassTheme(
     darkTheme: Boolean,
+    blackTheme: Boolean,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
+    var colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
@@ -101,6 +102,13 @@ fun LibrePassTheme(
 
         darkTheme -> darkColorScheme
         else -> lightColorScheme
+    }
+
+    if (blackTheme) {
+        colorScheme = colorScheme.copy(
+            surface = Color.Black,
+            background = Color.Black
+        )
     }
 
     val systemUiController = rememberSystemUiController()
@@ -122,7 +130,7 @@ fun LibrePassTheme(
         typography = Typography,
     ) {
         Surface(
-            color = MaterialTheme.colorScheme.background,
+            color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
                 .fillMaxSize()
                 .imePadding(),

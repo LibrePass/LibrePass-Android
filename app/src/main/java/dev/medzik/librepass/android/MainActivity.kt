@@ -42,10 +42,12 @@ class MainActivity : FragmentActivity() {
         val theme = this.readKey(StoreKey.Theme)
         val autoTheme = theme == ThemeValues.SYSTEM.ordinal
         val darkTheme = theme == ThemeValues.DARK.ordinal
+        val blackTheme = theme == ThemeValues.BLACK.ordinal
 
         setContent {
             LibrePassTheme(
-                darkTheme = darkTheme || (autoTheme && isSystemInDarkTheme()),
+                darkTheme = blackTheme || darkTheme || (autoTheme && isSystemInDarkTheme()),
+                blackTheme = blackTheme,
                 dynamicColor = dynamicColor
             ) {
                 LibrePassNavigation()

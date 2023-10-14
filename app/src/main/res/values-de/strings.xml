@@ -64,6 +64,7 @@
     <string name="Settings_SystemDefault">Systemstandard</string>
     <string name="Settings_Light">Hell</string>
     <string name="Settings_Dark">Dunkel</string>
+    <string name="Settings_Black">Reines Schwarz (AMOLED)</string>
     <string name="Settings_Group_Security">Sicherheit</string>
     <string name="Settings_BiometricUnlock">Entsperren mit Biometrie</string>
     <string name="Settings_Vault_Timeout_Modal_Title">Tresor-Zeitlimit</string>

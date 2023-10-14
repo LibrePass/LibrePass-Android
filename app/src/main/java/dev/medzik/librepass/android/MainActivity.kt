@@ -30,6 +30,9 @@ class MainActivity : FragmentActivity() {
             finish()
         }
 
+        // merge application data when application updated
+        UpdateMerge.update(this)
+
         // init datastore
         userSecrets = SecretStore.initialize(this)
 

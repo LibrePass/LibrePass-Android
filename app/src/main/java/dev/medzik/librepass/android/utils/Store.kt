@@ -54,6 +54,11 @@ sealed class StoreKey<T>(
         stringSetPreferencesKey("custom_servers"),
         emptySet()
     )
+
+    data object AppVersionCode : StoreKey<Int>(
+        intPreferencesKey("app_version_code"),
+        -1
+    )
 }
 
 enum class ThemeValues {

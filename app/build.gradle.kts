@@ -12,7 +12,7 @@ android {
         applicationId = "dev.medzik.librepass.android"
         minSdk = libs.versions.android.sdk.min.get().toInt()
         targetSdk = libs.versions.android.sdk.target.get().toInt()
-        versionCode = 4
+        versionCode = 5 // already bumped
         versionName = "1.0.0-alpha04"
 
         vectorDrawables {

@@ -26,7 +26,7 @@ process-phoenix = "2.1.2"
 # Plugins
 android-application = "8.1.2"
 google-ksp = "1.9.10-1.0.13"
-jetbrains-kotlin-android = "1.9.10"
+kotlin-android = "1.9.10"
 
 [libraries]
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidx-annotation" }
@@ -62,4 +62,4 @@ process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "j
 android-application = { id = "com.android.application", version.ref = "android-application" }
 android-library = { id = "com.android.library", version.ref = "android-application" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin-android" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }

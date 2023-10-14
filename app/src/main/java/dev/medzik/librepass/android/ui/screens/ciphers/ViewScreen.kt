@@ -32,7 +32,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.components.BaseDialog
-import dev.medzik.android.components.PreferenceGroupTitle
+import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.getString
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
@@ -105,7 +105,10 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.username.isNullOrEmpty() || !cipherData.password.isNullOrEmpty()) {
                 item {
-                    PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Login))
+                    SecondaryText(
+                        stringResource(R.string.CipherField_Group_Login),
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
 
                     CipherField(
                         title = stringResource(R.string.CipherField_Username),
@@ -180,7 +183,10 @@ fun CipherViewScreen(navController: NavController) {
 
             item {
                 if (!cipherData.uris.isNullOrEmpty()) {
-                    PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Website))
+                    SecondaryText(
+                        stringResource(R.string.CipherField_Group_Website),
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
 
                     cipherData.uris?.forEachIndexed { index, it ->
                         CipherField(
@@ -194,7 +200,10 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.notes.isNullOrEmpty()) {
                 item {
-                    PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Other))
+                    SecondaryText(
+                        stringResource(R.string.CipherField_Group_Other),
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
 
                     CipherField(
                         title = stringResource(R.string.CipherField_Notes),

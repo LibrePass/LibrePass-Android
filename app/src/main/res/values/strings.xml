@@ -56,9 +56,9 @@
     <string name="CipherBottomSheet_Edit">Edit</string>
     <string name="CipherBottomSheet_Delete">Delete</string>
 
-    <!-- Dashboard bottom navigation -->
-    <string name="DashboardBottomNav_Dashboard">Dashboard</string>
-    <string name="DashboardBottomNav_Settings">Settings</string>
+    <!-- Vault Dropdown Menu navigation -->
+    <string name="VaultDropdownMenuNav_Settings">Settings</string>
+    <string name="VaultDropdownMenuNav_Lock">Lock vault</string>
 
     <!-- Settings -->
     <string name="Settings_Group_Appearance">Appearance</string>

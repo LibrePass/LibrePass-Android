@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dev.medzik.android.components.navigate
@@ -30,9 +29,6 @@ class MainActivity : FragmentActivity() {
             Log.e("LibrePass", "Uncaught exception", e)
             finish()
         }
-
-        // this will lay out our app behind the system bars (to make them transparent)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         // init datastore
         userSecrets = SecretStore.initialize(this)
@@ -70,9 +66,7 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    /**
-     * @see [LibrePassNavigation]
-     */
+    /** Called from [LibrePassNavigation] */
     fun onResume(navController: NavController) {
         // check if user is logged
         val repository = this.getRepository()

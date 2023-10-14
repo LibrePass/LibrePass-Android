@@ -1,6 +1,7 @@
 package dev.medzik.librepass.android.utils.exception
 
 import android.content.Context
+import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.showToast
 import dev.medzik.librepass.client.errors.ApiException
@@ -13,10 +14,9 @@ import kotlinx.coroutines.launch
  * Log exception if debugging is enabled.
  */
 fun Exception.debugLog() {
-    // TODO
-//    if (BuildConfig.DEBUG) {
-    printStackTrace()
-//    }
+    if (BuildConfig.DEBUG) {
+        printStackTrace()
+    }
 }
 
 /**

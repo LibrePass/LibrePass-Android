@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import dev.medzik.android.components.LoadingButton
-import dev.medzik.android.components.PreferenceGroupTitle
+import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.navigate
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
@@ -179,7 +179,10 @@ fun CipherAddEditView(
                 onValueChange = { cipherData = cipherData.copy(name = it) }
             )
 
-            PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Login))
+            SecondaryText(
+                stringResource(R.string.CipherField_Group_Login),
+                modifier = Modifier.padding(top = 8.dp)
+            )
 
             TextInputFieldBase(
                 label = stringResource(R.string.CipherField_Username),
@@ -216,7 +219,10 @@ fun CipherAddEditView(
                 }
             )
 
-            PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Website))
+            SecondaryText(
+                stringResource(R.string.CipherField_Group_Website),
+                modifier = Modifier.padding(top = 8.dp)
+            )
 
             // show field for each uri
             cipherData.uris?.forEachIndexed { index, uri ->
@@ -263,7 +269,10 @@ fun CipherAddEditView(
                 Text(stringResource(R.string.Button_AddField))
             }
 
-            PreferenceGroupTitle(stringResource(R.string.CipherField_Group_Other))
+            SecondaryText(
+                stringResource(R.string.CipherField_Group_Other),
+                modifier = Modifier.padding(top = 8.dp)
+            )
 
             TextInputFieldBase(
                 label = stringResource(R.string.CipherField_Notes),

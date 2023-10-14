@@ -15,8 +15,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -28,6 +26,8 @@ import com.google.gson.Gson
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.navigate
+import dev.medzik.android.components.rememberMutable
+import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
@@ -38,7 +38,6 @@ import dev.medzik.librepass.android.utils.TextInputFieldBase
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
@@ -63,10 +62,8 @@ fun CipherAddEditView(
         ?: return
 
     val scope = rememberCoroutineScope()
-    var loading by rememberLoadingState()
-    var cipherData by remember {
-        mutableStateOf(baseCipher?.loginData ?: CipherLoginData(name = ""))
-    }
+    var loading by rememberMutableBoolean()
+    var cipherData by rememberMutable(baseCipher?.loginData ?: CipherLoginData(name = ""))
 
     val repository = context.getRepository()
     val credentials = repository.credentials.get()!!

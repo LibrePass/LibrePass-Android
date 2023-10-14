@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import dev.medzik.android.components.navigate
+import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
@@ -20,7 +21,6 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.composables.CipherCard
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.exception.handle
-import dev.medzik.librepass.android.utils.rememberLoadingState
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
@@ -40,7 +40,7 @@ fun DashboardScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     // states
-    var refreshing by rememberLoadingState()
+    var refreshing by rememberMutableBoolean()
     var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
 
     // database repository

@@ -64,6 +64,7 @@
     <string name="Settings_SystemDefault">Ustawiania systemowe</string>
     <string name="Settings_Light">Jasny</string>
     <string name="Settings_Dark">Ciemny</string>
+    <string name="Settings_Black">Czysta czerń (AMOLED)</string>
     <string name="Settings_Group_Security">Zabezpieczenia</string>
     <string name="Settings_BiometricUnlock">Odblokowanie biometryczne</string>
     <string name="Settings_Vault_Timeout_Modal_Title">Limit czasu sejfu</string>

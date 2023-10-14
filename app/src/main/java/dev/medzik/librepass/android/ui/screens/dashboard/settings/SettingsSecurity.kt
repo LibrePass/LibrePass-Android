@@ -31,8 +31,7 @@ import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
-import dev.medzik.librepass.android.utils.Biometric
-import dev.medzik.librepass.android.utils.BiometricAlias
+import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
@@ -40,6 +39,7 @@ import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
+import dev.medzik.librepass.android.utils.showBiometricPrompt
 import kotlinx.coroutines.launch
 
 @Composable
@@ -56,7 +56,7 @@ fun SettingsSecurity(navController: NavController) {
     var vaultTimeout by remember { mutableIntStateOf(context.readKey(StoreKey.VaultTimeout)) }
 
     // Biometric checked event handler (enable/disable biometric authentication)
-    fun showBiometricPrompt() {
+    fun biometricHandler() {
         if (biometricEnabled) {
             biometricEnabled = false
 
@@ -71,10 +71,10 @@ fun SettingsSecurity(navController: NavController) {
             return
         }
 
-        Biometric.showBiometricPrompt(
+        showBiometricPrompt(
             context = context as MainActivity,
             cipher = KeyStore.initForEncryption(
-                BiometricAlias.PrivateKey,
+                KeyAlias.BiometricPrivateKey,
                 deviceAuthentication = true
             ),
             onAuthenticationSucceeded = { cipher ->
@@ -152,7 +152,7 @@ fun SettingsSecurity(navController: NavController) {
                 title = stringResource(R.string.Settings_BiometricUnlock),
                 icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
                 checked = biometricEnabled,
-                onCheckedChange = { showBiometricPrompt() }
+                onCheckedChange = { biometricHandler() }
             )
 
             PropertyPreference(

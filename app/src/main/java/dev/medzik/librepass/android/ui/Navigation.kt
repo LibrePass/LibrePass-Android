@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
@@ -44,6 +45,7 @@ import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.CipherAddScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.CipherEditScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.CipherViewScreen
+import dev.medzik.librepass.android.ui.screens.dashboard.SearchScreen
 import dev.medzik.librepass.android.ui.screens.dashboard.VaultScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsAccountScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsAppearanceScreen
@@ -112,6 +114,13 @@ enum class Screen(
                 actions = {
                     val context = LocalContext.current
                     var expanded by rememberMutableBoolean()
+                    IconButton(onClick = { it.navigate(Search) }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null
+                        )
+                    }
+
                     IconButton(onClick = { expanded = !expanded }) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
@@ -175,6 +184,10 @@ enum class Screen(
             )
         },
         composable = { PasswordGeneratorScreen(it) }
+    ),
+    Search(
+        customScaffold = true,
+        composable = { SearchScreen(it) }
     ),
 
     // Settings

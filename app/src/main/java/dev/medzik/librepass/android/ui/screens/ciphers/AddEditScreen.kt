@@ -37,8 +37,8 @@ import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.TextInputFieldBase
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.TopBarBackIcon
-import dev.medzik.librepass.android.utils.exception.handle
 import dev.medzik.librepass.android.utils.shorten
+import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
@@ -141,7 +141,7 @@ fun CipherAddEditView(
                 scope.launch(Dispatchers.Main) { navController.popBackStack() }
             } catch (e: Exception) {
                 loading = false
-                e.handle(context)
+                e.showErrorToast(context)
             }
         }
     }

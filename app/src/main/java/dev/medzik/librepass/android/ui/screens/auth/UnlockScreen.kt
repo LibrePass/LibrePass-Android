@@ -31,13 +31,12 @@ import dev.medzik.libcrypto.X25519
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.utils.Biometric
-import dev.medzik.librepass.android.utils.BiometricAlias
+import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.UserSecrets
-import dev.medzik.librepass.android.utils.exception.EncryptException
+import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
@@ -78,7 +77,7 @@ fun UnlockScreen(navController: NavController) {
                 val publicKey = X25519.publicFromPrivate(passwordHash.hash)
 
                 if (Hex.encode(publicKey) != credentials.publicKey)
-                    throw EncryptException("Invalid password")
+                    throw Exception("Invalid password")
 
                 val secretKey =
                     Cryptography.computeSharedKey(passwordHash.hash, Hex.decode(credentials.publicKey))
@@ -100,7 +99,7 @@ fun UnlockScreen(navController: NavController) {
                         )
                     }
                 }
-            } catch (e: EncryptException) {
+            } catch (e: Exception) {
                 // if password is invalid
                 loading = false
                 context.showToast(R.string.Error_InvalidCredentials)
@@ -109,10 +108,10 @@ fun UnlockScreen(navController: NavController) {
     }
 
     fun showBiometric() {
-        Biometric.showBiometricPrompt(
+        showBiometricPrompt(
             context = context,
             cipher = KeyStore.initForDecryption(
-                alias = BiometricAlias.PrivateKey,
+                alias = KeyAlias.BiometricPrivateKey,
                 initializationVector = Hex.decode(credentials.biometricProtectedPrivateKeyIV!!),
                 deviceAuthentication = true
             ),

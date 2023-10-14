@@ -82,6 +82,9 @@ dependencies {
     implementation(libs.medzik.android.utils)
     implementation(libs.process.phoenix)
 
+    // for splash screen with material3 and dynamic color
+    implementation(libs.google.material)
+
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // for preview support

@@ -1,11 +1,8 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,7 +31,6 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.TextInputField
-import dev.medzik.librepass.android.utils.TopBar
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.utils.Cryptography
@@ -94,7 +90,7 @@ fun UnlockScreen(navController: NavController) {
                 if (loading) {
                     scope.launch(Dispatchers.Main) {
                         navController.navigate(
-                            screen = Screen.Dashboard,
+                            screen = Screen.Vault,
                             disableBack = true
                         )
                     }
@@ -130,7 +126,7 @@ fun UnlockScreen(navController: NavController) {
                 )
 
                 navController.navigate(
-                    screen = Screen.Dashboard,
+                    screen = Screen.Vault,
                     disableBack = true
                 )
             },
@@ -142,50 +138,35 @@ fun UnlockScreen(navController: NavController) {
         if (credentials.biometricEnabled) showBiometric()
     }
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                stringResource(R.string.TopBar_Unlock)
-            )
-        },
-    ) { innerPadding ->
-        Column(
+    TextInputField(
+        label = stringResource(R.string.InputField_Password),
+        value = password,
+        onValueChange = { password = it },
+        hidden = true,
+        keyboardType = KeyboardType.Password
+    )
+
+    LoadingButton(
+        loading = loading,
+        onClick = { onUnlock(password) },
+        enabled = password.isNotEmpty(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+            .padding(horizontal = 80.dp)
+    ) {
+        Text(stringResource(R.string.Button_Unlock))
+    }
+
+    if (credentials.biometricEnabled) {
+        OutlinedButton(
+            onClick = { showBiometric() },
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .padding(horizontal = 80.dp)
         ) {
-            TextInputField(
-                label = stringResource(R.string.InputField_Password),
-                value = password,
-                onValueChange = { password = it },
-                hidden = true,
-                keyboardType = KeyboardType.Password
-            )
-
-            LoadingButton(
-                loading = loading,
-                onClick = { onUnlock(password) },
-                enabled = password.isNotEmpty(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-                    .padding(horizontal = 80.dp)
-            ) {
-                Text(stringResource(R.string.Button_Unlock))
-            }
-
-            if (credentials.biometricEnabled) {
-                OutlinedButton(
-                    onClick = { showBiometric() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
-                        .padding(horizontal = 80.dp)
-                ) {
-                    Text(stringResource(R.string.Button_UseBiometric))
-                }
-            }
+            Text(stringResource(R.string.Button_UseBiometric))
         }
     }
 }

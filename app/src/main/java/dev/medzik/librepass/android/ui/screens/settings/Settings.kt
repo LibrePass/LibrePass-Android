@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens.dashboard.settings
+package dev.medzik.librepass.android.ui.screens.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons

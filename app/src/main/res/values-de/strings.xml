@@ -54,9 +54,9 @@
     <string name="CipherBottomSheet_Edit">Bearbeiten</string>
     <string name="CipherBottomSheet_Delete">Löschen</string>
 
-    <!-- Dashboard bottom navigation -->
-    <string name="DashboardBottomNav_Dashboard">Dashboard</string>
-    <string name="DashboardBottomNav_Settings">Einstellungen</string>
+    <!-- Vault Dropdown Menu navigation -->
+    <string name="VaultDropdownMenuNav_Settings">Einstellungen</string>
+    <string name="VaultDropdownMenuNav_Lock">Tresor sperren</string>
 
     <!-- Settings -->
     <string name="Settings_Group_Appearance">Erscheinungsbild</string>

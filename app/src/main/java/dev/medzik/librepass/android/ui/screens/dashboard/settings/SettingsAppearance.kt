@@ -55,6 +55,7 @@ fun SettingsAppearance(navController: NavController) {
                     ThemeValues.SYSTEM.ordinal -> R.string.Settings_SystemDefault
                     ThemeValues.LIGHT.ordinal -> R.string.Settings_Light
                     ThemeValues.DARK.ordinal -> R.string.Settings_Dark
+                    ThemeValues.BLACK.ordinal -> R.string.Settings_Black
                     // never happens
                     else -> throw UnsupportedOperationException()
                 }
@@ -75,9 +76,9 @@ fun SettingsAppearance(navController: NavController) {
             PickerDialog(
                 state = themeDialogState,
                 title = stringResource(R.string.Settings_Theme),
-                items = listOf(0, 1, 2),
+                items = ThemeValues.entries.toList(),
                 onSelected = {
-                    context.writeKey(StoreKey.Theme, it)
+                    context.writeKey(StoreKey.Theme, it.ordinal)
 
                     // restart application to apply changes
                     ProcessPhoenix.triggerRebirth(context)
@@ -90,11 +91,10 @@ fun SettingsAppearance(navController: NavController) {
                 ) {
                     Icon(
                         when (it) {
-                            ThemeValues.SYSTEM.ordinal -> Icons.Outlined.InvertColors
-                            ThemeValues.LIGHT.ordinal -> Icons.Outlined.LightMode
-                            ThemeValues.DARK.ordinal -> Icons.Outlined.DarkMode
-                            // never happens
-                            else -> throw UnsupportedOperationException()
+                            ThemeValues.SYSTEM -> Icons.Outlined.InvertColors
+                            ThemeValues.LIGHT -> Icons.Outlined.LightMode
+                            ThemeValues.DARK -> Icons.Outlined.DarkMode
+                            ThemeValues.BLACK -> Icons.Outlined.DarkMode
                         },
                         contentDescription = null
                     )
@@ -103,7 +103,7 @@ fun SettingsAppearance(navController: NavController) {
                         modifier = Modifier
                             .padding(start = 12.dp)
                             .fillMaxWidth(),
-                        text = getThemeTranslation(it)
+                        text = getThemeTranslation(it.ordinal)
                     )
                 }
             }

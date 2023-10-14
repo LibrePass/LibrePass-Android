@@ -66,6 +66,7 @@
     <string name="Settings_SystemDefault">System default</string>
     <string name="Settings_Light">Light</string>
     <string name="Settings_Dark">Dark</string>
+    <string name="Settings_Black">Pure black (AMOLED)</string>
     <string name="Settings_MaterialYou" translatable="false">Material You (Android 12+)</string>
     <string name="Settings_Group_Security">Security</string>
     <string name="Settings_BiometricUnlock">Unlock with biometrics</string>

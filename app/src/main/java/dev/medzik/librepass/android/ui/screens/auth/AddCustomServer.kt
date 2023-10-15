@@ -21,7 +21,7 @@ import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.TextInputField
 
 @Composable
-fun AddCustomServer(navController: NavController) {
+fun AddCustomServerScreen(navController: NavController) {
     val context = LocalContext.current
 
     var loading by rememberMutableBoolean()

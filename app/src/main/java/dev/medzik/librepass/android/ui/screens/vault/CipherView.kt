@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens.dashboard
+package dev.medzik.librepass.android.ui.screens.vault
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.History
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
@@ -36,6 +38,7 @@ import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.getString
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
+import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
@@ -192,6 +195,8 @@ fun CipherViewScreen(navController: NavController) {
                         CipherField(
                             title = stringResource(R.string.CipherField_URL) + " ${index + 1}",
                             value = it,
+                            openUri = true,
+                            uri = it,
                             copy = true
                         )
                     }
@@ -221,11 +226,15 @@ fun CipherField(
     title: String,
     value: String?,
     hidden: Boolean = false,
+    openUri: Boolean = false,
+    uri: String? = null,
     copy: Boolean = false,
     customIcon: (@Composable () -> Unit)? = null
 ) {
     if (value.isNullOrEmpty()) return
 
+    val context = LocalContext.current
+    val uriHandler = LocalUriHandler.current
     val clipboardManager = LocalClipboardManager.current
 
     var hiddenState by remember { mutableStateOf(hidden) }
@@ -263,6 +272,25 @@ fun CipherField(
                 IconButton(onClick = { hiddenState = !hiddenState }) {
                     Icon(
                         imageVector = if (hiddenState) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = null
+                    )
+                }
+            }
+
+            if (openUri) {
+                IconButton(onClick = {
+                    try {
+                        var address = uri!!
+                        if (!address.contains("http(s)?://".toRegex()))
+                            address = "https://$uri"
+
+                        uriHandler.openUri(address)
+                    } catch (e: Exception) {
+                        context.showToast("No application found for URI: $uri")
+                    }
+                }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                         contentDescription = null
                     )
                 }

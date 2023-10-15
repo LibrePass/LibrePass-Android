@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens
+package dev.medzik.librepass.android.ui.screens.vault
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

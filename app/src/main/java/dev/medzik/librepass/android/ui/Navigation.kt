@@ -36,21 +36,21 @@ import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
-import dev.medzik.librepass.android.ui.screens.PasswordGeneratorScreen
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
-import dev.medzik.librepass.android.ui.screens.auth.AddCustomServer
+import dev.medzik.librepass.android.ui.screens.auth.AddCustomServerScreen
 import dev.medzik.librepass.android.ui.screens.auth.LoginScreen
 import dev.medzik.librepass.android.ui.screens.auth.RegisterScreen
 import dev.medzik.librepass.android.ui.screens.auth.UnlockScreen
-import dev.medzik.librepass.android.ui.screens.dashboard.CipherAddScreen
-import dev.medzik.librepass.android.ui.screens.dashboard.CipherEditScreen
-import dev.medzik.librepass.android.ui.screens.dashboard.CipherViewScreen
-import dev.medzik.librepass.android.ui.screens.dashboard.SearchScreen
-import dev.medzik.librepass.android.ui.screens.dashboard.VaultScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsAccountScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsAppearanceScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsSecurityScreen
+import dev.medzik.librepass.android.ui.screens.vault.CipherAddScreen
+import dev.medzik.librepass.android.ui.screens.vault.CipherEditScreen
+import dev.medzik.librepass.android.ui.screens.vault.CipherViewScreen
+import dev.medzik.librepass.android.ui.screens.vault.PasswordGeneratorScreen
+import dev.medzik.librepass.android.ui.screens.vault.SearchScreen
+import dev.medzik.librepass.android.ui.screens.vault.VaultScreen
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.TopBar
@@ -99,7 +99,7 @@ enum class Screen(
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
-        composable = { AddCustomServer(it) }
+        composable = { AddCustomServerScreen(it) }
     ),
 
     // Vault

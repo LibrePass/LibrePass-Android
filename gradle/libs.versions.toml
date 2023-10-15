@@ -21,7 +21,7 @@ google-material = "1.10.0"
 jakewharton-process-phoenix = "2.1.2"
 kotlinx-coroutines-android = "1.7.3"
 librepass-client = "0.1.0-SNAPSHOT-10"
-medzik-android-utils = "1.1.0"
+medzik-android-utils = "1.2.0"
 process-phoenix = "2.1.2"
 # Plugins
 android-application = "8.1.2"

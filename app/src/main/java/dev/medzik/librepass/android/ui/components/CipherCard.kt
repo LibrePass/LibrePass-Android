@@ -131,6 +131,7 @@ fun CipherActionsSheet(
 ) {
     PickerBottomSheet(
         state = state,
+        navigationBarPadding = true,
         items = listOf(
             R.string.CipherBottomSheet_View,
             R.string.CipherBottomSheet_Edit,

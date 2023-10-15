@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.screens.dashboard
+package dev.medzik.librepass.android.ui.screens.vault
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize

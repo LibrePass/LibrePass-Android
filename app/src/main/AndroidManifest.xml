@@ -11,6 +11,7 @@
         android:theme="@style/Theme.LibrePass">
         <activity
             android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true"
             android:theme="@style/Theme.LibrePass" >
             <intent-filter>

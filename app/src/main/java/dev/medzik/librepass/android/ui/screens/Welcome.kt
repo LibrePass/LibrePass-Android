@@ -22,7 +22,7 @@ import com.google.accompanist.drawablepainter.DrawablePainter
 import dev.medzik.android.components.navigate
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.utils.TopBarTwoColor
+import dev.medzik.librepass.android.ui.components.TopBarTwoColor
 
 @Composable
 fun WelcomeScreen(navController: NavController) {

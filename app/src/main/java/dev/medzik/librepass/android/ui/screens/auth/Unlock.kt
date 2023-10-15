@@ -28,9 +28,9 @@ import dev.medzik.libcrypto.X25519
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore
-import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.utils.Cryptography

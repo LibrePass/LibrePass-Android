@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.utils
+package dev.medzik.librepass.android.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope

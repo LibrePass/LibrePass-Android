@@ -32,11 +32,11 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.components.TextInputFieldBase
+import dev.medzik.librepass.android.ui.components.TopBar
+import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
-import dev.medzik.librepass.android.utils.TextInputFieldBase
-import dev.medzik.librepass.android.utils.TopBar
-import dev.medzik.librepass.android.utils.TopBarBackIcon
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server

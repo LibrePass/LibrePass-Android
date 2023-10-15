@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui.composables
+package dev.medzik.librepass.android.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

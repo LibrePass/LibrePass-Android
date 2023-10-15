@@ -29,10 +29,10 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
-import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server

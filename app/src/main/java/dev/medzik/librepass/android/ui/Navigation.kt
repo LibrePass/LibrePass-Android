@@ -1,5 +1,6 @@
 package dev.medzik.librepass.android.ui
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -36,6 +37,8 @@ import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
+import dev.medzik.librepass.android.ui.components.TopBar
+import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
 import dev.medzik.librepass.android.ui.screens.auth.AddCustomServerScreen
 import dev.medzik.librepass.android.ui.screens.auth.LoginScreen
@@ -53,8 +56,6 @@ import dev.medzik.librepass.android.ui.screens.vault.SearchScreen
 import dev.medzik.librepass.android.ui.screens.vault.VaultScreen
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
-import dev.medzik.librepass.android.utils.TopBar
-import dev.medzik.librepass.android.utils.TopBarBackIcon
 
 enum class Argument : NavArgument {
     CipherId
@@ -146,7 +147,7 @@ enum class Screen(
                                 SecretStore.delete(context)
 
                                 // close application
-                                (context as android.app.Activity).finish()
+                                (context as Activity).finish()
                             }
                         )
                     }

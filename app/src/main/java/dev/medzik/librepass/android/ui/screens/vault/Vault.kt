@@ -23,7 +23,7 @@ import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
-import dev.medzik.librepass.android.ui.composables.CipherCard
+import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server

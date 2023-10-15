@@ -15,10 +15,10 @@ import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
-import dev.medzik.librepass.android.utils.TextInputField
 
 @Composable
 fun AddCustomServerScreen(navController: NavController) {

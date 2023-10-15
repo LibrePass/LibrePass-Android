@@ -26,9 +26,9 @@ import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
-import dev.medzik.librepass.android.utils.TextInputField
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient

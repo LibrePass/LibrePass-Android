@@ -1,1 +1,2 @@
 - Fixed the view collapsing when the keyboard is displayed
+- Added navigation bar padding to BottomSheet

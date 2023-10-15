@@ -52,6 +52,14 @@ jobs:
     needs: build
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get changelog
+        run: |
+          echo "VERSION_CODE=$(sed -n 's/.*versionCode\s*=\s*\([0-9]\+\).*/\1/p' app/build.gradle.kts)" >> $GITHUB_ENV
+          echo "CHANGELOG=$(cat fastlane/metadata/android/en-US/changelogs/${{ env.VERSION_CODE }}.txt)" >> $GITHUB_ENV
+
       - name: Download APK from build
         uses: actions/download-artifact@v3
         with:
@@ -65,14 +73,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: false
           tag_name: ${{ github.ref }}
-          draft: true
           fail_on_unmatched_files: true
-          name: ${{ github.ref }} Release
-          body: |
-            <!-- Write summary here -->
-            ---
-            ## Features
-            ## Changes
-            ## Bug Fixes
-            ## Internal Changes
+          name: ${{ github.ref_name }} Release
+          body: ${{ env.CHANGELOG }}
           files: apk/*

@@ -2,7 +2,6 @@ package dev.medzik.librepass.android.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
@@ -131,9 +130,7 @@ fun LibrePassTheme(
     ) {
         Surface(
             color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier
-                .fillMaxSize()
-                .imePadding(),
+            modifier = Modifier.fillMaxSize(),
             content = content
         )
     }

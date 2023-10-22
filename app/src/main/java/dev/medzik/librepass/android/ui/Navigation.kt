@@ -3,6 +3,7 @@ package dev.medzik.librepass.android.ui
 import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -273,6 +274,7 @@ fun LibrePassNavigation() {
     NavHost(
         navController,
         startDestination = getStartRoute(),
+        modifier = Modifier.imePadding()
     ) {
         for (screen in Screen.values()) {
             composable(screen.getRoute()) {
@@ -281,7 +283,7 @@ fun LibrePassNavigation() {
                 } else {
                     Scaffold(
                         topBar = { screen.topBar(navController) },
-                        floatingActionButton = { screen.floatingActionButton(navController) },
+                        floatingActionButton = { screen.floatingActionButton(navController) }
                     ) { innerPadding ->
                         Column(
                             modifier = Modifier

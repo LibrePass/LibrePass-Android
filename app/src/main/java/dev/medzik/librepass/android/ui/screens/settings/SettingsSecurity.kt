@@ -35,7 +35,7 @@ import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
-import dev.medzik.librepass.android.utils.showBiometricPrompt
+import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
 import kotlinx.coroutines.launch
 
 @Composable
@@ -67,13 +67,12 @@ fun SettingsSecurityScreen() {
             return
         }
 
-        showBiometricPrompt(
-            context = context as MainActivity,
-            cipher =
-                KeyStore.initForEncryption(
-                    KeyAlias.BiometricPrivateKey,
-                    deviceAuthentication = true
-                ),
+        showBiometricPromptForSetup(
+            context as MainActivity,
+            KeyStore.initForEncryption(
+                KeyAlias.BiometricPrivateKey,
+                deviceAuthentication = true
+            ),
             onAuthenticationSucceeded = { cipher ->
                 val encryptedData =
                     KeyStore.encrypt(

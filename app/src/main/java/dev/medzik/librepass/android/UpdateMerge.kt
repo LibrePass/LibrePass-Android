@@ -31,8 +31,9 @@ object UpdateMerge {
 
     private fun merge4To5(context: Context) {
         val repositoryCredentials = context.getRepository().credentials
-        val credentials = repositoryCredentials.get()
-            ?: return
+        val credentials =
+            repositoryCredentials.get()
+                ?: return
 
         SecretStore.delete(context)
 

@@ -18,7 +18,10 @@ object SecretStore {
         return runBlocking { dataStore.read(key.preferenceKey) } ?: key.default
     }
 
-    inline fun <reified T> Context.writeKey(key: StoreKey<T>, value: T) {
+    inline fun <reified T> Context.writeKey(
+        key: StoreKey<T>,
+        value: T
+    ) {
         runBlocking { dataStore.write(key.preferenceKey, value) }
     }
 
@@ -30,52 +33,60 @@ object SecretStore {
         // check if the vault has expired
         if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds ||
             (vaultTimeout != VaultTimeoutValues.NEVER.seconds && currentTime > expiresTime)
-        ) return UserSecrets("", "")
+        )
+            return UserSecrets("", "")
 
-        val userSecrets = suspend {
-            UserSecrets(
-                privateKey = Hex.encode(
-                    context.dataStore.readEncrypted(
-                        KeyAlias.DataStoreEncrypted,
-                        UserSecrets.PrivateKeyStoreKey
-                    ) ?: ByteArray(0)
-                ),
-                secretKey = Hex.encode(
-                    context.dataStore.readEncrypted(
-                        KeyAlias.DataStoreEncrypted,
-                        UserSecrets.SecretKeyStoreKey
-                    ) ?: ByteArray(0)
+        val userSecrets =
+            suspend {
+                UserSecrets(
+                    privateKey =
+                        Hex.encode(
+                            context.dataStore.readEncrypted(
+                                KeyAlias.DataStoreEncrypted,
+                                UserSecrets.PrivateKeyStoreKey
+                            ) ?: ByteArray(0)
+                        ),
+                    secretKey =
+                        Hex.encode(
+                            context.dataStore.readEncrypted(
+                                KeyAlias.DataStoreEncrypted,
+                                UserSecrets.SecretKeyStoreKey
+                            ) ?: ByteArray(0)
+                        )
                 )
-            )
-        }
+            }
 
         return runBlocking { userSecrets() }
     }
 
-    fun save(context: Context, userSecrets: UserSecrets): UserSecrets {
-        val saveUserSecrets = suspend {
-            context.dataStore.writeEncrypted(
-                KeyAlias.DataStoreEncrypted,
-                UserSecrets.PrivateKeyStoreKey,
-                Hex.decode(userSecrets.privateKey)
-            )
-            context.dataStore.writeEncrypted(
-                KeyAlias.DataStoreEncrypted,
-                UserSecrets.SecretKeyStoreKey,
-                Hex.decode(userSecrets.secretKey)
-            )
+    fun save(
+        context: Context,
+        userSecrets: UserSecrets
+    ): UserSecrets {
+        val saveUserSecrets =
+            suspend {
+                context.dataStore.writeEncrypted(
+                    KeyAlias.DataStoreEncrypted,
+                    UserSecrets.PrivateKeyStoreKey,
+                    Hex.decode(userSecrets.privateKey)
+                )
+                context.dataStore.writeEncrypted(
+                    KeyAlias.DataStoreEncrypted,
+                    UserSecrets.SecretKeyStoreKey,
+                    Hex.decode(userSecrets.secretKey)
+                )
 
-            val vaultTimeout = context.readKey(StoreKey.VaultTimeout)
-            if (vaultTimeout != VaultTimeoutValues.INSTANT.seconds &&
-                vaultTimeout != VaultTimeoutValues.NEVER.seconds
-            ) {
-                val currentTime = System.currentTimeMillis()
-                val newExpiresTime = currentTime + (vaultTimeout * 1000)
-                context.writeKey(StoreKey.VaultExpiresAt, newExpiresTime)
+                val vaultTimeout = context.readKey(StoreKey.VaultTimeout)
+                if (vaultTimeout != VaultTimeoutValues.INSTANT.seconds &&
+                    vaultTimeout != VaultTimeoutValues.NEVER.seconds
+                ) {
+                    val currentTime = System.currentTimeMillis()
+                    val newExpiresTime = currentTime + (vaultTimeout * 1000)
+                    context.writeKey(StoreKey.VaultExpiresAt, newExpiresTime)
+                }
+
+                userSecrets
             }
-
-            userSecrets
-        }
 
         // save changes in-memory variable
         (context as MainActivity).userSecrets = userSecrets
@@ -84,10 +95,11 @@ object SecretStore {
     }
 
     fun delete(context: Context) {
-        val clearUserSecrets = suspend {
-            context.dataStore.deleteEncrypted(UserSecrets.PrivateKeyStoreKey)
-            context.dataStore.deleteEncrypted(UserSecrets.SecretKeyStoreKey)
-        }
+        val clearUserSecrets =
+            suspend {
+                context.dataStore.deleteEncrypted(UserSecrets.PrivateKeyStoreKey)
+                context.dataStore.deleteEncrypted(UserSecrets.SecretKeyStoreKey)
+            }
 
         // clear data from in-memory variable
         (context as MainActivity).userSecrets = UserSecrets("", "")

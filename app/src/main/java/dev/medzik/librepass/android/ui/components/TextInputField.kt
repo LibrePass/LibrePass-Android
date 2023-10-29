@@ -34,18 +34,19 @@ fun TextInputField(
     var supportingText: @Composable (() -> Unit)? = null
 
     if (errorMessage != null) {
-        supportingText = if (isError) {
-            {
-                Text(
-                    text = errorMessage,
-                    color = MaterialTheme.colorScheme.error
-                )
+        supportingText =
+            if (isError) {
+                {
+                    Text(
+                        text = errorMessage,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            } else {
+                {
+                    Text(text = "")
+                }
             }
-        } else {
-            {
-                Text(text = "")
-            }
-        }
     }
 
     OutlinedTextField(
@@ -59,7 +60,7 @@ fun TextInputField(
                 PasswordVisualTransformation()
             else
                 VisualTransformation.None
-            ),
+        ),
         trailingIcon = {
             if (hidden) {
                 IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
@@ -69,7 +70,7 @@ fun TextInputField(
                                 Icons.Filled.Visibility
                             else
                                 Icons.Filled.VisibilityOff
-                            ),
+                        ),
                         contentDescription = null
                     )
                 }
@@ -77,9 +78,10 @@ fun TextInputField(
         },
         supportingText = supportingText,
         isError = isError,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType
-        ),
+        keyboardOptions =
+            KeyboardOptions(
+                keyboardType = keyboardType
+            ),
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -107,7 +109,7 @@ fun TextInputFieldBase(
                 PasswordVisualTransformation()
             else
                 VisualTransformation.None
-            ),
+        ),
         trailingIcon = {
             Row {
                 if (hidden) {
@@ -118,7 +120,7 @@ fun TextInputFieldBase(
                                     Icons.Filled.Visibility
                                 else
                                     Icons.Filled.VisibilityOff
-                                ),
+                            ),
                             contentDescription = null
                         )
                     }
@@ -127,9 +129,10 @@ fun TextInputFieldBase(
                 trailingIcon()
             }
         },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType
-        ),
+        keyboardOptions =
+            KeyboardOptions(
+                keyboardType = keyboardType
+            ),
         modifier = modifier
     )
 }

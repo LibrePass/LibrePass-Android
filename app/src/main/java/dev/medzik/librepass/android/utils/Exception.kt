@@ -21,16 +21,23 @@ fun Exception.showErrorToast(context: Context) {
     // log exception trace if debugging is enabled
     debugLog()
 
-    val message = when (this) {
+    val message =
+        when (this) {
 //        // handle encrypt exception
 //        is EncryptException -> { context.getString(R.string.Error_EncryptionError) }
-        // handle client exception (network error)
-        is ClientException -> { context.getString(R.string.Error_NetworkError) }
-        // handle api exceptions
-        is ApiException -> { getTranslatedErrorMessage(context) }
-        // handle other exceptions
-        else -> { context.getString(R.string.Error_UnknownError) }
-    }
+            // handle client exception (network error)
+            is ClientException -> {
+                context.getString(R.string.Error_NetworkError)
+            }
+            // handle api exceptions
+            is ApiException -> {
+                getTranslatedErrorMessage(context)
+            }
+            // handle other exceptions
+            else -> {
+                context.getString(R.string.Error_UnknownError)
+            }
+        }
 
     runOnUiThread { context.showToast(message) }
 }

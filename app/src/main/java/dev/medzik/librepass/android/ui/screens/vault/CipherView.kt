@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.FloatingActionButton
@@ -55,22 +55,25 @@ import java.util.UUID
 
 @Composable
 fun CipherViewScreen(navController: NavController) {
-    val cipherId = navController.getString(Argument.CipherId)
-        ?: return
+    val cipherId =
+        navController.getString(Argument.CipherId)
+            ?: return
 
     val context = LocalContext.current
 
-    val userSecrets = context.getUserSecrets()
-        ?: return
+    val userSecrets =
+        context.getUserSecrets()
+            ?: return
 
     val cipher = context.getRepository().cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
-    val cipherData = try {
-        Cipher(cipher, userSecrets.secretKey).loginData!!
-    } catch (e: Exception) {
-        // handle decryption error
-        DecryptionError(navController, e)
-        return
-    }
+    val cipherData =
+        try {
+            Cipher(cipher, userSecrets.secretKey).loginData!!
+        } catch (e: Exception) {
+            // handle decryption error
+            DecryptionError(navController, e)
+            return
+        }
 
     Scaffold(
         topBar = {
@@ -94,10 +97,11 @@ fun CipherViewScreen(navController: NavController) {
         }
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
         ) {
             item {
                 CipherField(
@@ -155,9 +159,10 @@ fun CipherViewScreen(navController: NavController) {
                                             Text(
                                                 text = parser.format(passwords[i].lastUsed),
                                                 style = MaterialTheme.typography.titleSmall,
-                                                color = MaterialTheme.colorScheme.onSurface.copy(
-                                                    alpha = 0.6f
-                                                )
+                                                color =
+                                                    MaterialTheme.colorScheme.onSurface.copy(
+                                                        alpha = 0.6f
+                                                    )
                                             )
 
                                             Text(
@@ -290,7 +295,7 @@ fun CipherField(
                     }
                 }) {
                     Icon(
-                        imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                        imageVector = Icons.Default.OpenInNew,
                         contentDescription = null
                     )
                 }
@@ -309,7 +314,10 @@ fun CipherField(
 }
 
 @Composable
-fun DecryptionError(navController: NavController, e: Exception) {
+fun DecryptionError(
+    navController: NavController,
+    e: Exception
+) {
     Scaffold(
         topBar = {
             TopBar(

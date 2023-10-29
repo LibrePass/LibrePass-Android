@@ -104,9 +104,9 @@ fun LoginScreen(navController: NavController) {
                     )
                 )
 
-                // enable biometric authentication if possible
-                if (checkIfBiometricAvailable(context)) {
-                    runOnUiThread {
+                runOnUiThread {
+                    // enable biometric authentication if possible
+                    if (checkIfBiometricAvailable(context)) {
                         showBiometricPromptForSetup(
                             context as MainActivity,
                             KeyStore.initForEncryption(
@@ -125,18 +125,28 @@ fun LoginScreen(navController: NavController) {
                                         )
                                     )
                                 }
+
+                                // navigate to dashboard
+                                navController.navigate(
+                                    screen = Screen.Vault,
+                                    disableBack = true
+                                )
                             },
-                            onAuthenticationFailed = {}
+                            onAuthenticationFailed = {
+                                // navigate to dashboard
+                                navController.navigate(
+                                    screen = Screen.Vault,
+                                    disableBack = true
+                                )
+                            }
+                        )
+                    } else {
+                        // navigate to dashboard
+                        navController.navigate(
+                            screen = Screen.Vault,
+                            disableBack = true
                         )
                     }
-                }
-
-                // navigate to dashboard
-                runOnUiThread {
-                    navController.navigate(
-                        screen = Screen.Vault,
-                        disableBack = true
-                    )
                 }
             } catch (e: Exception) {
                 loading = false

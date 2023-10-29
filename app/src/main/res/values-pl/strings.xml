@@ -38,6 +38,9 @@
     <string name="BiometricUnlock_Title">Odblokuj</string>
     <string name="BiometricUnlock_Subtitle">Proszę uwierzytelnić się</string>
     <string name="BiometricUnlock_Button_UsePassword">Użyj hasła</string>
+    <string name="BiometricSetup_Title">Konfiguracja</string>
+    <string name="BiometricSetup_Subtitle">Włącz uwierzytelnianie biometryczne</string>
+    <string name="BiometricSetup_Button_Cancel">Anuluj</string>
 
     <!-- Cipher Fields -->
     <string name="CipherField_Name">Nazwa</string>

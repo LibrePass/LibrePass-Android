@@ -33,7 +33,7 @@ import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
-import dev.medzik.librepass.android.utils.showBiometricPrompt
+import dev.medzik.librepass.android.utils.showBiometricPromptForUnlock
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
@@ -107,14 +107,13 @@ fun UnlockScreen(navController: NavController) {
     }
 
     fun showBiometric() {
-        showBiometricPrompt(
-            context = context,
-            cipher =
-                KeyStore.initForDecryption(
-                    alias = KeyAlias.BiometricPrivateKey,
-                    initializationVector = Hex.decode(credentials.biometricProtectedPrivateKeyIV!!),
-                    deviceAuthentication = true
-                ),
+        showBiometricPromptForUnlock(
+            context,
+            KeyStore.initForDecryption(
+                alias = KeyAlias.BiometricPrivateKey,
+                initializationVector = Hex.decode(credentials.biometricProtectedPrivateKeyIV!!),
+                deviceAuthentication = true
+            ),
             onAuthenticationSucceeded = { cipher ->
                 val privateKey =
                     KeyStore.decrypt(cipher, credentials.biometricProtectedPrivateKey!!)

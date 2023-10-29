@@ -22,6 +22,7 @@ import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
@@ -49,7 +50,10 @@ fun RegisterScreen(navController: NavController) {
     var server by rememberMutableString(Server.PRODUCTION)
 
     // Register user with given credentials and navigate to log in screen.
-    fun submit(email: String, password: String) {
+    fun submit(
+        email: String,
+        password: String
+    ) {
         val authClient = AuthClient(apiUrl = server)
 
         // disable button
@@ -60,7 +64,7 @@ fun RegisterScreen(navController: NavController) {
                 authClient.register(email, password, passwordHint)
 
                 // navigate to login
-                scope.launch(Dispatchers.Main) {
+                runOnUiThread {
                     context.showToast(R.string.Success_Registration_Please_Verify)
 
                     navController.navigate(
@@ -129,9 +133,10 @@ fun RegisterScreen(navController: NavController) {
     }
 
     Row(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .clickable { serverChoiceDialog.show() }
+        modifier =
+            Modifier
+                .padding(vertical = 8.dp)
+                .clickable { serverChoiceDialog.show() }
     ) {
         Text(
             text = stringResource(R.string.Server_AuthScreen_Server_Address) + ": ",
@@ -150,16 +155,18 @@ fun RegisterScreen(navController: NavController) {
         loading = loading,
         onClick = { submit(email, password) },
         enabled = email.contains("@") && password.length >= 8,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 40.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 40.dp)
     ) {
         Text(stringResource(R.string.Button_Register))
     }
 
-    var servers = listOf(Server.PRODUCTION)
-        .plus(context.readKey(StoreKey.CustomServers))
-        .plus("custom_server")
+    var servers =
+        listOf(Server.PRODUCTION)
+            .plus(context.readKey(StoreKey.CustomServers))
+            .plus("custom_server")
 
     if (BuildConfig.DEBUG) servers = servers.plus(Server.TEST)
 
@@ -170,22 +177,26 @@ fun RegisterScreen(navController: NavController) {
         onSelected = {
             if (it == "custom_server") {
                 navController.navigate(Screen.AddCustomServer)
-            } else server = it
+            } else {
+                server = it
+            }
         }
     ) {
-        val text = when (it) {
-            "custom_server" -> {
-                stringResource(R.string.Server_Choice_Dialog_Add_Custom)
-            }
+        val text =
+            when (it) {
+                "custom_server" -> {
+                    stringResource(R.string.Server_Choice_Dialog_Add_Custom)
+                }
 
-            else -> getServerName(it)
-        }
+                else -> getServerName(it)
+            }
 
         Text(
             text = text,
-            modifier = Modifier
-                .padding(vertical = 12.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
         )
     }
 }

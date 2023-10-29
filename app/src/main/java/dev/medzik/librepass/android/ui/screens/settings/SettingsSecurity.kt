@@ -34,6 +34,7 @@ import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
+import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import kotlinx.coroutines.launch
 
@@ -68,15 +69,17 @@ fun SettingsSecurityScreen() {
 
         showBiometricPrompt(
             context = context as MainActivity,
-            cipher = KeyStore.initForEncryption(
-                KeyAlias.BiometricPrivateKey,
-                deviceAuthentication = true
-            ),
+            cipher =
+                KeyStore.initForEncryption(
+                    KeyAlias.BiometricPrivateKey,
+                    deviceAuthentication = true
+                ),
             onAuthenticationSucceeded = { cipher ->
-                val encryptedData = KeyStore.encrypt(
-                    cipher = cipher,
-                    clearBytes = Hex.decode(userSecrets.privateKey)
-                )
+                val encryptedData =
+                    KeyStore.encrypt(
+                        cipher = cipher,
+                        clearBytes = Hex.decode(userSecrets.privateKey)
+                    )
 
                 biometricEnabled = true
 
@@ -98,55 +101,63 @@ fun SettingsSecurityScreen() {
     fun getVaultTimeoutTranslation(value: VaultTimeoutValues): String {
         return when (value) {
             VaultTimeoutValues.INSTANT -> stringResource(R.string.Settings_Vault_Timeout_Instant)
-            VaultTimeoutValues.ONE_MINUTE -> pluralStringResource(
-                R.plurals.Time_Minutes,
-                1,
-                1
-            )
+            VaultTimeoutValues.ONE_MINUTE ->
+                pluralStringResource(
+                    R.plurals.Time_Minutes,
+                    1,
+                    1
+                )
 
-            VaultTimeoutValues.FIVE_MINUTES -> pluralStringResource(
-                R.plurals.Time_Minutes,
-                5,
-                5
-            )
+            VaultTimeoutValues.FIVE_MINUTES ->
+                pluralStringResource(
+                    R.plurals.Time_Minutes,
+                    5,
+                    5
+                )
 
-            VaultTimeoutValues.FIFTEEN_MINUTES -> pluralStringResource(
-                R.plurals.Time_Minutes,
-                15,
-                15
-            )
+            VaultTimeoutValues.FIFTEEN_MINUTES ->
+                pluralStringResource(
+                    R.plurals.Time_Minutes,
+                    15,
+                    15
+                )
 
-            VaultTimeoutValues.THIRTY_MINUTES -> pluralStringResource(
-                R.plurals.Time_Minutes,
-                30,
-                30
-            )
+            VaultTimeoutValues.THIRTY_MINUTES ->
+                pluralStringResource(
+                    R.plurals.Time_Minutes,
+                    30,
+                    30
+                )
 
-            VaultTimeoutValues.ONE_HOUR -> pluralStringResource(
-                R.plurals.Time_Hours,
-                1,
-                1
-            )
+            VaultTimeoutValues.ONE_HOUR ->
+                pluralStringResource(
+                    R.plurals.Time_Hours,
+                    1,
+                    1
+                )
 
             VaultTimeoutValues.NEVER -> stringResource(R.string.Settings_Vault_Timeout_Never)
         }
     }
 
-    SwitcherPreference(
-        title = stringResource(R.string.Settings_BiometricUnlock),
-        icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
-        checked = biometricEnabled,
-        onCheckedChange = { biometricHandler() }
-    )
+    if (checkIfBiometricAvailable(context)) {
+        SwitcherPreference(
+            title = stringResource(R.string.Settings_BiometricUnlock),
+            icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
+            checked = biometricEnabled,
+            onCheckedChange = { biometricHandler() }
+        )
+    }
 
     PropertyPreference(
         title = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
         icon = { Icon(Icons.Default.Timer, contentDescription = null) },
-        currentValue = getVaultTimeoutTranslation(
-            VaultTimeoutValues.fromSeconds(
-                vaultTimeout
-            )
-        ),
+        currentValue =
+            getVaultTimeoutTranslation(
+                VaultTimeoutValues.fromSeconds(
+                    vaultTimeout
+                )
+            ),
         onClick = { timerDialogState.show() },
     )
 
@@ -161,9 +172,10 @@ fun SettingsSecurityScreen() {
     ) {
         Text(
             text = getVaultTimeoutTranslation(it),
-            modifier = Modifier
-                .padding(vertical = 12.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
         )
     }
 }

@@ -28,6 +28,7 @@ import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableBoolean
+import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.data.getRepository
@@ -58,8 +59,9 @@ fun CipherAddEditView(
 ) {
     val context = LocalContext.current
 
-    val userSecrets = context.getUserSecrets()
-        ?: return
+    val userSecrets =
+        context.getUserSecrets()
+            ?: return
 
     val scope = rememberCoroutineScope()
     var loading by rememberMutableBoolean()
@@ -69,10 +71,11 @@ fun CipherAddEditView(
     val credentials = repository.credentials.get()!!
     val cipherRepository = repository.cipher
 
-    val cipherClient = CipherClient(
-        apiKey = credentials.apiKey,
-        apiUrl = credentials.apiUrl ?: Server.PRODUCTION
-    )
+    val cipherClient =
+        CipherClient(
+            apiKey = credentials.apiKey,
+            apiUrl = credentials.apiUrl ?: Server.PRODUCTION
+        )
 
     // observe username and password from navController
     // used to get password from password generator
@@ -99,13 +102,14 @@ fun CipherAddEditView(
         loading = true
 
         // update existing cipher or create new one
-        var cipher = baseCipher?.copy(loginData = cipherData)
-            ?: Cipher(
-                id = UUID.randomUUID(),
-                owner = credentials.userId,
-                type = CipherType.Login,
-                loginData = cipherData
-            )
+        var cipher =
+            baseCipher?.copy(loginData = cipherData)
+                ?: Cipher(
+                    id = UUID.randomUUID(),
+                    owner = credentials.userId,
+                    type = CipherType.Login,
+                    loginData = cipherData
+                )
 
         scope.launch(Dispatchers.IO) {
             if (baseCipher != null) {
@@ -130,15 +134,17 @@ fun CipherAddEditView(
                 // insert or update cipher on server
                 if (baseCipher == null)
                     cipherClient.insert(encryptedCipher)
-                else cipherClient.update(encryptedCipher)
+                else
+                    cipherClient.update(encryptedCipher)
 
                 // insert or update cipher in a local database
                 val cipherTable = CipherTable(encryptedCipher)
                 if (baseCipher == null)
                     cipherRepository.insert(cipherTable)
-                else cipherRepository.update(cipherTable)
+                else
+                    cipherRepository.update(cipherTable)
 
-                scope.launch(Dispatchers.Main) { navController.popBackStack() }
+                runOnUiThread { navController.popBackStack() }
             } catch (e: Exception) {
                 loading = false
                 e.showErrorToast(context)
@@ -162,16 +168,18 @@ fun CipherAddEditView(
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState())
+            modifier =
+                Modifier
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState())
         ) {
             TextInputFieldBase(
                 label = stringResource(R.string.CipherField_Name),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
                 value = cipherData.name,
                 onValueChange = { cipherData = cipherData.copy(name = it) }
             )
@@ -183,18 +191,20 @@ fun CipherAddEditView(
 
             TextInputFieldBase(
                 label = stringResource(R.string.CipherField_Username),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
                 value = cipherData.username,
                 onValueChange = { cipherData = cipherData.copy(username = it) }
             )
 
             TextInputFieldBase(
                 label = stringResource(R.string.CipherField_Password),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
                 value = cipherData.password,
                 onValueChange = { cipherData = cipherData.copy(password = it) },
                 hidden = true,
@@ -228,19 +238,23 @@ fun CipherAddEditView(
                     modifier = Modifier.fillMaxWidth(),
                     value = uri,
                     onValueChange = {
-                        cipherData = cipherData.copy(
-                            uris = cipherData.uris.orEmpty().toMutableList().apply {
-                                this[index] = it
-                            }
-                        )
+                        cipherData =
+                            cipherData.copy(
+                                uris =
+                                    cipherData.uris.orEmpty().toMutableList().apply {
+                                        this[index] = it
+                                    }
+                            )
                     },
                     trailingIcon = {
                         IconButton(onClick = {
-                            cipherData = cipherData.copy(
-                                uris = cipherData.uris.orEmpty().toMutableList().apply {
-                                    this.removeAt(index)
-                                }
-                            )
+                            cipherData =
+                                cipherData.copy(
+                                    uris =
+                                        cipherData.uris.orEmpty().toMutableList().apply {
+                                            this.removeAt(index)
+                                        }
+                                )
                         }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
@@ -254,14 +268,16 @@ fun CipherAddEditView(
             // button for adding more fields
             Button(
                 onClick = {
-                    cipherData = cipherData.copy(
-                        uris = cipherData.uris.orEmpty() + ""
-                    )
+                    cipherData =
+                        cipherData.copy(
+                            uris = cipherData.uris.orEmpty() + ""
+                        )
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 60.dp)
-                    .padding(top = 8.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 60.dp)
+                        .padding(top = 8.dp)
             ) {
                 Text(stringResource(R.string.Button_AddField))
             }
@@ -283,10 +299,11 @@ fun CipherAddEditView(
                 loading = loading,
                 onClick = { submit() },
                 enabled = cipherData.name.isNotEmpty(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp)
-                    .padding(horizontal = 40.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                        .padding(horizontal = 40.dp)
             ) {
                 Text(
                     stringResource(

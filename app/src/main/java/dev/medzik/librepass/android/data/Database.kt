@@ -12,6 +12,7 @@ import androidx.room.RoomDatabase
 )
 abstract class LibrePassDatabase : RoomDatabase() {
     abstract fun credentialsDao(): CredentialsDao
+
     abstract fun cipherDao(): CipherDao
 }
 
@@ -28,13 +29,14 @@ object LibrePassDatabaseProvider {
      */
     fun getInstance(context: Context): LibrePassDatabase {
         if (database == null) {
-            database = Room.databaseBuilder(
-                context,
-                LibrePassDatabase::class.java,
-                "librepass.db"
-            )
-                .allowMainThreadQueries()
-                .build()
+            database =
+                Room.databaseBuilder(
+                    context,
+                    LibrePassDatabase::class.java,
+                    "librepass.db"
+                )
+                    .allowMainThreadQueries()
+                    .build()
         }
 
         return database as LibrePassDatabase

@@ -123,9 +123,10 @@ fun PasswordGeneratorScreen(navController: NavController) {
     ) {
         OutlinedTextField(
             value = passwordLength.toString(),
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = 8.dp),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
             label = { Text(stringResource(R.string.PasswordGenerator_Length)) },
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             onValueChange = {
@@ -202,10 +203,11 @@ fun PasswordGeneratorScreen(navController: NavController) {
     // Submit button
     Button(
         // center horizontally
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 90.dp)
-            .padding(top = 16.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 90.dp)
+                .padding(top = 16.dp),
         onClick = {
             navController.previousBackStackEntry?.savedStateHandle?.set("password", generatedPassword)
             navController.popBackStack()

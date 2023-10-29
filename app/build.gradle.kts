@@ -61,24 +61,39 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.annotation)
-    implementation(libs.androidx.biometric.ktx)
-    implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.ui)
-    implementation(libs.coil.compose)
     implementation(libs.google.accompanist.drawablepainter)
     implementation(libs.google.accompanist.swiperefresh)
     implementation(libs.google.accompanist.systemuicontroller)
-    implementation(libs.kotlinx.coroutines.android)
+
+    // for biometric authentication
+    implementation(libs.androidx.biometric)
+
+    // used for calling `onResume` and locking vault after X minutes
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
+    // for storing preferences
+    implementation(libs.androidx.datastore.preferences)
+
+    // room database
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+
+    // for cipher icons in vault
+    implementation(libs.coil.compose)
+
+    // API client
     implementation(libs.librepass.client)
+
+    // for restarting the application, for example, after changing the theme in settings
     implementation(libs.process.phoenix)
+
+    // kotlin coroutines
+    implementation(libs.kotlinx.coroutines.android)
 
     // local modules
     implementation(project(":components"))
@@ -88,6 +103,7 @@ dependencies {
     // for splash screen with material3 and dynamic color
     implementation(libs.google.material)
 
+    // for testing
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // for preview support

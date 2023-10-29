@@ -132,7 +132,7 @@ fun LoginScreen(navController: NavController) {
                 }
 
                 // navigate to dashboard
-                scope.launch(Dispatchers.Main) {
+                runOnUiThread {
                     navController.navigate(
                         screen = Screen.Vault,
                         disableBack = true

@@ -67,9 +67,10 @@ fun SettingsAppearanceScreen() {
         },
     ) {
         Row(
-            modifier = Modifier
-                .padding(vertical = 12.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
         ) {
             Icon(
                 when (it) {
@@ -82,9 +83,10 @@ fun SettingsAppearanceScreen() {
             )
 
             Text(
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .padding(start = 12.dp)
+                        .fillMaxWidth(),
                 text = getThemeTranslation(it)
             )
         }

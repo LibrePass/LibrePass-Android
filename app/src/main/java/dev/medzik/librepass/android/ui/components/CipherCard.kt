@@ -59,14 +59,15 @@ fun CipherCard(
         modifier = Modifier.padding(vertical = 8.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .combinedClickable(
-                    onClick = { onClick(cipher) },
-                    onLongClick = { showMoreOptions() }
-                )
-                .size(64.dp)
-                .padding(horizontal = 24.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .combinedClickable(
+                        onClick = { onClick(cipher) },
+                        onLongClick = { showMoreOptions() }
+                    )
+                    .size(64.dp)
+                    .padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             val domain = getDomain()
@@ -85,10 +86,11 @@ fun CipherCard(
             }
 
             Column(
-                modifier = Modifier
-                    .padding(start = 16.dp)
-                    .fillMaxSize()
-                    .weight(1f),
+                modifier =
+                    Modifier
+                        .padding(start = 16.dp)
+                        .fillMaxSize()
+                        .weight(1f),
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
@@ -132,11 +134,12 @@ fun CipherActionsSheet(
     PickerBottomSheet(
         state = state,
         navigationBarPadding = true,
-        items = listOf(
-            R.string.CipherBottomSheet_View,
-            R.string.CipherBottomSheet_Edit,
-            R.string.CipherBottomSheet_Delete
-        ),
+        items =
+            listOf(
+                R.string.CipherBottomSheet_View,
+                R.string.CipherBottomSheet_Edit,
+                R.string.CipherBottomSheet_Delete
+            ),
         onSelected = {
             when (it) {
                 R.string.CipherBottomSheet_View -> {
@@ -150,9 +153,10 @@ fun CipherActionsSheet(
     ) {
         Text(
             text = stringResource(it),
-            modifier = Modifier
-                .padding(vertical = 12.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
         )
     }
 }

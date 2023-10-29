@@ -286,10 +286,11 @@ fun LibrePassNavigation() {
                         floatingActionButton = { screen.floatingActionButton(navController) }
                     ) { innerPadding ->
                         Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(innerPadding)
-                                .padding(horizontal = if (screen.noHorizontalPadding) 0.dp else 16.dp)
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .padding(innerPadding)
+                                    .padding(horizontal = if (screen.noHorizontalPadding) 0.dp else 16.dp)
                         ) {
                             screen.composable(navController)
                         }

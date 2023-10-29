@@ -38,8 +38,9 @@ import dev.medzik.librepass.types.cipher.data.CipherLoginData
 fun SearchScreen(navController: NavController) {
     val context = LocalContext.current
 
-    val userSecrets = context.getUserSecrets()
-        ?: return
+    val userSecrets =
+        context.getUserSecrets()
+            ?: return
 
     // database repository
     val repository = context.getRepository()
@@ -47,20 +48,22 @@ fun SearchScreen(navController: NavController) {
 
     val localCiphers = repository.cipher.getAll(credentials.userId)
     // decrypt ciphers
-    val decryptedCiphers = localCiphers.map {
-        try {
-            Cipher(it.encryptedCipher, userSecrets.secretKey)
-        } catch (e: Exception) {
-            Cipher(
-                id = it.encryptedCipher.id,
-                owner = it.encryptedCipher.owner,
-                type = CipherType.Login,
-                loginData = CipherLoginData(
-                    name = "Encryption error"
+    val decryptedCiphers =
+        localCiphers.map {
+            try {
+                Cipher(it.encryptedCipher, userSecrets.secretKey)
+            } catch (e: Exception) {
+                Cipher(
+                    id = it.encryptedCipher.id,
+                    owner = it.encryptedCipher.owner,
+                    type = CipherType.Login,
+                    loginData =
+                        CipherLoginData(
+                            name = "Encryption error"
+                        )
                 )
-            )
+            }
         }
-    }
     // sort ciphers by name
     val ciphers = decryptedCiphers.sortedBy { it.loginData!!.name }
 
@@ -79,15 +82,17 @@ fun SearchScreen(navController: NavController) {
                                 contentDescription = null
                             )
                         },
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 56.dp)
+                        colors =
+                            TextFieldDefaults.colors(
+                                focusedContainerColor = Color.Transparent,
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
+                            ),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 56.dp)
                     )
                 },
                 navigationIcon = { TopBarBackIcon(navController) }
@@ -95,15 +100,17 @@ fun SearchScreen(navController: NavController) {
         }
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
         ) {
-            val filteredCiphers = ciphers.filter {
-                it.loginData!!.name.lowercase().contains(searchText) || it.loginData!!.username?.lowercase()
-                    ?.contains(searchText) ?: false
-            }
+            val filteredCiphers =
+                ciphers.filter {
+                    it.loginData!!.name.lowercase().contains(searchText) || it.loginData!!.username?.lowercase()
+                        ?.contains(searchText) ?: false
+                }
 
             for (cipher in filteredCiphers) {
                 item {

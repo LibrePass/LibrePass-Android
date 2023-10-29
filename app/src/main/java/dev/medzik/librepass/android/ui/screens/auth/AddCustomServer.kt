@@ -49,9 +49,10 @@ fun AddCustomServerScreen(navController: NavController) {
         loading = loading,
         onClick = { submit(server) },
         enabled = server.isNotEmpty(),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 80.dp, vertical = 8.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 80.dp, vertical = 8.dp)
     ) {
         Text(stringResource(R.string.Button_Add))
     }

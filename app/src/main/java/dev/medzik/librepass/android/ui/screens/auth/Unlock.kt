@@ -21,6 +21,7 @@ import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.crypto.KeyStore
+import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Hex
@@ -91,7 +92,7 @@ fun UnlockScreen(navController: NavController) {
 
                 // run only if loading is true (if no error occurred)
                 if (loading) {
-                    scope.launch(Dispatchers.Main) {
+                    runOnUiThread {
                         navController.navigate(
                             screen = Screen.Vault,
                             disableBack = true

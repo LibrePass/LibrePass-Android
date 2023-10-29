@@ -32,6 +32,7 @@ import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.UserSecrets
+import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
 import dev.medzik.librepass.android.utils.showBiometricPrompt
 import dev.medzik.librepass.client.utils.Cryptography
 import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
@@ -59,16 +60,18 @@ fun UnlockScreen(navController: NavController) {
                 loading = true
 
                 // compute base password hash
-                val passwordHash = computePasswordHash(
-                    password = password,
-                    email = credentials.email,
-                    argon2Function = Argon2(
-                        32,
-                        credentials.parallelism,
-                        credentials.memory,
-                        credentials.iterations
+                val passwordHash =
+                    computePasswordHash(
+                        password = password,
+                        email = credentials.email,
+                        argon2Function =
+                            Argon2(
+                                32,
+                                credentials.parallelism,
+                                credentials.memory,
+                                credentials.iterations
+                            )
                     )
-                )
 
                 val publicKey = X25519.publicFromPrivate(passwordHash.hash)
 
@@ -106,11 +109,12 @@ fun UnlockScreen(navController: NavController) {
     fun showBiometric() {
         showBiometricPrompt(
             context = context,
-            cipher = KeyStore.initForDecryption(
-                alias = KeyAlias.BiometricPrivateKey,
-                initializationVector = Hex.decode(credentials.biometricProtectedPrivateKeyIV!!),
-                deviceAuthentication = true
-            ),
+            cipher =
+                KeyStore.initForDecryption(
+                    alias = KeyAlias.BiometricPrivateKey,
+                    initializationVector = Hex.decode(credentials.biometricProtectedPrivateKeyIV!!),
+                    deviceAuthentication = true
+                ),
             onAuthenticationSucceeded = { cipher ->
                 val privateKey =
                     KeyStore.decrypt(cipher, credentials.biometricProtectedPrivateKey!!)
@@ -135,7 +139,7 @@ fun UnlockScreen(navController: NavController) {
     }
 
     LaunchedEffect(scope) {
-        if (credentials.biometricEnabled) showBiometric()
+        if (credentials.biometricEnabled && checkIfBiometricAvailable(context)) showBiometric()
     }
 
     TextInputField(
@@ -150,21 +154,23 @@ fun UnlockScreen(navController: NavController) {
         loading = loading,
         onClick = { onUnlock(password) },
         enabled = password.isNotEmpty(),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
-            .padding(horizontal = 80.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .padding(horizontal = 80.dp)
     ) {
         Text(stringResource(R.string.Button_Unlock))
     }
 
-    if (credentials.biometricEnabled) {
+    if (credentials.biometricEnabled && checkIfBiometricAvailable(context)) {
         OutlinedButton(
             onClick = { showBiometric() },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-                .padding(horizontal = 80.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+                    .padding(horizontal = 80.dp)
         ) {
             Text(stringResource(R.string.Button_UseBiometric))
         }

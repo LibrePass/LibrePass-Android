@@ -38,6 +38,9 @@
     <string name="BiometricUnlock_Title">Entsperren</string>
     <string name="BiometricUnlock_Subtitle">Bitte authentifizieren Sie sich</string>
     <string name="BiometricUnlock_Button_UsePassword">Passwort verwenden</string>
+    <string name="BiometricSetup_Title">Einrichtung</string>
+    <string name="BiometricSetup_Subtitle">Biometrische Authentifizierung aktivieren</string>
+    <string name="BiometricSetup_Button_Cancel">Abbrechen</string>
 
     <!-- Cipher Fields -->
     <string name="CipherField_Group_Login">Anmeldung</string>

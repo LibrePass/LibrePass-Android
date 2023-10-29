@@ -22,18 +22,24 @@ import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.crypto.KeyStore
+import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.BuildConfig
+import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
+import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.UserSecrets
+import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
+import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
@@ -51,9 +57,12 @@ fun LoginScreen(navController: NavController) {
     var password by rememberMutableString()
     var server by rememberMutableString(Server.PRODUCTION)
 
-    val credentialsRepository = context.getRepository().credentials
+    val repositoryCredentials = context.getRepository().credentials
 
-    fun submit(email: String, password: String) {
+    fun submit(
+        email: String,
+        password: String
+    ) {
         val authClient = AuthClient(apiUrl = server)
 
         if (email.isEmpty() || password.isEmpty())
@@ -65,13 +74,14 @@ fun LoginScreen(navController: NavController) {
             try {
                 val preLogin = authClient.preLogin(email)
 
-                val credentials = authClient.login(
-                    email = email,
-                    password = password
-                )
+                val credentials =
+                    authClient.login(
+                        email = email,
+                        password = password
+                    )
 
                 // save credentials
-                credentialsRepository.insert(
+                val credentialsDb =
                     Credentials(
                         userId = credentials.userId,
                         email = email,
@@ -83,7 +93,7 @@ fun LoginScreen(navController: NavController) {
                         iterations = preLogin.iterations,
                         parallelism = preLogin.parallelism
                     )
-                )
+                repositoryCredentials.insert(credentialsDb)
 
                 // save secrets in encrypted datastore
                 SecretStore.save(
@@ -93,6 +103,33 @@ fun LoginScreen(navController: NavController) {
                         secretKey = credentials.secretKey
                     )
                 )
+
+                // enable biometric authentication if possible
+                if (checkIfBiometricAvailable(context)) {
+                    runOnUiThread {
+                        showBiometricPromptForSetup(
+                            context as MainActivity,
+                            KeyStore.initForEncryption(
+                                KeyAlias.BiometricPrivateKey,
+                                deviceAuthentication = true
+                            ),
+                            onAuthenticationSucceeded = { cipher ->
+                                val encryptedData = KeyStore.encrypt(cipher, credentials.privateKey)
+
+                                scope.launch {
+                                    repositoryCredentials.update(
+                                        credentialsDb.copy(
+                                            biometricEnabled = true,
+                                            biometricProtectedPrivateKey = encryptedData.cipherText,
+                                            biometricProtectedPrivateKeyIV = encryptedData.initializationVector
+                                        )
+                                    )
+                                }
+                            },
+                            onAuthenticationFailed = {}
+                        )
+                    }
+                }
 
                 // navigate to dashboard
                 scope.launch(Dispatchers.Main) {
@@ -119,26 +156,27 @@ fun LoginScreen(navController: NavController) {
         text = stringResource(R.string.Auth_Get_Password_Hint),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .clickable {
-                val authClient = AuthClient(apiUrl = server)
+        modifier =
+            Modifier
+                .padding(vertical = 8.dp)
+                .clickable {
+                    val authClient = AuthClient(apiUrl = server)
 
-                if (email.isEmpty()) {
-                    context.showToast(context.getString(R.string.Toast_Enter_Email))
-                    return@clickable
-                }
+                    if (email.isEmpty()) {
+                        context.showToast(context.getString(R.string.Toast_Enter_Email))
+                        return@clickable
+                    }
 
-                scope.launch(Dispatchers.IO) {
-                    try {
-                        authClient.requestPasswordHint(email)
+                    scope.launch(Dispatchers.IO) {
+                        try {
+                            authClient.requestPasswordHint(email)
 
-                        context.showToast(context.getString(R.string.Toast_Password_Hint_Sent))
-                    } catch (e: Exception) {
-                        e.showErrorToast(context)
+                            context.showToast(context.getString(R.string.Toast_Password_Hint_Sent))
+                        } catch (e: Exception) {
+                            e.showErrorToast(context)
+                        }
                     }
                 }
-            }
     )
 
     TextInputField(
@@ -167,9 +205,10 @@ fun LoginScreen(navController: NavController) {
     }
 
     Row(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .clickable { serverChoiceDialog.show() }
+        modifier =
+            Modifier
+                .padding(vertical = 8.dp)
+                .clickable { serverChoiceDialog.show() }
     ) {
         Text(
             text = stringResource(R.string.Server_AuthScreen_Server_Address) + ": ",
@@ -188,16 +227,18 @@ fun LoginScreen(navController: NavController) {
         loading = loading,
         onClick = { submit(email, password) },
         enabled = email.isNotEmpty() && password.isNotEmpty(),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 40.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 40.dp)
     ) {
         Text(stringResource(R.string.Button_Login))
     }
 
-    var servers = listOf(Server.PRODUCTION)
-        .plus(context.readKey(StoreKey.CustomServers))
-        .plus("custom_server")
+    var servers =
+        listOf(Server.PRODUCTION)
+            .plus(context.readKey(StoreKey.CustomServers))
+            .plus("custom_server")
 
     if (BuildConfig.DEBUG) servers = servers.plus(Server.TEST)
 
@@ -208,22 +249,26 @@ fun LoginScreen(navController: NavController) {
         onSelected = {
             if (it == "custom_server") {
                 navController.navigate(Screen.AddCustomServer)
-            } else server = it
+            } else {
+                server = it
+            }
         }
     ) {
-        val text = when (it) {
-            "custom_server" -> {
-                stringResource(R.string.Server_Choice_Dialog_Add_Custom)
-            }
+        val text =
+            when (it) {
+                "custom_server" -> {
+                    stringResource(R.string.Server_Choice_Dialog_Add_Custom)
+                }
 
-            else -> getServerName(it)
-        }
+                else -> getServerName(it)
+            }
 
         Text(
             text = text,
-            modifier = Modifier
-                .padding(vertical = 12.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
         )
     }
 }

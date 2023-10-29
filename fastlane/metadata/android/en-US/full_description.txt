@@ -2,9 +2,10 @@ With LibrePass, convenience and security go hand in hand. Through LibrePass, you
 
 <br><b>Features:</b>
 
-- Password encryption
-- Password generator
-- Material You theme
-- Written in native Kotlin
+- Advanced password encryption
+- Generating secure passwords
+- Face and fingerprint unlocking
+- Native Material You Design
+- Written in native language for Android
 - Various settings options
 - And more with incoming updates!

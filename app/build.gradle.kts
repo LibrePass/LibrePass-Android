@@ -78,10 +78,12 @@ dependencies {
     implementation(libs.google.accompanist.systemuicontroller)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.librepass.client)
-    implementation(libs.medzik.android.components)
-    implementation(libs.medzik.android.crypto)
-    implementation(libs.medzik.android.utils)
     implementation(libs.process.phoenix)
+
+    // local modules
+    implementation(project(":components"))
+    implementation(project(":crypto"))
+    implementation(project(":utils"))
 
     // for splash screen with material3 and dynamic color
     implementation(libs.google.material)

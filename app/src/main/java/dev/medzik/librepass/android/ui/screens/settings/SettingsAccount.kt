@@ -1,7 +1,7 @@
 package dev.medzik.librepass.android.ui.screens.settings
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -20,21 +20,22 @@ fun SettingsAccountScreen(navController: NavController) {
 
     val repository = context.getRepository()
 
-    fun logout() = runBlocking {
-        val credentials = repository.credentials.get()!!
+    fun logout() =
+        runBlocking {
+            val credentials = repository.credentials.get()!!
 
-        repository.credentials.drop()
-        repository.cipher.drop(credentials.userId)
+            repository.credentials.drop()
+            repository.cipher.drop(credentials.userId)
 
-        navController.navigate(
-            screen = Screen.Welcome,
-            disableBack = true
-        )
-    }
+            navController.navigate(
+                screen = Screen.Welcome,
+                disableBack = true
+            )
+        }
 
     PreferenceEntry(
         title = stringResource(R.string.Settings_Logout),
-        icon = { Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null) },
+        icon = { Icon(Icons.Default.Logout, contentDescription = null) },
         onClick = { logout() },
     )
 }

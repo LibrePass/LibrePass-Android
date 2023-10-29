@@ -43,14 +43,14 @@ object SecretStore {
                         Hex.encode(
                             context.dataStore.readEncrypted(
                                 KeyAlias.DataStoreEncrypted,
-                                UserSecrets.PrivateKeyStoreKey
+                                UserSecrets.PRIVATE_KEY_STORE_KEY
                             ) ?: ByteArray(0)
                         ),
                     secretKey =
                         Hex.encode(
                             context.dataStore.readEncrypted(
                                 KeyAlias.DataStoreEncrypted,
-                                UserSecrets.SecretKeyStoreKey
+                                UserSecrets.SECRET_KEY_STORE_KEY
                             ) ?: ByteArray(0)
                         )
                 )
@@ -67,12 +67,12 @@ object SecretStore {
             suspend {
                 context.dataStore.writeEncrypted(
                     KeyAlias.DataStoreEncrypted,
-                    UserSecrets.PrivateKeyStoreKey,
+                    UserSecrets.PRIVATE_KEY_STORE_KEY,
                     Hex.decode(userSecrets.privateKey)
                 )
                 context.dataStore.writeEncrypted(
                     KeyAlias.DataStoreEncrypted,
-                    UserSecrets.SecretKeyStoreKey,
+                    UserSecrets.SECRET_KEY_STORE_KEY,
                     Hex.decode(userSecrets.secretKey)
                 )
 
@@ -97,8 +97,8 @@ object SecretStore {
     fun delete(context: Context) {
         val clearUserSecrets =
             suspend {
-                context.dataStore.deleteEncrypted(UserSecrets.PrivateKeyStoreKey)
-                context.dataStore.deleteEncrypted(UserSecrets.SecretKeyStoreKey)
+                context.dataStore.deleteEncrypted(UserSecrets.PRIVATE_KEY_STORE_KEY)
+                context.dataStore.deleteEncrypted(UserSecrets.SECRET_KEY_STORE_KEY)
             }
 
         // clear data from in-memory variable
@@ -123,7 +123,7 @@ data class UserSecrets(
     val secretKey: String
 ) {
     companion object {
-        const val PrivateKeyStoreKey = "private_key"
-        const val SecretKeyStoreKey = "secret_key"
+        const val PRIVATE_KEY_STORE_KEY = "private_key"
+        const val SECRET_KEY_STORE_KEY = "secret_key"
     }
 }

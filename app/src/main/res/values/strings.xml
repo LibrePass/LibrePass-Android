@@ -40,6 +40,9 @@
     <string name="BiometricUnlock_Title">Unlock</string>
     <string name="BiometricUnlock_Subtitle">Please authenticate yourself</string>
     <string name="BiometricUnlock_Button_UsePassword">Use password</string>
+    <string name="BiometricSetup_Title">Setup</string>
+    <string name="BiometricSetup_Subtitle">Enable biometric authentication</string>
+    <string name="BiometricSetup_Button_Cancel">Cancel</string>
 
     <!-- Cipher Fields -->
     <string name="CipherField_Group_Login">Login</string>

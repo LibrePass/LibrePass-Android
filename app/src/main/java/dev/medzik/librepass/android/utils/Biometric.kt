@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import dev.medzik.librepass.android.R
 import javax.crypto.Cipher
 
-fun showBiometricPrompt(
+fun showBiometricPromptForUnlock(
     context: FragmentActivity,
     cipher: Cipher,
     onAuthenticationSucceeded: (Cipher) -> Unit,
@@ -20,6 +20,32 @@ fun showBiometricPrompt(
             .setNegativeButtonText(context.getString(R.string.BiometricUnlock_Button_UsePassword))
             .build()
 
+    showBiometricPrompt(context, promptInfo, cipher, onAuthenticationSucceeded, onAuthenticationFailed)
+}
+
+fun showBiometricPromptForSetup(
+    context: FragmentActivity,
+    cipher: Cipher,
+    onAuthenticationSucceeded: (Cipher) -> Unit,
+    onAuthenticationFailed: () -> Unit
+) {
+    val promptInfo =
+        BiometricPrompt.PromptInfo.Builder()
+            .setTitle(context.getString(R.string.BiometricSetup_Title))
+            .setSubtitle(context.getString(R.string.BiometricSetup_Subtitle))
+            .setNegativeButtonText(context.getString(R.string.BiometricSetup_Button_Cancel))
+            .build()
+
+    showBiometricPrompt(context, promptInfo, cipher, onAuthenticationSucceeded, onAuthenticationFailed)
+}
+
+fun showBiometricPrompt(
+    context: FragmentActivity,
+    promptInfo: BiometricPrompt.PromptInfo,
+    cipher: Cipher,
+    onAuthenticationSucceeded: (Cipher) -> Unit,
+    onAuthenticationFailed: () -> Unit
+) {
     val biometricPrompt =
         BiometricPrompt(
             context,

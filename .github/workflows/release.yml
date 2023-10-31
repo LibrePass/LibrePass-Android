@@ -56,7 +56,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Get changelog
-        run: echo "CHANGELOG=$(./.github/scripts/get-changelog.sh)" >> $GITHUB_ENV
+        run: |
+          {
+              echo 'CHANGELOG<<CHANGELOG_EOF'
+              echo "$(./.github/scripts/get-changelog.sh)"
+              echo 'CHANGELOG_EOF'
+          } >> "$GITHUB_ENV"
 
       - name: Download APK from build
         uses: actions/download-artifact@v3

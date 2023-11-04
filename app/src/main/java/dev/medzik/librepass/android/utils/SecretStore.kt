@@ -7,7 +7,6 @@ import dev.medzik.android.crypto.DataStore.read
 import dev.medzik.android.crypto.DataStore.readEncrypted
 import dev.medzik.android.crypto.DataStore.write
 import dev.medzik.android.crypto.DataStore.writeEncrypted
-import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.MainActivity
 import kotlinx.coroutines.runBlocking
 
@@ -34,25 +33,21 @@ object SecretStore {
         if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds ||
             (vaultTimeout != VaultTimeoutValues.NEVER.seconds && currentTime > expiresTime)
         )
-            return UserSecrets("", "")
+            return UserSecrets(ByteArray(0), ByteArray(0),)
 
         val userSecrets =
             suspend {
                 UserSecrets(
                     privateKey =
-                        Hex.encode(
-                            context.dataStore.readEncrypted(
-                                KeyAlias.DataStoreEncrypted,
-                                UserSecrets.PRIVATE_KEY_STORE_KEY
-                            ) ?: ByteArray(0)
-                        ),
+                        context.dataStore.readEncrypted(
+                            KeyAlias.DataStoreEncrypted,
+                            UserSecrets.PRIVATE_KEY_STORE_KEY
+                        ) ?: ByteArray(0),
                     secretKey =
-                        Hex.encode(
-                            context.dataStore.readEncrypted(
-                                KeyAlias.DataStoreEncrypted,
-                                UserSecrets.SECRET_KEY_STORE_KEY
-                            ) ?: ByteArray(0)
-                        )
+                        context.dataStore.readEncrypted(
+                            KeyAlias.DataStoreEncrypted,
+                            UserSecrets.SECRET_KEY_STORE_KEY
+                        ) ?: ByteArray(0)
                 )
             }
 
@@ -68,12 +63,12 @@ object SecretStore {
                 context.dataStore.writeEncrypted(
                     KeyAlias.DataStoreEncrypted,
                     UserSecrets.PRIVATE_KEY_STORE_KEY,
-                    Hex.decode(userSecrets.privateKey)
+                    userSecrets.privateKey
                 )
                 context.dataStore.writeEncrypted(
                     KeyAlias.DataStoreEncrypted,
                     UserSecrets.SECRET_KEY_STORE_KEY,
-                    Hex.decode(userSecrets.secretKey)
+                    userSecrets.secretKey
                 )
 
                 val vaultTimeout = context.readKey(StoreKey.VaultTimeout)
@@ -102,7 +97,7 @@ object SecretStore {
             }
 
         // clear data from in-memory variable
-        (context as MainActivity).userSecrets = UserSecrets("", "")
+        (context as MainActivity).userSecrets = UserSecrets(ByteArray(0), ByteArray(0))
 
         return runBlocking { clearUserSecrets() }
     }
@@ -111,16 +106,16 @@ object SecretStore {
         // get secrets from in-memory variable
         val userSecrets = (this as MainActivity).userSecrets
 
-        if (userSecrets.privateKey.isBlank() || userSecrets.secretKey.isBlank())
+        if (userSecrets.privateKey.isEmpty() || userSecrets.secretKey.isEmpty())
             return null
 
         return userSecrets
     }
 }
 
-data class UserSecrets(
-    val privateKey: String,
-    val secretKey: String
+class UserSecrets(
+    val privateKey: ByteArray,
+    val secretKey: ByteArray
 ) {
     companion object {
         const val PRIVATE_KEY_STORE_KEY = "private_key"

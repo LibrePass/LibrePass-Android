@@ -25,7 +25,6 @@ import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
-import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
@@ -43,6 +42,7 @@ import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
+import dev.medzik.librepass.utils.fromHexString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -87,7 +87,7 @@ fun LoginScreen(navController: NavController) {
                         email = email,
                         apiUrl = if (server == Server.PRODUCTION) null else server,
                         apiKey = credentials.apiKey,
-                        publicKey = Hex.encode(credentials.publicKey),
+                        publicKey = credentials.publicKey,
                         // Argon2id parameters
                         memory = preLogin.memory,
                         iterations = preLogin.iterations,
@@ -99,8 +99,8 @@ fun LoginScreen(navController: NavController) {
                 SecretStore.save(
                     context,
                     UserSecrets(
-                        privateKey = Hex.encode(credentials.privateKey),
-                        secretKey = credentials.secretKey
+                        privateKey = credentials.privateKey.fromHexString(),
+                        secretKey = credentials.secretKey.fromHexString()
                     )
                 )
 
@@ -114,7 +114,7 @@ fun LoginScreen(navController: NavController) {
                                 deviceAuthentication = true
                             ),
                             onAuthenticationSucceeded = { cipher ->
-                                val encryptedData = KeyStore.encrypt(cipher, credentials.privateKey)
+                                val encryptedData = KeyStore.encrypt(cipher, credentials.privateKey.fromHexString())
 
                                 scope.launch {
                                     repositoryCredentials.update(

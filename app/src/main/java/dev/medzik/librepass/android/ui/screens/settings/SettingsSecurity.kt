@@ -24,7 +24,6 @@ import dev.medzik.android.components.PropertyPreference
 import dev.medzik.android.components.SwitcherPreference
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.crypto.KeyStore
-import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
@@ -77,7 +76,7 @@ fun SettingsSecurityScreen() {
                 val encryptedData =
                     KeyStore.encrypt(
                         cipher = cipher,
-                        clearBytes = Hex.decode(userSecrets.privateKey)
+                        clearBytes = userSecrets.privateKey
                     )
 
                 biometricEnabled = true

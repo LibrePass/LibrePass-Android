@@ -85,8 +85,8 @@ fun UnlockScreen(navController: NavController) {
                 SecretStore.save(
                     context,
                     UserSecrets(
-                        privateKey = Hex.encode(passwordHash.hash),
-                        secretKey = Hex.encode(secretKey)
+                        privateKey = passwordHash.hash,
+                        secretKey = secretKey
                     )
                 )
 
@@ -124,8 +124,8 @@ fun UnlockScreen(navController: NavController) {
                 SecretStore.save(
                     context,
                     UserSecrets(
-                        privateKey = Hex.encode(privateKey),
-                        secretKey = Hex.encode(secretKey)
+                        privateKey = privateKey,
+                        secretKey = secretKey
                     )
                 )
 

@@ -43,8 +43,8 @@
     <string name="BiometricSetup_Button_Cancel">Anuluj</string>
 
     <!-- Cipher Fields -->
-    <string name="CipherField_Name">Nazwa</string>
     <string name="CipherField_Group_Login">Dane logowania</string>
+    <string name="CipherField_Name">Nazwa</string>
     <string name="CipherField_Username">Nazwa użytkownika</string>
     <string name="CipherField_Password">Hasło</string>
     <string name="CipherField_Group_Website">Strona internetowa</string>

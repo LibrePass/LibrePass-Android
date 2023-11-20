@@ -1,0 +1,8 @@
+[main]
+host = https://app.transifex.com
+
+[o:librepass:p:librepass-android:r:android]
+source_file = app/src/main/res/values/strings.xml
+file_filter = app/src/main/res/values-<lang>/strings.xml
+source_lang = en
+type = ANDROID

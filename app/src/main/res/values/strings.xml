@@ -1,82 +1,132 @@
 <resources>
     <string name="app_name" translatable="false">LibrePass</string>
 
-    <!-- TopBar -->
+    <!-- TopBar on the register screen -->
     <string name="TopBar_Register">Register</string>
+    <!-- TopBar on the login screen -->
     <string name="TopBar_Login">Login</string>
+    <!-- TopBar on the unlock vault screen -->
     <string name="TopBar_Unlock">Unlock</string>
+    <!-- TopBar on the add new cipher screen -->
     <string name="TopBar_AddNewCipher">Add new cipher</string>
+    <!-- TopBar on the vault screen -->
     <string name="TopBar_Vault">Vault</string>
+    <!-- TopBar on the settings screen -->
     <string name="TopBar_Settings">Settings</string>
+    <!-- TopBar on the password generator screen -->
     <string name="TopBar_PasswordGenerator">Generator</string>
+    <!-- TopBar on the screen for adding custom server -->
     <string name="TopBar_AddCustomServer">Add server</string>
 
-    <!-- Input Fields -->
+    <!-- Email field placeholder -->
     <string name="InputField_Email">Email</string>
+    <!-- Password field placeholder -->
     <string name="InputField_Password">Password</string>
+    <!-- Confirm password field placeholder -->
     <string name="InputField_ConfirmPassword">Confirm password</string>
+    <!-- Password hint field placeholder -->
     <string name="InputField_PasswordHint">Password hint</string>
+    <!-- "(optional)" text in field e.g. "Password hint (optional) -->
     <string name="InputField_Optional">optional</string>
-    <!-- Error Messages -->
+
+    <!-- Error toast -->
     <string name="Error_InvalidEmail">Invalid email</string>
+    <!-- Error toast -->
     <string name="Error_InvalidPasswordTooShort">Password is too short</string>
+    <!-- Error toast -->
     <string name="Error_PasswordsDoNotMatch">Passwords do not match</string>
 
-    <!-- Buttons -->
+    <!-- "Register" button -->
     <string name="Button_Register">Register</string>
+    <!-- "Login" button -->
     <string name="Button_Login">Login</string>
+    <!-- "Unlock" button to unlock the vault -->
     <string name="Button_Unlock">Unlock</string>
+    <!-- "Use biometric" button to unlock the vault -->
     <string name="Button_UseBiometric">Use biometric</string>
+    <!-- "Save" button to save the cipher -->
     <string name="Button_Save">Save</string>
+    <!-- "Add" button to add a new cipher -->
     <string name="Button_Add">Add</string>
+    <!-- "Add field" button to add new field to the cipher (e.g. add new website url field) -->
     <string name="Button_AddField">Add field</string>
 
-    <!-- Welcome screen -->
+    <!-- Text on the website screen -->
     <string name="WelcomeScreen_Title">Welcome to LibrePass</string>
+    <!-- "Register" button on the website screen -->
     <string name="WelcomeScreen_Button_Register">Register</string>
+    <!-- "Login" button on the website screen -->
     <string name="WelcomeScreen_Button_Login">Login</string>
 
-    <!-- Biometric unlock -->
+    <!-- Title of biometric alert -->
     <string name="BiometricUnlock_Title">Unlock</string>
+    <!-- Subtitle of biometric alert -->
     <string name="BiometricUnlock_Subtitle">Please authenticate yourself</string>
+    <!-- "Use password" button in biometric alert -->
     <string name="BiometricUnlock_Button_UsePassword">Use password</string>
+    <!-- Title of biometric alert during setup -->
     <string name="BiometricSetup_Title">Setup</string>
+    <!-- Subtitle of biometric alert during setup -->
     <string name="BiometricSetup_Subtitle">Enable biometric authentication</string>
+    <!-- "Cancel" button in biometric alert during setup -->
     <string name="BiometricSetup_Button_Cancel">Cancel</string>
 
-    <!-- Cipher Fields -->
+    <!-- Cipher "Login" group -->
     <string name="CipherField_Group_Login">Login</string>
+    <!-- Alt text for cipher name field -->
     <string name="CipherField_Name">Name</string>
+    <!-- Alt text for cipher username field -->
     <string name="CipherField_Username">Username</string>
+    <!-- Alt text for cipher password field -->
     <string name="CipherField_Password">Password</string>
+    <!-- Cipher "Website" group -->
     <string name="CipherField_Group_Website">Website</string>
+    <!-- Alt text for cipher website url field -->
     <string name="CipherField_URL">URL</string>
+    <!-- Cipher "Other" group -->
     <string name="CipherField_Group_Other">Other</string>
+    <!-- Alt text for cipher notes field -->
     <string name="CipherField_Notes">Notes</string>
 
-    <!-- Cipher Bottom Sheet -->
+    <!-- "View" button in cipher bottom sheet -->
     <string name="CipherBottomSheet_View">View</string>
+    <!-- "Edit" button in cipher bottom sheet -->
     <string name="CipherBottomSheet_Edit">Edit</string>
+    <!-- "Delete" button in cipher bottom sheet -->
     <string name="CipherBottomSheet_Delete">Delete</string>
 
-    <!-- Vault Dropdown Menu navigation -->
+    <!-- "Settings" button in the dropdown menu on the vault screen -->
     <string name="VaultDropdownMenuNav_Settings">Settings</string>
+    <!-- "Lock vault" button in the dropdown menu on the vault screen -->
     <string name="VaultDropdownMenuNav_Lock">Lock vault</string>
 
-    <!-- Settings -->
+    <!-- Settings appearance group -->
     <string name="Settings_Group_Appearance">Appearance</string>
+    <!-- Change theme button and dialog title -->
     <string name="Settings_Theme">Theme</string>
+    <!-- "System default" theme -->
     <string name="Settings_SystemDefault">System default</string>
+    <!-- "Light" theme -->
     <string name="Settings_Light">Light</string>
+    <!-- "Dark" theme -->
     <string name="Settings_Dark">Dark</string>
+    <!-- "Pure black (AMOLED)" theme -->
     <string name="Settings_Black">Pure black (AMOLED)</string>
+    <!-- Material You theme switcher -->
     <string name="Settings_MaterialYou" translatable="false">Material You (Android 12+)</string>
+    <!-- Settings security group -->
     <string name="Settings_Group_Security">Security</string>
+    <!-- Switcher to enable biometrics unlocking -->
     <string name="Settings_BiometricUnlock">Unlock with biometrics</string>
+    <!-- Change vault timeout button and vault timeout dialog title -->
     <string name="Settings_Vault_Timeout_Modal_Title">Vault timeout</string>
+    <!-- Vault timeout "Instant" -->
     <string name="Settings_Vault_Timeout_Instant">Instant</string>
+    <!-- Vault timeout "Never" -->
     <string name="Settings_Vault_Timeout_Never">Never</string>
+    <!-- Settings account group -->
     <string name="Settings_Group_Account">Account</string>
+    <!-- "Log out" button in settings -->
     <string name="Settings_Logout">Log out</string>
 
     <!-- Time -->
@@ -84,45 +134,66 @@
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
     </plurals>
+    <!-- Time -->
     <plurals name="Time_Hours">
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
 
-    <!-- Password Generator -->
+    <!-- Length of the password to generate -->
     <string name="PasswordGenerator_Length">Length</string>
+    <!-- Switcher in password generator -->
     <string name="PasswordGenerator_CapitalLetters">Capital letters</string>
+    <!-- Switcher in password generator -->
     <string name="PasswordGenerator_Numbers">Numbers</string>
+    <!-- Switcher in password generator -->
     <string name="PasswordGenerator_Symbols">Symbols</string>
+    <!-- "Submit" button in password generator -->
     <string name="PasswordGenerator_Submit">Submit</string>
 
-    <!-- Success Messages -->
+    <!-- Toast message after account creation (please verify email address) -->
     <string name="Success_Registration_Please_Verify">Please verify your email address</string>
 
-    <!-- Error Messages -->
+    <!-- Toast error message -->
     <string name="Error_NetworkError">Network error</string>
+    <!-- Toast error message -->
     <string name="Error_InvalidCredentials">Invalid credentials</string>
+    <!-- Toast error message -->
     <string name="Error_EncryptionError">Encryption/Decryption error</string>
+    <!-- Toast error message -->
     <string name="Error_UnknownError">Unknown error</string>
 
-    <!-- API Error Messages -->
+    <!-- API error message -->
     <string name="API_Error_INVALID_CREDENTIALS">Invalid credentials</string>
+    <!-- API error message -->
     <string name="API_Error_RE_LOGIN_REQUIRED">Re-login required</string>
+    <!-- API error message -->
     <string name="API_Error_EMAIL_NOT_VERIFIED">Please verify your email address</string>
+    <!-- API error message -->
     <string name="API_Error_TOO_MANY_REQUESTS">Too many requests</string>
+    <!-- API error message -->
     <string name="API_Error_DATABASE_DUPLICATED_KEY">Duplicated key in server database</string>
+    <!-- API error message -->
     <string name="API_Error_UNEXPECTED_SERVER_ERROR">Unexpected server error</string>
 
-    <!-- Custom Servers -->
+    <!-- "Choose a server" button -->
     <string name="Server_Choice_Dialog_Title">Choose a server</string>
+    <!-- "Official" LibrePass server -->
     <string name="Server_Choice_Dialog_Official">Official</string>
+    <!-- "Testing" LibrePass server -->
     <string name="Server_Choice_Dialog_Testing">Testing</string>
+    <!-- Button to add self-hosted server -->
     <string name="Server_Choice_Dialog_Add_Custom">Add self-hosted</string>
+    <!-- "Server address" input server in add custom server screen -->
     <string name="Server_Add_InputField_Server">Server address</string>
+    <!-- "Server address" text in auth screens -->
     <string name="Server_AuthScreen_Server_Address">Server address</string>
 
-    <!-- Auth Screen Password Hint -->
+    <!-- "Get password hint" button in the login screen -->
     <string name="Auth_Get_Password_Hint">Get password hint</string>
+
+    <!-- Toast displayed when email field is empty -->
     <string name="Toast_Enter_Email">Enter your email address</string>
+    <!-- Toast displayed after password hint was sent -->
     <string name="Toast_Password_Hint_Sent">A password hint was sent to the email address</string>
 </resources>

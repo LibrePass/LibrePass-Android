@@ -184,6 +184,8 @@
     <string name="API_Error_DATABASE_DUPLICATED_KEY">Doppelter Schlüssel in der Serverdatenbank</string>
     <!-- API error message -->
     <string name="API_Error_UNEXPECTED_SERVER_ERROR">Unerwarteter Serverfehler</string>
+    <!-- API error message -->
+    <string name="API_Error_CIPHER_TOO_LARGE">Der Schlüssel ist zu groß</string>
 
     <!-- "Choose a server" button -->
     <string name="Server_Choice_Dialog_Title">Server auswählen</string>

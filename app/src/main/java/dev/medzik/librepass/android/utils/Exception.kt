@@ -50,6 +50,7 @@ fun ApiException.getTranslatedErrorMessage(context: Context): String {
         ResponseError.TOO_MANY_REQUESTS -> context.getString(R.string.API_Error_TOO_MANY_REQUESTS)
         ResponseError.DATABASE_DUPLICATED_KEY -> context.getString(R.string.API_Error_DATABASE_DUPLICATED_KEY)
         ResponseError.UNEXPECTED_SERVER_ERROR -> context.getString(R.string.API_Error_UNEXPECTED_SERVER_ERROR)
+        ResponseError.CIPHER_TOO_LARGE -> context.getString(R.string.API_Error_CIPHER_TOO_LARGE)
         else -> message
     }
 }

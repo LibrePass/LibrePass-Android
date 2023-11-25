@@ -188,6 +188,8 @@
     <string name="API_Error_DATABASE_DUPLICATED_KEY">Duplicated key in server database</string>
     <!-- API error message -->
     <string name="API_Error_UNEXPECTED_SERVER_ERROR">Unexpected server error</string>
+    <!-- API error message -->
+    <string name="API_Error_CIPHER_TOO_LARGE">Cipher is too large</string>
 
     <!-- "Choose a server" button -->
     <string name="Server_Choice_Dialog_Title">Choose a server</string>

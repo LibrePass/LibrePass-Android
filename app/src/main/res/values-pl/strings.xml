@@ -5,7 +5,7 @@
     <string name="TopBar_Login">Logowanie</string>
     <!-- TopBar on the unlock vault screen -->
     <string name="TopBar_Unlock">Odblokuj sejf</string>
-    <!-- TopBar on the add new cipher screen -->
+    <!-- TopBar on the adding new cipher screen -->
     <string name="TopBar_AddNewCipher">Dodaj nowy szyfr</string>
     <!-- TopBar on the vault screen -->
     <string name="TopBar_Vault">Sejf</string>
@@ -81,7 +81,7 @@
     <string name="CipherField_Group_Website">Strona internetowa</string>
     <!-- Alt text for cipher website url field -->
     <string name="CipherField_URL">Adres URL</string>
-    <!-- Cipher "Other" group -->
+    <!-- The cipher "Other" group -->
     <string name="CipherField_Group_Other">Inne</string>
     <!-- Alt text for cipher notes field -->
     <string name="CipherField_Notes">Notatki</string>
@@ -99,11 +99,11 @@
     <!-- Cipher card cvv (card verification value) -->
     <string name="CipherField_CardSecurityCode">Kod zabezpieczający</string>
 
-    <!-- "View" button in cipher bottom sheet -->
+    <!-- "View" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_View">Podgląd</string>
-    <!-- "Edit" button in cipher bottom sheet -->
+    <!-- "Edit" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_Edit">Edytuj</string>
-    <!-- "Delete" button in cipher bottom sheet -->
+    <!-- "Delete" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_Delete">Usuń</string>
 
     <!-- "Settings" button in the dropdown menu on the vault screen -->
@@ -111,7 +111,7 @@
     <!-- "Lock vault" button in the dropdown menu on the vault screen -->
     <string name="VaultDropdownMenuNav_Lock">Zablokuj sejf</string>
 
-    <!-- Settings appearance group -->
+    <!-- The appearance group in settings -->
     <string name="Settings_Group_Appearance">Wygląd</string>
     <!-- Change theme button and dialog title -->
     <string name="Settings_Theme">Motyw</string>
@@ -123,7 +123,7 @@
     <string name="Settings_Dark">Ciemny</string>
     <!-- "Pure black (AMOLED)" theme -->
     <string name="Settings_Black">Czysta czerń (AMOLED)</string>
-    <!-- Settings security group -->
+    <!-- The security group in settings -->
     <string name="Settings_Group_Security">Zabezpieczenia</string>
     <!-- Switcher to enable biometrics unlocking -->
     <string name="Settings_BiometricUnlock">Odblokowanie biometryczne</string>
@@ -133,7 +133,7 @@
     <string name="Settings_Vault_Timeout_Instant">Natychmiast</string>
     <!-- Vault timeout "Never" -->
     <string name="Settings_Vault_Timeout_Never">Nigdy</string>
-    <!-- Settings account group -->
+    <!-- The account group in settings -->
     <string name="Settings_Group_Account">Konto</string>
     <!-- "Log out" button in settings -->
     <string name="Settings_Logout">Wyloguj się</string>
@@ -164,7 +164,7 @@
     <!-- "Submit" button in password generator -->
     <string name="PasswordGenerator_Submit">Potwierdź</string>
 
-    <!-- Toast message after account creation (please verify email address) -->
+    <!-- The toast message displayed after an account was created (please verify email address) -->
     <string name="Success_Registration_Please_Verify">Zweryfikuj swój adres e-mail</string>
 
     <!-- Toast error message -->
@@ -207,7 +207,7 @@
 
     <!-- Toast displayed when email field is empty -->
     <string name="Toast_Enter_Email">Wpisz swój adres email</string>
-    <!-- Toast displayed after password hint was sent -->
+    <!-- Toast displayed after a password hint was sent -->
     <string name="Toast_Password_Hint_Sent">Na adres e-mail wysłano podpowiedź do hasła</string>
 
     <!-- Title of dialog for selecting the type of cipher to add -->

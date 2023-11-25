@@ -7,7 +7,7 @@
     <string name="TopBar_Login">Login</string>
     <!-- TopBar on the unlock vault screen -->
     <string name="TopBar_Unlock">Unlock</string>
-    <!-- TopBar on the add new cipher screen -->
+    <!-- TopBar on the adding new cipher screen -->
     <string name="TopBar_AddNewCipher">Add new cipher</string>
     <!-- TopBar on the vault screen -->
     <string name="TopBar_Vault">Vault</string>
@@ -83,7 +83,7 @@
     <string name="CipherField_Group_Website">Website</string>
     <!-- Alt text for cipher website url field -->
     <string name="CipherField_URL">URL</string>
-    <!-- Cipher "Other" group -->
+    <!-- The cipher "Other" group -->
     <string name="CipherField_Group_Other">Other</string>
     <!-- Alt text for cipher notes field -->
     <string name="CipherField_Notes">Notes</string>
@@ -101,11 +101,11 @@
     <!-- Cipher card cvv (card verification value) -->
     <string name="CipherField_CardSecurityCode">Security code</string>
 
-    <!-- "View" button in cipher bottom sheet -->
+    <!-- "View" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_View">View</string>
-    <!-- "Edit" button in cipher bottom sheet -->
+    <!-- "Edit" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_Edit">Edit</string>
-    <!-- "Delete" button in cipher bottom sheet -->
+    <!-- "Delete" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_Delete">Delete</string>
 
     <!-- "Settings" button in the dropdown menu on the vault screen -->
@@ -113,7 +113,7 @@
     <!-- "Lock vault" button in the dropdown menu on the vault screen -->
     <string name="VaultDropdownMenuNav_Lock">Lock vault</string>
 
-    <!-- Settings appearance group -->
+    <!-- The appearance group in settings -->
     <string name="Settings_Group_Appearance">Appearance</string>
     <!-- Change theme button and dialog title -->
     <string name="Settings_Theme">Theme</string>
@@ -127,7 +127,7 @@
     <string name="Settings_Black">Pure black (AMOLED)</string>
     <!-- Material You theme switcher -->
     <string name="Settings_MaterialYou" translatable="false">Material You (Android 12+)</string>
-    <!-- Settings security group -->
+    <!-- The security group in settings -->
     <string name="Settings_Group_Security">Security</string>
     <!-- Switcher to enable biometrics unlocking -->
     <string name="Settings_BiometricUnlock">Unlock with biometrics</string>
@@ -137,7 +137,7 @@
     <string name="Settings_Vault_Timeout_Instant">Instant</string>
     <!-- Vault timeout "Never" -->
     <string name="Settings_Vault_Timeout_Never">Never</string>
-    <!-- Settings account group -->
+    <!-- The account group in settings -->
     <string name="Settings_Group_Account">Account</string>
     <!-- "Log out" button in settings -->
     <string name="Settings_Logout">Log out</string>
@@ -164,7 +164,7 @@
     <!-- "Submit" button in password generator -->
     <string name="PasswordGenerator_Submit">Submit</string>
 
-    <!-- Toast message after account creation (please verify email address) -->
+    <!-- The toast message displayed after an account was created (please verify email address) -->
     <string name="Success_Registration_Please_Verify">Please verify your email address</string>
 
     <!-- Toast error message -->
@@ -207,7 +207,7 @@
 
     <!-- Toast displayed when email field is empty -->
     <string name="Toast_Enter_Email">Enter your email address</string>
-    <!-- Toast displayed after password hint was sent -->
+    <!-- Toast displayed after a password hint was sent -->
     <string name="Toast_Password_Hint_Sent">A password hint was sent to the email address</string>
 
     <!-- Title of dialog for selecting the type of cipher to add -->

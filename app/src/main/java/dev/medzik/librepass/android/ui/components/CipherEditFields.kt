@@ -247,7 +247,12 @@ fun CipherEditFieldsCard(
                 .padding(vertical = 4.dp),
         value = cipherData.expMonth?.toString(),
         onValueChange = {
-            if (!it.all { char -> char.isDigit() } && it.toInt() <= 12)
+            if (it.isEmpty()) {
+                cipherData = cipherData.copy(expMonth = null)
+                return@TextInputFieldBase
+            }
+
+            if (!it.all { char -> char.isDigit() } || it.length > 2 || it.toInt() > 12)
                 return@TextInputFieldBase
 
             cipherData = cipherData.copy(expMonth = it.toInt())
@@ -263,7 +268,11 @@ fun CipherEditFieldsCard(
                 .padding(vertical = 4.dp),
         value = cipherData.expYear?.toString(),
         onValueChange = {
-            if (!it.all { char -> char.isDigit() } && it.length <= 4)
+            if (it.isEmpty()) {
+                cipherData = cipherData.copy(expYear = null)
+                return@TextInputFieldBase
+            }
+            if (!it.all { char -> char.isDigit() } || it.length > 4)
                 return@TextInputFieldBase
 
             cipherData = cipherData.copy(expYear = it.toInt())
@@ -279,7 +288,7 @@ fun CipherEditFieldsCard(
                 .padding(vertical = 4.dp),
         value = cipherData.code,
         onValueChange = {
-            if (!it.all { char -> char.isDigit() } && it.length <= 6)
+            if (!it.all { char -> char.isDigit() })
                 return@TextInputFieldBase
 
             cipherData = cipherData.copy(code = it)

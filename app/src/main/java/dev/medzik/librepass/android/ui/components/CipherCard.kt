@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -34,6 +36,7 @@ import dev.medzik.librepass.android.utils.SHORTEN_USERNAME_LENGTH
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
+import dev.medzik.librepass.types.cipher.CipherType
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -53,7 +56,73 @@ fun CipherCard(
         return if (!uris.isNullOrEmpty()) uris[0] else null
     }
 
-    val cipherData = cipher.loginData!!
+    @Composable
+    fun CipherIcon() {
+        when (cipher.type) {
+            CipherType.Login -> {
+                val domain = getDomain()
+                if (domain != null) {
+                    AsyncImage(
+                        // TODO: custom api url
+                        model = CipherClient.getFavicon(domain = domain),
+                        contentDescription = null,
+                        error = rememberVectorPainter(Icons.Default.Person),
+                        modifier = Modifier.size(24.dp)
+                    )
+                } else {
+                    Image(
+                        Icons.Default.Person,
+                        contentDescription = null,
+                    )
+                }
+            }
+            CipherType.SecureNote -> {
+                Image(
+                    Icons.Default.Notes,
+                    contentDescription = null,
+                )
+            }
+            CipherType.Card -> {
+                Image(
+                    Icons.Default.CreditCard,
+                    contentDescription = null,
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun CipherText() {
+        val title: String
+        var subtitle: String? = null
+
+        when (cipher.type) {
+            CipherType.Login -> {
+                title = cipher.loginData!!.name
+                subtitle = cipher.loginData!!.username
+            }
+            CipherType.SecureNote -> {
+                title = cipher.secureNoteData!!.title
+            }
+            CipherType.Card -> {
+                title = cipher.cardData!!.cardholderName
+                subtitle = "•••• " + cipher.cardData!!.number!!.takeLast(4)
+            }
+        }
+
+        Text(
+            text = title.shorten(SHORTEN_NAME_LENGTH),
+            style = MaterialTheme.typography.titleMedium
+        )
+
+        if (subtitle != null) {
+            Text(
+                text = subtitle.shorten(SHORTEN_USERNAME_LENGTH),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            )
+        }
+    }
 
     Card(
         modifier = Modifier.padding(vertical = 8.dp)
@@ -70,20 +139,7 @@ fun CipherCard(
                     .padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            val domain = getDomain()
-            if (domain != null) {
-                AsyncImage(
-                    model = CipherClient.getFavicon(domain = domain),
-                    contentDescription = null,
-                    error = rememberVectorPainter(Icons.Default.Person),
-                    modifier = Modifier.size(24.dp)
-                )
-            } else {
-                Image(
-                    Icons.Default.Person,
-                    contentDescription = null,
-                )
-            }
+            CipherIcon()
 
             Column(
                 modifier =
@@ -93,19 +149,7 @@ fun CipherCard(
                         .weight(1f),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = cipherData.name.shorten(SHORTEN_NAME_LENGTH),
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                val username = cipherData.username
-                if (username != null) {
-                    Text(
-                        text = username.shorten(SHORTEN_USERNAME_LENGTH),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                    )
-                }
+                CipherText()
             }
 
             if (showCipherActions) {

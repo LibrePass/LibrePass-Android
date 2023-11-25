@@ -93,9 +93,9 @@
     <!-- Cipher card number -->
     <string name="CipherField_CardNumber">Numer karty</string>
     <!-- Cipher card expiration month -->
-    <string name="CipherField_CardExpirationMonth">Miesiąc wygaśnięcia</string>
+    <string name="CipherField_CardExpirationMonth">Miesiąc ważności</string>
     <!-- Cipher card expiration year -->
-    <string name="CipherField_CardExpirationYear">Rok wygaśnięcia</string>
+    <string name="CipherField_CardExpirationYear">Rok ważności</string>
     <!-- Cipher card cvv (card verification value) -->
     <string name="CipherField_CardSecurityCode">Kod zabezpieczający</string>
 

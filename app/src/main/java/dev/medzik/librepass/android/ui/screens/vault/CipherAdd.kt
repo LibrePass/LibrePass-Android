@@ -108,7 +108,7 @@ fun CipherAddScreen(navController: NavController) {
             }
             CipherType.Card -> {
                 cipher.cardData!!.cardholderName.isNotEmpty() &&
-                    cipher.cardData!!.number.isNullOrEmpty()
+                    !cipher.cardData!!.number.isNullOrEmpty()
             }
         }
     }

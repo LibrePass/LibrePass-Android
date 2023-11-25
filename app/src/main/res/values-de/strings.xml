@@ -5,7 +5,7 @@
     <string name="TopBar_Login">Anmelden</string>
     <!-- TopBar on the unlock vault screen -->
     <string name="TopBar_Unlock">Entsperren</string>
-    <!-- TopBar on the add new cipher screen -->
+    <!-- TopBar on the adding new cipher screen -->
     <string name="TopBar_AddNewCipher">Neue Verschlüsselung hinzufügen</string>
     <!-- TopBar on the vault screen -->
     <string name="TopBar_Vault">Tresor</string>
@@ -81,16 +81,29 @@
     <string name="CipherField_Group_Website">Website</string>
     <!-- Alt text for cipher website url field -->
     <string name="CipherField_URL">URL</string>
-    <!-- Cipher "Other" group -->
+    <!-- The cipher "Other" group -->
     <string name="CipherField_Group_Other">Andere</string>
     <!-- Alt text for cipher notes field -->
     <string name="CipherField_Notes">Notizen</string>
 
-    <!-- "View" button in cipher bottom sheet -->
+    <!-- Cipher card title -->
+    <string name="CipherField_Title">Titel</string>
+    <!-- Cipher cardholder name -->
+    <string name="CipherField_CardholderName">Karteninhabername</string>
+    <!-- Cipher card number -->
+    <string name="CipherField_CardNumber">Kartennummer</string>
+    <!-- Cipher card expiration month -->
+    <string name="CipherField_CardExpirationMonth">Ablaufmonat</string>
+    <!-- Cipher card expiration year -->
+    <string name="CipherField_CardExpirationYear">Ablaufjahr</string>
+    <!-- Cipher card cvv (card verification value) -->
+    <string name="CipherField_CardSecurityCode">Sicherheitscode</string>
+
+    <!-- "View" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_View">Anzeigen</string>
-    <!-- "Edit" button in cipher bottom sheet -->
+    <!-- "Edit" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_Edit">Bearbeiten</string>
-    <!-- "Delete" button in cipher bottom sheet -->
+    <!-- "Delete" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_Delete">Löschen</string>
 
     <!-- "Settings" button in the dropdown menu on the vault screen -->
@@ -98,7 +111,7 @@
     <!-- "Lock vault" button in the dropdown menu on the vault screen -->
     <string name="VaultDropdownMenuNav_Lock">Tresor sperren</string>
 
-    <!-- Settings appearance group -->
+    <!-- The appearance group in settings -->
     <string name="Settings_Group_Appearance">Erscheinungsbild</string>
     <!-- Change theme button and dialog title -->
     <string name="Settings_Theme">Thema</string>
@@ -110,7 +123,7 @@
     <string name="Settings_Dark">Dunkel</string>
     <!-- "Pure black (AMOLED)" theme -->
     <string name="Settings_Black">Reines Schwarz (AMOLED)</string>
-    <!-- Settings security group -->
+    <!-- The security group in settings -->
     <string name="Settings_Group_Security">Sicherheit</string>
     <!-- Switcher to enable biometrics unlocking -->
     <string name="Settings_BiometricUnlock">Entsperren mit Biometrie</string>
@@ -120,7 +133,7 @@
     <string name="Settings_Vault_Timeout_Instant">Sofort</string>
     <!-- Vault timeout "Never" -->
     <string name="Settings_Vault_Timeout_Never">Nie</string>
-    <!-- Settings account group -->
+    <!-- The account group in settings -->
     <string name="Settings_Group_Account">Konto</string>
     <!-- "Log out" button in settings -->
     <string name="Settings_Logout">Abmelden</string>
@@ -147,7 +160,7 @@
     <!-- "Submit" button in password generator -->
     <string name="PasswordGenerator_Submit">Senden</string>
 
-    <!-- Toast message after account creation (please verify email address) -->
+    <!-- The toast message displayed after an account was created (please verify email address) -->
     <string name="Success_Registration_Please_Verify">Bitte bestätigen Sie Ihre E-Mail-Adresse</string>
 
     <!-- Toast error message -->
@@ -190,6 +203,15 @@
 
     <!-- Toast displayed when email field is empty -->
     <string name="Toast_Enter_Email">Geben Sie Ihre E-Mail Adresse ein</string>
-    <!-- Toast displayed after password hint was sent -->
+    <!-- Toast displayed after a password hint was sent -->
     <string name="Toast_Password_Hint_Sent">Ein Passworthinweis wurde an die E-Mail-Adresse gesendet</string>
+
+    <!-- Title of dialog for selecting the type of cipher to add -->
+    <string name="Vault_CipherTypeDialog_Title">Auswahl des Chiffrentyps</string>
+    <!-- Entry of dialog for selecting the type of cipher -->
+    <string name="Vault_CipherTypeDialog_Type_Login">Anmeldedaten</string>
+    <!-- Entry of dialog for selecting the type of cipher -->
+    <string name="Vault_CipherTypeDialog_Type_Card">Karte</string>
+    <!-- Entry of dialog for selecting the type of cipher -->
+    <string name="Vault_CipherTypeDialog_Type_SecureNote">Sicherer Hinweis</string>
 </resources>

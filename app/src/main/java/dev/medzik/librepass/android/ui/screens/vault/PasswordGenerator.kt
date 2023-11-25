@@ -209,7 +209,7 @@ fun PasswordGeneratorScreen(navController: NavController) {
                 .padding(horizontal = 90.dp)
                 .padding(top = 16.dp),
         onClick = {
-            navController.previousBackStackEntry?.savedStateHandle?.set("password", generatedPassword)
+            navController.previousBackStackEntry!!.savedStateHandle["password"] = generatedPassword
             navController.popBackStack()
         }
     ) {

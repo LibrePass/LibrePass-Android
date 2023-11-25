@@ -82,7 +82,20 @@ fun VaultScreen(navController: NavController) {
             }
 
         // sort ciphers by name and update UI
-        ciphers = decryptedCiphers.sortedBy { it.loginData!!.name }
+        ciphers =
+            decryptedCiphers.sortedBy {
+                when (it.type) {
+                    CipherType.Login -> {
+                        it.loginData!!.name
+                    }
+                    CipherType.SecureNote -> {
+                        it.secureNoteData!!.title
+                    }
+                    CipherType.Card -> {
+                        it.cardData!!.cardholderName
+                    }
+                }
+            }
     }
 
     // Update ciphers from API and local database and update UI

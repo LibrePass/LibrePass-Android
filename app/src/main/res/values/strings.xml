@@ -88,6 +88,19 @@
     <!-- Alt text for cipher notes field -->
     <string name="CipherField_Notes">Notes</string>
 
+    <!-- Cipher card title -->
+    <string name="CipherField_Title">Title</string>
+    <!-- Cipher cardholder name -->
+    <string name="CipherField_CardholderName">Cardholder name</string>
+    <!-- Cipher card number -->
+    <string name="CipherField_CardNumber">Card number</string>
+    <!-- Cipher card expiration month -->
+    <string name="CipherField_CardExpirationMonth">Expiration month</string>
+    <!-- Cipher card expiration year -->
+    <string name="CipherField_CardExpirationYear">Expiration year</string>
+    <!-- Cipher card cvv (card verification value) -->
+    <string name="CipherField_CardSecurityCode">Security code</string>
+
     <!-- "View" button in cipher bottom sheet -->
     <string name="CipherBottomSheet_View">View</string>
     <!-- "Edit" button in cipher bottom sheet -->
@@ -196,4 +209,13 @@
     <string name="Toast_Enter_Email">Enter your email address</string>
     <!-- Toast displayed after password hint was sent -->
     <string name="Toast_Password_Hint_Sent">A password hint was sent to the email address</string>
+
+    <!-- Title of dialog for selecting the type of cipher to add -->
+    <string name="Vault_CipherTypeDialog_Title">Select cipher type</string>
+    <!-- Entry of dialog for selecting the type of cipher -->
+    <string name="Vault_CipherTypeDialog_Type_Login">Login</string>
+    <!-- Entry of dialog for selecting the type of cipher -->
+    <string name="Vault_CipherTypeDialog_Type_Card">Card</string>
+    <!-- Entry of dialog for selecting the type of cipher -->
+    <string name="Vault_CipherTypeDialog_Type_SecureNote">Secure note</string>
 </resources>

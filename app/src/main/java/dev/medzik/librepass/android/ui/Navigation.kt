@@ -34,10 +34,12 @@ import androidx.navigation.compose.rememberNavController
 import dev.medzik.android.components.NavArgument
 import dev.medzik.android.components.NavScreen
 import dev.medzik.android.components.navigate
+import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
+import dev.medzik.librepass.android.ui.components.CipherTypeDialog
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
@@ -59,7 +61,8 @@ import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 
 enum class Argument : NavArgument {
-    CipherId
+    CipherId,
+    CipherType
 }
 
 enum class Screen(
@@ -155,12 +158,27 @@ enum class Screen(
                 }
             )
         },
-        floatingActionButton = {
+        floatingActionButton = { navController ->
+            val dialogState = rememberDialogState()
+
             FloatingActionButton(
-                onClick = { it.navigate(CipherAdd) }
+                onClick = { dialogState.show() }
             ) {
                 Icon(Icons.Default.Add, contentDescription = null)
             }
+
+            CipherTypeDialog(
+                dialogState,
+                onSelected = { cipherType ->
+                    navController.navigate(
+                        CipherAdd,
+                        args =
+                            arrayOf(
+                                Argument.CipherType to cipherType.ordinal.toString()
+                            )
+                    )
+                }
+            )
         },
         composable = { VaultScreen(it) }
     ),
@@ -170,6 +188,7 @@ enum class Screen(
         composable = { CipherViewScreen(it) }
     ),
     CipherAdd(
+        args = arrayOf(Argument.CipherType),
         customScaffold = true,
         composable = { CipherAddScreen(it) }
     ),

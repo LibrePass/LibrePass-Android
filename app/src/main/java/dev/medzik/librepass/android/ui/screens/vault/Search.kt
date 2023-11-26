@@ -65,7 +65,20 @@ fun SearchScreen(navController: NavController) {
             }
         }
     // sort ciphers by name
-    val ciphers = decryptedCiphers.sortedBy { it.loginData!!.name }
+    val ciphers =
+        decryptedCiphers.sortedBy {
+            when (it.type) {
+                CipherType.Login -> {
+                    it.loginData!!.name
+                }
+                CipherType.SecureNote -> {
+                    it.secureNoteData!!.title
+                }
+                CipherType.Card -> {
+                    it.cardData!!.cardholderName
+                }
+            }
+        }
 
     var searchText by rememberMutableString()
 
@@ -108,8 +121,18 @@ fun SearchScreen(navController: NavController) {
         ) {
             val filteredCiphers =
                 ciphers.filter {
-                    it.loginData!!.name.lowercase().contains(searchText) || it.loginData!!.username?.lowercase()
-                        ?.contains(searchText) ?: false
+                    when (it.type) {
+                        CipherType.Login -> {
+                            it.loginData!!.name.lowercase().contains(searchText) ||
+                                it.loginData!!.username?.lowercase()?.contains(searchText) ?: false
+                        }
+                        CipherType.SecureNote -> {
+                            it.secureNoteData!!.title.lowercase().contains(searchText)
+                        }
+                        CipherType.Card -> {
+                            it.cardData!!.cardholderName.lowercase().contains(searchText)
+                        }
+                    }
                 }
 
             for (cipher in filteredCiphers) {

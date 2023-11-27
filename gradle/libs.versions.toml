@@ -28,7 +28,7 @@ process-phoenix = "2.1.2"
 # Plugins
 android-application = "8.1.4"
 google-ksp = "1.9.20-1.0.14"
-kotlin-android = "1.9.20"
+kotlin-android = "1.9.21"
 
 [libraries]
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }

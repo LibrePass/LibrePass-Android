@@ -105,8 +105,8 @@ fun CipherCard(
                 title = cipher.secureNoteData!!.title
             }
             CipherType.Card -> {
-                title = cipher.cardData!!.cardholderName
-                subtitle = "•••• " + cipher.cardData!!.number!!.takeLast(4)
+                title = cipher.cardData!!.name
+                subtitle = "•••• " + cipher.cardData!!.number.takeLast(4)
             }
         }
 

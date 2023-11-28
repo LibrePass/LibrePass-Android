@@ -213,6 +213,16 @@ fun CipherEditFieldsCard(
     var cipherData by rememberMutable(cipher.cardData!!)
 
     TextInputFieldBase(
+        label = stringResource(R.string.CipherField_Name),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+        value = cipherData.name,
+        onValueChange = { cipherData = cipherData.copy(name = it) }
+    )
+
+    TextInputFieldBase(
         label = stringResource(R.string.CipherField_CardholderName),
         modifier =
             Modifier

@@ -113,8 +113,9 @@ fun CipherEditScreen(navController: NavController) {
                     cipher.secureNoteData!!.note.isNotEmpty()
             }
             CipherType.Card -> {
-                cipher.cardData!!.cardholderName.isNotEmpty() &&
-                    !cipher.cardData!!.number.isNullOrEmpty()
+                cipher.cardData!!.name.isNotEmpty() &&
+                    cipher.cardData!!.cardholderName.isNotEmpty() &&
+                    cipher.cardData!!.number.isNotEmpty()
             }
         }
     }

@@ -215,6 +215,12 @@ fun CipherViewScreen(navController: NavController) {
         val cipherData = cipher.cardData!!
 
         CipherField(
+            title = stringResource(R.string.CipherField_Name),
+            value = cipherData.name,
+            copy = true
+        )
+
+        CipherField(
             title = stringResource(R.string.CipherField_CardholderName),
             value = cipherData.cardholderName,
             copy = true

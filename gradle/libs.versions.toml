@@ -22,7 +22,7 @@ commons-codec = "1.16.0"
 google-accompanist = "0.32.0"
 google-material = "1.10.0"
 kotlinx-coroutines-android = "1.7.3"
-librepass-client = "1.1.0"
+librepass-client = "1.2.0"
 medzik-libcrypto = "1.2.0"
 process-phoenix = "2.1.2"
 # Plugins

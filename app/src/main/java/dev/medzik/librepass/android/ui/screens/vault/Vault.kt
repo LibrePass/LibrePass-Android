@@ -92,7 +92,7 @@ fun VaultScreen(navController: NavController) {
                         it.secureNoteData!!.title
                     }
                     CipherType.Card -> {
-                        it.cardData!!.cardholderName
+                        it.cardData!!.name
                     }
                 }
             }

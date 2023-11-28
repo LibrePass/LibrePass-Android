@@ -61,7 +61,7 @@ fun CipherAddScreen(navController: NavController) {
             owner = credentials.userId,
             type = cipherType,
             loginData = if (cipherType == CipherType.Login) CipherLoginData(name = "") else null,
-            cardData = if (cipherType == CipherType.Card) CipherCardData(cardholderName = "") else null,
+            cardData = if (cipherType == CipherType.Card) CipherCardData(name = "", cardholderName = "", number = "") else null,
             secureNoteData = if (cipherType == CipherType.SecureNote) CipherSecureNoteData(title = "", note = "") else null
         )
     )
@@ -107,8 +107,9 @@ fun CipherAddScreen(navController: NavController) {
                     cipher.secureNoteData!!.note.isNotEmpty()
             }
             CipherType.Card -> {
-                cipher.cardData!!.cardholderName.isNotEmpty() &&
-                    !cipher.cardData!!.number.isNullOrEmpty()
+                cipher.cardData!!.name.isNotEmpty() &&
+                    cipher.cardData!!.cardholderName.isNotEmpty() &&
+                    cipher.cardData!!.number.isNotEmpty()
             }
         }
     }

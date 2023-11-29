@@ -139,8 +139,22 @@
     <string name="Settings_Vault_Timeout_Never">Never</string>
     <!-- The account group in settings -->
     <string name="Settings_Group_Account">Account</string>
+    <!-- "Change password" button in settings -->
+    <string name="Settings_ChangePassword">Change password</string>
     <!-- "Log out" button in settings -->
     <string name="Settings_Logout">Log out</string>
+    <!-- "Delete account" button in settings -->
+    <string name="Settings_DeleteAccount">Delete account</string>
+    <!-- "Old password" input in change password screen -->
+    <string name="Settings_ChangePassword_OldPassword">Old password</string>
+    <!-- "New password" input in change password screen -->
+    <string name="Settings_ChangePassword_NewPassword">New password</string>
+    <!-- "Confirm new password" input in change password screen -->
+    <string name="Settings_ChangePassword_ConfirmNewPassword">Confirm new password</string>
+    <!-- "Change password" button on the change password screen -->
+    <string name="Settings_ChangePassword_Button">Change password</string>
+    <!-- "Old password" input error when old password is incorrect on change password screen -->
+    <string name="Settings_ChangePassword_Error_InvalidOldPassword">Old password is incorrect</string>
 
     <!-- Time -->
     <plurals name="Time_Minutes">

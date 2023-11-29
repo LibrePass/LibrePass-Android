@@ -1,7 +1,9 @@
 package dev.medzik.librepass.android.ui.screens.settings
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LockReset
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.NoAccounts
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -9,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import dev.medzik.android.components.PreferenceEntry
 import dev.medzik.android.components.navigate
+import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Screen
@@ -19,6 +22,18 @@ fun SettingsAccountScreen(navController: NavController) {
     val context = LocalContext.current
 
     val repository = context.getRepository()
+
+    fun changePassword() {
+        runOnUiThread {
+            navController.navigate(Screen.SettingsAccountChangePassword)
+        }
+    }
+
+    PreferenceEntry(
+        title = stringResource(R.string.Settings_ChangePassword),
+        icon = { Icon(Icons.Default.LockReset, contentDescription = null) },
+        onClick = { changePassword() },
+    )
 
     fun logout() =
         runBlocking {
@@ -37,5 +52,14 @@ fun SettingsAccountScreen(navController: NavController) {
         title = stringResource(R.string.Settings_Logout),
         icon = { Icon(Icons.Default.Logout, contentDescription = null) },
         onClick = { logout() },
+    )
+
+    fun deleteAccount() {
+    }
+
+    PreferenceEntry(
+        title = stringResource(R.string.Settings_DeleteAccount),
+        icon = { Icon(Icons.Default.NoAccounts, contentDescription = null) },
+        onClick = { deleteAccount() },
     )
 }

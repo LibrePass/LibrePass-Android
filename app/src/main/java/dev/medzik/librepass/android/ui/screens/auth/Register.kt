@@ -84,7 +84,7 @@ fun RegisterScreen(navController: NavController) {
         value = email,
         onValueChange = { email = it },
         isError = email.isNotEmpty() && !email.contains("@"),
-        errorMessage = stringResource(R.string.Error_InvalidEmail),
+        errorMessage = stringResource(R.string.InvalidEmail),
         keyboardType = KeyboardType.Email
     )
 
@@ -94,7 +94,7 @@ fun RegisterScreen(navController: NavController) {
         onValueChange = { password = it },
         hidden = true,
         isError = password.isNotEmpty() && password.length < 8,
-        errorMessage = stringResource(R.string.Error_InvalidPasswordTooShort),
+        errorMessage = stringResource(R.string.PasswordTooShort),
         keyboardType = KeyboardType.Password
     )
 
@@ -104,12 +104,12 @@ fun RegisterScreen(navController: NavController) {
         onValueChange = { configPassword = it },
         hidden = true,
         isError = configPassword.isNotEmpty() && configPassword != password,
-        errorMessage = stringResource(R.string.Error_PasswordsDoNotMatch),
+        errorMessage = stringResource(R.string.PasswordsDoNotMatch),
         keyboardType = KeyboardType.Password
     )
 
     TextInputField(
-        label = "${stringResource(R.string.InputField_PasswordHint)} (${stringResource(R.string.InputField_Optional)})",
+        label = "${stringResource(R.string.InputField_PasswordHint)} (${stringResource(R.string.optional)})",
         value = passwordHint,
         onValueChange = { passwordHint = it },
         keyboardType = KeyboardType.Text

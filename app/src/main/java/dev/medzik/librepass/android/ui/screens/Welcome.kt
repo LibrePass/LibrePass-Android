@@ -61,7 +61,7 @@ fun WelcomeScreen(navController: NavController) {
                         .padding(horizontal = 90.dp)
                         .padding(top = 20.dp)
             ) {
-                Text(stringResource(R.string.WelcomeScreen_Button_Register))
+                Text(stringResource(R.string.TopBar_Register))
             }
 
             OutlinedButton(
@@ -72,7 +72,7 @@ fun WelcomeScreen(navController: NavController) {
                         .padding(horizontal = 90.dp)
                         .padding(top = 8.dp)
             ) {
-                Text(stringResource(R.string.WelcomeScreen_Button_Login))
+                Text(stringResource(R.string.TopBar_Login))
             }
         }
     }

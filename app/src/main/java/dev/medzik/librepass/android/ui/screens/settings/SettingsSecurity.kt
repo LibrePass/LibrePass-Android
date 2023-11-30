@@ -101,35 +101,35 @@ fun SettingsSecurityScreen() {
             VaultTimeoutValues.INSTANT -> stringResource(R.string.Settings_Vault_Timeout_Instant)
             VaultTimeoutValues.ONE_MINUTE ->
                 pluralStringResource(
-                    R.plurals.Time_Minutes,
+                    R.plurals.minutes,
                     1,
                     1
                 )
 
             VaultTimeoutValues.FIVE_MINUTES ->
                 pluralStringResource(
-                    R.plurals.Time_Minutes,
+                    R.plurals.minutes,
                     5,
                     5
                 )
 
             VaultTimeoutValues.FIFTEEN_MINUTES ->
                 pluralStringResource(
-                    R.plurals.Time_Minutes,
+                    R.plurals.minutes,
                     15,
                     15
                 )
 
             VaultTimeoutValues.THIRTY_MINUTES ->
                 pluralStringResource(
-                    R.plurals.Time_Minutes,
+                    R.plurals.minutes,
                     30,
                     30
                 )
 
             VaultTimeoutValues.ONE_HOUR ->
                 pluralStringResource(
-                    R.plurals.Time_Hours,
+                    R.plurals.hours,
                     1,
                     1
                 )

@@ -124,7 +124,7 @@ fun SettingsAccountChangePasswordScreen(navController: NavController) {
         onValueChange = { newPassword = it },
         hidden = true,
         isError = newPassword.isNotEmpty() && newPassword.length < 8,
-        errorMessage = stringResource(R.string.Error_InvalidPasswordTooShort),
+        errorMessage = stringResource(R.string.PasswordTooShort),
         keyboardType = KeyboardType.Password
     )
 
@@ -134,7 +134,7 @@ fun SettingsAccountChangePasswordScreen(navController: NavController) {
         onValueChange = { newPasswordConfirm = it },
         hidden = true,
         isError = newPasswordConfirm.isNotEmpty() && newPasswordConfirm != newPassword,
-        errorMessage = stringResource(R.string.Error_PasswordsDoNotMatch),
+        errorMessage = stringResource(R.string.PasswordsDoNotMatch),
         keyboardType = KeyboardType.Password
     )
 

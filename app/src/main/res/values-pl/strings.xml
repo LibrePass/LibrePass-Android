@@ -118,4 +118,9 @@
     <string name="Vault_CipherTypeDialog_Type_Card">Karta</string>
     <string name="Vault_CipherTypeDialog_Type_SecureNote">Bezpieczna notatka</string>
     <string name="Settings_DeleteAccount_Error_InvalidPassword">Hasło jest niepoprawne</string>
+    <string name="PasswordTooShort">Hasło jest zbyt krótkie</string>
+    <string name="Settings_DeleteAccount_Button">Usuń konto</string>
+    <string name="InvalidEmail">Nieprawidłowy adres email</string>
+    <string name="optional">opcjonalne</string>
+    <string name="PasswordsDoNotMatch">Hasła nie pasują do siebie</string>
 </resources>

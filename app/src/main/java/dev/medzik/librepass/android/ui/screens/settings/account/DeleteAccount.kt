@@ -27,25 +27,21 @@ import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.UserClient
-import dev.medzik.librepass.client.utils.Cryptography.computeSecretKeyFromPassword
+import dev.medzik.librepass.client.utils.Cryptography
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun SettingsAccountChangePasswordScreen(navController: NavController) {
+fun SettingsAccountDeleteAccountScreen(navController: NavController) {
     val context = LocalContext.current
     val repository = context.getRepository()
     val credentials = repository.credentials.get() ?: return
     val userSecrets = context.getUserSecrets() ?: return
 
-    var oldPassword by rememberMutableString()
-    var oldPasswordInvalid by rememberMutableBoolean()
-    var newPassword by rememberMutableString()
-    var newPasswordConfirm by rememberMutableString()
-    var newPasswordHint by rememberMutableString()
     var loading by rememberMutableBoolean()
-
+    var password by rememberMutableString()
+    var passwordInvalid by rememberMutableBoolean()
     val scope = rememberCoroutineScope()
 
     val userClient =
@@ -55,20 +51,16 @@ fun SettingsAccountChangePasswordScreen(navController: NavController) {
             apiUrl = credentials.apiUrl ?: Server.PRODUCTION
         )
 
-    fun resetPassword(
-        oldPassword: String,
-        newPassword: String,
-        newPasswordHint: String
-    ) {
+    fun deleteAccount(password: String) {
         loading = true
-        oldPasswordInvalid = false
+        passwordInvalid = false
 
         scope.launch(Dispatchers.IO) {
             // check old password
             // compute base password hash
             val oldPasswordHash =
-                computeSecretKeyFromPassword(
-                    password = oldPassword,
+                Cryptography.computeSecretKeyFromPassword(
+                    password = password,
                     email = credentials.email,
                     argon2Function =
                         Argon2(
@@ -80,13 +72,13 @@ fun SettingsAccountChangePasswordScreen(navController: NavController) {
                 )
 
             if (!oldPasswordHash.contentEquals(userSecrets.secretKey)) {
-                oldPasswordInvalid = true
+                passwordInvalid = true
                 loading = false
                 return@launch
             }
 
             try {
-                userClient.changePassword(oldPassword, newPassword, newPasswordHint)
+                userClient.deleteAccount(password)
 
                 runBlocking {
                     repository.credentials.drop()
@@ -109,50 +101,24 @@ fun SettingsAccountChangePasswordScreen(navController: NavController) {
     }
 
     TextInputField(
-        label = stringResource(R.string.Settings_ChangePassword_OldPassword),
-        value = oldPassword,
-        onValueChange = { oldPassword = it },
+        label = stringResource(R.string.InputField_Password),
+        value = password,
+        onValueChange = { password = it },
         hidden = true,
-        isError = oldPasswordInvalid,
-        errorMessage = stringResource(R.string.Settings_ChangePassword_Error_InvalidOldPassword),
+        isError = passwordInvalid,
+        errorMessage = stringResource(R.string.Settings_DeleteAccount_Error_InvalidPassword),
         keyboardType = KeyboardType.Password
-    )
-
-    TextInputField(
-        label = stringResource(R.string.Settings_ChangePassword_NewPassword),
-        value = newPassword,
-        onValueChange = { newPassword = it },
-        hidden = true,
-        isError = newPassword.isNotEmpty() && newPassword.length < 8,
-        errorMessage = stringResource(R.string.Error_InvalidPasswordTooShort),
-        keyboardType = KeyboardType.Password
-    )
-
-    TextInputField(
-        label = stringResource(R.string.Settings_ChangePassword_ConfirmNewPassword),
-        value = newPasswordConfirm,
-        onValueChange = { newPasswordConfirm = it },
-        hidden = true,
-        isError = newPasswordConfirm.isNotEmpty() && newPasswordConfirm != newPassword,
-        errorMessage = stringResource(R.string.Error_PasswordsDoNotMatch),
-        keyboardType = KeyboardType.Password
-    )
-
-    TextInputField(
-        label = stringResource(R.string.InputField_PasswordHint),
-        value = newPasswordHint,
-        onValueChange = { newPasswordHint = it }
     )
 
     LoadingButton(
         loading = loading,
-        onClick = { resetPassword(oldPassword, newPassword, newPasswordHint) },
-        enabled = oldPassword.isNotEmpty() && newPassword.isNotEmpty() && newPasswordConfirm == newPassword,
+        onClick = { deleteAccount(password) },
+        enabled = password.isNotEmpty(),
         modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp, vertical = 8.dp)
     ) {
-        Text(stringResource(R.string.Settings_ChangePassword_Button))
+        Text(stringResource(R.string.Settings_DeleteAccount_Button))
     }
 }

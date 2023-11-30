@@ -1,233 +1,132 @@
 <resources>
-    <!-- TopBar on the register screen -->
+    <plurals name="minutes">
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minuten</item>
+    </plurals>
+    <!-- Time -->
+    <plurals name="hours">
+        <item quantity="one">%d Stunde</item>
+        <item quantity="other">%d Stunden</item>
+    </plurals>
+
     <string name="TopBar_Register">Registrieren</string>
-    <!-- TopBar on the login screen -->
     <string name="TopBar_Login">Anmelden</string>
-    <!-- TopBar on the unlock vault screen -->
     <string name="TopBar_Unlock">Entsperren</string>
-    <!-- TopBar on the adding new cipher screen -->
     <string name="TopBar_AddNewCipher">Neue Verschlüsselung hinzufügen</string>
-    <!-- TopBar on the vault screen -->
     <string name="TopBar_Vault">Tresor</string>
-    <!-- TopBar on the settings screen -->
     <string name="TopBar_Settings">Einstellungen</string>
-    <!-- TopBar on the password generator screen -->
     <string name="TopBar_PasswordGenerator">Generator</string>
-    <!-- TopBar on the screen for adding custom server -->
     <string name="TopBar_AddCustomServer">Server hinzufügen</string>
 
-    <!-- Email field placeholder -->
     <string name="InputField_Email">E-Mail</string>
-    <!-- Password field placeholder -->
     <string name="InputField_Password">Passwort</string>
-    <!-- Confirm password field placeholder -->
     <string name="InputField_ConfirmPassword">Passwort bestätigen</string>
-    <!-- Password hint field placeholder -->
     <string name="InputField_PasswordHint">Passwort-Hinweis</string>
-    <!-- "(optional)" text in field e.g. "Password hint (optional) -->
-    <string name="InputField_Optional">optional</string>
-
-    <!-- Error toast -->
-    <string name="Error_InvalidEmail">Ungültige E-Mail</string>
-    <!-- Error toast -->
-    <string name="Error_InvalidPasswordTooShort">Passwort ist zu kurz</string>
-    <!-- Error toast -->
-    <string name="Error_PasswordsDoNotMatch">Passwörter stimmen nicht überein</string>
-
-    <!-- "Register" button -->
     <string name="Button_Register">Registrieren</string>
-    <!-- "Login" button -->
     <string name="Button_Login">Anmelden</string>
-    <!-- "Unlock" button to unlock the vault -->
     <string name="Button_Unlock">Entsperren</string>
-    <!-- "Use biometric" button to unlock the vault -->
+    <!-- Button to unlock the vault using biometric -->
     <string name="Button_UseBiometric">Biometrie verwenden</string>
-    <!-- "Save" button to save the cipher -->
     <string name="Button_Save">Speichern</string>
-    <!-- "Add" button to add a new cipher -->
     <string name="Button_Add">Hinzufügen</string>
-    <!-- "Add field" button to add new field to the cipher (e.g. add new website url field) -->
+    <!-- Button to add new field to the cipher data  (e.g., add new website url field) -->
     <string name="Button_AddField">Feld hinzufügen</string>
 
-    <!-- Text on the website screen -->
     <string name="WelcomeScreen_Title">Willkommen bei LibrePass</string>
-    <!-- "Register" button on the website screen -->
-    <string name="WelcomeScreen_Button_Register">Registrieren</string>
-    <!-- "Login" button on the website screen -->
-    <string name="WelcomeScreen_Button_Login">Anmelden</string>
 
     <!-- Title of biometric alert -->
     <string name="BiometricUnlock_Title">Entsperren</string>
     <!-- Subtitle of biometric alert -->
     <string name="BiometricUnlock_Subtitle">Bitte authentifizieren Sie sich</string>
-    <!-- "Use password" button in biometric alert -->
+    <!-- Cancel button in biometric alert -->
     <string name="BiometricUnlock_Button_UsePassword">Passwort verwenden</string>
     <!-- Title of biometric alert during setup -->
     <string name="BiometricSetup_Title">Einrichtung</string>
     <!-- Subtitle of biometric alert during setup -->
     <string name="BiometricSetup_Subtitle">Biometrische Authentifizierung aktivieren</string>
-    <!-- "Cancel" button in biometric alert during setup -->
+    <!-- Cancel button in biometric alert during setup -->
     <string name="BiometricSetup_Button_Cancel">Abbrechen</string>
 
-    <!-- Cipher "Login" group -->
     <string name="CipherField_Group_Login">Anmeldung</string>
-    <!-- Alt text for cipher name field -->
     <string name="CipherField_Name">Name</string>
-    <!-- Alt text for cipher username field -->
     <string name="CipherField_Username">Benutzername</string>
-    <!-- Alt text for cipher password field -->
     <string name="CipherField_Password">Passwort</string>
-    <!-- Cipher "Website" group -->
     <string name="CipherField_Group_Website">Website</string>
-    <!-- Alt text for cipher website url field -->
     <string name="CipherField_URL">URL</string>
-    <!-- The cipher "Other" group -->
     <string name="CipherField_Group_Other">Andere</string>
-    <!-- Alt text for cipher notes field -->
     <string name="CipherField_Notes">Notizen</string>
 
-    <!-- Cipher card title -->
     <string name="CipherField_Title">Titel</string>
-    <!-- Cipher cardholder name -->
     <string name="CipherField_CardholderName">Karteninhabername</string>
-    <!-- Cipher card number -->
     <string name="CipherField_CardNumber">Kartennummer</string>
-    <!-- Cipher card expiration month -->
     <string name="CipherField_CardExpirationMonth">Ablaufmonat</string>
-    <!-- Cipher card expiration year -->
     <string name="CipherField_CardExpirationYear">Ablaufjahr</string>
-    <!-- Cipher card cvv (card verification value) -->
     <string name="CipherField_CardSecurityCode">Sicherheitscode</string>
 
-    <!-- "View" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_View">Anzeigen</string>
-    <!-- "Edit" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_Edit">Bearbeiten</string>
-    <!-- "Delete" button in the cipher bottom sheet -->
     <string name="CipherBottomSheet_Delete">Löschen</string>
 
-    <!-- "Settings" button in the dropdown menu on the vault screen -->
     <string name="VaultDropdownMenuNav_Settings">Einstellungen</string>
-    <!-- "Lock vault" button in the dropdown menu on the vault screen -->
     <string name="VaultDropdownMenuNav_Lock">Tresor sperren</string>
 
-    <!-- The appearance group in settings -->
     <string name="Settings_Group_Appearance">Erscheinungsbild</string>
-    <!-- Change theme button and dialog title -->
     <string name="Settings_Theme">Thema</string>
-    <!-- "System default" theme -->
     <string name="Settings_SystemDefault">Systemstandard</string>
-    <!-- "Light" theme -->
     <string name="Settings_Light">Hell</string>
-    <!-- "Dark" theme -->
     <string name="Settings_Dark">Dunkel</string>
-    <!-- "Pure black (AMOLED)" theme -->
     <string name="Settings_Black">Reines Schwarz (AMOLED)</string>
-    <!-- The security group in settings -->
     <string name="Settings_Group_Security">Sicherheit</string>
-    <!-- Switcher to enable biometrics unlocking -->
+    <!-- Switcher to enable/disable biometrics unlocking -->
     <string name="Settings_BiometricUnlock">Entsperren mit Biometrie</string>
-    <!-- Change vault timeout button and vault timeout dialog title -->
     <string name="Settings_Vault_Timeout_Modal_Title">Tresor-Zeitlimit</string>
-    <!-- Vault timeout "Instant" -->
     <string name="Settings_Vault_Timeout_Instant">Sofort</string>
-    <!-- Vault timeout "Never" -->
     <string name="Settings_Vault_Timeout_Never">Nie</string>
-    <!-- The account group in settings -->
     <string name="Settings_Group_Account">Konto</string>
-    <!-- "Change password" button in settings -->
     <string name="Settings_ChangePassword">Passwort ändern</string>
-    <!-- "Log out" button in settings -->
     <string name="Settings_Logout">Abmelden</string>
-    <!-- "Delete account" button in settings -->
     <string name="Settings_DeleteAccount">Konto löschen</string>
-    <!-- "Old password" input in change password screen -->
     <string name="Settings_ChangePassword_OldPassword">Altes Passwort</string>
-    <!-- "New password" input in change password screen -->
     <string name="Settings_ChangePassword_NewPassword">Neues Passwort</string>
-    <!-- "Confirm new password" input in change password screen -->
     <string name="Settings_ChangePassword_ConfirmNewPassword">Neues Passwort bestätigen</string>
-    <!-- "Change password" button on the change password screen -->
     <string name="Settings_ChangePassword_Button">Passwort ändern</string>
-    <!-- "Old password" input error when old password is incorrect on change password screen -->
     <string name="Settings_ChangePassword_Error_InvalidOldPassword">Das alte Passwort ist falsch.</string>
-
-    <!-- Time -->
-    <plurals name="Time_Minutes">
-        <item quantity="one">%d Minute</item>
-        <item quantity="other">%d Minuten</item>
-    </plurals>
-    <!-- Time -->
-    <plurals name="Time_Hours">
-        <item quantity="one">%d Stunde</item>
-        <item quantity="other">%d Stunden</item>
-    </plurals>
-
-    <!-- Length of the password to generate -->
     <string name="PasswordGenerator_Length">Länge</string>
-    <!-- Switcher in password generator -->
     <string name="PasswordGenerator_CapitalLetters">Großbuchstaben</string>
-    <!-- Switcher in password generator -->
     <string name="PasswordGenerator_Numbers">Zahlen</string>
-    <!-- Switcher in password generator -->
     <string name="PasswordGenerator_Symbols">Symbole</string>
-    <!-- "Submit" button in password generator -->
     <string name="PasswordGenerator_Submit">Senden</string>
 
     <!-- The toast message displayed after an account was created (please verify email address) -->
     <string name="Success_Registration_Please_Verify">Bitte bestätigen Sie Ihre E-Mail-Adresse</string>
 
-    <!-- Toast error message -->
     <string name="Error_NetworkError">Netzwerkfehler</string>
-    <!-- Toast error message -->
     <string name="Error_InvalidCredentials">Ungültige Anmeldeinformationen</string>
-    <!-- Toast error message -->
     <string name="Error_EncryptionError">Verschlüsselungs-/Entschlüsselungsfehler</string>
-    <!-- Toast error message -->
     <string name="Error_UnknownError">Unbekannter Fehler</string>
 
-    <!-- API error message -->
     <string name="API_Error_INVALID_CREDENTIALS">Ungültige Anmeldeinformationen</string>
-    <!-- API error message -->
     <string name="API_Error_RE_LOGIN_REQUIRED">Erneute Anmeldung erforderlich</string>
-    <!-- API error message -->
     <string name="API_Error_EMAIL_NOT_VERIFIED">Bitte bestätigen Sie Ihre E-Mail-Adresse</string>
-    <!-- API error message -->
     <string name="API_Error_TOO_MANY_REQUESTS">Zu viele Anfragen</string>
-    <!-- API error message -->
     <string name="API_Error_DATABASE_DUPLICATED_KEY">Doppelter Schlüssel in der Serverdatenbank</string>
-    <!-- API error message -->
     <string name="API_Error_UNEXPECTED_SERVER_ERROR">Unerwarteter Serverfehler</string>
-    <!-- API error message -->
     <string name="API_Error_CIPHER_TOO_LARGE">Der Schlüssel ist zu groß</string>
 
-    <!-- "Choose a server" button -->
     <string name="Server_Choice_Dialog_Title">Server auswählen</string>
-    <!-- "Official" LibrePass server -->
     <string name="Server_Choice_Dialog_Official">Offiziell</string>
-    <!-- "Testing" LibrePass server -->
     <string name="Server_Choice_Dialog_Testing">Testen</string>
-    <!-- Button to add self-hosted server -->
     <string name="Server_Choice_Dialog_Add_Custom">Selbst gehosteten Server hinzufügen</string>
-    <!-- "Server address" input server in add custom server screen -->
     <string name="Server_Add_InputField_Server">Server-Adresse</string>
-    <!-- "Server address" text in auth screens -->
     <string name="Server_AuthScreen_Server_Address">Server-Adresse</string>
 
-    <!-- "Get password hint" button in the login screen -->
     <string name="Auth_Get_Password_Hint">Passwort-Hinweis abrufen</string>
 
-    <!-- Toast displayed when email field is empty -->
     <string name="Toast_Enter_Email">Geben Sie Ihre E-Mail Adresse ein</string>
-    <!-- Toast displayed after a password hint was sent -->
     <string name="Toast_Password_Hint_Sent">Ein Passworthinweis wurde an die E-Mail-Adresse gesendet</string>
 
-    <!-- Title of dialog for selecting the type of cipher to add -->
     <string name="Vault_CipherTypeDialog_Title">Auswahl des Chiffrentyps</string>
-    <!-- Entry of dialog for selecting the type of cipher -->
     <string name="Vault_CipherTypeDialog_Type_Login">Anmeldedaten</string>
-    <!-- Entry of dialog for selecting the type of cipher -->
     <string name="Vault_CipherTypeDialog_Type_Card">Karte</string>
-    <!-- Entry of dialog for selecting the type of cipher -->
     <string name="Vault_CipherTypeDialog_Type_SecureNote">Sicherer Hinweis</string>
 </resources>

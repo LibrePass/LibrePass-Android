@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="minutes">
         <item quantity="one">%d minuta</item>
@@ -11,7 +12,6 @@
         <item quantity="many">%d godzin</item>
         <item quantity="other">%d godziny</item>
     </plurals>
-
     <string name="TopBar_Register">Rejestracja</string>
     <string name="TopBar_Login">Logowanie</string>
     <string name="TopBar_Unlock">Odblokuj sejf</string>
@@ -20,7 +20,6 @@
     <string name="TopBar_Settings">Ustawienia</string>
     <string name="TopBar_PasswordGenerator">Generator</string>
     <string name="TopBar_AddCustomServer">Dodaj serwer</string>
-
     <string name="InputField_Email">Email</string>
     <string name="InputField_Password">Hasło</string>
     <string name="InputField_ConfirmPassword">Potwierdź hasło</string>
@@ -34,9 +33,7 @@
     <string name="Button_Add">Dodaj</string>
     <!-- Button to add new field to the cipher data  (e.g., add new website url field) -->
     <string name="Button_AddField">Dodaj pole</string>
-
     <string name="WelcomeScreen_Title">Witaj w LibrePass</string>
-
     <!-- Title of biometric alert -->
     <string name="BiometricUnlock_Title">Odblokuj</string>
     <!-- Subtitle of biometric alert -->
@@ -49,7 +46,6 @@
     <string name="BiometricSetup_Subtitle">Włącz uwierzytelnianie biometryczne</string>
     <!-- Cancel button in biometric alert during setup -->
     <string name="BiometricSetup_Button_Cancel">Anuluj</string>
-
     <string name="CipherField_Group_Login">Dane logowania</string>
     <string name="CipherField_Name">Nazwa</string>
     <string name="CipherField_Username">Nazwa użytkownika</string>
@@ -58,21 +54,17 @@
     <string name="CipherField_URL">Adres URL</string>
     <string name="CipherField_Group_Other">Inne</string>
     <string name="CipherField_Notes">Notatki</string>
-
     <string name="CipherField_Title">Tytuł</string>
     <string name="CipherField_CardholderName">Nazwa posiadacza karty</string>
     <string name="CipherField_CardNumber">Numer karty</string>
     <string name="CipherField_CardExpirationMonth">Miesiąc ważności</string>
     <string name="CipherField_CardExpirationYear">Rok ważności</string>
     <string name="CipherField_CardSecurityCode">Kod zabezpieczający</string>
-
     <string name="CipherBottomSheet_View">Podgląd</string>
     <string name="CipherBottomSheet_Edit">Edytuj</string>
     <string name="CipherBottomSheet_Delete">Usuń</string>
-
     <string name="VaultDropdownMenuNav_Settings">Ustawienia</string>
     <string name="VaultDropdownMenuNav_Lock">Zablokuj sejf</string>
-
     <string name="Settings_Group_Appearance">Wygląd</string>
     <string name="Settings_Theme">Motyw</string>
     <string name="Settings_SystemDefault">Ustawiania systemowe</string>
@@ -99,15 +91,12 @@
     <string name="PasswordGenerator_Numbers">Liczby</string>
     <string name="PasswordGenerator_Symbols">Symbole</string>
     <string name="PasswordGenerator_Submit">Potwierdź</string>
-
     <!-- The toast message displayed after an account was created (please verify email address) -->
     <string name="Success_Registration_Please_Verify">Zweryfikuj swój adres e-mail</string>
-
     <string name="Error_NetworkError">Błąd sieci</string>
     <string name="Error_InvalidCredentials">Nieprawidłowe dane uwierzytelniające</string>
     <string name="Error_EncryptionError">Błąd szyfrowania/deszyfrowania</string>
     <string name="Error_UnknownError">Nieznany błąd</string>
-
     <string name="API_Error_INVALID_CREDENTIALS">Nieprawidłowe dane uwierzytelniające</string>
     <string name="API_Error_RE_LOGIN_REQUIRED">Wymagane ponowne logowanie</string>
     <string name="API_Error_EMAIL_NOT_VERIFIED">Proszę zweryfikować swój adres e-mail</string>
@@ -115,21 +104,18 @@
     <string name="API_Error_DATABASE_DUPLICATED_KEY">Powtórzony klucz w bazie danych serwera</string>
     <string name="API_Error_UNEXPECTED_SERVER_ERROR">Niespodziewany błąd serwera</string>
     <string name="API_Error_CIPHER_TOO_LARGE">Szyfr jest zbyt duży</string>
-
     <string name="Server_Choice_Dialog_Title">Wybierz serwer</string>
     <string name="Server_Choice_Dialog_Official">Oficjalny</string>
     <string name="Server_Choice_Dialog_Testing">Testowy</string>
     <string name="Server_Choice_Dialog_Add_Custom">Dodaj samodzielnie hostowany</string>
     <string name="Server_Add_InputField_Server">Adres serwera</string>
     <string name="Server_AuthScreen_Server_Address">Adres serwera</string>
-
     <string name="Auth_Get_Password_Hint">Uzyskaj podpowiedź do hasła</string>
-
     <string name="Toast_Enter_Email">Wpisz swój adres email</string>
     <string name="Toast_Password_Hint_Sent">Na adres e-mail wysłano podpowiedź do hasła</string>
-
     <string name="Vault_CipherTypeDialog_Title">Wybierz typ szyfru</string>
     <string name="Vault_CipherTypeDialog_Type_Login">Dane logowania</string>
     <string name="Vault_CipherTypeDialog_Type_Card">Karta</string>
     <string name="Vault_CipherTypeDialog_Type_SecureNote">Bezpieczna notatka</string>
+    <string name="Settings_DeleteAccount_Error_InvalidPassword">Hasło jest niepoprawne</string>
 </resources>

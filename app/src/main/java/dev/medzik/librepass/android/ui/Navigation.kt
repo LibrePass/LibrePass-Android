@@ -52,6 +52,7 @@ import dev.medzik.librepass.android.ui.screens.settings.SettingsAppearanceScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsSecurityScreen
 import dev.medzik.librepass.android.ui.screens.settings.account.SettingsAccountChangePasswordScreen
+import dev.medzik.librepass.android.ui.screens.settings.account.SettingsAccountDeleteAccountScreen
 import dev.medzik.librepass.android.ui.screens.vault.CipherAddScreen
 import dev.medzik.librepass.android.ui.screens.vault.CipherEditScreen
 import dev.medzik.librepass.android.ui.screens.vault.CipherViewScreen
@@ -261,7 +262,16 @@ enum class Screen(
             )
         },
         composable = { SettingsAccountChangePasswordScreen(it) }
-    )
+    ),
+    SettingsAccountDeleteAccount(
+        topBar = {
+            TopBar(
+                stringResource(R.string.Settings_DeleteAccount),
+                navigationIcon = { TopBarBackIcon(it) }
+            )
+        },
+        composable = { SettingsAccountDeleteAccountScreen(it) }
+    ),
 }
 
 @Composable

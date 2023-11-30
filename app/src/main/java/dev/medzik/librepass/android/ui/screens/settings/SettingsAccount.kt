@@ -23,11 +23,10 @@ fun SettingsAccountScreen(navController: NavController) {
 
     val repository = context.getRepository()
 
-    fun changePassword() {
+    fun changePassword() =
         runOnUiThread {
             navController.navigate(Screen.SettingsAccountChangePassword)
         }
-    }
 
     PreferenceEntry(
         title = stringResource(R.string.Settings_ChangePassword),
@@ -54,8 +53,10 @@ fun SettingsAccountScreen(navController: NavController) {
         onClick = { logout() },
     )
 
-    fun deleteAccount() {
-    }
+    fun deleteAccount() =
+        runOnUiThread {
+            navController.navigate(Screen.SettingsAccountDeleteAccount)
+        }
 
     PreferenceEntry(
         title = stringResource(R.string.Settings_DeleteAccount),

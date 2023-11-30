@@ -155,6 +155,10 @@
     <string name="Settings_ChangePassword_Button">Change password</string>
     <!-- "Old password" input error when old password is incorrect on change password screen -->
     <string name="Settings_ChangePassword_Error_InvalidOldPassword">Old password is incorrect</string>
+    <!-- "Delete account" input error when password is incorrect on account deletion screen -->
+    <string name="Settings_DeleteAccount_Error_InvalidPassword">Password is incorrect</string>
+    <!-- "Change password" button on the account deletion screen -->
+    <string name="Settings_DeleteAccount_Button">Delete account</string>
 
     <!-- Time -->
     <plurals name="Time_Minutes">

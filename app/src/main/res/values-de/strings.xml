@@ -10,7 +10,7 @@
         <item quantity="other">%d Stunden</item>
     </plurals>
     <string name="TopBar_Register">Registrieren</string>
-    <string name="TopBar_Login">Anmelden</string>
+    <string name="TopBar_Login">Anmeldung</string>
     <string name="TopBar_Unlock">Entsperren</string>
     <string name="TopBar_AddNewCipher">Neue Verschlüsselung hinzufügen</string>
     <string name="TopBar_Vault">Tresor</string>
@@ -22,7 +22,7 @@
     <string name="InputField_ConfirmPassword">Passwort bestätigen</string>
     <string name="InputField_PasswordHint">Passwort-Hinweis</string>
     <string name="Button_Register">Registrieren</string>
-    <string name="Button_Login">Anmelden</string>
+    <string name="Button_Login">Anmeldung</string>
     <string name="Button_Unlock">Entsperren</string>
     <!-- Button to unlock the vault using biometric -->
     <string name="Button_UseBiometric">Biometrie verwenden</string>
@@ -67,7 +67,7 @@
     <string name="Settings_SystemDefault">Systemstandard</string>
     <string name="Settings_Light">Hell</string>
     <string name="Settings_Dark">Dunkel</string>
-    <string name="Settings_Black">Reines Schwarz (AMOLED)</string>
+    <string name="Settings_Black">Schwarz</string>
     <string name="Settings_Group_Security">Sicherheit</string>
     <!-- Switcher to enable/disable biometrics unlocking -->
     <string name="Settings_BiometricUnlock">Entsperren mit Biometrie</string>
@@ -111,13 +111,15 @@
     <string name="Toast_Enter_Email">Geben Sie Ihre E-Mail Adresse ein</string>
     <string name="Toast_Password_Hint_Sent">Ein Passworthinweis wurde an die E-Mail-Adresse gesendet</string>
     <string name="Vault_CipherTypeDialog_Title">Auswahl des Chiffrentyps</string>
-    <string name="Vault_CipherTypeDialog_Type_Login">Anmeldedaten</string>
+    <string name="Vault_CipherTypeDialog_Type_Login">Anmeldung</string>
     <string name="Vault_CipherTypeDialog_Type_Card">Karte</string>
     <string name="Vault_CipherTypeDialog_Type_SecureNote">Sicherer Hinweis</string>
-    <string name="Settings_DeleteAccount_Error_InvalidPassword">Passwort ist falsch</string>
+    <string name="Settings_DeleteAccount_Error_InvalidPassword">Passwort ist inkorrekt</string>
     <string name="PasswordTooShort">Passwort ist zu kurz</string>
     <string name="Settings_DeleteAccount_Button">Konto löschen</string>
     <string name="InvalidEmail">Ungültige E-Mail</string>
     <string name="optional">optional</string>
     <string name="PasswordsDoNotMatch">Passwörter stimmen nicht überein</string>
+    <string name="Settings_MaterialYou" translatable="false">Materiell Du (Androide 12+)</string>
+    <string name="app_name" translatable="false">LibrePass</string>
 </resources>

@@ -10,22 +10,22 @@
         <item quantity="one">%d godzina</item>
         <item quantity="few">%d godziny</item>
         <item quantity="many">%d godzin</item>
-        <item quantity="other">%d godziny</item>
+        <item quantity="other">%d godzin</item>
     </plurals>
-    <string name="TopBar_Register">Rejestracja</string>
-    <string name="TopBar_Login">Logowanie</string>
-    <string name="TopBar_Unlock">Odblokuj sejf</string>
+    <string name="TopBar_Register">Zarejestruj się</string>
+    <string name="TopBar_Login">Dane logowania</string>
+    <string name="TopBar_Unlock">Odblokuj</string>
     <string name="TopBar_AddNewCipher">Dodaj nowy szyfr</string>
     <string name="TopBar_Vault">Sejf</string>
     <string name="TopBar_Settings">Ustawienia</string>
     <string name="TopBar_PasswordGenerator">Generator</string>
     <string name="TopBar_AddCustomServer">Dodaj serwer</string>
-    <string name="InputField_Email">Email</string>
+    <string name="InputField_Email">E-mail</string>
     <string name="InputField_Password">Hasło</string>
     <string name="InputField_ConfirmPassword">Potwierdź hasło</string>
     <string name="InputField_PasswordHint">Podpowiedź hasła</string>
     <string name="Button_Register">Zarejestruj się</string>
-    <string name="Button_Login">Zaloguj się</string>
+    <string name="Button_Login">Dane logowania</string>
     <string name="Button_Unlock">Odblokuj</string>
     <!-- Button to unlock the vault using biometric -->
     <string name="Button_UseBiometric">Użyj biometrii</string>
@@ -43,7 +43,7 @@
     <!-- Title of biometric alert during setup -->
     <string name="BiometricSetup_Title">Konfiguracja</string>
     <!-- Subtitle of biometric alert during setup -->
-    <string name="BiometricSetup_Subtitle">Włącz uwierzytelnianie biometryczne</string>
+    <string name="BiometricSetup_Subtitle">Odwraca się na autentyczności biometrycznej</string>
     <!-- Cancel button in biometric alert during setup -->
     <string name="BiometricSetup_Button_Cancel">Anuluj</string>
     <string name="CipherField_Group_Login">Dane logowania</string>
@@ -70,7 +70,7 @@
     <string name="Settings_SystemDefault">Ustawiania systemowe</string>
     <string name="Settings_Light">Jasny</string>
     <string name="Settings_Dark">Ciemny</string>
-    <string name="Settings_Black">Czysta czerń (AMOLED)</string>
+    <string name="Settings_Black">Czarny</string>
     <string name="Settings_Group_Security">Zabezpieczenia</string>
     <!-- Switcher to enable/disable biometrics unlocking -->
     <string name="Settings_BiometricUnlock">Odblokowanie biometryczne</string>
@@ -92,7 +92,7 @@
     <string name="PasswordGenerator_Symbols">Symbole</string>
     <string name="PasswordGenerator_Submit">Potwierdź</string>
     <!-- The toast message displayed after an account was created (please verify email address) -->
-    <string name="Success_Registration_Please_Verify">Zweryfikuj swój adres e-mail</string>
+    <string name="Success_Registration_Please_Verify">Proszę zweryfikować swój adres e-mail</string>
     <string name="Error_NetworkError">Błąd sieci</string>
     <string name="Error_InvalidCredentials">Nieprawidłowe dane uwierzytelniające</string>
     <string name="Error_EncryptionError">Błąd szyfrowania/deszyfrowania</string>
@@ -123,4 +123,6 @@
     <string name="InvalidEmail">Nieprawidłowy adres email</string>
     <string name="optional">opcjonalne</string>
     <string name="PasswordsDoNotMatch">Hasła nie pasują do siebie</string>
+    <string name="Settings_MaterialYou" translatable="false">Materiał You (Android 12+) (ang.)</string>
+    <string name="app_name" translatable="false">LibrePas</string>
 </resources>

@@ -13,7 +13,7 @@
         <item quantity="other">%d godzin</item>
     </plurals>
     <string name="TopBar_Register">Zarejestruj się</string>
-    <string name="TopBar_Login">Dane logowania</string>
+    <string name="TopBar_Login">Zaloguj się</string>
     <string name="TopBar_Unlock">Odblokuj</string>
     <string name="TopBar_AddNewCipher">Dodaj nowy szyfr</string>
     <string name="TopBar_Vault">Sejf</string>
@@ -25,7 +25,7 @@
     <string name="InputField_ConfirmPassword">Potwierdź hasło</string>
     <string name="InputField_PasswordHint">Podpowiedź hasła</string>
     <string name="Button_Register">Zarejestruj się</string>
-    <string name="Button_Login">Dane logowania</string>
+    <string name="Button_Login">Zaloguj się</string>
     <string name="Button_Unlock">Odblokuj</string>
     <!-- Button to unlock the vault using biometric -->
     <string name="Button_UseBiometric">Użyj biometrii</string>
@@ -46,7 +46,7 @@
     <string name="BiometricSetup_Subtitle">Odwraca się na autentyczności biometrycznej</string>
     <!-- Cancel button in biometric alert during setup -->
     <string name="BiometricSetup_Button_Cancel">Anuluj</string>
-    <string name="CipherField_Group_Login">Dane logowania</string>
+    <string name="CipherField_Group_Login">Zaloguj się</string>
     <string name="CipherField_Name">Nazwa</string>
     <string name="CipherField_Username">Nazwa użytkownika</string>
     <string name="CipherField_Password">Hasło</string>
@@ -114,7 +114,7 @@
     <string name="Toast_Enter_Email">Wpisz swój adres email</string>
     <string name="Toast_Password_Hint_Sent">Na adres e-mail wysłano podpowiedź do hasła</string>
     <string name="Vault_CipherTypeDialog_Title">Wybierz typ szyfru</string>
-    <string name="Vault_CipherTypeDialog_Type_Login">Dane logowania</string>
+    <string name="Vault_CipherTypeDialog_Type_Login">Zaloguj się</string>
     <string name="Vault_CipherTypeDialog_Type_Card">Karta</string>
     <string name="Vault_CipherTypeDialog_Type_SecureNote">Bezpieczna notatka</string>
     <string name="Settings_DeleteAccount_Error_InvalidPassword">Hasło jest niepoprawne</string>

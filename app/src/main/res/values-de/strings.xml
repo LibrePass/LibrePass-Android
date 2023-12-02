@@ -120,6 +120,4 @@
     <string name="InvalidEmail">Ungültige E-Mail</string>
     <string name="optional">optional</string>
     <string name="PasswordsDoNotMatch">Passwörter stimmen nicht überein</string>
-    <string name="Settings_MaterialYou" translatable="false">Materiell Du (Androide 12+)</string>
-    <string name="app_name" translatable="false">LibrePass</string>
 </resources>

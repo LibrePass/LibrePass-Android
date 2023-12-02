@@ -123,6 +123,4 @@
     <string name="InvalidEmail">Nieprawidłowy adres email</string>
     <string name="optional">opcjonalne</string>
     <string name="PasswordsDoNotMatch">Hasła nie pasują do siebie</string>
-    <string name="Settings_MaterialYou" translatable="false">Materiał You (Android 12+) (ang.)</string>
-    <string name="app_name" translatable="false">LibrePas</string>
 </resources>

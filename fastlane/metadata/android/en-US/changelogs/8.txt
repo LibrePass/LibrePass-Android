@@ -1,0 +1,4 @@
+- Add support for secure notes and cards
+- Add support to change password and delete account from settings
+- Updated translations and added new language (Norwegian Bokmal)
+- Add support for per-app language preference

@@ -35,6 +35,10 @@ android {
         }
     }
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     lint {
         warning.add("MissingTranslation")
     }

@@ -114,7 +114,7 @@
     <string name="Toast_Enter_Email">Wpisz swój adres email</string>
     <string name="Toast_Password_Hint_Sent">Na adres e-mail wysłano podpowiedź do hasła</string>
     <string name="Vault_CipherTypeDialog_Title">Wybierz typ szyfru</string>
-    <string name="Vault_CipherTypeDialog_Type_Login">Zaloguj się</string>
+    <string name="Vault_CipherTypeDialog_Type_Login">Dane logowania</string>
     <string name="Vault_CipherTypeDialog_Type_Card">Karta</string>
     <string name="Vault_CipherTypeDialog_Type_SecureNote">Bezpieczna notatka</string>
     <string name="Settings_DeleteAccount_Error_InvalidPassword">Hasło jest niepoprawne</string>

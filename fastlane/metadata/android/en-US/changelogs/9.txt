@@ -1,0 +1,2 @@
+- Fixed F-Droid build (issue #61)
+- Fixed string in Polish translation

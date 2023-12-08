@@ -40,7 +40,7 @@ fun AddCustomServerScreen(navController: NavController) {
     }
 
     TextInputField(
-        label = stringResource(R.string.Server_Add_InputField_Server),
+        label = stringResource(R.string.Server_Choice_Dialog),
         value = server,
         onValueChange = { server = it }
     )
@@ -54,6 +54,6 @@ fun AddCustomServerScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(horizontal = 80.dp, vertical = 8.dp)
     ) {
-        Text(stringResource(R.string.Button_Add))
+        Text(stringResource(R.string.Add))
     }
 }

@@ -180,18 +180,18 @@ fun CipherActionsSheet(
         navigationBarPadding = true,
         items =
             listOf(
-                R.string.CipherBottomSheet_View,
-                R.string.CipherBottomSheet_Edit,
-                R.string.CipherBottomSheet_Delete
+                R.string.View,
+                R.string.Edit,
+                R.string.Delete
             ),
         onSelected = {
             when (it) {
-                R.string.CipherBottomSheet_View -> {
+                R.string.View -> {
                     onClick()
                 }
 
-                R.string.CipherBottomSheet_Edit -> onEdit()
-                R.string.CipherBottomSheet_Delete -> onDelete()
+                R.string.Edit -> onEdit()
+                R.string.Delete -> onDelete()
             }
         }
     ) {

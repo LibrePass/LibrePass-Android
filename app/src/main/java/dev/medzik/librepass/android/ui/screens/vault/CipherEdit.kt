@@ -123,7 +123,7 @@ fun CipherEditScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(R.string.TopBar_AddNewCipher),
+                title = stringResource(R.string.AddNewCipher),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }
@@ -150,7 +150,7 @@ fun CipherEditScreen(navController: NavController) {
                                 .padding(top = 16.dp)
                                 .padding(horizontal = 40.dp)
                     ) {
-                        Text(stringResource(R.string.Button_Add))
+                        Text(stringResource(R.string.Save))
                     }
                 }
             }

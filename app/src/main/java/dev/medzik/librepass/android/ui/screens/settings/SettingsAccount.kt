@@ -29,7 +29,7 @@ fun SettingsAccountScreen(navController: NavController) {
         }
 
     PreferenceEntry(
-        title = stringResource(R.string.Settings_ChangePassword),
+        title = stringResource(R.string.ChangePassword),
         icon = { Icon(Icons.Default.LockReset, contentDescription = null) },
         onClick = { changePassword() },
     )
@@ -48,7 +48,7 @@ fun SettingsAccountScreen(navController: NavController) {
         }
 
     PreferenceEntry(
-        title = stringResource(R.string.Settings_Logout),
+        title = stringResource(R.string.Logout),
         icon = { Icon(Icons.Default.Logout, contentDescription = null) },
         onClick = { logout() },
     )
@@ -59,7 +59,7 @@ fun SettingsAccountScreen(navController: NavController) {
         }
 
     PreferenceEntry(
-        title = stringResource(R.string.Settings_DeleteAccount),
+        title = stringResource(R.string.DeleteAccount),
         icon = { Icon(Icons.Default.NoAccounts, contentDescription = null) },
         onClick = { deleteAccount() },
     )

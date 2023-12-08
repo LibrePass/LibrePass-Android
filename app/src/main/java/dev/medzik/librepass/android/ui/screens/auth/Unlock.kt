@@ -143,7 +143,7 @@ fun UnlockScreen(navController: NavController) {
     }
 
     TextInputField(
-        label = stringResource(R.string.InputField_Password),
+        label = stringResource(R.string.Password),
         value = password,
         onValueChange = { password = it },
         hidden = true,
@@ -160,7 +160,7 @@ fun UnlockScreen(navController: NavController) {
                 .padding(top = 8.dp)
                 .padding(horizontal = 80.dp)
     ) {
-        Text(stringResource(R.string.Button_Unlock))
+        Text(stringResource(R.string.Unlock))
     }
 
     if (credentials.biometricEnabled && checkIfBiometricAvailable(context)) {
@@ -172,7 +172,7 @@ fun UnlockScreen(navController: NavController) {
                     .padding(top = 8.dp)
                     .padding(horizontal = 80.dp)
         ) {
-            Text(stringResource(R.string.Button_UseBiometric))
+            Text(stringResource(R.string.UseBiometric))
         }
     }
 }

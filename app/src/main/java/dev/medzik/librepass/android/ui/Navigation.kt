@@ -84,7 +84,7 @@ enum class Screen(
     Register(
         topBar = {
             TopBar(
-                stringResource(R.string.TopBar_Register),
+                stringResource(R.string.Register),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
@@ -93,7 +93,7 @@ enum class Screen(
     Login(
         topBar = {
             TopBar(
-                stringResource(R.string.TopBar_Login),
+                stringResource(R.string.Login),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
@@ -102,7 +102,7 @@ enum class Screen(
     AddCustomServer(
         topBar = {
             TopBar(
-                stringResource(R.string.TopBar_AddCustomServer),
+                stringResource(R.string.AddServer),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
@@ -111,13 +111,13 @@ enum class Screen(
 
     // Vault
     Unlock(
-        topBar = { TopBar(stringResource(R.string.TopBar_Unlock)) },
+        topBar = { TopBar(stringResource(R.string.Unlock)) },
         composable = { UnlockScreen(it) }
     ),
     Vault(
         topBar = {
             TopBar(
-                stringResource(R.string.TopBar_Vault),
+                stringResource(R.string.Vault),
                 actions = {
                     val context = LocalContext.current
                     var expanded by rememberMutableBoolean()
@@ -140,14 +140,14 @@ enum class Screen(
                         onDismissRequest = { expanded = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.VaultDropdownMenuNav_Settings)) },
+                            text = { Text(stringResource(R.string.Settings)) },
                             onClick = {
                                 expanded = false
                                 it.navigate(Settings)
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.VaultDropdownMenuNav_Lock)) },
+                            text = { Text(stringResource(R.string.LockVault)) },
                             onClick = {
                                 // delete secrets
                                 SecretStore.delete(context)
@@ -202,7 +202,7 @@ enum class Screen(
     PasswordGenerator(
         topBar = {
             TopBar(
-                stringResource(R.string.TopBar_PasswordGenerator),
+                stringResource(R.string.PasswordGenerator),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
@@ -217,7 +217,7 @@ enum class Screen(
     Settings(
         topBar = {
             TopBar(
-                stringResource(R.string.TopBar_Settings),
+                stringResource(R.string.Settings),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
@@ -227,7 +227,7 @@ enum class Screen(
     SettingsAppearance(
         topBar = {
             TopBar(
-                stringResource(R.string.Settings_Group_Appearance),
+                stringResource(R.string.Settings_Appearance),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
@@ -237,7 +237,7 @@ enum class Screen(
     SettingsSecurity(
         topBar = {
             TopBar(
-                stringResource(R.string.Settings_Group_Security),
+                stringResource(R.string.Settings_Security),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
@@ -247,7 +247,7 @@ enum class Screen(
     SettingsAccount(
         topBar = {
             TopBar(
-                stringResource(R.string.Settings_Group_Account),
+                stringResource(R.string.Settings_Account),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
@@ -257,7 +257,7 @@ enum class Screen(
     SettingsAccountChangePassword(
         topBar = {
             TopBar(
-                stringResource(R.string.Settings_ChangePassword),
+                stringResource(R.string.ChangePassword),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },
@@ -266,7 +266,7 @@ enum class Screen(
     SettingsAccountDeleteAccount(
         topBar = {
             TopBar(
-                stringResource(R.string.Settings_DeleteAccount),
+                stringResource(R.string.DeleteAccount),
                 navigationIcon = { TopBarBackIcon(it) }
             )
         },

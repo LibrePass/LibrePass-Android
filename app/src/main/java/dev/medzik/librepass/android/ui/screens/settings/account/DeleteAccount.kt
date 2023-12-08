@@ -101,12 +101,12 @@ fun SettingsAccountDeleteAccountScreen(navController: NavController) {
     }
 
     TextInputField(
-        label = stringResource(R.string.InputField_Password),
+        label = stringResource(R.string.Password),
         value = password,
         onValueChange = { password = it },
         hidden = true,
         isError = passwordInvalid,
-        errorMessage = stringResource(R.string.Settings_DeleteAccount_Error_InvalidPassword),
+        errorMessage = stringResource(R.string.Error_InvalidPassword),
         keyboardType = KeyboardType.Password
     )
 
@@ -119,6 +119,6 @@ fun SettingsAccountDeleteAccountScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp, vertical = 8.dp)
     ) {
-        Text(stringResource(R.string.Settings_DeleteAccount_Button))
+        Text(stringResource(R.string.DeleteAccount))
     }
 }

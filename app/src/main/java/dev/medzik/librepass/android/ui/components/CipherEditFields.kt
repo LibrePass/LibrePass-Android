@@ -54,7 +54,7 @@ fun CipherEditFieldsLogin(
         }
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_Name),
+        label = stringResource(R.string.Name),
         modifier =
             Modifier
                 .fillMaxWidth()
@@ -64,12 +64,12 @@ fun CipherEditFieldsLogin(
     )
 
     SecondaryText(
-        stringResource(R.string.CipherField_Group_Login),
+        stringResource(R.string.LoginDetails),
         modifier = Modifier.padding(top = 8.dp)
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_Username),
+        label = stringResource(R.string.Username),
         modifier =
             Modifier
                 .fillMaxWidth()
@@ -79,7 +79,7 @@ fun CipherEditFieldsLogin(
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_Password),
+        label = stringResource(R.string.Password),
         modifier =
             Modifier
                 .fillMaxWidth()
@@ -106,14 +106,14 @@ fun CipherEditFieldsLogin(
     )
 
     SecondaryText(
-        stringResource(R.string.CipherField_Group_Website),
+        stringResource(R.string.WebsiteDetails),
         modifier = Modifier.padding(top = 8.dp)
     )
 
     // show field for each uri
     cipherData.uris?.forEachIndexed { index, uri ->
         TextInputFieldBase(
-            label = stringResource(R.string.CipherField_URL) + " ${index + 1}",
+            label = stringResource(R.string.WebsiteAddress) + " ${index + 1}",
             modifier = Modifier.fillMaxWidth(),
             value = uri,
             onValueChange = {
@@ -158,16 +158,16 @@ fun CipherEditFieldsLogin(
                 .padding(horizontal = 60.dp)
                 .padding(top = 8.dp)
     ) {
-        Text(stringResource(R.string.Button_AddField))
+        Text(stringResource(R.string.AddField))
     }
 
     SecondaryText(
-        stringResource(R.string.CipherField_Group_Other),
+        stringResource(R.string.OtherDetails),
         modifier = Modifier.padding(top = 8.dp)
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_Notes),
+        label = stringResource(R.string.Notes),
         modifier = Modifier.fillMaxWidth(),
         singleLine = false,
         value = cipherData.notes,
@@ -185,7 +185,7 @@ fun CipherEditFieldsSecureNote(
     var cipherData by rememberMutable(cipher.secureNoteData!!)
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_Title),
+        label = stringResource(R.string.Title),
         modifier =
             Modifier
                 .fillMaxWidth()
@@ -195,7 +195,7 @@ fun CipherEditFieldsSecureNote(
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_Notes),
+        label = stringResource(R.string.Notes),
         modifier = Modifier.fillMaxWidth(),
         singleLine = false,
         value = cipherData.note,
@@ -213,7 +213,7 @@ fun CipherEditFieldsCard(
     var cipherData by rememberMutable(cipher.cardData!!)
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_Name),
+        label = stringResource(R.string.Name),
         modifier =
             Modifier
                 .fillMaxWidth()
@@ -223,7 +223,7 @@ fun CipherEditFieldsCard(
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_CardholderName),
+        label = stringResource(R.string.CardholderName),
         modifier =
             Modifier
                 .fillMaxWidth()
@@ -233,7 +233,7 @@ fun CipherEditFieldsCard(
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_CardNumber),
+        label = stringResource(R.string.CardNumber),
         keyboardType = KeyboardType.Number,
         modifier =
             Modifier
@@ -249,7 +249,7 @@ fun CipherEditFieldsCard(
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_CardExpirationMonth),
+        label = stringResource(R.string.ExpirationMonth),
         keyboardType = KeyboardType.Number,
         modifier =
             Modifier
@@ -270,7 +270,7 @@ fun CipherEditFieldsCard(
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_CardExpirationYear),
+        label = stringResource(R.string.ExpirationYear),
         keyboardType = KeyboardType.Number,
         modifier =
             Modifier
@@ -290,7 +290,7 @@ fun CipherEditFieldsCard(
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_CardSecurityCode),
+        label = stringResource(R.string.SecurityCode),
         keyboardType = KeyboardType.Number,
         modifier =
             Modifier
@@ -306,12 +306,12 @@ fun CipherEditFieldsCard(
     )
 
     SecondaryText(
-        stringResource(R.string.CipherField_Group_Other),
+        stringResource(R.string.OtherDetails),
         modifier = Modifier.padding(top = 8.dp)
     )
 
     TextInputFieldBase(
-        label = stringResource(R.string.CipherField_Notes),
+        label = stringResource(R.string.Notes),
         modifier = Modifier.fillMaxWidth(),
         singleLine = false,
         value = cipherData.notes,

@@ -109,37 +109,37 @@ fun SettingsAccountChangePasswordScreen(navController: NavController) {
     }
 
     TextInputField(
-        label = stringResource(R.string.Settings_ChangePassword_OldPassword),
+        label = stringResource(R.string.OldPassword),
         value = oldPassword,
         onValueChange = { oldPassword = it },
         hidden = true,
         isError = oldPasswordInvalid,
-        errorMessage = stringResource(R.string.Settings_ChangePassword_Error_InvalidOldPassword),
+        errorMessage = stringResource(R.string.Error_InvalidPassword),
         keyboardType = KeyboardType.Password
     )
 
     TextInputField(
-        label = stringResource(R.string.Settings_ChangePassword_NewPassword),
+        label = stringResource(R.string.NewPassword),
         value = newPassword,
         onValueChange = { newPassword = it },
         hidden = true,
         isError = newPassword.isNotEmpty() && newPassword.length < 8,
-        errorMessage = stringResource(R.string.PasswordTooShort),
+        errorMessage = stringResource(R.string.Error_PasswordTooShort),
         keyboardType = KeyboardType.Password
     )
 
     TextInputField(
-        label = stringResource(R.string.Settings_ChangePassword_ConfirmNewPassword),
+        label = stringResource(R.string.ConfirmNewPassword),
         value = newPasswordConfirm,
         onValueChange = { newPasswordConfirm = it },
         hidden = true,
         isError = newPasswordConfirm.isNotEmpty() && newPasswordConfirm != newPassword,
-        errorMessage = stringResource(R.string.PasswordsDoNotMatch),
+        errorMessage = stringResource(R.string.Error_PasswordsDoNotMatch),
         keyboardType = KeyboardType.Password
     )
 
     TextInputField(
-        label = stringResource(R.string.InputField_PasswordHint),
+        label = stringResource(R.string.PasswordHint),
         value = newPasswordHint,
         onValueChange = { newPasswordHint = it }
     )
@@ -153,6 +153,6 @@ fun SettingsAccountChangePasswordScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp, vertical = 8.dp)
     ) {
-        Text(stringResource(R.string.Settings_ChangePassword_Button))
+        Text(stringResource(R.string.ChangePassword))
     }
 }

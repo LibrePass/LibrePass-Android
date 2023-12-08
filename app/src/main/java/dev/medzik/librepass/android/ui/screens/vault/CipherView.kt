@@ -81,18 +81,18 @@ fun CipherViewScreen(navController: NavController) {
         val cipherData = cipher.loginData!!
 
         CipherField(
-            title = stringResource(R.string.CipherField_Name),
+            title = stringResource(R.string.Name),
             value = cipherData.name
         )
 
         if (!cipherData.username.isNullOrEmpty() || !cipherData.password.isNullOrEmpty()) {
             SecondaryText(
-                stringResource(R.string.CipherField_Group_Login),
+                stringResource(R.string.LoginDetails),
                 modifier = Modifier.padding(top = 8.dp)
             )
 
             CipherField(
-                title = stringResource(R.string.CipherField_Username),
+                title = stringResource(R.string.Username),
                 value = cipherData.username,
                 copy = true
             )
@@ -100,7 +100,7 @@ fun CipherViewScreen(navController: NavController) {
             val passwordHistoryDialog = rememberDialogState()
 
             CipherField(
-                title = stringResource(R.string.CipherField_Password),
+                title = stringResource(R.string.Password),
                 value = cipherData.password,
                 copy = true,
                 hidden = true,
@@ -163,13 +163,13 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.uris.isNullOrEmpty()) {
                 SecondaryText(
-                    stringResource(R.string.CipherField_Group_Website),
+                    stringResource(R.string.WebsiteDetails),
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
                 cipherData.uris?.forEachIndexed { index, it ->
                     CipherField(
-                        title = stringResource(R.string.CipherField_URL) + " ${index + 1}",
+                        title = stringResource(R.string.WebsiteAddress) + " ${index + 1}",
                         value = it,
                         openUri = true,
                         uri = it,
@@ -180,12 +180,12 @@ fun CipherViewScreen(navController: NavController) {
 
             if (!cipherData.notes.isNullOrEmpty()) {
                 SecondaryText(
-                    stringResource(R.string.CipherField_Group_Other),
+                    stringResource(R.string.OtherDetails),
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
                 CipherField(
-                    title = stringResource(R.string.CipherField_Notes),
+                    title = stringResource(R.string.Notes),
                     value = cipherData.notes,
                     copy = true
                 )
@@ -198,13 +198,13 @@ fun CipherViewScreen(navController: NavController) {
         val cipherData = cipher.secureNoteData!!
 
         CipherField(
-            title = stringResource(R.string.CipherField_Title),
+            title = stringResource(R.string.Title),
             value = cipherData.title,
             copy = true
         )
 
         CipherField(
-            title = stringResource(R.string.CipherField_Notes),
+            title = stringResource(R.string.Notes),
             value = cipherData.note,
             copy = true
         )
@@ -215,19 +215,19 @@ fun CipherViewScreen(navController: NavController) {
         val cipherData = cipher.cardData!!
 
         CipherField(
-            title = stringResource(R.string.CipherField_Name),
+            title = stringResource(R.string.Name),
             value = cipherData.name,
             copy = true
         )
 
         CipherField(
-            title = stringResource(R.string.CipherField_CardholderName),
+            title = stringResource(R.string.CardholderName),
             value = cipherData.cardholderName,
             copy = true
         )
 
         CipherField(
-            title = stringResource(R.string.CipherField_CardNumber),
+            title = stringResource(R.string.CardNumber),
             value = cipherData.number,
             copy = true,
             hidden = true
@@ -235,7 +235,7 @@ fun CipherViewScreen(navController: NavController) {
 
         if (cipherData.expMonth != null) {
             CipherField(
-                title = stringResource(R.string.CipherField_CardExpirationMonth),
+                title = stringResource(R.string.ExpirationMonth),
                 value = cipherData.expMonth.toString(),
                 copy = true
             )
@@ -243,7 +243,7 @@ fun CipherViewScreen(navController: NavController) {
 
         if (cipherData.expYear != null) {
             CipherField(
-                title = stringResource(R.string.CipherField_CardExpirationYear),
+                title = stringResource(R.string.ExpirationYear),
                 value = cipherData.expYear.toString(),
                 copy = true
             )
@@ -251,7 +251,7 @@ fun CipherViewScreen(navController: NavController) {
 
         if (cipherData.code != null) {
             CipherField(
-                title = stringResource(R.string.CipherField_CardSecurityCode),
+                title = stringResource(R.string.SecurityCode),
                 value = cipherData.code,
                 copy = true,
                 hidden = true

@@ -98,7 +98,7 @@ fun SettingsSecurityScreen() {
     @Composable
     fun getVaultTimeoutTranslation(value: VaultTimeoutValues): String {
         return when (value) {
-            VaultTimeoutValues.INSTANT -> stringResource(R.string.Settings_Vault_Timeout_Instant)
+            VaultTimeoutValues.INSTANT -> stringResource(R.string.Timeout_Instant)
             VaultTimeoutValues.ONE_MINUTE ->
                 pluralStringResource(
                     R.plurals.minutes,
@@ -134,13 +134,13 @@ fun SettingsSecurityScreen() {
                     1
                 )
 
-            VaultTimeoutValues.NEVER -> stringResource(R.string.Settings_Vault_Timeout_Never)
+            VaultTimeoutValues.NEVER -> stringResource(R.string.Timeout_Never)
         }
     }
 
     if (checkIfBiometricAvailable(context)) {
         SwitcherPreference(
-            title = stringResource(R.string.Settings_BiometricUnlock),
+            title = stringResource(R.string.UnlockWithBiometrics),
             icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
             checked = biometricEnabled,
             onCheckedChange = { biometricHandler() }
@@ -148,7 +148,7 @@ fun SettingsSecurityScreen() {
     }
 
     PropertyPreference(
-        title = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
+        title = stringResource(R.string.VaultTimeout),
         icon = { Icon(Icons.Default.Timer, contentDescription = null) },
         currentValue =
             getVaultTimeoutTranslation(
@@ -161,7 +161,7 @@ fun SettingsSecurityScreen() {
 
     PickerDialog(
         state = timerDialogState,
-        title = stringResource(R.string.Settings_Vault_Timeout_Modal_Title),
+        title = stringResource(R.string.VaultTimeout),
         items = VaultTimeoutValues.values().asList(),
         onSelected = {
             vaultTimeout = it.seconds

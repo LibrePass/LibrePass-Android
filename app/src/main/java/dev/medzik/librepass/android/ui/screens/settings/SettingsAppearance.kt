@@ -37,10 +37,10 @@ fun SettingsAppearanceScreen() {
     fun getThemeTranslation(theme: ThemeValues): String {
         return stringResource(
             when (theme) {
-                ThemeValues.SYSTEM -> R.string.Settings_SystemDefault
-                ThemeValues.LIGHT -> R.string.Settings_Light
-                ThemeValues.DARK -> R.string.Settings_Dark
-                ThemeValues.BLACK -> R.string.Settings_Black
+                ThemeValues.SYSTEM -> R.string.Theme_SystemDefault
+                ThemeValues.LIGHT -> R.string.Theme_Light
+                ThemeValues.DARK -> R.string.Theme_Dark
+                ThemeValues.BLACK -> R.string.Theme_Black
             }
         )
     }
@@ -49,7 +49,7 @@ fun SettingsAppearanceScreen() {
     val themeDialogState = rememberDialogState()
 
     PropertyPreference(
-        title = stringResource(R.string.Settings_Theme),
+        title = stringResource(R.string.Theme),
         icon = { Icon(Icons.Default.DarkMode, contentDescription = null) },
         currentValue = getThemeTranslation(ThemeValues.values()[theme]),
         onClick = { themeDialogState.show() },
@@ -57,7 +57,7 @@ fun SettingsAppearanceScreen() {
 
     PickerDialog(
         state = themeDialogState,
-        title = stringResource(R.string.Settings_Theme),
+        title = stringResource(R.string.Theme),
         items = ThemeValues.entries.toList(),
         onSelected = {
             context.writeKey(StoreKey.Theme, it.ordinal)

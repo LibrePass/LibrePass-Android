@@ -156,14 +156,14 @@ fun LoginScreen(navController: NavController) {
     }
 
     TextInputField(
-        label = stringResource(R.string.InputField_Email),
+        label = stringResource(R.string.Email),
         value = email,
         onValueChange = { email = it },
         keyboardType = KeyboardType.Email
     )
 
     Text(
-        text = stringResource(R.string.Auth_Get_Password_Hint),
+        text = stringResource(R.string.GetPasswordHint),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.primary,
         modifier =
@@ -190,7 +190,7 @@ fun LoginScreen(navController: NavController) {
     )
 
     TextInputField(
-        label = stringResource(R.string.InputField_Password),
+        label = stringResource(R.string.Password),
         value = password,
         onValueChange = { password = it },
         hidden = true,
@@ -203,11 +203,11 @@ fun LoginScreen(navController: NavController) {
     fun getServerName(server: String): String {
         return when (server) {
             Server.PRODUCTION -> {
-                stringResource(R.string.Server_Choice_Dialog_Official)
+                stringResource(R.string.Server_Official)
             }
 
             Server.TEST -> {
-                stringResource(R.string.Server_Choice_Dialog_Testing)
+                stringResource(R.string.Server_Testing)
             }
 
             else -> server
@@ -221,7 +221,7 @@ fun LoginScreen(navController: NavController) {
                 .clickable { serverChoiceDialog.show() }
     ) {
         Text(
-            text = stringResource(R.string.Server_AuthScreen_Server_Address) + ": ",
+            text = stringResource(R.string.ServerAddress) + ": ",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
         )
@@ -242,7 +242,7 @@ fun LoginScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp)
     ) {
-        Text(stringResource(R.string.Button_Login))
+        Text(stringResource(R.string.Login))
     }
 
     var servers =
@@ -254,7 +254,7 @@ fun LoginScreen(navController: NavController) {
 
     PickerDialog(
         state = serverChoiceDialog,
-        title = stringResource(R.string.Server_Choice_Dialog_Title),
+        title = stringResource(R.string.ServerAddress),
         items = servers,
         onSelected = {
             if (it == "custom_server") {
@@ -267,7 +267,7 @@ fun LoginScreen(navController: NavController) {
         val text =
             when (it) {
                 "custom_server" -> {
-                    stringResource(R.string.Server_Choice_Dialog_Add_Custom)
+                    stringResource(R.string.Server_Choice_Dialog_AddCustom)
                 }
 
                 else -> getServerName(it)

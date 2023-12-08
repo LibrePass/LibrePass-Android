@@ -21,9 +21,9 @@ fun CipherTypeDialog(
     fun getTranslated(type: CipherType): String {
         val id =
             when (type) {
-                CipherType.Login -> R.string.Vault_CipherTypeDialog_Type_Login
-                CipherType.SecureNote -> R.string.Vault_CipherTypeDialog_Type_SecureNote
-                CipherType.Card -> R.string.Vault_CipherTypeDialog_Type_Card
+                CipherType.Login -> R.string.CipherType_Login
+                CipherType.SecureNote -> R.string.CipherType_SecureNote
+                CipherType.Card -> R.string.CipherType_Card
             }
 
         return stringResource(id)
@@ -31,7 +31,7 @@ fun CipherTypeDialog(
 
     PickerDialog(
         state,
-        title = stringResource(R.string.Vault_CipherTypeDialog_Title),
+        title = stringResource(R.string.SelectCipherType),
         items = CipherType.values().asList(),
         onSelected
     ) {

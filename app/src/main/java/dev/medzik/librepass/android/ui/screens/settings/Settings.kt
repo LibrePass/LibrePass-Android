@@ -19,19 +19,19 @@ fun SettingsScreen(navController: NavController) {
     Column {
         PreferenceEntry(
             icon = { Icon(Icons.Default.ColorLens, contentDescription = null) },
-            title = stringResource(R.string.Settings_Group_Appearance),
+            title = stringResource(R.string.Settings_Appearance),
             onClick = { navController.navigate(Screen.SettingsAppearance) }
         )
 
         PreferenceEntry(
             icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
-            title = stringResource(R.string.Settings_Group_Security),
+            title = stringResource(R.string.Settings_Security),
             onClick = { navController.navigate(Screen.SettingsSecurity) }
         )
 
         PreferenceEntry(
             icon = { Icon(Icons.Default.AccountCircle, contentDescription = null) },
-            title = stringResource(R.string.Settings_Group_Account),
+            title = stringResource(R.string.Settings_Account),
             onClick = { navController.navigate(Screen.SettingsAccount) }
         )
     }

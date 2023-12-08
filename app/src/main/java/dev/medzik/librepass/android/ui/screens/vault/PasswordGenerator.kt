@@ -213,6 +213,6 @@ fun PasswordGeneratorScreen(navController: NavController) {
             navController.popBackStack()
         }
     ) {
-        Text(stringResource(R.string.PasswordGenerator_Submit))
+        Text(stringResource(R.string.Submit))
     }
 }

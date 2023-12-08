@@ -65,7 +65,7 @@ fun RegisterScreen(navController: NavController) {
 
                 // navigate to login
                 runOnUiThread {
-                    context.showToast(R.string.Success_Registration_Please_Verify)
+                    context.showToast(R.string.Toast_PleaseVerifyYourEmail)
 
                     navController.navigate(
                         screen = Screen.Login,
@@ -80,36 +80,36 @@ fun RegisterScreen(navController: NavController) {
     }
 
     TextInputField(
-        label = stringResource(R.string.InputField_Email),
+        label = stringResource(R.string.Email),
         value = email,
         onValueChange = { email = it },
         isError = email.isNotEmpty() && !email.contains("@"),
-        errorMessage = stringResource(R.string.InvalidEmail),
+        errorMessage = stringResource(R.string.Error_InvalidEmail),
         keyboardType = KeyboardType.Email
     )
 
     TextInputField(
-        label = stringResource(R.string.InputField_Password),
+        label = stringResource(R.string.Password),
         value = password,
         onValueChange = { password = it },
         hidden = true,
         isError = password.isNotEmpty() && password.length < 8,
-        errorMessage = stringResource(R.string.PasswordTooShort),
+        errorMessage = stringResource(R.string.Error_PasswordTooShort),
         keyboardType = KeyboardType.Password
     )
 
     TextInputField(
-        label = stringResource(R.string.InputField_ConfirmPassword),
+        label = stringResource(R.string.ConfirmPassword),
         value = configPassword,
         onValueChange = { configPassword = it },
         hidden = true,
         isError = configPassword.isNotEmpty() && configPassword != password,
-        errorMessage = stringResource(R.string.PasswordsDoNotMatch),
+        errorMessage = stringResource(R.string.Error_PasswordsDoNotMatch),
         keyboardType = KeyboardType.Password
     )
 
     TextInputField(
-        label = "${stringResource(R.string.InputField_PasswordHint)} (${stringResource(R.string.optional)})",
+        label = "${stringResource(R.string.PasswordHint)} (${stringResource(R.string.optional)})",
         value = passwordHint,
         onValueChange = { passwordHint = it },
         keyboardType = KeyboardType.Text
@@ -121,11 +121,11 @@ fun RegisterScreen(navController: NavController) {
     fun getServerName(server: String): String {
         return when (server) {
             Server.PRODUCTION -> {
-                stringResource(R.string.Server_Choice_Dialog_Official)
+                stringResource(R.string.Server_Official)
             }
 
             Server.TEST -> {
-                stringResource(R.string.Server_Choice_Dialog_Testing)
+                stringResource(R.string.Server_Testing)
             }
 
             else -> server
@@ -139,7 +139,7 @@ fun RegisterScreen(navController: NavController) {
                 .clickable { serverChoiceDialog.show() }
     ) {
         Text(
-            text = stringResource(R.string.Server_AuthScreen_Server_Address) + ": ",
+            text = stringResource(R.string.ServerAddress) + ": ",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
         )
@@ -160,7 +160,7 @@ fun RegisterScreen(navController: NavController) {
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp)
     ) {
-        Text(stringResource(R.string.Button_Register))
+        Text(stringResource(R.string.Register))
     }
 
     var servers =
@@ -172,7 +172,7 @@ fun RegisterScreen(navController: NavController) {
 
     PickerDialog(
         state = serverChoiceDialog,
-        title = stringResource(R.string.Server_Choice_Dialog_Title),
+        title = stringResource(R.string.ServerAddress),
         items = servers,
         onSelected = {
             if (it == "custom_server") {
@@ -185,7 +185,7 @@ fun RegisterScreen(navController: NavController) {
         val text =
             when (it) {
                 "custom_server" -> {
-                    stringResource(R.string.Server_Choice_Dialog_Add_Custom)
+                    stringResource(R.string.Server_Choice_Dialog_AddCustom)
                 }
 
                 else -> getServerName(it)

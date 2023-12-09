@@ -126,29 +126,30 @@ fun CipherCard(
     }
 
     Card(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
+        modifier =
+            Modifier
+                .padding(vertical = 8.dp)
     ) {
         Row(
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .combinedClickable(
-                    onClick = { onClick(cipher) },
-                    onLongClick = { showMoreOptions() }
-                )
-                .heightIn(min = 64.dp)
-                .padding(horizontal = 24.dp, vertical = 4.dp),
+                Modifier
+                    .fillMaxWidth()
+                    .combinedClickable(
+                        onClick = { onClick(cipher) },
+                        onLongClick = { showMoreOptions() }
+                    )
+                    .heightIn(min = 64.dp)
+                    .padding(horizontal = 24.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             CipherIcon()
 
             Column(
                 modifier =
-                Modifier
-                    .padding(start = 16.dp)
-                    .fillMaxSize()
-                    .weight(1f),
+                    Modifier
+                        .padding(start = 16.dp)
+                        .fillMaxSize()
+                        .weight(1f),
                 verticalArrangement = Arrangement.Center
             ) {
                 CipherText()
@@ -200,9 +201,9 @@ fun CipherActionsSheet(
         Text(
             text = stringResource(it),
             modifier =
-            Modifier
-                .padding(vertical = 12.dp)
-                .fillMaxWidth()
+                Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxWidth()
         )
     }
 }

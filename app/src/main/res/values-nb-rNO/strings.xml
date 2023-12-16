@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="hours">
-        <item quantity="one">% time</item>
-        <item quantity="other">% timer</item>
+        <item quantity="one">%d% time</item>
+        <item quantity="other">%d timer</item>
     </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minutt</item>
@@ -23,13 +23,13 @@
     <string name="BiometricSetup_Subtitle">Skru på biometrisk identitetsbekreftelse</string>
     <string name="BiometricSetup_Title">Oppsett</string>
     <string name="BiometricUnlock_Button_UsePassword">Bruk passord</string>
-    <string name="BiometricUnlock_Subtitle">Logg inn</string>
+    <string name="BiometricUnlock_Subtitle">Vennligst autentiser deg selv</string>
     <string name="BiometricUnlock_Title">Lås opp</string>
     <string name="CardNumber">Kortnummer</string>
     <string name="CardholderName">Kortinnehavers navn</string>
     <string name="ChangePassword">Endre passord</string>
     <string name="CipherType_Card">Kort</string>
-    <string name="CipherType_Login">Logg inn</string>
+    <string name="CipherType_Login">Innloggingsdata</string>
     <string name="CipherType_SecureNote">Sikkert notat</string>
     <string name="ConfirmNewPassword">Bekreft nytt passord</string>
     <string name="ConfirmPassword">Bekreft passord</string>

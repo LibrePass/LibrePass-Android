@@ -100,7 +100,7 @@
     <string name="VaultTimeout">Limit czasu sejfu</string>
     <string name="View">Zobacz</string>
     <string name="WebsiteAddress">Adres strony</string>
-    <string name="WebsiteDetails">Dane strony</string>
+    <string name="WebsiteDetails">Strona internetowa</string>
     <string name="WelcomeScreen_Title">Witaj w LibrePass</string>
     <string name="optional">opcjonalnie</string>
 </resources>

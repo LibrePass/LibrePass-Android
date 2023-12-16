@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <plurals name="hours">
-        <item quantity="one">%d% time</item>
+        <item quantity="one">%d time</item>
         <item quantity="other">%d timer</item>
     </plurals>
     <plurals name="minutes">

@@ -72,17 +72,17 @@
     </plurals>
     <string name="Email">E-Mail</string>
     <string name="OtherDetails">Sonstige Angaben</string>
-    <string name="WebsiteDetails">Details der Website</string>
+    <string name="WebsiteDetails">Website</string>
     <string name="BiometricSetup_Subtitle">Biometrische Authentifizierung aktivieren</string>
-    <string name="Error_EncryptionError">Verschlüsselungsfehler</string>
+    <string name="Error_EncryptionError">Verschlüsselungs-/Entschlüsselungsfehler</string>
     <string name="CardNumber">Kartennummer</string>
     <string name="BiometricSetup_Button_Cancel">Abbrechen</string>
     <string name="CipherType_Login">Login-Daten</string>
     <string name="ConfirmPassword">Passwort bestätigen</string>
     <string name="ChangePassword">Passwort ändern</string>
     <string name="AddField">Feld hinzufügen</string>
-    <string name="API_Error_EMAIL_NOT_VERIFIED">Bitte überprüfen Sie Ihre E-Mail-Adresse</string>
-    <string name="API_Error_DATABASE_DUPLICATED_KEY">Duplizierter Schlüssel in der Server-Datenbank</string>
+    <string name="API_Error_EMAIL_NOT_VERIFIED">Bitte bestätigen Sie Ihre E-Mail-Adresse</string>
+    <string name="API_Error_DATABASE_DUPLICATED_KEY">Doppelter Schlüssel in der Serverdatenbank</string>
     <string name="CardholderName">Karteninhabername</string>
     <string name="Add">Hinzufügen</string>
     <string name="CipherType_SecureNote">Sicherer Hinweis</string>
@@ -98,5 +98,5 @@
     <string name="ConfirmNewPassword">Neues Passwort bestätigen</string>
     <string name="BiometricSetup_Title">Einrichtung</string>
     <string name="AddNewCipher">Neue Cipher hinzufügen</string>
-    <string name="API_Error_UNEXPECTED_SERVER_ERROR">Unerwartete Serverfehler</string>
+    <string name="API_Error_UNEXPECTED_SERVER_ERROR">Unerwarteter Serverfehler</string>
 </resources>

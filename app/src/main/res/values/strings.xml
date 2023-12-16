@@ -99,7 +99,7 @@
     <string name="VaultTimeout">Vault timeout</string>
     <string name="View">View</string>
     <string name="WebsiteAddress">Website address</string>
-    <string name="WebsiteDetails">Website details</string>
+    <string name="WebsiteDetails">Website</string>
     <string name="WelcomeScreen_Title">Welcome to LibrePass</string>
     <string name="optional">optional</string>
 </resources>

@@ -29,7 +29,7 @@
     <string name="BiometricUnlock_Button_UsePassword">Użyj hasła</string>
     <string name="BiometricUnlock_Subtitle">Prosimy o uwierzytelnienie</string>
     <string name="BiometricUnlock_Title">Odblokuj</string>
-    <string name="CardNumber">Number karty</string>
+    <string name="CardNumber">Numer karty</string>
     <string name="CardholderName">Nazwa posiadacza karty</string>
     <string name="ChangePassword">Zmień hasło</string>
     <string name="CipherType_Card">Dane karty</string>
@@ -66,7 +66,7 @@
     <string name="PasswordGenerator_CapitalLetters">Duże litery</string>
     <string name="PasswordGenerator_Length">Długość</string>
     <string name="PasswordGenerator_Numbers">Liczby</string>
-    <string name="PasswordGenerator_Symbols">Sybmole</string>
+    <string name="PasswordGenerator_Symbols">Symbole</string>
     <string name="PasswordHint">Podpowiedź do hasła</string>
     <string name="Register">Zarejestruj się</string>
     <string name="Save">Zapisz</string>
@@ -90,7 +90,7 @@
     <string name="Timeout_Never">Nigdy</string>
     <string name="Title">Tytuł</string>
     <string name="Toast_Enter_Email">Wprowadź swój adres e-mail</string>
-    <string name="Toast_Password_Hint_Sent">Podpowiedź do hasła została wysłana na adres e-mail</string>
+    <string name="Toast_Password_Hint_Sent">Podpowiedź dotycząca hasła została wysłana na adres e-mail</string>
     <string name="Toast_PleaseVerifyYourEmail">Zweryfikuj swój adres e-mail</string>
     <string name="Unlock">Odblokuj</string>
     <string name="UnlockWithBiometrics">Odblokowanie za pomocą danych biometrycznych</string>

@@ -95,7 +95,7 @@
     <string name="Unlock">Odblokuj</string>
     <string name="UnlockWithBiometrics">Odblokowanie za pomocą danych biometrycznych</string>
     <string name="UseBiometric">Użyj biometrii</string>
-    <string name="Username">Nazywa użytkownika</string>
+    <string name="Username">Nazwa użytkownika</string>
     <string name="Vault">Sejf</string>
     <string name="VaultTimeout">Limit czasu sejfu</string>
     <string name="View">Zobacz</string>

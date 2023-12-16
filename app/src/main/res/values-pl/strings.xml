@@ -54,7 +54,7 @@
     <string name="GetPasswordHint">Uzyskaj podpowiedź do hasła</string>
     <string name="LockVault">Zablokuj sejf</string>
     <string name="Login">Zaloguj się</string>
-    <string name="LoginDetails">Informacje logowania</string>
+    <string name="LoginDetails">Dane logowania</string>
     <string name="Logout">Wyloguj się</string>
     <string name="Name">Nazwa</string>
     <string name="NewPassword">Nowa hasło</string>
@@ -100,7 +100,7 @@
     <string name="VaultTimeout">Limit czasu sejfu</string>
     <string name="View">Zobacz</string>
     <string name="WebsiteAddress">Adres strony</string>
-    <string name="WebsiteDetails">Szczegóły strony</string>
+    <string name="WebsiteDetails">Dane strony</string>
     <string name="WelcomeScreen_Title">Witaj w LibrePass</string>
     <string name="optional">opcjonalnie</string>
 </resources>

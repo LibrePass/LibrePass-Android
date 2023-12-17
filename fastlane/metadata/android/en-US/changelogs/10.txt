@@ -1,0 +1,3 @@
+- Refactor translations
+- Fixed text size on smaller screens in CipherCard
+- Updated LibrePass Client (new production API url is `api.librepass.org`)

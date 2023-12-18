@@ -42,7 +42,7 @@ jobs:
           cp ${{ steps.sign_apk.outputs.signedReleaseFile }} release/LibrePass-signed.apk
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: apk
           path: release/*

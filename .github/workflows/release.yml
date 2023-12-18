@@ -64,7 +64,7 @@ jobs:
           } >> "$GITHUB_ENV"
 
       - name: Download APK from build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: apk
           path: apk

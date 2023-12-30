@@ -6,7 +6,7 @@ android-sdk-compile = "34"
 # Libraries
 androidx-annotation = "1.7.1"
 androidx-biometric = "1.2.0-alpha05"
-androidx-compose-compiler = "1.5.6" # used in `app` submodule by calling it directly
+androidx-compose-compiler = "1.5.7" # used in `app` submodule by calling it directly
 androidx-datastore = "1.1.0-alpha07"
 androidx-espresso-core = "3.5.1"
 androidx-junit = "1.1.5"

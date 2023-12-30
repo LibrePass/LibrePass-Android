@@ -162,6 +162,21 @@ fun CipherEditFieldsLogin(
     }
 
     SecondaryText(
+        stringResource(R.string.TwoFactorAuthorization),
+        modifier = Modifier.padding(top = 8.dp)
+    )
+
+    TextInputFieldBase(
+        label = stringResource(R.string.AuthenticationKey),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+        value = cipherData.twoFactor,
+        onValueChange = { cipherData = cipherData.copy(twoFactor = it) }
+    )
+
+    SecondaryText(
         stringResource(R.string.OtherDetails),
         modifier = Modifier.padding(top = 8.dp)
     )

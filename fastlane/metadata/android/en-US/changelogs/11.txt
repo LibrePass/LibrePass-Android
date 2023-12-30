@@ -1,0 +1,3 @@
+- Added Arabic translation
+- Fixed inconsistent navigation status after application resume
+- Bump Gradle and compose compiler

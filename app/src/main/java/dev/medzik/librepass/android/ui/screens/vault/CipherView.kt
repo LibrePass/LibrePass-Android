@@ -92,13 +92,15 @@ fun CipherViewScreen(navController: NavController) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
     LaunchedEffect(scope) {
-        totpCode = TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+        if (cipher.type == CipherType.Login && !cipher.loginData?.twoFactor.isNullOrEmpty()) {
+            totpCode = TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
 
-        scope.launch {
-            while (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                delay(30 * 1000)
+            scope.launch {
+                while (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                    delay(30 * 1000)
 
-                totpCode = TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+                    totpCode = TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+                }
             }
         }
     }
@@ -226,7 +228,7 @@ fun CipherViewScreen(navController: NavController) {
 
                 CipherField(
                     title = stringResource(R.string.VerificationCode),
-                    value = totpCode,
+                    value = totpCode.chunked(3).joinToString(" "),
                     copy = true
                 )
             }

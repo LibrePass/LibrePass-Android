@@ -20,24 +20,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
+import com.bastiaanjansen.otp.TOTPGenerator
 import dev.medzik.android.components.BaseDialog
 import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.getString
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
+import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.getRepository
@@ -50,6 +56,9 @@ import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID
@@ -66,6 +75,10 @@ fun CipherViewScreen(navController: NavController) {
         context.getUserSecrets()
             ?: return
 
+    var totpCode by rememberMutable("")
+
+    val scope = rememberCoroutineScope()
+
     val encryptedCipher = context.getRepository().cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
     val cipher =
         try {
@@ -75,6 +88,20 @@ fun CipherViewScreen(navController: NavController) {
             DecryptionError(navController, e)
             return
         }
+
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+
+    LaunchedEffect(scope) {
+        totpCode = TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+
+        scope.launch {
+            while (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                delay(30 * 1000)
+
+                totpCode = TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+            }
+        }
+    }
 
     @Composable
     fun CipherViewLogin() {
@@ -187,6 +214,19 @@ fun CipherViewScreen(navController: NavController) {
                 CipherField(
                     title = stringResource(R.string.Notes),
                     value = cipherData.notes,
+                    copy = true
+                )
+            }
+
+            if (!cipherData.twoFactor.isNullOrEmpty()) {
+                SecondaryText(
+                    stringResource(R.string.TwoFactorAuthorization),
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+
+                CipherField(
+                    title = stringResource(R.string.VerificationCode),
+                    value = totpCode,
                     copy = true
                 )
             }

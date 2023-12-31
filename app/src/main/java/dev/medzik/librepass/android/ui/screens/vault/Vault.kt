@@ -1,9 +1,13 @@
 package dev.medzik.librepass.android.ui.screens.vault
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.pullrefresh.PullRefreshIndicator
+import androidx.compose.material3.pullrefresh.pullRefresh
+import androidx.compose.material3.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,12 +15,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.librepass.android.data.CipherTable
@@ -173,14 +176,14 @@ fun VaultScreen(navController: NavController) {
         updateCiphers()
     }
 
-    // Google has not yet added pull refresh to material3 for reasons unknown to me.
-    @Suppress("DEPRECATION")
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(refreshing),
-        onRefresh = { updateCiphers() },
-    ) {
+    val pullRefreshState = rememberPullRefreshState(refreshing, ::updateCiphers)
+
+    Box {
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .pullRefresh(pullRefreshState)
         ) {
             items(ciphers.size) { index ->
                 CipherCard(
@@ -218,5 +221,11 @@ fun VaultScreen(navController: NavController) {
                 )
             }
         }
+
+        PullRefreshIndicator(
+            refreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
 }

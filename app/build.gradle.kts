@@ -76,7 +76,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.ui)
     implementation(libs.google.accompanist.drawablepainter)
-    implementation(libs.google.accompanist.swiperefresh)
     implementation(libs.google.accompanist.systemuicontroller)
 
     // for biometric authentication
@@ -108,6 +107,7 @@ dependencies {
     // local modules
     implementation(project(":components"))
     implementation(project(":crypto"))
+    implementation(project(":m3-pullrefresh"))
     implementation(project(":utils"))
 
     // for splash screen with material3 and dynamic color

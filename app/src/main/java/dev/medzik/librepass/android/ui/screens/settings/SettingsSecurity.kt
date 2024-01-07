@@ -46,7 +46,7 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
     val credentials = viewModel.credentialRepository.get() ?: return
 
     val scope = rememberCoroutineScope()
-    var biometricEnabled by remember { mutableStateOf(credentials.biometricEnabled) }
+    var biometricEnabled by remember { mutableStateOf(credentials.biometricPrivateKey != null) }
     val timerDialogState = rememberDialogState()
     var vaultTimeout by remember { mutableIntStateOf(context.readKey(StoreKey.VaultTimeout)) }
 
@@ -58,7 +58,9 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
             scope.launch {
                 viewModel.credentialRepository.update(
                     credentials.copy(
-                        biometricEnabled = false
+                        biometricEnabled = false,
+                        biometricPrivateKey = null,
+                        biometricPrivateKeyIV = null
                     )
                 )
             }
@@ -84,9 +86,8 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
                 scope.launch {
                     viewModel.credentialRepository.update(
                         credentials.copy(
-                            biometricEnabled = true,
-                            biometricProtectedPrivateKey = encryptedData.cipherText,
-                            biometricProtectedPrivateKeyIV = encryptedData.initializationVector
+                            biometricPrivateKey = encryptedData.cipherText,
+                            biometricPrivateKeyIV = encryptedData.initializationVector
                         )
                     )
                 }

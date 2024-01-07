@@ -9,20 +9,25 @@ import dev.medzik.librepass.types.cipher.EncryptedCipher
 import java.util.UUID
 
 /**
- * CipherTable is a table that stores encrypted ciphers.
+ * LocalCipher is a table that stores encrypted ciphers.
  * It is such as a cache to avoid pointlessly downloading the same data from the server and working offline.
  */
 @Entity
-class CipherTable(
+class LocalCipher(
     @PrimaryKey
     val id: UUID,
     val owner: UUID,
+    val toUpload: Boolean,
     @field:TypeConverters(EncryptedCipherConverter::class)
     var encryptedCipher: EncryptedCipher
 ) {
-    constructor(encryptedCipher: EncryptedCipher) : this(
+    constructor(
+        encryptedCipher: EncryptedCipher,
+        toUpload: Boolean = false
+    ) : this(
         id = encryptedCipher.id,
         owner = encryptedCipher.owner,
+        toUpload = toUpload,
         encryptedCipher = encryptedCipher
     )
 }

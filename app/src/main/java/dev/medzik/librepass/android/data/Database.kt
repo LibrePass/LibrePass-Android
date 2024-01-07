@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [Credentials::class, CipherTable::class],
-    version = 1,
+    version = 2,
+    entities = [Credentials::class, LocalCipher::class],
     exportSchema = false
 )
 abstract class LibrePassDatabase : RoomDatabase() {
@@ -23,7 +23,8 @@ object LibrePassDatabaseProvider {
     private var database: LibrePassDatabase? = null
 
     /**
-     * Get database instance. If database is not initialized, it will be created.
+     * Get database instance. If database is not initialized, it will be initialize.
+     *
      * @param context Application context.
      * @return Database instance.
      */
@@ -35,6 +36,7 @@ object LibrePassDatabaseProvider {
                     LibrePassDatabase::class.java,
                     "librepass.db"
                 )
+                    .addMigrations(DatabaseMigrations.MIGRATION_1_2)
                     .allowMainThreadQueries()
                     .build()
         }

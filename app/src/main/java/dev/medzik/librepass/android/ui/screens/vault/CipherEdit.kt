@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.getString
@@ -23,8 +24,8 @@ import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
-import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsCard
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsLogin
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsSecureNote
@@ -44,21 +45,22 @@ import java.util.Date
 import java.util.UUID
 
 @Composable
-fun CipherEditScreen(navController: NavController) {
+fun CipherEditScreen(
+    navController: NavController,
+    viewModel: LibrePassViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
 
-    val repository = context.getRepository()
-
     val cipherId = navController.getString(Argument.CipherId) ?: return
-    val cipherTable = repository.cipher.get(UUID.fromString(cipherId)) ?: return
+    val cipherTable = viewModel.cipherRepository.get(UUID.fromString(cipherId)) ?: return
     val oldCipher = Cipher(cipherTable.encryptedCipher, context.getUserSecrets()!!.secretKey)
     var cipher by rememberMutable(oldCipher)
 
     var loading by rememberMutableBoolean()
     val scope = rememberCoroutineScope()
 
-    val userSecrets = context.getUserSecrets()!!
-    val credentials = repository.credentials.get()!!
+    val userSecrets = context.getUserSecrets() ?: return
+    val credentials = viewModel.credentialRepository.get() ?: return
 
     val cipherClient =
         CipherClient(
@@ -92,7 +94,7 @@ fun CipherEditScreen(navController: NavController) {
                 cipherClient.update(encryptedCipher)
 
                 // update cipher in local repository
-                repository.cipher.update(CipherTable(encryptedCipher))
+                viewModel.cipherRepository.update(CipherTable(encryptedCipher))
 
                 runOnUiThread { navController.popBackStack() }
             } catch (e: Exception) {

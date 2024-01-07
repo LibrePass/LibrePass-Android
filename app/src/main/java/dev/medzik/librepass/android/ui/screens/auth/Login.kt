@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.PickerDialog
@@ -29,7 +30,7 @@ import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
-import dev.medzik.librepass.android.data.getRepository
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.KeyAlias
@@ -47,7 +48,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LibrePassViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
@@ -56,8 +60,6 @@ fun LoginScreen(navController: NavController) {
     var email by rememberMutableString()
     var password by rememberMutableString()
     var server by rememberMutableString(Server.PRODUCTION)
-
-    val repositoryCredentials = context.getRepository().credentials
 
     fun submit(
         email: String,
@@ -93,7 +95,7 @@ fun LoginScreen(navController: NavController) {
                         iterations = preLogin.iterations,
                         parallelism = preLogin.parallelism
                     )
-                repositoryCredentials.insert(credentialsDb)
+                viewModel.credentialRepository.insert(credentialsDb)
 
                 // save secrets in encrypted datastore
                 SecretStore.save(
@@ -117,7 +119,7 @@ fun LoginScreen(navController: NavController) {
                                 val encryptedData = KeyStore.encrypt(cipher, credentials.privateKey.fromHexString())
 
                                 scope.launch {
-                                    repositoryCredentials.update(
+                                    viewModel.credentialRepository.update(
                                         credentialsDb.copy(
                                             biometricEnabled = true,
                                             biometricProtectedPrivateKey = encryptedData.cipherText,

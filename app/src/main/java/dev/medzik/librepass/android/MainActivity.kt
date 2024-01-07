@@ -7,8 +7,9 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import dagger.hilt.android.AndroidEntryPoint
 import dev.medzik.android.components.navigate
-import dev.medzik.librepass.android.data.getRepository
+import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
@@ -18,8 +19,13 @@ import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : FragmentActivity() {
+    @Inject
+    lateinit var repository: Repository
+
     lateinit var userSecrets: UserSecrets
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,9 +40,9 @@ class MainActivity : FragmentActivity() {
         }
 
         // merge application data when application updated
-        UpdateMerge.update(this)
+        UpdateMerge.update(this, repository)
 
-        // init datastore
+        // init vault
         userSecrets = SecretStore.initialize(this)
 
         // get app theme settings
@@ -61,7 +67,6 @@ class MainActivity : FragmentActivity() {
         super.onPause()
 
         // check if user is logged
-        val repository = this.getRepository()
         if (repository.credentials.get() == null) return
 
         val vaultTimeout = this.readKey(StoreKey.VaultTimeout)
@@ -75,7 +80,7 @@ class MainActivity : FragmentActivity() {
     /** Called from [LibrePassNavigation] */
     fun onResume(navController: NavController) {
         // check if user is logged
-        val repository = this.getRepository()
+
         if (repository.credentials.get() == null) return
 
         val vaultTimeout = this.readKey(StoreKey.VaultTimeout)

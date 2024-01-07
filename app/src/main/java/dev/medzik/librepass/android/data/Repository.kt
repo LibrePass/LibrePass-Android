@@ -3,7 +3,7 @@ package dev.medzik.librepass.android.data
 import android.content.Context
 
 /**
- * Repository interface provides access to the database DAOs.
+ * Repository interface provides database DAOs.
  */
 interface RepositoryInterface {
     val credentials: CredentialsDao
@@ -11,7 +11,7 @@ interface RepositoryInterface {
 }
 
 /**
- * Repository provides access to the database.
+ * Repository class provides access to the database.
  */
 class Repository(context: Context) : RepositoryInterface {
     // get database instance
@@ -20,8 +20,3 @@ class Repository(context: Context) : RepositoryInterface {
     override val credentials = database.credentialsDao()
     override val cipher = database.cipherDao()
 }
-
-/**
- * Get the repository that provides access to the database.
- */
-fun Context.getRepository() = Repository(this)

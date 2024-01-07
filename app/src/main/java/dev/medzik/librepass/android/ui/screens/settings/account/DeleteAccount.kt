@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.navigate
@@ -20,7 +21,7 @@ import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.libcrypto.Argon2
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.getRepository
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
@@ -33,10 +34,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun SettingsAccountDeleteAccountScreen(navController: NavController) {
+fun SettingsAccountDeleteAccountScreen(
+    navController: NavController,
+    viewModel: LibrePassViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
-    val repository = context.getRepository()
-    val credentials = repository.credentials.get() ?: return
+    val credentials = viewModel.credentialRepository.get() ?: return
     val userSecrets = context.getUserSecrets() ?: return
 
     var loading by rememberMutableBoolean()
@@ -81,8 +84,8 @@ fun SettingsAccountDeleteAccountScreen(navController: NavController) {
                 userClient.deleteAccount(password)
 
                 runBlocking {
-                    repository.credentials.drop()
-                    repository.cipher.drop(credentials.userId)
+                    viewModel.credentialRepository.drop()
+                    viewModel.cipherRepository.drop(credentials.userId)
                     context
                 }
 

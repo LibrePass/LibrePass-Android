@@ -66,8 +66,6 @@ fun VaultScreen(
     fun updateLocalCiphers() {
         val dbCiphers = viewModel.cipherRepository.getAll(credentials.userId)
 
-        viewModel.vault.decryptDatabase(userSecrets.secretKey, dbCiphers)
-
         // decrypt ciphers
         val decryptedCiphers =
             dbCiphers.map {

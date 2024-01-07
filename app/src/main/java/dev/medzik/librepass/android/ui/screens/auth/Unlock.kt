@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.navigate
@@ -27,7 +28,7 @@ import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Hex
 import dev.medzik.libcrypto.X25519
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.getRepository
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.KeyAlias
@@ -41,7 +42,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun UnlockScreen(navController: NavController) {
+fun UnlockScreen(
+    navController: NavController,
+    viewModel: LibrePassViewModel = hiltViewModel()
+) {
     // context must be FragmentActivity to show biometric prompt
     val context = LocalContext.current as FragmentActivity
 
@@ -50,7 +54,7 @@ fun UnlockScreen(navController: NavController) {
     var loading by rememberMutableBoolean()
     var password by rememberMutableString()
 
-    val credentials = context.getRepository().credentials.get()!!
+    val credentials = viewModel.credentialRepository.get()!!
 
     fun onUnlock(password: String) {
         // disable button

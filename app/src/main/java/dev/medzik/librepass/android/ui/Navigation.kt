@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import androidx.navigation.NavController
@@ -39,7 +40,6 @@ import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.components.CipherTypeDialog
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
@@ -276,7 +276,7 @@ enum class Screen(
 }
 
 @Composable
-fun LibrePassNavigation() {
+fun LibrePassNavigation(viewModel: LibrePassViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val navController = rememberNavController()
 
@@ -297,12 +297,11 @@ fun LibrePassNavigation() {
         }
     }
 
-    val repository = context.getRepository()
     val userSecrets = context.getUserSecrets()
 
     fun getStartRoute(): String {
         // if a user is not logged in, show welcome screen
-        repository.credentials.get() ?: return Screen.Welcome.getRoute()
+        viewModel.credentialRepository.get() ?: return Screen.Welcome.getRoute()
 
         // if user secrets are not set, show unlock screen
         userSecrets ?: return Screen.Unlock.getRoute()

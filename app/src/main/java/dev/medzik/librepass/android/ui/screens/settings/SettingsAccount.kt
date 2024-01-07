@@ -6,23 +6,22 @@ import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.NoAccounts
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.PreferenceEntry
 import dev.medzik.android.components.navigate
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.getRepository
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun SettingsAccountScreen(navController: NavController) {
-    val context = LocalContext.current
-
-    val repository = context.getRepository()
-
+fun SettingsAccountScreen(
+    navController: NavController,
+    viewModel: LibrePassViewModel = hiltViewModel()
+) {
     fun changePassword() =
         runOnUiThread {
             navController.navigate(Screen.SettingsAccountChangePassword)
@@ -36,10 +35,10 @@ fun SettingsAccountScreen(navController: NavController) {
 
     fun logout() =
         runBlocking {
-            val credentials = repository.credentials.get()!!
+            val credentials = viewModel.credentialRepository.get()!!
 
-            repository.credentials.drop()
-            repository.cipher.drop(credentials.userId)
+            viewModel.credentialRepository.drop()
+            viewModel.cipherRepository.drop(credentials.userId)
 
             navController.navigate(
                 screen = Screen.Welcome,

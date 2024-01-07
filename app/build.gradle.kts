@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
     kotlin("android")
 }
 
@@ -84,13 +85,18 @@ dependencies {
     // used for calling `onResume` and locking vault after X minutes
     implementation(libs.androidx.lifecycle.runtime.compose)
 
-    // for storing preferences
+    // datastore
     implementation(libs.androidx.datastore.preferences)
 
     // room database
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
+
+    // dagger
+    implementation(libs.google.dagger.hilt)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.google.dagger.hilt.compiler)
 
     // for cipher icons in vault
     implementation(libs.coil.compose)

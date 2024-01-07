@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.getString
@@ -23,8 +24,8 @@ import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.CipherTable
-import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsCard
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsLogin
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsSecureNote
@@ -45,15 +46,17 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 @Composable
-fun CipherAddScreen(navController: NavController) {
+fun CipherAddScreen(
+    navController: NavController,
+    viewModel: LibrePassViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
 
     val cipherTypeArg = navController.getString(Argument.CipherType) ?: return
     val cipherType = CipherType.from(cipherTypeArg.toInt())
 
-    val userSecrets = context.getUserSecrets()!!
-    val repository = context.getRepository()
-    val credentials = repository.credentials.get()!!
+    val userSecrets = context.getUserSecrets() ?: return
+    val credentials = viewModel.credentialRepository.get() ?: return
 
     var cipher by rememberMutable(
         Cipher(
@@ -86,7 +89,7 @@ fun CipherAddScreen(navController: NavController) {
                 cipherClient.insert(encryptedCipher)
 
                 // insert cipher to local repository
-                repository.cipher.insert(CipherTable(encryptedCipher))
+                viewModel.cipherRepository.insert(CipherTable(encryptedCipher))
 
                 runOnUiThread { navController.popBackStack() }
             } catch (e: Exception) {

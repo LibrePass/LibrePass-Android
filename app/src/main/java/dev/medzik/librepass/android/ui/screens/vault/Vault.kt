@@ -19,12 +19,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.librepass.android.data.CipherTable
-import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
@@ -39,12 +40,13 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
-fun VaultScreen(navController: NavController) {
+fun VaultScreen(
+    navController: NavController,
+    viewModel: LibrePassViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
 
-    val userSecrets =
-        context.getUserSecrets()
-            ?: return
+    val userSecrets = context.getUserSecrets() ?: return
 
     val scope = rememberCoroutineScope()
 
@@ -52,9 +54,7 @@ fun VaultScreen(navController: NavController) {
     var refreshing by rememberMutableBoolean()
     var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
 
-    // database repository
-    val repository = context.getRepository()
-    val credentials = repository.credentials.get()!!
+    val credentials = viewModel.credentialRepository.get() ?: return
 
     val cipherClient =
         CipherClient(
@@ -64,7 +64,9 @@ fun VaultScreen(navController: NavController) {
 
     // get ciphers from local repository and update UI
     fun updateLocalCiphers() {
-        val dbCiphers = repository.cipher.getAll(credentials.userId)
+        val dbCiphers = viewModel.cipherRepository.getAll(credentials.userId)
+
+        viewModel.vault.decryptDatabase(userSecrets.secretKey, dbCiphers)
 
         // decrypt ciphers
         val decryptedCiphers =
@@ -109,12 +111,12 @@ fun VaultScreen(navController: NavController) {
 
             try {
                 // caching
-                val cachedCiphers = repository.cipher.getAllIDs(credentials.userId)
-                val lastSync = repository.credentials.get()!!.lastSync
+                val cachedCiphers = viewModel.cipherRepository.getAllIDs(credentials.userId)
+                val lastSync = viewModel.credentialRepository.get()!!.lastSync
 
                 if (lastSync != null) {
                     // update last sync date
-                    repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
+                    viewModel.credentialRepository.update(credentials.copy(lastSync = Date().time / 1000))
 
                     // get ciphers from API
                     val syncResponse = cipherClient.sync(Date(lastSync * 1000))
@@ -122,13 +124,13 @@ fun VaultScreen(navController: NavController) {
                     // delete ciphers from the local database that are not in API response
                     for (cipher in cachedCiphers) {
                         if (cipher !in syncResponse.ids) {
-                            repository.cipher.delete(cipher)
+                            viewModel.cipherRepository.delete(cipher)
                         }
                     }
 
                     // update ciphers in the local database
                     for (cipher in syncResponse.ciphers) {
-                        repository.cipher.insert(
+                        viewModel.cipherRepository.insert(
                             CipherTable(
                                 id = cipher.id,
                                 owner = cipher.owner,
@@ -138,14 +140,14 @@ fun VaultScreen(navController: NavController) {
                     }
                 } else {
                     // update last sync date
-                    repository.credentials.update(credentials.copy(lastSync = Date().time / 1000))
+                    viewModel.credentialRepository.update(credentials.copy(lastSync = Date().time / 1000))
 
                     // get all ciphers from API
                     val ciphersResponse = cipherClient.getAll()
 
                     // insert ciphers into the local database
                     for (cipher in ciphersResponse) {
-                        repository.cipher.insert(
+                        viewModel.cipherRepository.insert(
                             CipherTable(
                                 id = cipher.id,
                                 owner = cipher.owner,
@@ -204,7 +206,7 @@ fun VaultScreen(navController: NavController) {
                         scope.launch(Dispatchers.IO) {
                             try {
                                 cipherClient.delete(cipher.id)
-                                repository.cipher.delete(cipher.id)
+                                viewModel.cipherRepository.delete(cipher.id)
 
                                 ciphers = ciphers.filter { it.id != cipher.id }
                             } catch (e: Exception) {

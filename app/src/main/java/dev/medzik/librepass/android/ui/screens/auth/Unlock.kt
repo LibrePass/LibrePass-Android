@@ -116,12 +116,12 @@ fun UnlockScreen(
             context,
             KeyStore.initForDecryption(
                 alias = KeyAlias.BiometricPrivateKey,
-                initializationVector = Hex.decode(credentials.biometricProtectedPrivateKeyIV!!),
+                initializationVector = Hex.decode(credentials.biometricPrivateKeyIV!!),
                 deviceAuthentication = true
             ),
             onAuthenticationSucceeded = { cipher ->
                 val privateKey =
-                    KeyStore.decrypt(cipher, credentials.biometricProtectedPrivateKey!!)
+                    KeyStore.decrypt(cipher, credentials.biometricPrivateKey!!)
 
                 val secretKey = Cryptography.computeSharedKey(privateKey, Hex.decode(credentials.publicKey))
 

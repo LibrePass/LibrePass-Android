@@ -23,7 +23,7 @@ import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.CipherTable
+import dev.medzik.librepass.android.data.LocalCipher
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsCard
@@ -94,7 +94,7 @@ fun CipherEditScreen(
                 cipherClient.update(encryptedCipher)
 
                 // update cipher in local repository
-                viewModel.cipherRepository.update(CipherTable(encryptedCipher))
+                viewModel.cipherRepository.update(LocalCipher(encryptedCipher))
 
                 runOnUiThread { navController.popBackStack() }
             } catch (e: Exception) {

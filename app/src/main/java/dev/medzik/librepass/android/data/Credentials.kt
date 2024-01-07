@@ -18,8 +18,8 @@ data class Credentials(
     val iterations: Int,
     val parallelism: Int,
     // for biometric auth
-    val biometricProtectedPrivateKey: String? = null,
-    val biometricProtectedPrivateKeyIV: String? = null,
+    val biometricPrivateKey: String? = null,
+    val biometricPrivateKeyIV: String? = null,
     // settings
     val biometricEnabled: Boolean = false
 )

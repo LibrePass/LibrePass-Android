@@ -122,8 +122,8 @@ fun LoginScreen(
                                     viewModel.credentialRepository.update(
                                         credentialsDb.copy(
                                             biometricEnabled = true,
-                                            biometricProtectedPrivateKey = encryptedData.cipherText,
-                                            biometricProtectedPrivateKeyIV = encryptedData.initializationVector
+                                            biometricPrivateKey = encryptedData.cipherText,
+                                            biometricPrivateKeyIV = encryptedData.initializationVector
                                         )
                                     )
                                 }

@@ -20,11 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableString
-import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
@@ -35,7 +36,10 @@ import dev.medzik.librepass.types.cipher.data.CipherLoginData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(navController: NavController) {
+fun SearchScreen(
+    navController: NavController,
+    viewModel: LibrePassViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
 
     val userSecrets =
@@ -43,10 +47,9 @@ fun SearchScreen(navController: NavController) {
             ?: return
 
     // database repository
-    val repository = context.getRepository()
-    val credentials = repository.credentials.get()!!
+    val credentials = viewModel.credentialRepository.get() ?: return
 
-    val localCiphers = repository.cipher.getAll(credentials.userId)
+    val localCiphers = viewModel.cipherRepository.getAll(credentials.userId)
     // decrypt ciphers
     val decryptedCiphers =
         localCiphers.map {

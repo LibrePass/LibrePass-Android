@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import dev.medzik.android.components.PickerDialog
 import dev.medzik.android.components.PropertyPreference
 import dev.medzik.android.components.SwitcherPreference
@@ -26,7 +27,7 @@ import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.getRepository
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.SecretStore.readKey
@@ -38,12 +39,11 @@ import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsSecurityScreen() {
+fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     val userSecrets = context.getUserSecrets() ?: return
-    val repository = context.getRepository()
-    val credentials = repository.credentials.get()!!
+    val credentials = viewModel.credentialRepository.get() ?: return
 
     val scope = rememberCoroutineScope()
     var biometricEnabled by remember { mutableStateOf(credentials.biometricEnabled) }
@@ -56,7 +56,7 @@ fun SettingsSecurityScreen() {
             biometricEnabled = false
 
             scope.launch {
-                repository.credentials.update(
+                viewModel.credentialRepository.update(
                     credentials.copy(
                         biometricEnabled = false
                     )
@@ -82,7 +82,7 @@ fun SettingsSecurityScreen() {
                 biometricEnabled = true
 
                 scope.launch {
-                    repository.credentials.update(
+                    viewModel.credentialRepository.update(
                         credentials.copy(
                             biometricEnabled = true,
                             biometricProtectedPrivateKey = encryptedData.cipherText,

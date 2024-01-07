@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import com.bastiaanjansen.otp.TOTPGenerator
@@ -46,8 +47,8 @@ import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.getRepository
 import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
@@ -64,7 +65,10 @@ import java.util.Locale
 import java.util.UUID
 
 @Composable
-fun CipherViewScreen(navController: NavController) {
+fun CipherViewScreen(
+    navController: NavController,
+    viewModel: LibrePassViewModel = hiltViewModel()
+) {
     val cipherId =
         navController.getString(Argument.CipherId)
             ?: return
@@ -79,7 +83,7 @@ fun CipherViewScreen(navController: NavController) {
 
     val scope = rememberCoroutineScope()
 
-    val encryptedCipher = context.getRepository().cipher.get(UUID.fromString(cipherId))!!.encryptedCipher
+    val encryptedCipher = viewModel.cipherRepository.get(UUID.fromString(cipherId))!!.encryptedCipher
     val cipher =
         try {
             Cipher(encryptedCipher, userSecrets.secretKey)

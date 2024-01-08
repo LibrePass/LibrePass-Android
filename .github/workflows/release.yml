@@ -77,6 +77,6 @@ jobs:
           prerelease: false
           tag_name: ${{ github.ref }}
           fail_on_unmatched_files: true
-          name: Release ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           body: ${{ env.CHANGELOG }}
           files: apk/*

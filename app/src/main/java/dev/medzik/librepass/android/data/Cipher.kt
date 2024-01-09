@@ -17,17 +17,17 @@ class LocalCipher(
     @PrimaryKey
     val id: UUID,
     val owner: UUID,
-    val toUpload: Boolean,
+    val needUpload: Boolean,
     @field:TypeConverters(EncryptedCipherConverter::class)
     var encryptedCipher: EncryptedCipher
 ) {
     constructor(
         encryptedCipher: EncryptedCipher,
-        toUpload: Boolean = false
+        needUpload: Boolean = false
     ) : this(
         id = encryptedCipher.id,
         owner = encryptedCipher.owner,
-        toUpload = toUpload,
+        needUpload = needUpload,
         encryptedCipher = encryptedCipher
     )
 }

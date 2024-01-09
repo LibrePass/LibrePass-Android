@@ -13,7 +13,7 @@ object DatabaseMigrations {
 
                 // LocalCipher
                 db.execSQL("ALTER TABLE CipherTable RENAME TO LocalCipher")
-                db.execSQL("ALTER TABLE LocalCipher ADD COLUMN toUpload INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE LocalCipher ADD COLUMN needUpload INTEGER NOT NULL DEFAULT 0")
             }
         }
 }

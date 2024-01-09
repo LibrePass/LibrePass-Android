@@ -23,7 +23,6 @@ import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.data.LocalCipher
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsCard
@@ -31,18 +30,13 @@ import dev.medzik.librepass.android.ui.components.CipherEditFieldsLogin
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsSecureNote
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
-import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.showErrorToast
-import dev.medzik.librepass.client.Server
-import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
-import dev.medzik.librepass.types.cipher.EncryptedCipher
 import dev.medzik.librepass.types.cipher.data.PasswordHistory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
-import java.util.UUID
 
 @Composable
 fun CipherEditScreen(
@@ -52,21 +46,11 @@ fun CipherEditScreen(
     val context = LocalContext.current
 
     val cipherId = navController.getString(Argument.CipherId) ?: return
-    val cipherTable = viewModel.cipherRepository.get(UUID.fromString(cipherId)) ?: return
-    val oldCipher = Cipher(cipherTable.encryptedCipher, context.getUserSecrets()!!.secretKey)
+    val oldCipher = viewModel.vault.find(cipherId) ?: return
     var cipher by rememberMutable(oldCipher)
 
     var loading by rememberMutableBoolean()
     val scope = rememberCoroutineScope()
-
-    val userSecrets = context.getUserSecrets() ?: return
-    val credentials = viewModel.credentialRepository.get() ?: return
-
-    val cipherClient =
-        CipherClient(
-            apiKey = credentials.apiKey,
-            apiUrl = credentials.apiUrl ?: Server.PRODUCTION
-        )
 
     fun submit() {
         loading = true
@@ -87,14 +71,8 @@ fun CipherEditScreen(
                 }
             }
 
-            val encryptedCipher = EncryptedCipher(cipher, userSecrets.secretKey)
-
             try {
-                // update cipher in server
-                cipherClient.update(encryptedCipher)
-
-                // update cipher in local repository
-                viewModel.cipherRepository.update(LocalCipher(encryptedCipher))
+                viewModel.vault.save(cipher)
 
                 runOnUiThread { navController.popBackStack() }
             } catch (e: Exception) {

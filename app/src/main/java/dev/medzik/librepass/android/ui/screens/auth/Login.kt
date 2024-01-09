@@ -102,7 +102,7 @@ fun LoginScreen(
                     context,
                     UserSecrets(
                         privateKey = credentials.privateKey.fromHexString(),
-                        secretKey = credentials.secretKey.fromHexString()
+                        secretKey = credentials.aesKey.fromHexString()
                     )
                 )
 

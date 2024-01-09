@@ -36,8 +36,8 @@ import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
 import dev.medzik.librepass.android.utils.showBiometricPromptForUnlock
-import dev.medzik.librepass.client.utils.Cryptography
-import dev.medzik.librepass.client.utils.Cryptography.computePasswordHash
+import dev.medzik.librepass.utils.Cryptography
+import dev.medzik.librepass.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

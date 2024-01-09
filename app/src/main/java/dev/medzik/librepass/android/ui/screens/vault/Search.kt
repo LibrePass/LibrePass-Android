@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -29,10 +28,7 @@ import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
-import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
-import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
-import dev.medzik.librepass.types.cipher.data.CipherLoginData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,48 +36,7 @@ fun SearchScreen(
     navController: NavController,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-
-    val userSecrets =
-        context.getUserSecrets()
-            ?: return
-
-    // database repository
-    val credentials = viewModel.credentialRepository.get() ?: return
-
-    val localCiphers = viewModel.cipherRepository.getAll(credentials.userId)
-    // decrypt ciphers
-    val decryptedCiphers =
-        localCiphers.map {
-            try {
-                Cipher(it.encryptedCipher, userSecrets.secretKey)
-            } catch (e: Exception) {
-                Cipher(
-                    id = it.encryptedCipher.id,
-                    owner = it.encryptedCipher.owner,
-                    type = CipherType.Login,
-                    loginData =
-                        CipherLoginData(
-                            name = "Encryption error"
-                        )
-                )
-            }
-        }
-    // sort ciphers by name
-    val ciphers =
-        decryptedCiphers.sortedBy {
-            when (it.type) {
-                CipherType.Login -> {
-                    it.loginData!!.name
-                }
-                CipherType.SecureNote -> {
-                    it.secureNoteData!!.title
-                }
-                CipherType.Card -> {
-                    it.cardData!!.cardholderName
-                }
-            }
-        }
+    val ciphers = viewModel.vault.sortAlphabetically()
 
     var searchText by rememberMutableString()
 

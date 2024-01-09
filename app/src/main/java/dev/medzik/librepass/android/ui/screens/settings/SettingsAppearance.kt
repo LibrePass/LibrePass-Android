@@ -51,7 +51,7 @@ fun SettingsAppearanceScreen() {
     PropertyPreference(
         title = stringResource(R.string.Theme),
         icon = { Icon(Icons.Default.DarkMode, contentDescription = null) },
-        currentValue = getThemeTranslation(ThemeValues.values()[theme]),
+        currentValue = getThemeTranslation(ThemeValues.entries[theme]),
         onClick = { themeDialogState.show() },
     )
 

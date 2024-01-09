@@ -32,7 +32,7 @@ fun CipherTypeDialog(
     PickerDialog(
         state,
         title = stringResource(R.string.SelectCipherType),
-        items = CipherType.values().asList(),
+        items = CipherType.entries,
         onSelected
     ) {
         Text(

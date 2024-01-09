@@ -39,7 +39,7 @@ fun showBiometricPromptForSetup(
     showBiometricPrompt(context, promptInfo, cipher, onAuthenticationSucceeded, onAuthenticationFailed)
 }
 
-fun showBiometricPrompt(
+private fun showBiometricPrompt(
     context: FragmentActivity,
     promptInfo: BiometricPrompt.PromptInfo,
     cipher: Cipher,
@@ -66,7 +66,9 @@ fun showBiometricPrompt(
 }
 
 fun checkIfBiometricAvailable(context: Context): Boolean {
-    val status = BiometricManager.from(context).canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+    val status =
+        BiometricManager.from(context)
+            .canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
 
     // return true when available
     return status == BiometricManager.BIOMETRIC_SUCCESS

@@ -28,7 +28,8 @@ import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.UserClient
-import dev.medzik.librepass.client.utils.Cryptography.computeSecretKeyFromPassword
+import dev.medzik.librepass.utils.Cryptography.computeAesKey
+import dev.medzik.librepass.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -68,9 +69,8 @@ fun SettingsAccountChangePasswordScreen(
 
         scope.launch(Dispatchers.IO) {
             // check old password
-            // compute base password hash
             val oldPasswordHash =
-                computeSecretKeyFromPassword(
+                computePasswordHash(
                     password = oldPassword,
                     email = credentials.email,
                     argon2Function =
@@ -81,8 +81,9 @@ fun SettingsAccountChangePasswordScreen(
                             credentials.iterations
                         )
                 )
+            val oldAesKey = computeAesKey(oldPasswordHash.hash)
 
-            if (!oldPasswordHash.contentEquals(userSecrets.secretKey)) {
+            if (!oldAesKey.contentEquals(userSecrets.secretKey)) {
                 oldPasswordInvalid = true
                 loading = false
                 return@launch

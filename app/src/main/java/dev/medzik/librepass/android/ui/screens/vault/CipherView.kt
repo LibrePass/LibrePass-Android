@@ -53,45 +53,25 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
-import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.shorten
-import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.Locale
-import java.util.UUID
 
 @Composable
 fun CipherViewScreen(
     navController: NavController,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    val cipherId =
-        navController.getString(Argument.CipherId)
-            ?: return
-
-    val context = LocalContext.current
-
-    val userSecrets =
-        context.getUserSecrets()
-            ?: return
+    val cipherId = navController.getString(Argument.CipherId) ?: return
+    val cipher = viewModel.vault.find(cipherId) ?: return
 
     var totpCode by rememberMutable("")
 
     val scope = rememberCoroutineScope()
-
-    val encryptedCipher = viewModel.cipherRepository.get(UUID.fromString(cipherId))!!.encryptedCipher
-    val cipher =
-        try {
-            Cipher(encryptedCipher, userSecrets.secretKey)
-        } catch (e: Exception) {
-            // handle decryption error
-            DecryptionError(navController, e)
-            return
-        }
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
@@ -432,25 +412,6 @@ fun CipherField(
                     )
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun DecryptionError(
-    navController: NavController,
-    e: Exception
-) {
-    Scaffold(
-        topBar = {
-            TopBar(
-                "Error",
-                navigationIcon = { TopBarBackIcon(navController) }
-            )
-        }
-    ) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
-            Text(e.message ?: "Unknown encryption error")
         }
     }
 }

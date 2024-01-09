@@ -8,7 +8,7 @@ import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
 import kotlinx.coroutines.runBlocking
 
-object UpdateMerge {
+object Migrations {
     fun update(
         context: Context,
         repository: Repository
@@ -43,9 +43,9 @@ object UpdateMerge {
         runBlocking {
             repository.credentials.update(
                 credentials.copy(
-                    biometricProtectedPrivateKey = null,
-                    biometricProtectedPrivateKeyIV = null,
-                    biometricEnabled = false
+                    biometricEnabled = false,
+                    biometricPrivateKey = null,
+                    biometricPrivateKeyIV = null
                 )
             )
         }

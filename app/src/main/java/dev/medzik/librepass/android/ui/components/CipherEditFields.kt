@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,7 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.bastiaanjansen.otp.TOTPGenerator
 import com.google.gson.Gson
 import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.navigate
@@ -25,6 +28,7 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.data.CipherLoginData
+import java.net.URI
 
 @Composable
 fun CipherEditFieldsLogin(
@@ -166,6 +170,12 @@ fun CipherEditFieldsLogin(
         modifier = Modifier.padding(top = 8.dp)
     )
 
+    val checkOtp =
+        !cipher.loginData?.twoFactor.isNullOrEmpty() &&
+            runCatching {
+                TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+            }.isFailure
+
     TextInputFieldBase(
         label = stringResource(R.string.AuthenticationKey),
         modifier =
@@ -173,8 +183,20 @@ fun CipherEditFieldsLogin(
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
         value = cipherData.twoFactor,
+        isError = checkOtp,
         onValueChange = { cipherData = cipherData.copy(twoFactor = it) }
     )
+
+    if (checkOtp) {
+        Text(
+            text = stringResource(R.string.UriIsInvalid),
+            color = MaterialTheme.colorScheme.error,
+            fontSize = 12.sp,
+            modifier =
+                Modifier
+                    .padding(horizontal = 6.dp),
+        )
+    }
 
     SecondaryText(
         stringResource(R.string.OtherDetails),

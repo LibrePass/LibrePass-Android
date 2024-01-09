@@ -92,6 +92,7 @@ fun TextInputFieldBase(
     modifier: Modifier = Modifier,
     hidden: Boolean = false,
     value: String?,
+    isError: Boolean = false,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType = KeyboardType.Text,
     singleLine: Boolean = true,
@@ -102,6 +103,7 @@ fun TextInputFieldBase(
     OutlinedTextField(
         value = value ?: "",
         onValueChange = onValueChange,
+        isError = isError,
         label = { Text(label) },
         singleLine = singleLine,
         visualTransformation = (

@@ -163,7 +163,7 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
     PickerDialog(
         state = timerDialogState,
         title = stringResource(R.string.VaultTimeout),
-        items = VaultTimeoutValues.values().asList(),
+        items = VaultTimeoutValues.entries,
         onSelected = {
             vaultTimeout = it.seconds
             context.writeKey(StoreKey.VaultTimeout, it.seconds)

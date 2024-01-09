@@ -18,6 +18,7 @@ import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.UserSecrets
+import dev.medzik.librepass.android.utils.Vault
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
 import javax.inject.Inject
 
@@ -25,6 +26,9 @@ import javax.inject.Inject
 class MainActivity : FragmentActivity() {
     @Inject
     lateinit var repository: Repository
+
+    @Inject
+    lateinit var vault: Vault
 
     lateinit var userSecrets: UserSecrets
 
@@ -40,10 +44,12 @@ class MainActivity : FragmentActivity() {
         }
 
         // merge application data when application updated
-        UpdateMerge.update(this, repository)
+        Migrations.update(this, repository)
 
         // init vault
         userSecrets = SecretStore.initialize(this)
+
+        vault.cipherRepository = repository.cipher
 
         // get app theme settings
         val dynamicColor = this.readKey(StoreKey.DynamicColor)

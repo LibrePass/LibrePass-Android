@@ -315,7 +315,7 @@ fun LibrePassNavigation(viewModel: LibrePassViewModel = hiltViewModel()) {
         startDestination = remember { getStartRoute() },
         modifier = Modifier.imePadding()
     ) {
-        for (screen in Screen.values()) {
+        for (screen in Screen.entries) {
             composable(screen.getRoute()) {
                 if (screen.customScaffold) {
                     screen.composable(navController)

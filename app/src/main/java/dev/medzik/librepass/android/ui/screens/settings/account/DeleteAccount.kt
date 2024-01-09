@@ -28,7 +28,7 @@ import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.UserClient
-import dev.medzik.librepass.client.utils.Cryptography
+import dev.medzik.librepass.utils.Cryptography
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -59,10 +59,9 @@ fun SettingsAccountDeleteAccountScreen(
         passwordInvalid = false
 
         scope.launch(Dispatchers.IO) {
-            // check old password
-            // compute base password hash
-            val oldPasswordHash =
-                Cryptography.computeSecretKeyFromPassword(
+            // check password
+            val passwordHash =
+                Cryptography.computePasswordHash(
                     password = password,
                     email = credentials.email,
                     argon2Function =
@@ -73,8 +72,9 @@ fun SettingsAccountDeleteAccountScreen(
                             credentials.iterations
                         )
                 )
+            val aesKey = Cryptography.computeAesKey(passwordHash.hash)
 
-            if (!oldPasswordHash.contentEquals(userSecrets.secretKey)) {
+            if (!aesKey.contentEquals(userSecrets.secretKey)) {
                 passwordInvalid = true
                 loading = false
                 return@launch

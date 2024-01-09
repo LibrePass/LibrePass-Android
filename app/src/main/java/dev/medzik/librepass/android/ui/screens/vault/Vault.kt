@@ -23,7 +23,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.librepass.android.data.CipherTable
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
@@ -32,9 +31,6 @@ import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
-import dev.medzik.librepass.types.cipher.Cipher
-import dev.medzik.librepass.types.cipher.CipherType
-import dev.medzik.librepass.types.cipher.data.CipherLoginData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -52,7 +48,7 @@ fun VaultScreen(
 
     // states
     var refreshing by rememberMutableBoolean()
-    var ciphers by remember { mutableStateOf(listOf<Cipher>()) }
+    var ciphers by remember { mutableStateOf(viewModel.vault.sortAlphabetically()) }
 
     val credentials = viewModel.credentialRepository.get() ?: return
 
@@ -62,55 +58,19 @@ fun VaultScreen(
             apiUrl = credentials.apiUrl ?: Server.PRODUCTION
         )
 
-    // get ciphers from local repository and update UI
-    fun updateLocalCiphers() {
-        val dbCiphers = viewModel.cipherRepository.getAll(credentials.userId)
-
-        // decrypt ciphers
-        val decryptedCiphers =
-            dbCiphers.map {
-                try {
-                    Cipher(it.encryptedCipher, userSecrets.secretKey)
-                } catch (e: Exception) {
-                    Cipher(
-                        id = it.encryptedCipher.id,
-                        owner = it.encryptedCipher.owner,
-                        type = CipherType.Login,
-                        loginData =
-                            CipherLoginData(
-                                name = "Encryption error"
-                            )
-                    )
-                }
-            }
-
-        // sort ciphers by name and update UI
-        ciphers =
-            decryptedCiphers.sortedBy {
-                when (it.type) {
-                    CipherType.Login -> {
-                        it.loginData!!.name
-                    }
-                    CipherType.SecureNote -> {
-                        it.secureNoteData!!.title
-                    }
-                    CipherType.Card -> {
-                        it.cardData!!.name
-                    }
-                }
-            }
-    }
-
-    // Update ciphers from API and local database and update UI
-    fun updateCiphers() =
+    fun updateCiphers() {
         scope.launch(Dispatchers.IO) {
-            // set loading state to true
             refreshing = true
 
             try {
-                // caching
-                val cachedCiphers = viewModel.cipherRepository.getAllIDs(credentials.userId)
+                val localCiphers = viewModel.cipherRepository.getAll(credentials.userId)
                 val lastSync = viewModel.credentialRepository.get()!!.lastSync
+
+                // send non-synchronized ciphers
+                localCiphers.filter { it.needUpload }.forEach {
+                    cipherClient.save(it.encryptedCipher)
+                    viewModel.vault.save(it.encryptedCipher, needUpload = false)
+                }
 
                 if (lastSync != null) {
                     // update last sync date
@@ -119,23 +79,7 @@ fun VaultScreen(
                     // get ciphers from API
                     val syncResponse = cipherClient.sync(Date(lastSync * 1000))
 
-                    // delete ciphers from the local database that are not in API response
-                    for (cipher in cachedCiphers) {
-                        if (cipher !in syncResponse.ids) {
-                            viewModel.cipherRepository.delete(cipher)
-                        }
-                    }
-
-                    // update ciphers in the local database
-                    for (cipher in syncResponse.ciphers) {
-                        viewModel.cipherRepository.insert(
-                            CipherTable(
-                                id = cipher.id,
-                                owner = cipher.owner,
-                                encryptedCipher = cipher
-                            )
-                        )
-                    }
+                    viewModel.vault.sync(syncResponse)
                 } else {
                     // update last sync date
                     viewModel.credentialRepository.update(credentials.copy(lastSync = Date().time / 1000))
@@ -145,35 +89,31 @@ fun VaultScreen(
 
                     // insert ciphers into the local database
                     for (cipher in ciphersResponse) {
-                        viewModel.cipherRepository.insert(
-                            CipherTable(
-                                id = cipher.id,
-                                owner = cipher.owner,
-                                encryptedCipher = cipher
-                            )
-                        )
+                        viewModel.vault.save(cipher)
                     }
                 }
             } catch (e: Exception) {
                 e.showErrorToast(context)
-            } finally {
-                // get cipher from local repository and update UI
-                updateLocalCiphers()
-
-                // set loading state to false
-                refreshing = false
             }
+
+            // sort ciphers and update UI
+            ciphers = viewModel.vault.sortAlphabetically()
+
+            refreshing = false
+        }
+    }
+
+    LaunchedEffect(scope) {
+        // get local stored ciphers
+        val dbCiphers = viewModel.cipherRepository.getAll(credentials.userId)
+
+        // decrypt database if needed
+        if (viewModel.vault.ciphers.isEmpty()) {
+            viewModel.vault.decryptDatabase(userSecrets.secretKey, dbCiphers)
         }
 
-    // load ciphers from cache on start
-    LaunchedEffect(scope) {
-        // get ciphers from the local database and update UI
-        updateLocalCiphers()
-
-        // update ciphers from API and update UI
-        // and show loading indicator while updating
-        // after local ciphers are loaded to prevent empty screen
-        updateCiphers()
+        // sort ciphers and update UI
+        ciphers = viewModel.vault.sortAlphabetically()
     }
 
     val pullRefreshState = rememberPullRefreshState(refreshing, ::updateCiphers)

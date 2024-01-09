@@ -270,7 +270,7 @@ fun CipherEditFieldsCard(
             Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
-        value = cipherData.expMonth?.toString(),
+        value = cipherData.expMonth,
         onValueChange = {
             if (it.isEmpty()) {
                 cipherData = cipherData.copy(expMonth = null)
@@ -280,7 +280,7 @@ fun CipherEditFieldsCard(
             if (!it.all { char -> char.isDigit() } || it.length > 2 || it.toInt() > 12)
                 return@TextInputFieldBase
 
-            cipherData = cipherData.copy(expMonth = it.toInt())
+            cipherData = cipherData.copy(expMonth = it)
         }
     )
 
@@ -291,7 +291,7 @@ fun CipherEditFieldsCard(
             Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
-        value = cipherData.expYear?.toString(),
+        value = cipherData.expYear,
         onValueChange = {
             if (it.isEmpty()) {
                 cipherData = cipherData.copy(expYear = null)
@@ -300,7 +300,7 @@ fun CipherEditFieldsCard(
             if (!it.all { char -> char.isDigit() } || it.length > 4)
                 return@TextInputFieldBase
 
-            cipherData = cipherData.copy(expYear = it.toInt())
+            cipherData = cipherData.copy(expYear = it)
         }
     )
 

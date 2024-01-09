@@ -79,7 +79,7 @@ enum class VaultTimeoutValues(val seconds: Int) {
 
     companion object {
         fun fromSeconds(seconds: Int): VaultTimeoutValues {
-            for (value in values())
+            for (value in entries)
                 if (value.seconds == seconds)
                     return value
 

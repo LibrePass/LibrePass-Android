@@ -106,4 +106,5 @@
     <string name="optional">optional</string>
     <string name="VerificationCode">Verification Code (TOTP)</string>
     <string name="Error_InvalidURI">URI address is invalid</string>
+    <string name="CardDetails">Card details</string>
 </resources>

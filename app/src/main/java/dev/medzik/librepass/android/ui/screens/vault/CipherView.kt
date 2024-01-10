@@ -259,7 +259,7 @@ fun CipherViewScreen(
             hidden = true
         )
 
-        if (cipherData.expMonth != null) {
+        if (cipherData.expMonth.isNullOrEmpty()) {
             CipherField(
                 title = stringResource(R.string.ExpirationMonth),
                 value = cipherData.expMonth.toString(),
@@ -267,7 +267,7 @@ fun CipherViewScreen(
             )
         }
 
-        if (cipherData.expYear != null) {
+        if (cipherData.expYear.isNullOrEmpty()) {
             CipherField(
                 title = stringResource(R.string.ExpirationYear),
                 value = cipherData.expYear.toString(),
@@ -275,12 +275,25 @@ fun CipherViewScreen(
             )
         }
 
-        if (cipherData.code != null) {
+        if (cipherData.code.isNullOrEmpty()) {
             CipherField(
                 title = stringResource(R.string.SecurityCode),
                 value = cipherData.code,
                 copy = true,
                 hidden = true
+            )
+        }
+
+        if (!cipherData.notes.isNullOrEmpty()) {
+            SecondaryText(
+                stringResource(R.string.OtherDetails),
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            CipherField(
+                title = stringResource(R.string.Notes),
+                value = cipherData.notes,
+                copy = true
             )
         }
     }

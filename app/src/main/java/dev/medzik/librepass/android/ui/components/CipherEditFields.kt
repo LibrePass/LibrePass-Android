@@ -189,7 +189,7 @@ fun CipherEditFieldsLogin(
 
     if (checkOtp) {
         Text(
-            text = stringResource(R.string.UriIsInvalid),
+            text = stringResource(R.string.Error_InvalidURI),
             color = MaterialTheme.colorScheme.error,
             fontSize = 12.sp,
             modifier =

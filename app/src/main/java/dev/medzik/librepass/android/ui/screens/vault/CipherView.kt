@@ -246,6 +246,11 @@ fun CipherViewScreen(
             copy = true
         )
 
+        SecondaryText(
+            stringResource(R.string.CardDetails),
+            modifier = Modifier.padding(top = 8.dp)
+        )
+
         CipherField(
             title = stringResource(R.string.CardholderName),
             value = cipherData.cardholderName,

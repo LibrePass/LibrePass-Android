@@ -107,4 +107,5 @@
     <string name="TwoFactorAuthorization">Weryfikacja dwuetapowa</string>
     <string name="VerificationCode">Kod weryfikacji (TOTP)</string>
     <string name="Error_InvalidURI">Adres URI jest nieprawidłowy</string>
+    <string name="CardDetails">Dane karty</string>
 </resources>

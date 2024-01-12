@@ -264,7 +264,7 @@ fun CipherViewScreen(
             hidden = true
         )
 
-        if (cipherData.expMonth.isNullOrEmpty()) {
+        if (!cipherData.expMonth.isNullOrEmpty()) {
             CipherField(
                 title = stringResource(R.string.ExpirationMonth),
                 value = cipherData.expMonth.toString(),
@@ -272,7 +272,7 @@ fun CipherViewScreen(
             )
         }
 
-        if (cipherData.expYear.isNullOrEmpty()) {
+        if (!cipherData.expYear.isNullOrEmpty()) {
             CipherField(
                 title = stringResource(R.string.ExpirationYear),
                 value = cipherData.expYear.toString(),
@@ -280,7 +280,7 @@ fun CipherViewScreen(
             )
         }
 
-        if (cipherData.code.isNullOrEmpty()) {
+        if (!cipherData.code.isNullOrEmpty()) {
             CipherField(
                 title = stringResource(R.string.SecurityCode),
                 value = cipherData.code,

@@ -49,8 +49,6 @@ class MainActivity : FragmentActivity() {
         // init vault
         userSecrets = SecretStore.initialize(this)
 
-        vault.cipherRepository = repository.cipher
-
         // get app theme settings
         val dynamicColor = this.readKey(StoreKey.DynamicColor)
         val theme = this.readKey(StoreKey.Theme)

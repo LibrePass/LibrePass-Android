@@ -108,4 +108,6 @@
     <string name="Error_InvalidURI">URI address is invalid</string>
     <string name="CardDetails">Card details</string>
     <string name="BiometricKeyInvalidated">Biometric key has been invalidated by Android</string>
+    <string name="NewEmail">New e-mail address</string>
+    <string name="ChangeEmail">Change e-mail address</string>
 </resources>

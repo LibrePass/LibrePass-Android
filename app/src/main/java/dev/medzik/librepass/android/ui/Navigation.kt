@@ -38,8 +38,8 @@ import dev.medzik.android.components.NavScreen
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.activity.MainActivity
 import dev.medzik.librepass.android.ui.components.CipherTypeDialog
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon

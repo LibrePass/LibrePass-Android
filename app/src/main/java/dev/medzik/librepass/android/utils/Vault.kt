@@ -136,7 +136,7 @@ class Vault(
         aesKey = byteArrayOf()
 
         runOnIOThread {
-            context.dataStore.deleteEncrypted(AES_KEY_STORE_KEY)
+            context.dataStore.deleteEncrypted(SecretStore.AES_KEY_STORE_KEY)
         }
     }
 }

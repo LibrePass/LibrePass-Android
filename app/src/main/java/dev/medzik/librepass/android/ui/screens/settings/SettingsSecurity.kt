@@ -25,8 +25,8 @@ import dev.medzik.android.components.PropertyPreference
 import dev.medzik.android.components.SwitcherPreference
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.crypto.KeyStore
-import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.activity.MainActivity
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore.readKey

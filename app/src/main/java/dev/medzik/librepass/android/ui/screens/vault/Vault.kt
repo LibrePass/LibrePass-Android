@@ -24,7 +24,7 @@ import androidx.navigation.NavController
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.crypto.KeyStore
-import dev.medzik.librepass.android.MainActivity
+import dev.medzik.librepass.android.activity.MainActivity
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen

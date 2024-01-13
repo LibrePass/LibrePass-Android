@@ -37,21 +37,12 @@ class StructureParser(private val structure: AssistStructure) {
     }
 
     private fun parseViewNode(node: AssistStructure.ViewNode): Boolean {
-        var webDomain: String? = null
-//        var webScheme: String? = null
-
         var returnValue = false
 
         node.webDomain?.let {
-            webDomain = it
-            Log.d(TAG, "Autofill domain: $webDomain")
+            result.webDomain = it
+            Log.d(TAG, "Autofill domain: $it")
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//            node.webDomain?.let {
-//                webScheme = it
-//                Log.d(TAG, "Autofill scheme: $webScheme")
-//            }
-//        }
 
         if (node.visibility == View.VISIBLE) {
             if (node.autofillId != null) {
@@ -66,14 +57,14 @@ class StructureParser(private val structure: AssistStructure) {
                 }
             }
 
-            if (webDomain?.isNotEmpty() == true && returnValue)
+            if (result.webDomain?.isNotEmpty() == true && returnValue)
                 return true
 
             // process each node
             for (i in 0 until node.childCount) {
                 if (parseViewNode(node.getChildAt(i)))
                     returnValue = true
-                if (webDomain?.isNotEmpty() == true && returnValue)
+                if (result.webDomain?.isNotEmpty() == true && returnValue)
                     return true
             }
         }
@@ -203,6 +194,7 @@ class StructureParser(private val structure: AssistStructure) {
     }
 
     data class AutofillResult(
+        var webDomain: String? = null,
         var usernameId: AutofillId? = null,
         var usernameValue: AutofillValue? = null,
         var passwordId: AutofillId? = null,

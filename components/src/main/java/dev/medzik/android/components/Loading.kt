@@ -34,9 +34,9 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Only the dot that is used in [LoadingIndicator].
+ *
  * @param color The color of the dot.
  * @param modifier The modifier to apply to the dot.
- * @see LoadingIndicator
  */
 @Composable
 fun LoadingDot(
@@ -53,11 +53,11 @@ fun LoadingDot(
 
 /**
  * A loading indicator that animates three dots in a row.
+ *
  * @param animating Whether the indicator should be animating.
  * @param modifier The modifier to apply to the indicator.
  * @param color The color of the indicator.
  * @param indicatorSpacing The spacing between the dots.
- * @see LoadingDot
  */
 @Composable
 fun LoadingIndicator(
@@ -114,10 +114,11 @@ fun LoadingIndicatorPreview() {
 
 /**
  * A button that shows the loading indicator, e.g., when clicked while waiting for an API response.
- * @param onClick called when this button is clicked
- * @param modifier the [Modifier] to be applied to this button
- * @param loading if true, a loading animation will be shown
- * @param enabled controls the enabled state of this button
+ *
+ * @param onClick Called when this button is clicked.
+ * @param modifier The [Modifier] to be applied to this button.
+ * @param loading If true, a loading animation will be shown.
+ * @param enabled Controls the enabled state of this button.
  */
 @Composable
 fun LoadingButton(

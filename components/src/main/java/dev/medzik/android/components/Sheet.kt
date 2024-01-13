@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package dev.medzik.android.components
 
 import androidx.compose.foundation.clickable
@@ -31,7 +29,7 @@ fun rememberBottomSheetState(): BottomSheetState {
 
 /** A visibility controller for a bottom sheet */
 @OptIn(ExperimentalMaterial3Api::class)
-class BottomSheetState constructor(
+class BottomSheetState(
     internal val sheetState: SheetState
 ) {
     internal var expanded by mutableStateOf(false)

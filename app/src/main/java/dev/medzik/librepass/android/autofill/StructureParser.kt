@@ -61,7 +61,7 @@ class StructureParser(private val structure: AssistStructure) {
                         returnValue = true
                 } else if (parseNodeByHtml(node)) {
                     returnValue = true
-                } else if (parseByAndroidInput(node)) {
+                } else if (parseNodeByAndroidInput(node)) {
                     returnValue = true
                 }
             }
@@ -146,7 +146,7 @@ class StructureParser(private val structure: AssistStructure) {
         return false
     }
 
-    private fun parseByAndroidInput(node: AssistStructure.ViewNode): Boolean {
+    private fun parseNodeByAndroidInput(node: AssistStructure.ViewNode): Boolean {
         when (node.inputType and InputType.TYPE_MASK_CLASS) {
             InputType.TYPE_CLASS_TEXT -> {
                 when {

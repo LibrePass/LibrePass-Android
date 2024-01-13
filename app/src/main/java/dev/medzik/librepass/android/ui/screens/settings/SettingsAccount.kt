@@ -11,7 +11,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.PreferenceEntry
 import dev.medzik.android.components.navigate
-import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
@@ -22,44 +21,33 @@ fun SettingsAccountScreen(
     navController: NavController,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    fun changePassword() =
-        runOnUiThread {
-            navController.navigate(Screen.SettingsAccountChangePassword)
-        }
-
     PreferenceEntry(
         title = stringResource(R.string.ChangePassword),
         icon = { Icon(Icons.Default.LockReset, contentDescription = null) },
-        onClick = { changePassword() },
+        onClick = { navController.navigate(Screen.SettingsAccountChangePassword) }
     )
-
-    fun logout() =
-        runBlocking {
-            val credentials = viewModel.credentialRepository.get()!!
-
-            viewModel.credentialRepository.drop()
-            viewModel.cipherRepository.drop(credentials.userId)
-
-            navController.navigate(
-                screen = Screen.Welcome,
-                disableBack = true
-            )
-        }
 
     PreferenceEntry(
         title = stringResource(R.string.Logout),
         icon = { Icon(Icons.Default.Logout, contentDescription = null) },
-        onClick = { logout() },
-    )
+        onClick = {
+            runBlocking {
+                val credentials = viewModel.credentialRepository.get()!!
 
-    fun deleteAccount() =
-        runOnUiThread {
-            navController.navigate(Screen.SettingsAccountDeleteAccount)
+                viewModel.credentialRepository.drop()
+                viewModel.cipherRepository.drop(credentials.userId)
+
+                navController.navigate(
+                    screen = Screen.Welcome,
+                    disableBack = true
+                )
+            }
         }
+    )
 
     PreferenceEntry(
         title = stringResource(R.string.DeleteAccount),
         icon = { Icon(Icons.Default.NoAccounts, contentDescription = null) },
-        onClick = { deleteAccount() },
+        onClick = { navController.navigate(Screen.SettingsAccountDeleteAccount) }
     )
 }

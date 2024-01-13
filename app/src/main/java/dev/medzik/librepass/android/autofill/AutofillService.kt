@@ -8,12 +8,13 @@ import android.service.autofill.FillRequest
 import android.service.autofill.SaveCallback
 import android.service.autofill.SaveRequest
 import androidx.annotation.RequiresApi
+import dagger.hilt.android.AndroidEntryPoint
 import dev.medzik.librepass.android.utils.Vault
 import javax.inject.Inject
 
+@AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.O)
 class LibrePassAutofillService : AutofillService() {
-    // TODO: does not init, why?
     @Inject
     lateinit var vault: Vault
 

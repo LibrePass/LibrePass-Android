@@ -31,15 +31,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun SettingsAccountDeleteAccountScreen(
+fun SettingsAccountChangeEmailScreen(
     navController: NavController,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val credentials = viewModel.credentialRepository.get() ?: return
 
-    var loading by rememberMutableBoolean()
+    var newEmail by rememberMutableString()
     var password by rememberMutableString()
+    var loading by rememberMutableBoolean()
+
     val scope = rememberCoroutineScope()
 
     val userClient =
@@ -49,12 +51,17 @@ fun SettingsAccountDeleteAccountScreen(
             apiUrl = credentials.apiUrl ?: Server.PRODUCTION
         )
 
-    fun deleteAccount(password: String) {
+    fun changeEmail(
+        newEmail: String,
+        password: String
+    ) {
         loading = true
+
+        // TODO: show error "invalid password"
 
         scope.launch(Dispatchers.IO) {
             try {
-                userClient.deleteAccount(password)
+                userClient.changeEmail(newEmail, password)
 
                 runBlocking {
                     viewModel.credentialRepository.drop()
@@ -77,22 +84,32 @@ fun SettingsAccountDeleteAccountScreen(
     }
 
     TextInputField(
+        label = stringResource(R.string.NewEmail),
+        value = newEmail,
+        onValueChange = { newEmail = it },
+        isError = newEmail.isNotEmpty() && !newEmail.contains('@'),
+        errorMessage = stringResource(R.string.Error_InvalidEmail),
+        keyboardType = KeyboardType.Email
+    )
+
+    TextInputField(
         label = stringResource(R.string.Password),
         value = password,
         onValueChange = { password = it },
+        emptySupportingText = true,
         hidden = true,
-        keyboardType = KeyboardType.Password
+        keyboardType = KeyboardType.Password,
     )
 
     LoadingButton(
         loading = loading,
-        onClick = { deleteAccount(password) },
-        enabled = password.isNotEmpty(),
+        onClick = { changeEmail(newEmail, password) },
+        enabled = newEmail.isNotEmpty() && newEmail.contains('@') && password.isNotEmpty(),
         modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 40.dp, vertical = 8.dp)
     ) {
-        Text(stringResource(R.string.DeleteAccount))
+        Text(stringResource(R.string.ChangeEmail))
     }
 }

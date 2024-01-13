@@ -25,6 +25,7 @@ fun TextInputField(
     hidden: Boolean = false,
     value: String?,
     onValueChange: (String) -> Unit,
+    emptySupportingText: Boolean = false,
     isError: Boolean = false,
     errorMessage: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text
@@ -47,6 +48,10 @@ fun TextInputField(
                     Text(text = "")
                 }
             }
+    }
+
+    if (emptySupportingText) {
+        supportingText = { Text(text = "") }
     }
 
     OutlinedTextField(

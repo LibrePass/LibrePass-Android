@@ -19,17 +19,13 @@ import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.utils.runOnUiThread
-import dev.medzik.libcrypto.Argon2
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
-import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.UserClient
-import dev.medzik.librepass.utils.Cryptography.computeAesKey
-import dev.medzik.librepass.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -41,10 +37,8 @@ fun SettingsAccountChangePasswordScreen(
 ) {
     val context = LocalContext.current
     val credentials = viewModel.credentialRepository.get() ?: return
-    val userSecrets = context.getUserSecrets() ?: return
 
     var oldPassword by rememberMutableString()
-    var oldPasswordInvalid by rememberMutableBoolean()
     var newPassword by rememberMutableString()
     var newPasswordConfirm by rememberMutableString()
     var newPasswordHint by rememberMutableString()
@@ -59,36 +53,14 @@ fun SettingsAccountChangePasswordScreen(
             apiUrl = credentials.apiUrl ?: Server.PRODUCTION
         )
 
-    fun resetPassword(
+    fun changePassword(
         oldPassword: String,
         newPassword: String,
         newPasswordHint: String
     ) {
         loading = true
-        oldPasswordInvalid = false
 
         scope.launch(Dispatchers.IO) {
-            // check old password
-            val oldPasswordHash =
-                computePasswordHash(
-                    password = oldPassword,
-                    email = credentials.email,
-                    argon2Function =
-                        Argon2(
-                            32,
-                            credentials.parallelism,
-                            credentials.memory,
-                            credentials.iterations
-                        )
-                )
-            val oldAesKey = computeAesKey(oldPasswordHash.hash)
-
-            if (!oldAesKey.contentEquals(userSecrets.secretKey)) {
-                oldPasswordInvalid = true
-                loading = false
-                return@launch
-            }
-
             try {
                 userClient.changePassword(oldPassword, newPassword, newPasswordHint)
 
@@ -117,8 +89,7 @@ fun SettingsAccountChangePasswordScreen(
         value = oldPassword,
         onValueChange = { oldPassword = it },
         hidden = true,
-        isError = oldPasswordInvalid,
-        errorMessage = stringResource(R.string.Error_InvalidPassword),
+        emptySupportingText = true,
         keyboardType = KeyboardType.Password
     )
 
@@ -145,12 +116,13 @@ fun SettingsAccountChangePasswordScreen(
     TextInputField(
         label = stringResource(R.string.PasswordHint),
         value = newPasswordHint,
-        onValueChange = { newPasswordHint = it }
+        onValueChange = { newPasswordHint = it },
+        emptySupportingText = true
     )
 
     LoadingButton(
         loading = loading,
-        onClick = { resetPassword(oldPassword, newPassword, newPasswordHint) },
+        onClick = { changePassword(oldPassword, newPassword, newPasswordHint) },
         enabled = oldPassword.isNotEmpty() && newPassword.isNotEmpty() && newPasswordConfirm == newPassword,
         modifier =
             Modifier

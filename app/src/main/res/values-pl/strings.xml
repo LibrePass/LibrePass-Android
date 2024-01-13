@@ -58,8 +58,8 @@
     <string name="Logout">Wyloguj się</string>
     <string name="Name">Nazwa</string>
     <string name="NewPassword">Nowa hasło</string>
-    <string name="Notes">Notes</string>
-    <string name="OldPassword">State hasło</string>
+    <string name="Notes">Notatka</string>
+    <string name="OldPassword">Stare hasło</string>
     <string name="OtherDetails">Pozostałe informacje</string>
     <string name="Password">Hasło</string>
     <string name="PasswordGenerator">Generator hasła</string>
@@ -109,4 +109,6 @@
     <string name="Error_InvalidURI">Adres URI jest nieprawidłowy</string>
     <string name="CardDetails">Dane karty</string>
     <string name="BiometricKeyInvalidated">Klucz biometryczny został unieważniony przez Androida</string>
+    <string name="NewEmail">Nowy adres e-mail</string>
+    <string name="ChangeEmail">Zmień adres e-mail</string>
 </resources>

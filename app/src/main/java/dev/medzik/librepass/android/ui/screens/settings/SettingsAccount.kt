@@ -1,6 +1,7 @@
 package dev.medzik.librepass.android.ui.screens.settings
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LockReset
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.NoAccounts
@@ -21,6 +22,12 @@ fun SettingsAccountScreen(
     navController: NavController,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
+    PreferenceEntry(
+        title = stringResource(R.string.ChangeEmail),
+        icon = { Icon(Icons.Default.Email, contentDescription = null) },
+        onClick = { navController.navigate(Screen.SettingsAccountChangeEmail) }
+    )
+
     PreferenceEntry(
         title = stringResource(R.string.ChangePassword),
         icon = { Icon(Icons.Default.LockReset, contentDescription = null) },

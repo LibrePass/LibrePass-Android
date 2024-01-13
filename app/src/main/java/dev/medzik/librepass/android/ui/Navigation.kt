@@ -52,6 +52,7 @@ import dev.medzik.librepass.android.ui.screens.settings.SettingsAccountScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsAppearanceScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsScreen
 import dev.medzik.librepass.android.ui.screens.settings.SettingsSecurityScreen
+import dev.medzik.librepass.android.ui.screens.settings.account.SettingsAccountChangeEmailScreen
 import dev.medzik.librepass.android.ui.screens.settings.account.SettingsAccountChangePasswordScreen
 import dev.medzik.librepass.android.ui.screens.settings.account.SettingsAccountDeleteAccountScreen
 import dev.medzik.librepass.android.ui.screens.vault.CipherAddScreen
@@ -254,6 +255,15 @@ enum class Screen(
         },
         composable = { SettingsAccountScreen(it) },
         noHorizontalPadding = true
+    ),
+    SettingsAccountChangeEmail(
+        topBar = {
+            TopBar(
+                stringResource(R.string.ChangeEmail),
+                navigationIcon = { TopBarBackIcon(it) }
+            )
+        },
+        composable = { SettingsAccountChangeEmailScreen(it) }
     ),
     SettingsAccountChangePassword(
         topBar = {

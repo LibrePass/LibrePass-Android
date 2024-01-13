@@ -61,8 +61,6 @@ import dev.medzik.librepass.android.ui.screens.vault.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.vault.PasswordGeneratorScreen
 import dev.medzik.librepass.android.ui.screens.vault.SearchScreen
 import dev.medzik.librepass.android.ui.screens.vault.VaultScreen
-import dev.medzik.librepass.android.utils.SecretStore
-import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 
 enum class Argument : NavArgument {
     CipherId,
@@ -151,8 +149,7 @@ enum class Screen(
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.LockVault)) },
                             onClick = {
-                                // delete secrets
-                                SecretStore.delete(context)
+                                (context as MainActivity).vault.deleteSecrets(context)
 
                                 // close application
                                 (context as Activity).finish()
@@ -307,14 +304,13 @@ fun LibrePassNavigation(viewModel: LibrePassViewModel = hiltViewModel()) {
         }
     }
 
-    val userSecrets = context.getUserSecrets()
-
     fun getStartRoute(): String {
         // if a user is not logged in, show welcome screen
         viewModel.credentialRepository.get() ?: return Screen.Welcome.getRoute()
 
         // if user secrets are not set, show unlock screen
-        userSecrets ?: return Screen.Unlock.getRoute()
+        if (viewModel.vault.aesKey.size == 0)
+            return Screen.Unlock.getRoute()
 
         // else where the user secrets are set, show vault screen
         return Screen.Vault.getRoute()

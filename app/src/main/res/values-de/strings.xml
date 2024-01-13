@@ -99,4 +99,7 @@
     <string name="BiometricSetup_Title">Einrichtung</string>
     <string name="AddNewCipher">Neue Cipher hinzufügen</string>
     <string name="API_Error_UNEXPECTED_SERVER_ERROR">Unerwarteter Serverfehler</string>
+    <string name="VerificationCode">Verifikationscode (TOTP)</string>
+    <string name="Error_InvalidURI">URI Adresse ist ungültig</string>
+    <string name="CardDetails">Kartendetails</string>
 </resources>

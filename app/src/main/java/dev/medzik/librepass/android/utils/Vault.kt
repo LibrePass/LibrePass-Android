@@ -1,7 +1,14 @@
 package dev.medzik.librepass.android.utils
 
+import android.content.Context
+import dev.medzik.android.crypto.DataStore.deleteEncrypted
+import dev.medzik.android.crypto.DataStore.writeEncrypted
+import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.librepass.android.data.CipherDao
 import dev.medzik.librepass.android.data.LocalCipher
+import dev.medzik.librepass.android.utils.SecretStore.AES_KEY_STORE_KEY
+import dev.medzik.librepass.android.utils.SecretStore.readKey
+import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.types.api.SyncResponse
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -11,18 +18,12 @@ import java.util.UUID
 class Vault(
     private val cipherRepository: CipherDao
 ) {
-    private lateinit var secretKey: ByteArray
-
+    var aesKey: ByteArray = byteArrayOf()
     val ciphers = mutableListOf<Cipher>()
 
-    fun decryptDatabase(
-        secretKey: ByteArray,
-        ciphers: List<LocalCipher>
-    ) {
-        this.secretKey = secretKey
-
+    fun decryptDatabase(ciphers: List<LocalCipher>) {
         ciphers.forEach {
-            val cipher = Cipher(it.encryptedCipher, secretKey)
+            val cipher = Cipher(it.encryptedCipher, aesKey)
             this.ciphers.add(cipher)
         }
     }
@@ -70,7 +71,7 @@ class Vault(
         encryptedCipher: EncryptedCipher,
         needUpload: Boolean = true
     ) {
-        return save(Cipher(encryptedCipher, secretKey), encryptedCipher, needUpload)
+        return save(Cipher(encryptedCipher, aesKey), encryptedCipher, needUpload)
     }
 
     fun save(
@@ -82,12 +83,60 @@ class Vault(
         ciphers.add(cipher)
 
         cipherRepository.insert(
-            LocalCipher(encryptedCipher ?: EncryptedCipher(cipher, secretKey), needUpload)
+            LocalCipher(encryptedCipher ?: EncryptedCipher(cipher, aesKey), needUpload)
         )
     }
 
     fun delete(id: UUID) {
         ciphers.removeIf { it.id == id }
         cipherRepository.delete(id)
+    }
+
+    fun saveVaultExpiration(context: Context) {
+        val vaultTimeout = context.readKey(StoreKey.VaultTimeout)
+        if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds) {
+            deleteSecrets(context)
+        } else {
+            runOnIOThread {
+                context.dataStore.writeEncrypted(
+                    KeyAlias.DataStoreEncrypted,
+                    AES_KEY_STORE_KEY,
+                    aesKey
+                )
+            }
+
+            if (vaultTimeout != VaultTimeoutValues.INSTANT.seconds &&
+                vaultTimeout != VaultTimeoutValues.NEVER.seconds
+            ) {
+                val currentTime = System.currentTimeMillis()
+                val newExpiresTime = currentTime + (vaultTimeout * 1000)
+                context.writeKey(StoreKey.VaultExpiresAt, newExpiresTime)
+            }
+        }
+    }
+
+    fun handleExpiration(context: Context): Boolean {
+        val vaultTimeout = context.readKey(StoreKey.VaultTimeout)
+        val expiresTime = context.readKey(StoreKey.VaultExpiresAt)
+        val currentTime = System.currentTimeMillis()
+
+        if (vaultTimeout == VaultTimeoutValues.NEVER.seconds)
+            return false
+
+        if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds || currentTime > expiresTime) {
+            deleteSecrets(context)
+
+            return true
+        }
+
+        return false
+    }
+
+    fun deleteSecrets(context: Context) {
+        aesKey = byteArrayOf()
+
+        runOnIOThread {
+            context.dataStore.deleteEncrypted(AES_KEY_STORE_KEY)
+        }
     }
 }

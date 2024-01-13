@@ -33,12 +33,10 @@ import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.KeyAlias
-import dev.medzik.librepass.android.utils.SecretStore
-import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
 import dev.medzik.librepass.android.utils.debugLog
 import dev.medzik.librepass.android.utils.showBiometricPromptForUnlock
-import dev.medzik.librepass.utils.Cryptography
+import dev.medzik.librepass.utils.Cryptography.computeAesKey
 import dev.medzik.librepass.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -86,16 +84,7 @@ fun UnlockScreen(
                 if (Hex.encode(publicKey) != credentials.publicKey)
                     throw Exception("Invalid password")
 
-                val secretKey =
-                    Cryptography.computeSharedKey(passwordHash.hash, Hex.decode(credentials.publicKey))
-
-                SecretStore.save(
-                    context,
-                    UserSecrets(
-                        privateKey = passwordHash.hash,
-                        secretKey = secretKey
-                    )
-                )
+                viewModel.vault.aesKey = computeAesKey(passwordHash.hash)
 
                 // run only if loading is true (if no error occurred)
                 if (loading) {
@@ -119,23 +108,12 @@ fun UnlockScreen(
             showBiometricPromptForUnlock(
                 context,
                 KeyStore.initForDecryption(
-                    alias = KeyAlias.BiometricPrivateKey,
-                    initializationVector = Hex.decode(credentials.biometricPrivateKeyIV!!),
+                    alias = KeyAlias.BiometricAesKey,
+                    initializationVector = Hex.decode(credentials.biometricAesKeyIV!!),
                     deviceAuthentication = true
                 ),
                 onAuthenticationSucceeded = { cipher ->
-                    val privateKey =
-                        KeyStore.decrypt(cipher, credentials.biometricPrivateKey!!)
-
-                    val secretKey = Cryptography.computeSharedKey(privateKey, Hex.decode(credentials.publicKey))
-
-                    SecretStore.save(
-                        context,
-                        UserSecrets(
-                            privateKey = privateKey,
-                            secretKey = secretKey
-                        )
-                    )
+                    viewModel.vault.aesKey = KeyStore.decrypt(cipher, credentials.biometricAesKey!!)
 
                     navController.navigate(
                         screen = Screen.Vault,
@@ -148,15 +126,14 @@ fun UnlockScreen(
             // after adding or removing fingerprint, the key is invalidated
             context.showToast(R.string.BiometricKeyInvalidated)
 
-            // TODO: re-setup biometric authentication
             try {
-                KeyStore.deleteKey(KeyAlias.BiometricPrivateKey.name)
+                KeyStore.deleteKey(KeyAlias.BiometricAesKey.name)
                 runBlocking {
                     viewModel.credentialRepository.update(
                         credentials.copy(
-                            biometricPrivateKey = null,
-                            biometricPrivateKeyIV = null,
-                            biometricEnabled = false,
+                            biometricReSetup = true,
+                            biometricAesKey = null,
+                            biometricAesKeyIV = null
                         )
                     )
                 }
@@ -167,7 +144,7 @@ fun UnlockScreen(
     }
 
     LaunchedEffect(scope) {
-        if (credentials.biometricEnabled && checkIfBiometricAvailable(context)) showBiometric()
+        if (credentials.biometricAesKey != null && checkIfBiometricAvailable(context)) showBiometric()
     }
 
     TextInputField(
@@ -191,7 +168,7 @@ fun UnlockScreen(
         Text(stringResource(R.string.Unlock))
     }
 
-    if (credentials.biometricEnabled && checkIfBiometricAvailable(context)) {
+    if (credentials.biometricAesKey != null && checkIfBiometricAvailable(context)) {
         OutlinedButton(
             onClick = { showBiometric() },
             modifier =

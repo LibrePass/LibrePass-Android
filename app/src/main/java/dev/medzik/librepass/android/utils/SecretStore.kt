@@ -7,7 +7,7 @@ import dev.medzik.android.crypto.DataStore.read
 import dev.medzik.android.crypto.DataStore.readEncrypted
 import dev.medzik.android.crypto.DataStore.write
 import dev.medzik.android.crypto.DataStore.writeEncrypted
-import dev.medzik.librepass.android.MainActivity
+import dev.medzik.librepass.android.activity.MainActivity
 import kotlinx.coroutines.runBlocking
 
 val Context.dataStore by preferencesDataStore("librepass")

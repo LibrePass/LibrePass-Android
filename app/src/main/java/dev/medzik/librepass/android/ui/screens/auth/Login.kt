@@ -27,8 +27,8 @@ import dev.medzik.android.crypto.KeyStore
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.BuildConfig
-import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.activity.MainActivity
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen

@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android
+package dev.medzik.librepass.android.activity
 
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.medzik.android.components.navigate
+import dev.medzik.librepass.android.Migrations
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.Screen

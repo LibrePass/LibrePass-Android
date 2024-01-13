@@ -13,12 +13,14 @@ class Vault {
     lateinit var cipherRepository: CipherDao
     private lateinit var secretKey: ByteArray
 
+    var openedDatabase: Boolean = false
     val ciphers: MutableList<Cipher> = mutableListOf()
 
     fun decryptDatabase(
         secretKey: ByteArray,
         ciphers: List<LocalCipher>
     ) {
+        this.openedDatabase = true
         this.secretKey = secretKey
 
         ciphers.forEach {

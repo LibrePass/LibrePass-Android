@@ -2,9 +2,9 @@ package dev.medzik.librepass.android.ui.screens.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.Fingerprint
+import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -30,7 +30,7 @@ fun SettingsScreen(navController: NavController) {
         )
 
         PreferenceEntry(
-            icon = { Icon(Icons.Default.AccountCircle, contentDescription = null) },
+            icon = { Icon(Icons.Default.ManageAccounts, contentDescription = null) },
             title = stringResource(R.string.Settings_Account),
             onClick = { navController.navigate(Screen.SettingsAccount) }
         )

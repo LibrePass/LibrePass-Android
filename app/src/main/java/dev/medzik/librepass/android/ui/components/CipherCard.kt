@@ -28,9 +28,9 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import dev.medzik.android.components.BottomSheetState
-import dev.medzik.android.components.PickerBottomSheet
-import dev.medzik.android.components.rememberBottomSheetState
+import dev.medzik.android.components.DialogState
+import dev.medzik.android.components.PickerDialog
+import dev.medzik.android.components.rememberDialogState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SHORTEN_USERNAME_LENGTH
@@ -38,6 +38,7 @@ import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
+import org.bouncycastle.asn1.x500.style.RFC4519Style.title
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -48,9 +49,9 @@ fun CipherCard(
     onDelete: (Cipher) -> Unit,
     showCipherActions: Boolean = true
 ) {
-    val sheetState = rememberBottomSheetState()
+    val dialogState = rememberDialogState()
 
-    fun showMoreOptions() = sheetState.show()
+    fun showMoreOptions() = dialogState.show()
 
     fun getDomain(): String? {
         val uris = cipher.loginData?.uris
@@ -160,8 +161,8 @@ fun CipherCard(
                     Icon(Icons.Default.MoreHoriz, contentDescription = null)
                 }
 
-                CipherActionsSheet(
-                    state = sheetState,
+                CipherActionsDialog(
+                    state = dialogState,
                     onClick = { onClick(cipher) },
                     onEdit = { onEdit(cipher) },
                     onDelete = { onDelete(cipher) }
@@ -172,15 +173,15 @@ fun CipherCard(
 }
 
 @Composable
-fun CipherActionsSheet(
-    state: BottomSheetState,
+fun CipherActionsDialog(
+    state: DialogState,
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
-    PickerBottomSheet(
-        state = state,
-        navigationBarPadding = true,
+    PickerDialog(
+        state,
+        null,
         items =
             listOf(
                 R.string.View,

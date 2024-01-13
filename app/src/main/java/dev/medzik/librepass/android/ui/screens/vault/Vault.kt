@@ -23,11 +23,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
+import dev.medzik.android.crypto.KeyStore
+import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.CipherCard
-import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
+import dev.medzik.librepass.android.utils.KeyAlias
+import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
+import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
@@ -41,8 +45,6 @@ fun VaultScreen(
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-
-    val userSecrets = context.getUserSecrets() ?: return
 
     val scope = rememberCoroutineScope()
 
@@ -102,13 +104,62 @@ fun VaultScreen(
         }
     }
 
+    fun reSetupBiometrics() {
+        // enable biometric authentication if possible
+        if (checkIfBiometricAvailable(context)) {
+            showBiometricPromptForSetup(
+                context as MainActivity,
+                KeyStore.initForEncryption(
+                    KeyAlias.BiometricAesKey,
+                    deviceAuthentication = true
+                ),
+                onAuthenticationSucceeded = { cipher ->
+                    scope.launch(Dispatchers.IO) {
+                        val encryptedData = KeyStore.encrypt(cipher, viewModel.vault.aesKey)
+
+                        viewModel.credentialRepository.update(
+                            credentials.copy(
+                                biometricReSetup = false,
+                                biometricAesKey = encryptedData.cipherText,
+                                biometricAesKeyIV = encryptedData.initializationVector
+                            )
+                        )
+                    }
+
+                    navController.navigate(
+                        screen = Screen.Vault,
+                        disableBack = true
+                    )
+                },
+                onAuthenticationFailed = {
+                    navController.navigate(
+                        screen = Screen.Vault,
+                        disableBack = true
+                    )
+                }
+            )
+        } else {
+            scope.launch(Dispatchers.IO) {
+                viewModel.credentialRepository.update(
+                    credentials.copy(
+                        biometricReSetup = false
+                    )
+                )
+            }
+        }
+    }
+
     LaunchedEffect(scope) {
+        if (credentials.biometricReSetup) {
+            reSetupBiometrics()
+        }
+
         // get local stored ciphers
         val dbCiphers = viewModel.cipherRepository.getAll(credentials.userId)
 
         // decrypt database if needed
         if (viewModel.vault.ciphers.isEmpty()) {
-            viewModel.vault.decryptDatabase(userSecrets.secretKey, dbCiphers)
+            viewModel.vault.decryptDatabase(dbCiphers)
         }
 
         // sort ciphers and update UI

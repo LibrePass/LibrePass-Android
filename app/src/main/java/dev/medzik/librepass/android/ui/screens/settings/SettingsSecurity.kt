@@ -29,24 +29,23 @@ import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.utils.KeyAlias
-import dev.medzik.librepass.android.utils.SecretStore.getUserSecrets
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.VaultTimeoutValues
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
 import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
-    val userSecrets = context.getUserSecrets() ?: return
     val credentials = viewModel.credentialRepository.get() ?: return
 
     val scope = rememberCoroutineScope()
-    var biometricEnabled by remember { mutableStateOf(credentials.biometricPrivateKey != null) }
+    var biometricEnabled by remember { mutableStateOf(credentials.biometricAesKey != null) }
     val timerDialogState = rememberDialogState()
     var vaultTimeout by remember { mutableIntStateOf(context.readKey(StoreKey.VaultTimeout)) }
 
@@ -55,12 +54,12 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
         if (biometricEnabled) {
             biometricEnabled = false
 
-            scope.launch {
+            scope.launch(Dispatchers.IO) {
                 viewModel.credentialRepository.update(
                     credentials.copy(
-                        biometricEnabled = false,
-                        biometricPrivateKey = null,
-                        biometricPrivateKeyIV = null
+                        biometricReSetup = false,
+                        biometricAesKey = null,
+                        biometricAesKeyIV = null
                     )
                 )
             }
@@ -71,14 +70,14 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
         showBiometricPromptForSetup(
             context as MainActivity,
             KeyStore.initForEncryption(
-                KeyAlias.BiometricPrivateKey,
+                KeyAlias.BiometricAesKey,
                 deviceAuthentication = true
             ),
             onAuthenticationSucceeded = { cipher ->
                 val encryptedData =
                     KeyStore.encrypt(
                         cipher = cipher,
-                        clearBytes = userSecrets.privateKey
+                        clearBytes = viewModel.vault.aesKey
                     )
 
                 biometricEnabled = true
@@ -86,8 +85,8 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
                 scope.launch {
                     viewModel.credentialRepository.update(
                         credentials.copy(
-                            biometricPrivateKey = encryptedData.cipherText,
-                            biometricPrivateKeyIV = encryptedData.initializationVector
+                            biometricAesKey = encryptedData.cipherText,
+                            biometricAesKeyIV = encryptedData.initializationVector
                         )
                     )
                 }

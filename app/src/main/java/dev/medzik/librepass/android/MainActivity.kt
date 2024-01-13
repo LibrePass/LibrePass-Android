@@ -13,13 +13,10 @@ import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
-import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
-import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.Vault
-import dev.medzik.librepass.android.utils.VaultTimeoutValues
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,8 +26,6 @@ class MainActivity : FragmentActivity() {
 
     @Inject
     lateinit var vault: Vault
-
-    lateinit var userSecrets: UserSecrets
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +41,9 @@ class MainActivity : FragmentActivity() {
         // merge application data when application updated
         Migrations.update(this, repository)
 
-        // init vault
-        userSecrets = SecretStore.initialize(this)
-
         // get app theme settings
-        val dynamicColor = this.readKey(StoreKey.DynamicColor)
-        val theme = this.readKey(StoreKey.Theme)
+        val dynamicColor = readKey(StoreKey.DynamicColor)
+        val theme = readKey(StoreKey.Theme)
         val autoTheme = theme == ThemeValues.SYSTEM.ordinal
         val darkTheme = theme == ThemeValues.DARK.ordinal
         val blackTheme = theme == ThemeValues.BLACK.ordinal
@@ -73,30 +65,16 @@ class MainActivity : FragmentActivity() {
         // check if user is logged
         if (repository.credentials.get() == null) return
 
-        val vaultTimeout = this.readKey(StoreKey.VaultTimeout)
-        if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds) {
-            SecretStore.delete(this)
-        } else {
-            SecretStore.save(this, userSecrets)
-        }
+        vault.saveVaultExpiration(this)
     }
 
-    /** Called from [LibrePassNavigation] */
+    /** Called from [LibrePassNavigation]. */
     fun onResume(navController: NavController) {
         // check if user is logged
-
         if (repository.credentials.get() == null) return
 
-        val vaultTimeout = this.readKey(StoreKey.VaultTimeout)
-        val expiresTime = this.readKey(StoreKey.VaultExpiresAt)
-        val currentTime = System.currentTimeMillis()
-
-        // check if the vault has expired
-        if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds ||
-            (vaultTimeout != VaultTimeoutValues.NEVER.seconds && currentTime > expiresTime)
-        ) {
-            SecretStore.delete(this)
-
+        val expired = vault.handleExpiration(this)
+        if (expired) {
             navController.navigate(
                 screen = Screen.Unlock,
                 disableBack = true

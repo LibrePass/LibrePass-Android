@@ -46,7 +46,6 @@ fun VaultScreen(
 
     val scope = rememberCoroutineScope()
 
-    // states
     var refreshing by rememberMutableBoolean()
     var ciphers by remember { mutableStateOf(viewModel.vault.sortAlphabetically()) }
 

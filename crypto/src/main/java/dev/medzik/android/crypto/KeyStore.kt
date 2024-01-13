@@ -83,6 +83,14 @@ object KeyStore {
         return cipher.doFinal(Hex.decode(cipherText))
     }
 
+    /**
+     * Deletes the given alias from Android KeyStore.
+     * @param alias alias in Android KeyStore to delete
+     */
+    fun deleteKey(alias: String) {
+        getKeyStore().deleteEntry(alias)
+    }
+
     /** Gets the secret key if it exists, otherwise generates a new secret key. */
     private fun getOrGenerateSecretKey(
         alias: String,

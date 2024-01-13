@@ -108,4 +108,5 @@
     <string name="VerificationCode">Kod weryfikacji (TOTP)</string>
     <string name="Error_InvalidURI">Adres URI jest nieprawidłowy</string>
     <string name="CardDetails">Dane karty</string>
+    <string name="BiometricKeyInvalidated">Klucz biometryczny został unieważniony przez Androida</string>
 </resources>

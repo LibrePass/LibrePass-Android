@@ -36,11 +36,13 @@ import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.UserSecrets
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
+import dev.medzik.librepass.android.utils.debugLog
 import dev.medzik.librepass.android.utils.showBiometricPromptForUnlock
 import dev.medzik.librepass.utils.Cryptography
 import dev.medzik.librepass.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun UnlockScreen(
@@ -147,16 +149,20 @@ fun UnlockScreen(
             context.showToast(R.string.BiometricKeyInvalidated)
 
             // TODO: re-setup biometric authentication
-
-//            runBlocking {
-//                viewModel.credentialRepository.update(
-//                    credentials.copy(
-//                        biometricPrivateKey = null,
-//                        biometricPrivateKeyIV = null,
-//                        biometricEnabled = false,
-//                    )
-//                )
-//            }
+            try {
+                KeyStore.deleteKey(KeyAlias.BiometricPrivateKey.name)
+                runBlocking {
+                    viewModel.credentialRepository.update(
+                        credentials.copy(
+                            biometricPrivateKey = null,
+                            biometricPrivateKeyIV = null,
+                            biometricEnabled = false,
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                e.debugLog()
+            }
         }
     }
 

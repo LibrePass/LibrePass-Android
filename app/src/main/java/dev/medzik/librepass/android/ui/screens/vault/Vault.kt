@@ -113,6 +113,9 @@ fun VaultScreen(
 
         // sort ciphers and update UI
         ciphers = viewModel.vault.sortAlphabetically()
+
+        // sync remote ciphers
+        updateCiphers()
     }
 
     val pullRefreshState = rememberPullRefreshState(refreshing, ::updateCiphers)

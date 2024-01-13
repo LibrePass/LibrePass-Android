@@ -8,12 +8,12 @@ import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.librepass.types.cipher.EncryptedCipher
 import java.util.UUID
 
-class Vault {
-    // TODO: inject, currently added by MainActivity
-    lateinit var cipherRepository: CipherDao
+class Vault(
+    private val cipherRepository: CipherDao
+) {
     private lateinit var secretKey: ByteArray
 
-    val ciphers: MutableList<Cipher> = mutableListOf()
+    val ciphers = mutableListOf<Cipher>()
 
     fun decryptDatabase(
         secretKey: ByteArray,

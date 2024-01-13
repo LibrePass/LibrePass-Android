@@ -9,8 +9,6 @@ All passwords stored in LibrePass are securely placed in an encrypted vault.
 This ensures that users can have full confidence
 that their passwords will remain private and inaccessible to unauthorized individuals.
 
-![Screenshot from application](/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png)
-
 <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" height="600"  alt="Application Screenshot"/>
 
 ## Install

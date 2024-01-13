@@ -1,5 +1,6 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
+import android.security.keystore.KeyPermanentlyInvalidatedException
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedButton
@@ -54,7 +55,7 @@ fun UnlockScreen(
     var loading by rememberMutableBoolean()
     var password by rememberMutableString()
 
-    val credentials = viewModel.credentialRepository.get()!!
+    val credentials = viewModel.credentialRepository.get() ?: return
 
     fun onUnlock(password: String) {
         // disable button
@@ -112,34 +113,51 @@ fun UnlockScreen(
     }
 
     fun showBiometric() {
-        showBiometricPromptForUnlock(
-            context,
-            KeyStore.initForDecryption(
-                alias = KeyAlias.BiometricPrivateKey,
-                initializationVector = Hex.decode(credentials.biometricPrivateKeyIV!!),
-                deviceAuthentication = true
-            ),
-            onAuthenticationSucceeded = { cipher ->
-                val privateKey =
-                    KeyStore.decrypt(cipher, credentials.biometricPrivateKey!!)
+        try {
+            showBiometricPromptForUnlock(
+                context,
+                KeyStore.initForDecryption(
+                    alias = KeyAlias.BiometricPrivateKey,
+                    initializationVector = Hex.decode(credentials.biometricPrivateKeyIV!!),
+                    deviceAuthentication = true
+                ),
+                onAuthenticationSucceeded = { cipher ->
+                    val privateKey =
+                        KeyStore.decrypt(cipher, credentials.biometricPrivateKey!!)
 
-                val secretKey = Cryptography.computeSharedKey(privateKey, Hex.decode(credentials.publicKey))
+                    val secretKey = Cryptography.computeSharedKey(privateKey, Hex.decode(credentials.publicKey))
 
-                SecretStore.save(
-                    context,
-                    UserSecrets(
-                        privateKey = privateKey,
-                        secretKey = secretKey
+                    SecretStore.save(
+                        context,
+                        UserSecrets(
+                            privateKey = privateKey,
+                            secretKey = secretKey
+                        )
                     )
-                )
 
-                navController.navigate(
-                    screen = Screen.Vault,
-                    disableBack = true
-                )
-            },
-            onAuthenticationFailed = { }
-        )
+                    navController.navigate(
+                        screen = Screen.Vault,
+                        disableBack = true
+                    )
+                },
+                onAuthenticationFailed = { }
+            )
+        } catch (e: KeyPermanentlyInvalidatedException) {
+            // after adding or removing fingerprint, the key is invalidated
+            context.showToast(R.string.BiometricKeyInvalidated)
+
+            // TODO: re-setup biometric authentication
+
+//            runBlocking {
+//                viewModel.credentialRepository.update(
+//                    credentials.copy(
+//                        biometricPrivateKey = null,
+//                        biometricPrivateKeyIV = null,
+//                        biometricEnabled = false,
+//                    )
+//                )
+//            }
+        }
     }
 
     LaunchedEffect(scope) {

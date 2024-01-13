@@ -107,4 +107,5 @@
     <string name="VerificationCode">Verification Code (TOTP)</string>
     <string name="Error_InvalidURI">URI address is invalid</string>
     <string name="CardDetails">Card details</string>
+    <string name="BiometricKeyInvalidated">Biometric key has been invalidated by Android</string>
 </resources>

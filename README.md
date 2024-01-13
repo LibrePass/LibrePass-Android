@@ -1,8 +1,28 @@
 # LibrePass Android
 
-LibrePass is an open-source and secure password manager.
+LibrePass represents an innovative cloud-based password manager known for its user-friendly 
+simplicity and performance.
+It functions not only as a tool for generating secure passwords 
+but also facilitates their synchronization across various devices.
 
-![LibrePass - Take control of your passwords.](https://github.com/LibrePass/LibrePass-Android/assets/87065584/d0abed7d-9ac5-4fe1-865b-0bcac949f17e)
+Password leaks from online websites pose a significant threat,
+especially considering that most people use a limited number of passwords.
+Using the same passwords for multiple services carries the risk of unauthorized access,
+jeopardizing bank accounts, social media profiles, and other online services.
+Therefore, it is recommended to use long and complex passwords for each of our accounts.
+Nevertheless, maintaining control over multiple passwords can be challenging.
+LibrePass addresses this issue by providing a straightforward and enjoyable way to generate, store,
+and access passwords.
+
+All passwords stored in LibrePass are securely placed in an encrypted vault.
+This ensures that users can have full confidence
+that their passwords will remain private and inaccessible to unauthorized individuals.
+
+LibrePass is an open-source project, meaning the complete source code is available to everyone.
+This openness allows anyone to review, verify, and make their own changes,
+emphasizing the transparency and trust associated with using this tool.
+
+![Screenshot from application](/fastlane/metadata/android/en-US/images/phoneScreenshots/01.png)
 
 ## Install
 
@@ -17,7 +37,7 @@ It will be also available in Google Play Store soon.
 - Advanced password encryption
 - Generating secure passwords
 - Face and fingerprint unlocking
-- Native Material You Design
-- Written in native language for Android
+- Native system theme (Android 12+)
+- Native performance
 - Various settings options
 - And more with incoming updates!

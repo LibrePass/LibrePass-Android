@@ -23,23 +23,16 @@ import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
-import dev.medzik.android.crypto.KeyStore
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.BuildConfig
-import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
-import dev.medzik.librepass.android.utils.KeyAlias
-import dev.medzik.librepass.android.utils.SecretStore
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
-import dev.medzik.librepass.android.utils.UserSecrets
-import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
-import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
@@ -97,58 +90,19 @@ fun LoginScreen(
                     )
                 viewModel.credentialRepository.insert(credentialsDb)
 
-                // save secrets in encrypted datastore
-                SecretStore.save(
-                    context,
-                    UserSecrets(
-                        privateKey = credentials.privateKey.fromHexString(),
-                        secretKey = credentials.aesKey.fromHexString()
+                viewModel.vault.aesKey = credentials.aesKey.fromHexString()
+
+                viewModel.credentialRepository.update(
+                    credentialsDb.copy(
+                        biometricReSetup = true
                     )
                 )
 
                 runOnUiThread {
-                    // enable biometric authentication if possible
-                    if (checkIfBiometricAvailable(context)) {
-                        showBiometricPromptForSetup(
-                            context as MainActivity,
-                            KeyStore.initForEncryption(
-                                KeyAlias.BiometricPrivateKey,
-                                deviceAuthentication = true
-                            ),
-                            onAuthenticationSucceeded = { cipher ->
-                                val encryptedData = KeyStore.encrypt(cipher, credentials.privateKey.fromHexString())
-
-                                scope.launch {
-                                    viewModel.credentialRepository.update(
-                                        credentialsDb.copy(
-                                            biometricEnabled = true,
-                                            biometricPrivateKey = encryptedData.cipherText,
-                                            biometricPrivateKeyIV = encryptedData.initializationVector
-                                        )
-                                    )
-                                }
-
-                                // navigate to dashboard
-                                navController.navigate(
-                                    screen = Screen.Vault,
-                                    disableBack = true
-                                )
-                            },
-                            onAuthenticationFailed = {
-                                // navigate to dashboard
-                                navController.navigate(
-                                    screen = Screen.Vault,
-                                    disableBack = true
-                                )
-                            }
-                        )
-                    } else {
-                        // navigate to dashboard
-                        navController.navigate(
-                            screen = Screen.Vault,
-                            disableBack = true
-                        )
-                    }
+                    navController.navigate(
+                        screen = Screen.Vault,
+                        disableBack = true
+                    )
                 }
             } catch (e: Exception) {
                 loading = false

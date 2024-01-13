@@ -8,8 +8,9 @@ object DatabaseMigrations {
         object : Migration(1, 2) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 // Credentials
-                db.execSQL("ALTER TABLE Credentials RENAME COLUMN biometricProtectedPrivateKey to biometricPrivateKey")
-                db.execSQL("ALTER TABLE Credentials RENAME COLUMN biometricProtectedPrivateKeyIV to biometricPrivateKeyIV")
+                db.execSQL("ALTER TABLE Credentials RENAME COLUMN biometricProtectedPrivateKey to biometricAesKey")
+                db.execSQL("ALTER TABLE Credentials RENAME COLUMN biometricProtectedPrivateKeyIV to biometricAesKeyIV")
+                db.execSQL("ALTER TABLE Credentials RENAME COLUMN biometricEnabled to biometricReSetup")
 
                 // LocalCipher
                 db.execSQL("ALTER TABLE CipherTable RENAME TO LocalCipher")

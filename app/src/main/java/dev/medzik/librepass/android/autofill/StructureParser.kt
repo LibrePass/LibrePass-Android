@@ -2,6 +2,7 @@ package dev.medzik.librepass.android.autofill
 
 import android.app.assist.AssistStructure
 import android.os.Build
+import android.text.InputType
 import android.util.Log
 import android.view.View
 import android.view.autofill.AutofillId
@@ -60,9 +61,9 @@ class StructureParser(private val structure: AssistStructure) {
                         returnValue = true
                 } else if (parseNodeByHtml(node)) {
                     returnValue = true
+                } else if (parseByAndroidInput(node)) {
+                    returnValue = true
                 }
-
-                // TODO: else if (parseNodeByAndroidInput)
             }
 
             if (webDomain?.isNotEmpty() == true && returnValue)
@@ -145,48 +146,61 @@ class StructureParser(private val structure: AssistStructure) {
         return false
     }
 
-//    private fun parseByAndroidInput(node: AssistStructure.ViewNode): Boolean {
-//        var usernameIdCandidate: AutofillId? = null
-//        var usernameValueCandidate: AutofillValue? = null
-//
-//        when (node.inputType and InputType.TYPE_MASK_CLASS) {
-//            InputType.TYPE_CLASS_TEXT -> {
-//                when {
-//                    androidInputIsVariationType(
-//                        node.inputType,
-//                        InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
-//                        InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS
-//                    ) -> {
-//                        usernameIdCandidate = node.autofillId
-//                        usernameValueCandidate = node.autofillValue
-//                    }
-//
-//                    androidInputIsVariationType(
-//                        node.inputType,
-//                        InputType.TYPE_TEXT_VARIATION_NORMAL,
-//                        InputType.TYPE_TEXT_VARIATION_PERSON_NAME,
-//                        InputType.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT
-//                    ) -> {
-//                        usernameIdCandidate = node.autofillId
-//                        usernameValueCandidate = node.autofillValue
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun androidInputIsVariationType(
-//        inputType: Int,
-//        vararg type: Int
-//    ): Boolean {
-//        type.forEach {
-//            if (inputType and InputType.TYPE_MASK_VARIATION == it) {
-//                return true
-//            }
-//        }
-//
-//        return false
-//    }
+    private fun parseByAndroidInput(node: AssistStructure.ViewNode): Boolean {
+        when (node.inputType and InputType.TYPE_MASK_CLASS) {
+            InputType.TYPE_CLASS_TEXT -> {
+                when {
+                    androidInputIsVariationType(
+                        node.inputType,
+                        InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
+                        InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS
+                    ) -> {
+                        result.usernameId = node.autofillId
+                        result.usernameValue = node.autofillValue
+                    }
+
+                    androidInputIsVariationType(
+                        node.inputType,
+                        InputType.TYPE_TEXT_VARIATION_NORMAL,
+                        InputType.TYPE_TEXT_VARIATION_PERSON_NAME,
+                        InputType.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT
+                    ) -> {
+                        if (result.usernameId == null && result.passwordId == null) {
+                            result.usernameId = node.autofillId
+                            result.usernameValue = node.autofillValue
+                        }
+                    }
+
+                    androidInputIsVariationType(
+                        node.inputType,
+                        InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
+                        InputType.TYPE_TEXT_VARIATION_PASSWORD,
+                        InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD
+                    ) -> {
+                        result.passwordId = node.autofillId
+                        result.passwordValue = node.autofillValue
+
+                        return true
+                    }
+                }
+            }
+        }
+
+        return false
+    }
+
+    private fun androidInputIsVariationType(
+        inputType: Int,
+        vararg type: Int
+    ): Boolean {
+        type.forEach {
+            if (inputType and InputType.TYPE_MASK_VARIATION == it) {
+                return true
+            }
+        }
+
+        return false
+    }
 
     data class AutofillResult(
         var usernameId: AutofillId? = null,

@@ -27,8 +27,8 @@ medzik-libcrypto = "1.2.0"
 process-phoenix = "2.1.2"
 # Plugins
 android-application = "8.2.1"
-google-ksp = "1.9.21-1.0.16"
-kotlin-android = "1.9.21"
+google-ksp = "1.9.22-1.0.16"
+kotlin-android = "1.9.22"
 
 [libraries]
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }

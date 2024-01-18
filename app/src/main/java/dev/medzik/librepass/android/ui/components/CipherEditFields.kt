@@ -212,12 +212,12 @@ fun CipherEditFieldsLogin(
                 .padding(horizontal = 60.dp)
                 .padding(top = 8.dp)
     ) {
-        Text("Configure TOTP")
+        Text(stringResource(R.string.TotpConfigure))
     }
 
     if (!cipher.loginData?.twoFactor.isNullOrEmpty()) {
         Text(
-            text = "TOTP is already configured",
+            text = stringResource(R.string.TotpWasConfigured),
             fontSize = 14.sp,
             textAlign = TextAlign.Center,
             modifier =

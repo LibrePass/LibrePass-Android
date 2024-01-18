@@ -21,7 +21,7 @@
     <string name="AddField">Add field</string>
     <string name="AddNewCipher">Add new cipher</string>
     <string name="AddServer">Add server</string>
-    <string name="AuthenticationKey">Authentication URI (TOTP)</string>
+    <string name="TotpKey">Authentication Key (TOTP)</string>
     <string name="BiometricSetup_Button_Cancel">Cancel</string>
     <string name="BiometricSetup_Subtitle">Turn on biometric authentication</string>
     <string name="BiometricSetup_Title">Setup</string>
@@ -110,4 +110,8 @@
     <string name="BiometricKeyInvalidated">Biometric key has been invalidated by Android</string>
     <string name="NewEmail">New e-mail address</string>
     <string name="ChangeEmail">Change e-mail address</string>
+    <string name="TotpConfigure">Configure TOTP</string>
+    <string name="ScanQrCode">Scan QR code</string>
+    <string name="EnterKeyManually">Enter key manually</string>
+    <string name="TotpWasConfigured">TOTP is already configured</string>
 </resources>

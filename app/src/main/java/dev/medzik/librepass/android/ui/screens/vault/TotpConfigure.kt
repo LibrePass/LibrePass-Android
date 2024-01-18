@@ -43,7 +43,7 @@ fun TotpConfigure(
     Scaffold(
         topBar = {
             TopBar(
-                title = "Configure TOTP",
+                title = stringResource(R.string.TotpConfigure),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }
@@ -59,7 +59,7 @@ fun TotpConfigure(
 
             if (qrScanning) {
                 Text(
-                    text = "Scan QR code",
+                    text = stringResource(R.string.ScanQrCode),
                     fontSize = 24.sp,
                     modifier =
                         Modifier
@@ -134,11 +134,11 @@ fun TotpConfigure(
                             .padding(horizontal = 60.dp)
                             .padding(top = 8.dp)
                 ) {
-                    Text("Enter code manually")
+                    Text(stringResource(R.string.EnterKeyManually))
                 }
             } else {
                 TextInputFieldBase(
-                    label = stringResource(R.string.AuthenticationKey),
+                    label = stringResource(R.string.TotpKey),
                     modifier =
                         Modifier
                             .fillMaxWidth()
@@ -155,7 +155,7 @@ fun TotpConfigure(
                             .padding(horizontal = 60.dp)
                             .padding(top = 8.dp)
                 ) {
-                    Text("Scan QR code")
+                    Text(stringResource(R.string.ScanQrCode))
                 }
 
                 Button(

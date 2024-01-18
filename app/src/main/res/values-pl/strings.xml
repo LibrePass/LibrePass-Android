@@ -12,7 +12,7 @@
         <item quantity="many">%d godzin</item>
         <item quantity="other">%d godzin</item>
     </plurals>
-    <string name="API_Error_CIPHER_TOO_LARGE">Szyft jest zbyt długi</string>
+    <string name="API_Error_CIPHER_TOO_LARGE">Szyfr jest zbyt długi</string>
     <string name="API_Error_DATABASE_DUPLICATED_KEY">Zduplikowany klucz w bazie danych serwera</string>
     <string name="API_Error_EMAIL_NOT_VERIFIED">Zweryfikuj swój adres e-mail</string>
     <string name="API_Error_INVALID_CREDENTIALS">Nieprawidłowe dane uwierzytelniające</string>
@@ -103,7 +103,7 @@
     <string name="WebsiteDetails">Strona internetowa</string>
     <string name="WelcomeScreen_Title">Witaj w LibrePass</string>
     <string name="optional">opcjonalnie</string>
-    <string name="AuthenticationKey">Adres uwierzytelniania (TOTP)</string>
+    <string name="TotpKey">Klucz uwierzytelniania (TOTP)</string>
     <string name="TwoFactorAuthorization">Weryfikacja dwuetapowa</string>
     <string name="VerificationCode">Kod weryfikacji (TOTP)</string>
     <string name="Error_InvalidURI">Adres URI jest nieprawidłowy</string>
@@ -111,4 +111,8 @@
     <string name="BiometricKeyInvalidated">Klucz biometryczny został unieważniony przez Androida</string>
     <string name="NewEmail">Nowy adres e-mail</string>
     <string name="ChangeEmail">Zmień adres e-mail</string>
+    <string name="TotpConfigure">Skonfiguruj TOTP</string>
+    <string name="ScanQrCode">Zeskanuj kod QR</string>
+    <string name="EnterKeyManually">Wprowadź klucz manualnie</string>
+    <string name="TotpWasConfigured">TOTP został skonfigurowany</string>
 </resources>

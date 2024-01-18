@@ -126,10 +126,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview)
 
-    //zxing
-    implementation(libs.zxing.android) {
-        isTransitive = false
-    }
+    // zxing
+    implementation(libs.zxing.android) { isTransitive = false }
     implementation(libs.zxing)
 
 }

@@ -13,11 +13,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -40,8 +38,6 @@ fun TotpConfigure(
     navController: NavController,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-
     var totpCode by rememberMutable("")
 
     Scaffold(
@@ -91,6 +87,11 @@ fun TotpConfigure(
                                 Log.i("TOTP_QR", "Valid: $isTotpValid")
 
                                 totpUri = it
+
+                                if (isTotpValid) {
+                                    navController.previousBackStackEntry!!.savedStateHandle["totpUri"] = totpUri
+                                    navController.popBackStack()
+                                }
                             }
                         }
 
@@ -104,12 +105,6 @@ fun TotpConfigure(
                                         Modifier
                                             .padding(6.dp),
                                 )
-                            } else {
-                                SideEffect {
-                                    // TODO: fix crashing
-                                    // navController.previousBackStackEntry!!.savedStateHandle["totpUri"] = totpUri
-                                    navController.popBackStack()
-                                }
                             }
                         }
                     },
@@ -166,9 +161,10 @@ fun TotpConfigure(
                 Button(
                     onClick = {
                         // TODO: add building URI from totpCode
+
                         // remove remember
-                        val totpCodeValue = totpCode
-                        navController.previousBackStackEntry!!.savedStateHandle["totpUri"] = totpCodeValue
+                        // val totpCodeValue = totpCode
+                        // navController.previousBackStackEntry!!.savedStateHandle["totpUri"] = totpCodeValue
                         navController.popBackStack()
                     },
                     modifier =

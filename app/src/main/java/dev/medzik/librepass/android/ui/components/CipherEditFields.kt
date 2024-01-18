@@ -15,7 +15,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import dev.medzik.android.components.SecondaryText
@@ -47,7 +49,7 @@ fun CipherEditFieldsLogin(
     navController
         .currentBackStackEntry
         ?.savedStateHandle
-        ?.getLiveData<String>("totpUrl")?.observeForever {
+        ?.getLiveData<String>("totpUri")?.observeForever {
             cipherData = cipherData.copy(twoFactor = it)
         }
     // observe for cipher from backstack
@@ -202,9 +204,7 @@ fun CipherEditFieldsLogin(
 
     Button(
         onClick = {
-            navController.navigate(
-                screen = Screen.TotpConfigure,
-            )
+            navController.navigate(screen = Screen.TotpConfigure)
         },
         modifier =
             Modifier
@@ -213,6 +213,18 @@ fun CipherEditFieldsLogin(
                 .padding(top = 8.dp)
     ) {
         Text("Configure TOTP")
+    }
+
+    if (!cipher.loginData?.twoFactor.isNullOrEmpty()) {
+        Text(
+            text = "TOTP is already configured",
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 6.dp),
+        )
     }
 
     SecondaryText(

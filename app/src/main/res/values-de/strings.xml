@@ -102,7 +102,6 @@
     <string name="VerificationCode">Verifikationscode (TOTP)</string>
     <string name="Error_InvalidURI">URI Adresse ist ungültig</string>
     <string name="CardDetails">Kartendetails</string>
-    <string name="AuthenticationKey">Authentifizierungs-URI (TOTP)</string>
     <string name="BiometricKeyInvalidated">Die biometrische Autorisierung wurde von Android ungültig gemacht</string>
     <string name="TwoFactorAuthorization">Zwei-Faktor Autorisierung</string>
 </resources>

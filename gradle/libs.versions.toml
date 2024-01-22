@@ -27,7 +27,7 @@ medzik-libcrypto = "1.2.0"
 process-phoenix = "2.1.2"
 # Plugins
 android-application = "8.2.1"
-google-ksp = "1.9.22-1.0.16"
+google-ksp = "1.9.22-1.0.17"
 kotlin-android = "1.9.22"
 
 [libraries]

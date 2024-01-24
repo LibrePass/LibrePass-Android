@@ -105,4 +105,6 @@
     <string name="AuthenticationKey">Authentifizierungs-URI (TOTP)</string>
     <string name="BiometricKeyInvalidated">Die biometrische Autorisierung wurde von Android ungültig gemacht</string>
     <string name="TwoFactorAuthorization">Zwei-Faktor Autorisierung</string>
+    <string name="NewEmail">Neue E-Mail-Adresse</string>
+    <string name="ChangeEmail">E-Mail-Adresse ändern</string>
 </resources>

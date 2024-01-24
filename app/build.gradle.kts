@@ -111,10 +111,11 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     // local modules
+    implementation(project(":autofill"))
     implementation(project(":components"))
     implementation(project(":crypto"))
-    implementation(project(":m3-pullrefresh"))
     implementation(project(":utils"))
+    implementation(project(":m3-pullrefresh"))
 
     // for splash screen with material3 and dynamic color
     implementation(libs.google.material)

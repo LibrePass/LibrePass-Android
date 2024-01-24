@@ -53,16 +53,6 @@ class NodeParser {
     }
 
     private fun nodeSupportsAutofill(node: AutofillNode): FieldType? {
-        if (!node.isEditText()) {
-            // TODO: DELETE
-            Log.d(TAG, "Discarding node because it is not edit text")
-            Log.d(TAG, "id -> ${node.id}")
-            Log.d(TAG, "className -> ${node.className}")
-            Log.d(TAG, "url -> ${node.url}")
-
-            return null
-        }
-
         if (node.id == null) {
             Log.d(TAG, "Discarding node because its id is null")
             return null
@@ -148,7 +138,6 @@ class NodeParser {
 
             androidInputIsVariationType(
                 inputType,
-                InputType.TYPE_TEXT_VARIATION_NORMAL,
                 InputType.TYPE_TEXT_VARIATION_PERSON_NAME,
                 InputType.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT
             ) -> return FieldType.Text

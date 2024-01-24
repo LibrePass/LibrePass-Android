@@ -1,6 +1,5 @@
 package dev.medzik.librepass.android.autofill
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.CancellationSignal
@@ -8,7 +7,8 @@ import android.service.autofill.FillCallback
 import android.service.autofill.FillRequest
 import android.util.Log
 import androidx.annotation.RequiresApi
-import dev.medzik.librepass.android.autofill.Utils.getWindowNodes
+import dev.medzik.android.autofill.AutofillUtils.getAssistInfo
+import dev.medzik.android.autofill.AutofillUtils.getWindowNodes
 import dev.medzik.librepass.android.utils.Vault
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -32,12 +32,8 @@ object AutofillHandler {
             return callback.onSuccess(null)
         }
 
-        val structure = request.fillContexts.last().structure
-        StructureParser(structure).parse()?.let {
-            // TODO: maybe add blocklist support
-
-            launchSelection(it, vault, context, callback)
-        }
+        val assistInfo = getAssistInfo(windowNode)
+        println(assistInfo)
 
 //        val exceptionHandler =
 //            CoroutineExceptionHandler { _, exception ->
@@ -52,59 +48,6 @@ object AutofillHandler {
 //
 //        cancellationSignal.setOnCancelListener {
 //            job.cancel()
-//        }
-    }
-
-    @SuppressLint("RemoteViewLayout")
-    private fun launchSelection(
-        parsedStructure: StructureParser.AutofillResult,
-        vault: Vault,
-        context: Context,
-        callback: FillCallback
-    ) {
-//        val responseBuilder = FillResponse.Builder()
-
-//        AutofillLauncherActivity.getPendingIntent(context)?.intentSender?.let { intentSender ->
-//            val remoteViewUnlock = RemoteViews(
-//                context.packageName,
-//                R.layout.autofill_unlock
-//            )
-//
-//            remoteViewUnlock.setTextViewText(R.id.text1, "Test")
-//
-//            responseBuilder.setAuthentication(
-//                parsedStructure.getAutofillIDs(),
-//                intentSender,
-//                remoteViewUnlock
-//            )
-//        }
-//
-//        callback.onSuccess(responseBuilder.build())
-
-//        val usernamePresentation = RemoteViews(packageName, R.layout.autofill_unlock)
-//        usernamePresentation.setTextViewText(R.id.text1, "my_username")
-//
-//        val fillResponse = FillResponse.Builder()
-//            .addDataset(
-//                Dataset.Builder()
-//                    .setValue(
-//                        parsedStructure.usernameId!!,
-//                        AutofillValue.forText("test"),
-//                        usernamePresentation
-//                    )
-//                    .build())
-//            .build()
-//
-//        callback.onSuccess(fillResponse)
-
-//        if (!vault.openedDatabase) {
-//
-//        }
-//
-//        parserResult.getAutofillIDs().let { autofillId ->
-//            if (autofillId.isNotEmpty()) {
-//
-//            }
 //        }
     }
 }

@@ -25,7 +25,6 @@ class LibrePassAutofillService : AutofillService() {
     ) {
         AutofillHandler.handleAutofill(
             vault,
-            context = this,
             request,
             cancellationSignal,
             callback

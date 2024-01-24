@@ -16,6 +16,12 @@ object AutofillUtils {
             Log.d(TAG, "No fields found")
             return null
         }
+
+        // if all fields types are Text, ignore them
+        if (assistInfo.fields.all { it.type == FieldType.Text }) {
+            return null
+        }
+
         Log.d(TAG, "Found fields: ${assistInfo.fields.map { it.type }.joinToString()}")
 
         return assistInfo

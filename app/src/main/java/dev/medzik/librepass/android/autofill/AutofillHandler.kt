@@ -62,6 +62,7 @@ object AutofillHandler {
         if (vault.aesKey.isEmpty()) {
             // TODO: unlock vault
             Log.w(TAG, "Vault is locked")
+            return
         }
 
         val responseBuilder = FillResponse.Builder()

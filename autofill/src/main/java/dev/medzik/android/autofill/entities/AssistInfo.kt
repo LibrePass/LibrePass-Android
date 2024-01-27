@@ -1,4 +1,4 @@
-package dev.medzik.android.autofill
+package dev.medzik.android.autofill.entities
 
 import android.os.Build
 import androidx.annotation.RequiresApi

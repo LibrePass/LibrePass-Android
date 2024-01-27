@@ -6,6 +6,11 @@ import android.text.InputType
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import dev.medzik.android.autofill.entities.AssistField
+import dev.medzik.android.autofill.entities.AssistInfo
+import dev.medzik.android.autofill.entities.AutofillNode
+import dev.medzik.android.autofill.entities.FieldType
+import dev.medzik.android.autofill.entities.toAutofillNode
 import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)

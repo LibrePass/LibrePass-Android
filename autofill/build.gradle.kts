@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.ksp)
 }
 
 android {
@@ -23,4 +24,9 @@ android {
 
 dependencies {
     implementation(libs.androidx.annotation)
+
+    // dagger
+    implementation(libs.google.dagger.hilt)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.google.dagger.hilt.compiler)
 }

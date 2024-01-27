@@ -5,6 +5,8 @@ import android.os.Build
 import android.service.autofill.FillContext
 import android.util.Log
 import androidx.annotation.RequiresApi
+import dev.medzik.android.autofill.entities.AssistInfo
+import dev.medzik.android.autofill.entities.FieldType
 
 @RequiresApi(Build.VERSION_CODES.O)
 object AutofillUtils {
@@ -41,4 +43,17 @@ object AutofillUtils {
             emptyList()
         }
     }
+
+//    /** Checks if the given [request] supports inline suggestions. */
+//    @ChecksSdkIntAtLeast(Build.VERSION_CODES.R)
+//    fun hasInlineSuggestionsSupport(request: FillRequest): Boolean {
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
+//            // return true if the request supports inline suggestions
+//            request.inlineSuggestionsRequest?.let {
+//                return it.maxSuggestionCount > 0
+//            }
+//        }
+//
+//        return false
+//    }
 }

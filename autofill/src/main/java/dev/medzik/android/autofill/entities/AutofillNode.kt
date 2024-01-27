@@ -1,4 +1,4 @@
-package dev.medzik.android.autofill
+package dev.medzik.android.autofill.entities
 
 import android.app.assist.AssistStructure
 import android.os.Build

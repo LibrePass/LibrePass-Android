@@ -39,6 +39,9 @@ class MainActivity : FragmentActivity() {
             finish()
         }
 
+        // retrieves aes key to decrypt vault if key is valid
+        vault.getVaultSecrets(this)
+
         // merge application data when application updated
         Migrations.update(this, repository)
 

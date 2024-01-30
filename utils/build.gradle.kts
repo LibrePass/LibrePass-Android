@@ -29,10 +29,10 @@ android {
 
 dependencies {
     compileOnly(libs.androidx.annotation)
-    compileOnly(libs.kotlinx.coroutines.android)
+    compileOnly(libs.kotlinx.coroutines)
 
     debugImplementation(libs.androidx.annotation)
-    debugImplementation(libs.kotlinx.coroutines.android)
+    debugImplementation(libs.kotlinx.coroutines)
 
 //    androidTestImplementation(libs.androidx.junit)
 //    androidTestImplementation(libs.androidx.espresso.core)

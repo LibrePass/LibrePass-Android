@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.google.dagger.hilt)
-    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.dagger.hilt)
+    alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.android)
 }
 
@@ -61,7 +61,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
     packaging {
@@ -72,31 +72,31 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.material.icons.extended)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.ui)
-    implementation(libs.google.accompanist.drawablepainter)
-    implementation(libs.google.accompanist.systemuicontroller)
+    implementation(libs.compose.material.icons)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.ui)
+    implementation(libs.accompanist.drawablepainter)
+    implementation(libs.accompanist.systemuicontroller)
 
     // for biometric authentication
     implementation(libs.androidx.biometric)
 
     // used for calling `onResume` and locking vault after X minutes
-    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.compose.lifecycle.runtime)
 
     // datastore
     implementation(libs.androidx.datastore.preferences)
 
     // room database
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
 
     // dagger
-    implementation(libs.google.dagger.hilt)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.google.dagger.hilt.compiler)
+    implementation(libs.dagger.hilt)
+    implementation(libs.hilt.navigation.compose)
+    ksp(libs.dagger.hilt.compiler)
 
     // for cipher icons in vault
     implementation(libs.coil.compose)
@@ -108,7 +108,7 @@ dependencies {
     implementation(libs.process.phoenix)
 
     // kotlin coroutines
-    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines)
 
     // local modules
     implementation(project(":components"))
@@ -120,9 +120,9 @@ dependencies {
     implementation(libs.google.material)
 
     // for testing
-    debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.compose.ui.test.manifest)
 
     // for preview support
-    debugImplementation(libs.androidx.ui.tooling)
-    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
 }

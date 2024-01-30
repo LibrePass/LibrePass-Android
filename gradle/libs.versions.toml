@@ -1,70 +1,80 @@
 [versions]
-# Android SDK
 android-sdk-min = "24"
 android-sdk-target = "34"
 android-sdk-compile = "34"
-# Libraries
+
+compose = "1.5.4"
+compose-compiler = "1.5.8"
+compose-lifecycle-runtime = "2.7.0"
+compose-material3 = "1.1.2"
+compose-navigation = "2.7.6"
+
+accompanist = "0.32.0"
+
+room = "2.6.1"
+
 androidx-annotation = "1.7.1"
 androidx-biometric = "1.2.0-alpha05"
-androidx-compose-compiler = "1.5.8"
 androidx-datastore = "1.1.0-beta01"
-androidx-espresso-core = "3.5.1"
-androidx-hilt = "1.1.0"
-androidx-junit = "1.1.5"
-androidx-lifecycle-runtime-compose = "2.7.0"
-androidx-material-icons-extended = "1.5.4"
-androidx-material3 = "1.1.2"
-androidx-navigation-compose = "2.7.6"
-androidx-room = "2.6.1"
-androidx-ui = "1.5.4"
+
+dagger = "2.50"
+hilt = "1.1.0"
+
 coil-compose = "2.5.0"
-google-accompanist = "0.32.0"
-google-dagger = "2.50"
 google-material = "1.11.0"
-kotlinx-coroutines-android = "1.7.3"
+kotlinx-coroutines = "1.7.3"
 librepass-client = "1.4.1"
 medzik-libcrypto = "1.2.0"
 process-phoenix = "2.1.2"
+
+test-espresso-core = "3.5.1"
+test-junit = "1.1.5"
+
 # Plugins
 android-application = "8.2.2"
-google-ksp = "1.9.22-1.0.17"
+kotlin-ksp = "1.9.22-1.0.17"
 kotlin-android = "1.9.22"
 
 [libraries]
+compose-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "compose-lifecycle-runtime" }
+compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
+compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+
+accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanist" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "androidx-biometric" }
-# Only for showing latest version from Android Studio. Used version ref by calling it directly.
-androidx-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "androidx-compose-compiler" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
-androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-espresso-core" }
-androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt" }
-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
-androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle-runtime-compose" }
-androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "androidx-material-icons-extended" }
-androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidx-material3" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation-compose" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidx-room" }
-androidx-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-ui" }
-androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-ui" }
-androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-ui" }
-androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-ui" }
-androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidx-ui" }
-coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
-google-accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "google-accompanist" }
-google-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "google-accompanist" }
-google-dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "google-dagger" }
-google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "google-dagger" }
+
+dagger-hilt = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt" }
+
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
+
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil-compose" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 librepass-client = { module = "dev.medzik.librepass:client", version.ref = "librepass-client" }
 medzik-libcrypto = { module = "dev.medzik:libcrypto", version.ref = "medzik-libcrypto" }
 process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "process-phoenix" }
 
+test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso-core" }
+test-junit = { module = "androidx.test.ext:junit", version.ref = "test-junit" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }
 android-library = { id = "com.android.library", version.ref = "android-application" }
-google-dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "google-dagger" }
-google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin-ksp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }

@@ -28,27 +28,27 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
 dependencies {
-    compileOnly(libs.androidx.material3)
-    compileOnly(libs.androidx.navigation.compose)
+    compileOnly(libs.compose.material3)
+    compileOnly(libs.compose.navigation)
 
-    debugImplementation(libs.androidx.material3)
-    debugImplementation(libs.androidx.navigation.compose)
+    debugImplementation(libs.compose.material3)
+    debugImplementation(libs.compose.navigation)
 
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.espresso.core)
+    androidTestImplementation(libs.compose.ui.test.junit4)
 
-    testImplementation(libs.androidx.junit)
+    testImplementation(libs.test.junit)
 //    testImplementation(libs.androidx.compose.runtime)
 
-    debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.compose.ui.test.manifest)
 
     // for preview support
-    debugImplementation(libs.androidx.ui.tooling)
-    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
 }

@@ -31,6 +31,6 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.medzik.libcrypto)
 
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.espresso.core)
 }

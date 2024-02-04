@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import dev.medzik.android.autofill.AutofillSearch
 import dev.medzik.android.autofill.AutofillSearchResponse
 import dev.medzik.android.autofill.entities.AssistInfo
+import dev.medzik.android.autofill.entities.AutofillItem
 import dev.medzik.android.autofill.entities.FieldType
 import dev.medzik.librepass.android.utils.Vault
 import dev.medzik.librepass.types.cipher.CipherType
@@ -12,11 +13,11 @@ import java.util.UUID
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
-class AutofillSearchHandler : AutofillSearch {
+class AutofillSearchImpl : AutofillSearch {
     @Inject
     lateinit var vault: Vault
 
-    override fun search(assistInfo: AssistInfo): List<AutofillSearchResponse> {
+    override fun search(assistInfo: AssistInfo): List<AutofillItem> {
         if (assistInfo.url == null) {
             return emptyList()
         }
@@ -27,13 +28,15 @@ class AutofillSearchHandler : AutofillSearch {
             return emptyList()
         }
 
-        val searchResponse = mutableListOf<AutofillSearchResponse>()
+        val searchResponse = mutableListOf<AutofillItem>()
 
         ciphers.forEach {
             searchResponse.add(
-                AutofillSearchResponse(
+                AutofillItem(
+                    id = it.id,
                     name = it.loginData!!.name,
                     username = it.loginData!!.username,
+                    password = it.loginData!!.password
                 )
             )
         }
@@ -46,7 +49,7 @@ class AutofillSearchHandler : AutofillSearch {
         assistInfo: AssistInfo
     ) {
         // get username field (first field with an email, username or phone)
-        var username =
+        var usernameField =
             assistInfo.fields.firstOrNull {
                 it.type == FieldType.Email ||
                     it.type == FieldType.Username ||
@@ -54,11 +57,12 @@ class AutofillSearchHandler : AutofillSearch {
             }
         // if username field does not exist, get text field as username
         // sometimes username/email field is not marked correctly
-        if (username == null) {
-            username = assistInfo.fields.firstOrNull { it.type == FieldType.Text }
+        if (usernameField == null) {
+            usernameField = assistInfo.fields.firstOrNull { it.type == FieldType.Text }
         }
 
-        // get password field
-        val password = assistInfo.fields.firstOrNull { it.type == FieldType.Password }
+        val passwordField = assistInfo.fields.firstOrNull { it.type == FieldType.Password }
+
+        // TODO
     }
 }

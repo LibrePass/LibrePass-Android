@@ -9,7 +9,7 @@ compose-lifecycle-runtime = "2.7.0"
 compose-material3 = "1.1.2"
 compose-navigation = "2.7.6"
 
-accompanist = "0.32.0"
+accompanist = "0.34.0"
 
 room = "2.6.1"
 

@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -115,6 +116,7 @@ fun CipherViewScreen(
             CipherField(
                 title = stringResource(R.string.Password),
                 value = cipherData.password,
+                fontFamily = FontFamily.Monospace,
                 copy = true,
                 hidden = true,
                 customIcon = {
@@ -154,7 +156,8 @@ fun CipherViewScreen(
 
                                     Text(
                                         text = passwords[i].password,
-                                        style = MaterialTheme.typography.bodyMedium
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        fontFamily = FontFamily.Monospace,
                                     )
                                 }
 
@@ -351,6 +354,7 @@ fun CipherViewScreen(
 fun CipherField(
     title: String,
     value: String?,
+    fontFamily: FontFamily? = null,
     hidden: Boolean = false,
     openUri: Boolean = false,
     uri: String? = null,
@@ -381,11 +385,13 @@ fun CipherField(
             if (hiddenState) {
                 Text(
                     text = "•".repeat(value.length),
+                    fontFamily = fontFamily,
                     style = MaterialTheme.typography.bodyMedium
                 )
             } else {
                 Text(
                     text = value,
+                    fontFamily = fontFamily,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

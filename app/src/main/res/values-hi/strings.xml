@@ -55,7 +55,6 @@
     <string name="Title">शीर्षक</string>
     <string name="Toast_Enter_Email">अपना ई-मेल पता दर्ज करें</string>
     <string name="Toast_Password_Hint_Sent">ईमेल पते पर पासवर्ड संकेत भेजा गया था</string>
-    <string name="TwoFactorAuthorization">द्वि-कारक प्राधिकरण</string>
     <string name="Unlock">अनलॉक</string>
     <string name="UnlockWithBiometrics">बायोमेट्रिक्स से अनलॉक करें</string>
     <string name="Server_Choice_Dialog">सर्वर चुनें</string>
@@ -68,7 +67,6 @@
         <item quantity="other">%d घंटे</item>
     </plurals>
     <string name="AddNewCipher">नया cipher जोड़ें</string>
-    <string name="AuthenticationKey">प्रमाणीकरण URI (TOTP)</string>
     <string name="BiometricSetup_Subtitle">बायोमेट्रिक प्रमाणीकरण चालू करें</string>
     <string name="BiometricUnlock_Button_UsePassword">पासवर्ड का प्रयोग करें</string>
     <string name="Notes">टिप्पणियाँ</string>

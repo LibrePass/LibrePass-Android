@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,18 +16,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutable
+import dev.medzik.android.components.rememberMutableString
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.data.CipherLoginData
-import dev.medzik.otp.OTPParser
-import dev.medzik.otp.TOTPGenerator
+import dev.medzik.otp.OTPParameters
+import dev.medzik.otp.OTPType
 
 @Composable
 fun CipherEditFieldsLogin(
@@ -166,38 +165,36 @@ fun CipherEditFieldsLogin(
     }
 
     SecondaryText(
-        stringResource(R.string.TwoFactorAuthorization),
+        stringResource(R.string.TFACode),
         modifier = Modifier.padding(top = 8.dp)
     )
 
-    val checkOtp =
-        !cipher.loginData?.twoFactor.isNullOrEmpty() &&
-            runCatching {
-                val params = OTPParser.parse(cipher.loginData?.twoFactor)
-                TOTPGenerator.now(params)
-            }.isFailure
+    var totp = OTPParameters.builder()
+        .type(OTPType.TOTP)
+        .secret(OTPParameters.Secret(cipherData.twoFactor))
+        .label(OTPParameters.Label(""))
+
+    var totpSecret by rememberMutableString(cipherData.twoFactor ?: "")
 
     TextInputFieldBase(
-        label = stringResource(R.string.AuthenticationKey),
+        label = stringResource(R.string.TFASecret),
         modifier =
             Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
-        value = cipherData.twoFactor,
-        isError = checkOtp,
-        onValueChange = { cipherData = cipherData.copy(twoFactor = it) }
-    )
+        value = totpSecret,
+        onValueChange = {
+            totpSecret = it
 
-    if (checkOtp) {
-        Text(
-            text = stringResource(R.string.Error_InvalidURI),
-            color = MaterialTheme.colorScheme.error,
-            fontSize = 12.sp,
-            modifier =
-                Modifier
-                    .padding(horizontal = 6.dp),
-        )
-    }
+            if (it.isBlank()) {
+                cipherData = cipherData.copy(twoFactor = null)
+                return@TextInputFieldBase
+            }
+
+            totp = totp.secret(OTPParameters.Secret(totpSecret))
+            cipherData = cipherData.copy(twoFactor = totp.build().buildOTPAuthURL())
+        }
+    )
 
     SecondaryText(
         stringResource(R.string.OtherDetails),

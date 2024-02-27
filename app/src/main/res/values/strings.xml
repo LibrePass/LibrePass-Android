@@ -14,7 +14,8 @@
     <string name="AddField">Add field</string>
     <string name="AddNewCipher">Add new cipher</string>
     <string name="AddServer">Add server</string>
-    <string name="AuthenticationKey">Authentication URI (TOTP)</string>
+    <string name="TFASecret">2FA Secret</string>
+    <string name="TFACode">2FA Code</string>
     <string name="BiometricSetup_Button_Cancel">Cancel</string>
     <string name="BiometricSetup_Subtitle">Turn on biometric authentication</string>
     <string name="BiometricSetup_Title">Setup</string>
@@ -85,7 +86,6 @@
     <string name="Toast_Enter_Email">Enter your e-mail address</string>
     <string name="Toast_Password_Hint_Sent">A password hint was sent to the email address</string>
     <string name="Toast_PleaseVerifyYourEmail">Please verify your e-mail address</string>
-    <string name="TwoFactorAuthorization">Two-Factor authorization</string>
     <string name="Unlock">Unlock</string>
     <string name="UnlockWithBiometrics">Unlock with biometrics</string>
     <string name="UseBiometric">Use biometric</string>

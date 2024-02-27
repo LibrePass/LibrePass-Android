@@ -8,9 +8,6 @@
         <item quantity="many"/>
         <item quantity="other">%d ساعة</item>
     </plurals>
-    <string name="API_Error_EMAIL_NOT_VERIFIED">يرجى التحقق من عنوان البريد الإلكتروني الخاص بك</string>
-    <string name="API_Error_DATABASE_DUPLICATED_KEY">مفتاح مكرر في قاعدة بيانات الخادم</string>
-    <string name="API_Error_CIPHER_TOO_LARGE">–التشفير كبير جدًا</string>
     <plurals name="minutes">
         <item quantity="zero"/>
         <item quantity="one">%d دقيقة</item>
@@ -19,18 +16,14 @@
         <item quantity="many"/>
         <item quantity="other">%d دقيقة</item>
     </plurals>
-    <string name="API_Error_INVALID_CREDENTIALS">بيانات الاعتماد غير صالحة</string>
     <string name="BiometricSetup_Subtitle">قم بتشغيل المصادقة البيومترية</string>
     <string name="BiometricSetup_Button_Cancel">يلغي</string>
     <string name="AddField">إضافة حقل</string>
     <string name="BiometricUnlock_Button_UsePassword">استخدم كلمة المرور</string>
     <string name="AddServer">أضف الخادم</string>
-    <string name="API_Error_RE_LOGIN_REQUIRED">مطلوب إعادة تسجيل الدخول</string>
     <string name="BiometricSetup_Title">يثبت</string>
     <string name="AddNewCipher">إضافة شفرة جديدة</string>
     <string name="Add">إضافة</string>
-    <string name="API_Error_TOO_MANY_REQUESTS">العديد من الطلبات</string>
-    <string name="API_Error_UNEXPECTED_SERVER_ERROR">خطأ خادم غير متوقع</string>
     <string name="DeleteAccount">حذف الحساب</string>
     <string name="Error_EncryptionError">خطأ في التشفير/فك التشفير</string>
     <string name="CardNumber">رقم البطاقة</string>

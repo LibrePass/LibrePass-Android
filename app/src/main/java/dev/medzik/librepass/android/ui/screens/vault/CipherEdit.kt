@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.bastiaanjansen.otp.TOTPGenerator
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.getString
 import dev.medzik.android.components.rememberMutable
@@ -35,9 +34,10 @@ import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.librepass.types.cipher.data.PasswordHistory
+import dev.medzik.otp.OTPParser
+import dev.medzik.otp.TOTPGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.net.URI
 import java.util.Date
 
 @Composable
@@ -92,7 +92,8 @@ fun CipherEditScreen(
                     (
                         cipher.loginData!!.twoFactor.isNullOrEmpty() ||
                             runCatching {
-                                TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+                                val params = OTPParser.parse(cipher.loginData?.twoFactor)
+                                TOTPGenerator.now(params)
                             }.isSuccess
                     )
             }

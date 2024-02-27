@@ -24,7 +24,7 @@ hilt = "1.2.0"
 coil-compose = "2.6.0"
 google-material = "1.11.0"
 kotlinx-coroutines = "1.8.0"
-librepass-client = "1.4.1"
+librepass-client = "1.5.0"
 medzik-libcrypto = "1.2.0"
 process-phoenix = "2.1.2"
 

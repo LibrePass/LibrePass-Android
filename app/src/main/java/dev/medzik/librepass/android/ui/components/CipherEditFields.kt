@@ -165,7 +165,7 @@ fun CipherEditFieldsLogin(
     }
 
     SecondaryText(
-        stringResource(R.string.TFACode),
+        stringResource(R.string.TwoFactorAuthentication),
         modifier = Modifier.padding(top = 8.dp)
     )
 
@@ -177,7 +177,7 @@ fun CipherEditFieldsLogin(
     var totpSecret by rememberMutableString(cipherData.twoFactor ?: "")
 
     TextInputFieldBase(
-        label = stringResource(R.string.TFASecret),
+        label = stringResource(R.string.TwoFactorSecret),
         modifier =
             Modifier
                 .fillMaxWidth()

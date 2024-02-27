@@ -18,6 +18,7 @@ fun showBiometricPromptForUnlock(
             .setTitle(context.getString(R.string.BiometricUnlock_Title))
             .setSubtitle(context.getString(R.string.BiometricUnlock_Subtitle))
             .setNegativeButtonText(context.getString(R.string.BiometricUnlock_Button_UsePassword))
+            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
             .build()
 
     showBiometricPrompt(context, promptInfo, cipher, onAuthenticationSucceeded, onAuthenticationFailed)
@@ -34,6 +35,7 @@ fun showBiometricPromptForSetup(
             .setTitle(context.getString(R.string.BiometricSetup_Title))
             .setSubtitle(context.getString(R.string.BiometricSetup_Subtitle))
             .setNegativeButtonText(context.getString(R.string.BiometricSetup_Button_Cancel))
+            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG)
             .build()
 
     showBiometricPrompt(context, promptInfo, cipher, onAuthenticationSucceeded, onAuthenticationFailed)
@@ -68,7 +70,7 @@ private fun showBiometricPrompt(
 fun checkIfBiometricAvailable(context: Context): Boolean {
     val status =
         BiometricManager.from(context)
-            .canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+            .canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)
 
     // return true when available
     return status == BiometricManager.BIOMETRIC_SUCCESS

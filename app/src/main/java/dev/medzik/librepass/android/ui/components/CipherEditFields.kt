@@ -19,7 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.bastiaanjansen.otp.TOTPGenerator
 import com.google.gson.Gson
 import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.navigate
@@ -28,7 +27,8 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.data.CipherLoginData
-import java.net.URI
+import dev.medzik.otp.OTPParser
+import dev.medzik.otp.TOTPGenerator
 
 @Composable
 fun CipherEditFieldsLogin(
@@ -173,7 +173,8 @@ fun CipherEditFieldsLogin(
     val checkOtp =
         !cipher.loginData?.twoFactor.isNullOrEmpty() &&
             runCatching {
-                TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+                val params = OTPParser.parse(cipher.loginData?.twoFactor)
+                TOTPGenerator.now(params)
             }.isFailure
 
     TextInputFieldBase(

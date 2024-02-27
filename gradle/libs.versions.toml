@@ -20,7 +20,7 @@ androidx-datastore = "1.1.0-dev01"
 dagger = "2.50"
 hilt = "1.2.0"
 
-coil-compose = "2.5.0"
+coil-compose = "2.6.0"
 google-material = "1.11.0"
 kotlinx-coroutines = "1.8.0"
 librepass-client = "1.4.1"

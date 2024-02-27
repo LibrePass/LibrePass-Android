@@ -7,7 +7,7 @@ import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
-import dev.medzik.librepass.responses.ResponseError
+import dev.medzik.librepass.errors.ServerError
 
 /** Log exception if debugging is enabled. */
 fun Exception.debugLog() {
@@ -43,14 +43,19 @@ fun Exception.showErrorToast(context: Context) {
 }
 
 fun ApiException.getTranslatedErrorMessage(context: Context): String {
-    return when (responseError) {
-        ResponseError.INVALID_CREDENTIALS -> context.getString(R.string.API_Error_INVALID_CREDENTIALS)
-        ResponseError.RE_LOGIN_REQUIRED -> context.getString(R.string.API_Error_RE_LOGIN_REQUIRED)
-        ResponseError.EMAIL_NOT_VERIFIED -> context.getString(R.string.API_Error_EMAIL_NOT_VERIFIED)
-        ResponseError.TOO_MANY_REQUESTS -> context.getString(R.string.API_Error_TOO_MANY_REQUESTS)
-        ResponseError.DATABASE_DUPLICATED_KEY -> context.getString(R.string.API_Error_DATABASE_DUPLICATED_KEY)
-        ResponseError.UNEXPECTED_SERVER_ERROR -> context.getString(R.string.API_Error_UNEXPECTED_SERVER_ERROR)
-        ResponseError.CIPHER_TOO_LARGE -> context.getString(R.string.API_Error_CIPHER_TOO_LARGE)
+    return when (getServerError()) {
+//        ServerError.CipherNotFound -> context.getString(R.string.CipherNotFound)
+//        ServerError.CollectionNotFound -> context.getString(R.string.CollectionNotFound)
+        ServerError.Database -> context.getString(R.string.Database)
+        ServerError.Duplicated -> context.getString(R.string.Duplicated)
+        ServerError.EmailNotVerified -> context.getString(R.string.EmailNotVerified)
+        ServerError.InvalidBody -> context.getString(R.string.InvalidBody)
+        ServerError.InvalidSharedSecret -> context.getString(R.string.InvalidCredentials)
+        ServerError.InvalidToken -> context.getString(R.string.InvalidToken)
+//        ServerError.InvalidTwoFactor -> context.getString(R.string.InvalidTwoFactor)
+//        ServerError.NotFound -> context.getString(R.string.NotFound)
+        ServerError.RateLimit -> context.getString(R.string.RateLimit)
+
         else -> message
     }
 }

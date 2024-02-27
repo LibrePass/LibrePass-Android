@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.History
@@ -39,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
-import com.bastiaanjansen.otp.TOTPGenerator
 import dev.medzik.android.components.BaseDialog
 import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.getString
@@ -56,9 +56,10 @@ import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.types.cipher.CipherType
+import dev.medzik.otp.OTPParser
+import dev.medzik.otp.TOTPGenerator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.net.URI
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -78,13 +79,14 @@ fun CipherViewScreen(
 
     LaunchedEffect(scope) {
         if (cipher.type == CipherType.Login && !cipher.loginData?.twoFactor.isNullOrEmpty()) {
-            totpCode = TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+            val params = OTPParser.parse(cipher.loginData?.twoFactor)
+            totpCode = TOTPGenerator.now(params)
 
             scope.launch {
                 while (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                     delay(30 * 1000)
 
-                    totpCode = TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+                    totpCode = TOTPGenerator.now(params)
                 }
             }
         }
@@ -422,7 +424,7 @@ fun CipherField(
                     }
                 }) {
                     Icon(
-                        imageVector = Icons.Default.OpenInNew,
+                        imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                         contentDescription = null
                     )
                 }

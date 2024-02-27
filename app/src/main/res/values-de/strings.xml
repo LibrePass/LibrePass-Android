@@ -92,7 +92,6 @@
     <string name="ConfirmNewPassword">Neues Passwort bestätigen</string>
     <string name="BiometricSetup_Title">Einrichtung</string>
     <string name="AddNewCipher">Neue Cipher hinzufügen</string>
-    <string name="VerificationCode">Verifikationscode (TOTP)</string>
     <string name="Error_InvalidURI">URI Adresse ist ungültig</string>
     <string name="CardDetails">Kartendetails</string>
     <string name="BiometricKeyInvalidated">Die biometrische Autorisierung wurde von Android ungültig gemacht</string>

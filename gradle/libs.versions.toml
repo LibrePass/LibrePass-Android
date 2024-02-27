@@ -5,7 +5,7 @@ android-sdk-compile = "34"
 
 commons-lang3 = "3.14.0"
 compose = "1.6.2"
-compose-compiler = "1.5.8"
+compose-compiler = "1.5.10"
 compose-lifecycle-runtime = "2.7.0"
 compose-material3 = "1.2.0"
 compose-navigation = "2.7.7"

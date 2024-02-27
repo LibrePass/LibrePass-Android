@@ -90,7 +90,7 @@ fun CipherEditScreen(
             CipherType.Login -> {
                 cipher.loginData!!.name.isNotEmpty() &&
                     (
-                        cipher.loginData!!.twoFactor.isNullOrEmpty() ||
+                        cipher.loginData!!.twoFactor.isNullOrBlank() ||
                             runCatching {
                                 val params = OTPParser.parse(cipher.loginData?.twoFactor)
                                 TOTPGenerator.now(params)

@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="API_Error_CIPHER_TOO_LARGE">Cipher बहुत बड़ा है</string>
-    <string name="API_Error_DATABASE_DUPLICATED_KEY">सर्वर डेटाबेस में डुप्लिकेट कुंजी</string>
-    <string name="API_Error_EMAIL_NOT_VERIFIED">कृपया अपना ई-मेल सत्यापित करें</string>
-    <string name="API_Error_TOO_MANY_REQUESTS">बहुत सारे अनुरोध</string>
-    <string name="API_Error_UNEXPECTED_SERVER_ERROR">अनपेक्षित सर्वर त्रुटि</string>
     <string name="Add">जोड़ें</string>
     <string name="BiometricUnlock_Subtitle">कृपया स्वयं को प्रमाणित करें</string>
     <string name="BiometricUnlock_Title">अनलॉक</string>
@@ -72,14 +67,12 @@
         <item quantity="one">%d घंटा</item>
         <item quantity="other">%d घंटे</item>
     </plurals>
-    <string name="API_Error_INVALID_CREDENTIALS">अमान्य क्रेडेंशियल</string>
     <string name="AddNewCipher">नया cipher जोड़ें</string>
     <string name="AuthenticationKey">प्रमाणीकरण URI (TOTP)</string>
     <string name="BiometricSetup_Subtitle">बायोमेट्रिक प्रमाणीकरण चालू करें</string>
     <string name="BiometricUnlock_Button_UsePassword">पासवर्ड का प्रयोग करें</string>
     <string name="Notes">टिप्पणियाँ</string>
     <string name="Toast_PleaseVerifyYourEmail">कृपया अपना ई-मेल पता सत्यापित करें</string>
-    <string name="API_Error_RE_LOGIN_REQUIRED">पुनः लॉगिन आवश्यक है</string>
     <string name="AddServer">सर्वर जोड़े</string>
     <string name="BiometricSetup_Title">सेटअप</string>
     <string name="OldPassword">पुराना पासवर्ड</string>

@@ -8,13 +8,6 @@
         <item quantity="one">%d minutt</item>
         <item quantity="other">%d minutter</item>
     </plurals>
-    <string name="API_Error_CIPHER_TOO_LARGE">For stort chiffer</string>
-    <string name="API_Error_DATABASE_DUPLICATED_KEY">Duplikatnøkkel i tjenerdatabase</string>
-    <string name="API_Error_EMAIL_NOT_VERIFIED">Bekreft din e-postadresse</string>
-    <string name="API_Error_INVALID_CREDENTIALS">Ugydlige identitetsdetaljer</string>
-    <string name="API_Error_RE_LOGIN_REQUIRED">Du må logge inn igjen</string>
-    <string name="API_Error_TOO_MANY_REQUESTS">For mange forespørsler</string>
-    <string name="API_Error_UNEXPECTED_SERVER_ERROR">Uventet tjenerfeil</string>
     <string name="Add">Legg til</string>
     <string name="AddField">Legg til felt</string>
     <string name="AddNewCipher">Legg til nytt chiffer</string>

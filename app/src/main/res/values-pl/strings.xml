@@ -12,13 +12,6 @@
         <item quantity="many">%d godzin</item>
         <item quantity="other">%d godzin</item>
     </plurals>
-    <string name="API_Error_CIPHER_TOO_LARGE">Szyft jest zbyt długi</string>
-    <string name="API_Error_DATABASE_DUPLICATED_KEY">Zduplikowany klucz w bazie danych serwera</string>
-    <string name="API_Error_EMAIL_NOT_VERIFIED">Zweryfikuj swój adres e-mail</string>
-    <string name="API_Error_INVALID_CREDENTIALS">Nieprawidłowe dane uwierzytelniające</string>
-    <string name="API_Error_RE_LOGIN_REQUIRED">Wymagane jest ponowne zalogowanie</string>
-    <string name="API_Error_TOO_MANY_REQUESTS">Zbyt wiele żądań</string>
-    <string name="API_Error_UNEXPECTED_SERVER_ERROR">Nieoczekiwany błąd serwera</string>
     <string name="Add">Dodaj</string>
     <string name="AddField">Dodaj pole</string>
     <string name="AddNewCipher">Dodaj nowy szyft</string>

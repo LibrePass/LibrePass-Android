@@ -10,13 +10,6 @@
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-    <string name="API_Error_CIPHER_TOO_LARGE">Cipher is too large</string>
-    <string name="API_Error_DATABASE_DUPLICATED_KEY">Duplicated key in server database</string>
-    <string name="API_Error_EMAIL_NOT_VERIFIED">Please verify your e-mail address</string>
-    <string name="API_Error_INVALID_CREDENTIALS">Invalid credentials</string>
-    <string name="API_Error_RE_LOGIN_REQUIRED">Re-login required</string>
-    <string name="API_Error_TOO_MANY_REQUESTS">Too many requests</string>
-    <string name="API_Error_UNEXPECTED_SERVER_ERROR">Unexpected server error</string>
     <string name="Add">Add</string>
     <string name="AddField">Add field</string>
     <string name="AddNewCipher">Add new cipher</string>
@@ -110,4 +103,14 @@
     <string name="BiometricKeyInvalidated">Biometric key has been invalidated by Android</string>
     <string name="NewEmail">New e-mail address</string>
     <string name="ChangeEmail">Change e-mail address</string>
+    <string name="CipherNotFound">Cipher not found</string>
+    <string name="CollectionNotFound">Collection not found</string>
+    <string name="Database">Unknown server database error</string>
+    <string name="Duplicated">Duplicated</string>
+    <string name="EmailNotVerified">Please verify your e-mail address</string>
+    <string name="InvalidBody">Invalid API request</string>
+    <string name="InvalidCredentials">Invalid credentials</string>
+    <string name="InvalidToken">Invalid login token</string>
+    <string name="RateLimit">Too many requests</string>
+    <string name="SendEmail">Internal server error - Failed to send email</string>
 </resources>

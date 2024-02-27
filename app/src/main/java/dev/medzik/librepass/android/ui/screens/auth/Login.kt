@@ -36,7 +36,7 @@ import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
-import dev.medzik.librepass.utils.fromHexString
+import dev.medzik.librepass.utils.fromHex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -90,7 +90,7 @@ fun LoginScreen(
                     )
                 viewModel.credentialRepository.insert(credentialsDb)
 
-                viewModel.vault.aesKey = credentials.aesKey.fromHexString()
+                viewModel.vault.aesKey = credentials.aesKey.fromHex()
 
                 viewModel.credentialRepository.update(
                     credentialsDb.copy(

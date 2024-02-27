@@ -11,7 +11,6 @@ import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.FloatingActionButton
@@ -211,12 +210,12 @@ fun CipherViewScreen(
 
             if (!cipherData.twoFactor.isNullOrEmpty()) {
                 SecondaryText(
-                    stringResource(R.string.TwoFactorAuthorization),
+                    stringResource(R.string.TwoFactorAuthentication),
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
                 CipherField(
-                    title = stringResource(R.string.VerificationCode),
+                    title = stringResource(R.string.TwoFactorCode),
                     value = totpCode.chunked(3).joinToString(" "),
                     copy = true
                 )

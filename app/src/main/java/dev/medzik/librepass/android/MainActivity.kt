@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.medzik.android.components.navigate
+import dev.medzik.android.utils.openEmailApplication
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.Screen
@@ -17,6 +18,7 @@ import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.Vault
+import org.apache.commons.lang3.exception.ExceptionUtils
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,6 +37,13 @@ class MainActivity : FragmentActivity() {
         // handle uncaught exceptions
         Thread.setDefaultUncaughtExceptionHandler { _, e ->
             Log.e("LibrePass", "Uncaught exception", e)
+
+            openEmailApplication(
+                email = "contact@librepass.org",
+                subject = "[Bug] [Android]: ",
+                body = "<A few words about the error>\n\n\n---- Stack trace for debugging ----\n\n${ExceptionUtils.getStackTrace(e)}"
+            )
+
             finish()
         }
 

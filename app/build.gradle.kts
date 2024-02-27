@@ -110,6 +110,8 @@ dependencies {
     // kotlin coroutines
     implementation(libs.kotlinx.coroutines)
 
+    implementation(libs.commons.lang3)
+
     // local modules
     implementation(project(":components"))
     implementation(project(":crypto"))

@@ -20,6 +20,9 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# ERROR: R8: Missing class lombok.NonNull
+-dontwarn lombok.**
+
 # Application classes that will be serialized/deserialized over Gson
 -keep class dev.medzik.librepass.types.** { *; }
 

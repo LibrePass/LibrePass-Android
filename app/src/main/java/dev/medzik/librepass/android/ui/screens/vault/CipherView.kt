@@ -61,6 +61,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun CipherViewScreen(
@@ -83,7 +84,7 @@ fun CipherViewScreen(
 
             scope.launch {
                 while (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                    delay(30 * 1000)
+                    delay(TimeUnit.SECONDS.toMillis(5))
 
                     totpCode = TOTPGenerator.now(params)
                 }

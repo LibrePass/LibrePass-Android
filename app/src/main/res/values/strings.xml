@@ -16,7 +16,6 @@
     <string name="AddServer">Add server</string>
     <string name="TwoFactorAuthentication">Two-factor authentication</string>
     <string name="TwoFactorSecret">Two-factor secret</string>
-    <string name="TwoFactorCode">Two-factor code</string>
     <string name="TotpKey">Authentication Key (TOTP)</string>
     <string name="BiometricSetup_Button_Cancel">Cancel</string>
     <string name="BiometricSetup_Subtitle">Turn on biometric authentication</string>

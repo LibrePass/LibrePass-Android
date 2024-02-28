@@ -190,49 +190,49 @@ fun CipherViewScreen(
                     }
                 }
             }
+        }
 
-            if (!cipherData.uris.isNullOrEmpty()) {
-                SecondaryText(
-                    stringResource(R.string.WebsiteDetails),
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+        if (!cipherData.uris.isNullOrEmpty()) {
+            SecondaryText(
+                stringResource(R.string.WebsiteDetails),
+                modifier = Modifier.padding(top = 8.dp)
+            )
 
-                cipherData.uris?.forEachIndexed { index, it ->
-                    CipherField(
-                        title = stringResource(R.string.WebsiteAddress) + " ${index + 1}",
-                        value = it,
-                        openUri = true,
-                        uri = it,
-                        copy = true
-                    )
-                }
-            }
-
-            if (!cipherData.notes.isNullOrEmpty()) {
-                SecondaryText(
-                    stringResource(R.string.OtherDetails),
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-
+            cipherData.uris?.forEachIndexed { index, it ->
                 CipherField(
-                    title = stringResource(R.string.Notes),
-                    value = cipherData.notes,
+                    title = stringResource(R.string.WebsiteAddress) + " ${index + 1}",
+                    value = it,
+                    openUri = true,
+                    uri = it,
                     copy = true
                 )
             }
+        }
 
-            if (!cipherData.twoFactor.isNullOrEmpty()) {
-                SecondaryText(
-                    stringResource(R.string.TwoFactorAuthentication),
-                    modifier = Modifier.padding(top = 8.dp)
-                )
+        if (!cipherData.notes.isNullOrEmpty()) {
+            SecondaryText(
+                stringResource(R.string.OtherDetails),
+                modifier = Modifier.padding(top = 8.dp)
+            )
 
-                OtpField(
-                    value = totpCode.chunked(totpDigits / 2).joinToString(" "),
-                    elapsed = totpElapsed,
-                    period = totpPeriod,
-                )
-            }
+            CipherField(
+                title = stringResource(R.string.Notes),
+                value = cipherData.notes,
+                copy = true
+            )
+        }
+
+        if (!cipherData.twoFactor.isNullOrEmpty()) {
+            SecondaryText(
+                stringResource(R.string.TwoFactorAuthentication),
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            OtpField(
+                value = totpCode.chunked(totpDigits / 2).joinToString(" "),
+                elapsed = totpElapsed,
+                period = totpPeriod,
+            )
         }
     }
 

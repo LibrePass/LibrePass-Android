@@ -1,0 +1,2 @@
+* HotFix: Fixed crashing when editing cipher by manual adding otp
+* Fixed showing other cipher data (e.g website or 2fa) when cipher doesn't have username and password

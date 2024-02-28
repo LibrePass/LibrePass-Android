@@ -1,6 +1,7 @@
 package dev.medzik.librepass.android.ui.screens.settings
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LockReset
 import androidx.compose.material.icons.filled.Logout
@@ -36,7 +37,7 @@ fun SettingsAccountScreen(
 
     PreferenceEntry(
         title = stringResource(R.string.Logout),
-        icon = { Icon(Icons.Default.Logout, contentDescription = null) },
+        icon = { Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null) },
         onClick = {
             runBlocking {
                 val credentials = viewModel.credentialRepository.get()!!

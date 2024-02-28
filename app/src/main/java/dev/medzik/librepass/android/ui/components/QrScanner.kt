@@ -16,10 +16,7 @@ import com.journeyapps.barcodescanner.CaptureManager
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
 
 @Composable
-fun QrCodeScanner(
-    blockAfterFound: Boolean = false,
-    onScanned: (String) -> Unit
-) {
+fun QrCodeScanner(onScanned: (String) -> Unit) {
     val context = LocalContext.current
 
     val compoundBarcodeView =

@@ -29,20 +29,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 import dev.medzik.android.components.BaseDialog
 import dev.medzik.android.components.SecondaryText
@@ -63,7 +60,6 @@ import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.otp.OTPParser
 import dev.medzik.otp.TOTPGenerator
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.TimeUnit
@@ -81,28 +77,28 @@ fun CipherViewScreen(
     var totpDigits by rememberMutable(6)
     var totpPeriod by rememberMutable(0)
 
-    val scope = rememberCoroutineScope()
+    LaunchedEffect(totpElapsed) {
+        fun calculateElapsed(): Long {
+            val unixSeconds = System.currentTimeMillis() / 1000
+            val counter = TimeUnit.SECONDS.toMillis(unixSeconds) / TimeUnit.SECONDS.toMillis(totpPeriod.toLong())
+            val nextUnixSeconds = (counter + 1) * totpPeriod
+            return totpPeriod - (nextUnixSeconds - unixSeconds)
+        }
 
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-
-    LaunchedEffect(scope) {
         if (cipher.type == CipherType.Login && !cipher.loginData?.twoFactor.isNullOrEmpty()) {
             val params = OTPParser.parse(cipher.loginData?.twoFactor)
             totpCode = TOTPGenerator.now(params)
 
             totpPeriod = params.period.value
             totpDigits = params.digits.value
+            totpCode = TOTPGenerator.now(params)
 
-            scope.launch {
-                while (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                    delay(TimeUnit.SECONDS.toMillis(1))
+            while (true) {
+                delay(TimeUnit.SECONDS.toMillis(1))
 
-                    if (totpElapsed >= totpPeriod) {
-                        totpElapsed = 0
-                    }
-
+                totpElapsed = calculateElapsed().toInt()
+                if (totpElapsed == 30) {
                     totpCode = TOTPGenerator.now(params)
-                    totpElapsed++
                 }
             }
         }
@@ -352,10 +348,10 @@ fun CipherViewScreen(
     ) { innerPadding ->
         LazyColumn(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
+            Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
         ) {
             item {
                 when (cipher.type) {

@@ -1,5 +1,8 @@
 package dev.medzik.librepass.android.ui.screens.vault
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +16,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,7 +39,9 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
@@ -72,6 +78,9 @@ fun CipherViewScreen(
     val cipher = viewModel.vault.find(cipherId) ?: return
 
     var totpCode by rememberMutable("")
+    var totpElapsed by rememberMutable(0)
+    var totpDigits by rememberMutable(6)
+    var totpPeriod by rememberMutable(0)
 
     val scope = rememberCoroutineScope()
 
@@ -82,11 +91,19 @@ fun CipherViewScreen(
             val params = OTPParser.parse(cipher.loginData?.twoFactor)
             totpCode = TOTPGenerator.now(params)
 
+            totpPeriod = params.period.value
+            totpDigits = params.digits.value
+
             scope.launch {
                 while (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                    delay(TimeUnit.SECONDS.toMillis(5))
+                    delay(TimeUnit.SECONDS.toMillis(1))
+
+                    if (totpElapsed >= totpPeriod) {
+                        totpElapsed = 0
+                    }
 
                     totpCode = TOTPGenerator.now(params)
+                    totpElapsed++
                 }
             }
         }
@@ -215,10 +232,12 @@ fun CipherViewScreen(
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
-                CipherField(
+                OtpField(
                     title = stringResource(R.string.TwoFactorCode),
-                    value = totpCode.chunked(3).joinToString(" "),
-                    copy = true
+                    value = totpCode.chunked(totpDigits / 2).joinToString(" "),
+                    copy = true,
+                    elapsed = totpElapsed,
+                    period = totpPeriod,
                 )
             }
         }
@@ -352,12 +371,86 @@ fun CipherViewScreen(
     }
 }
 
+@Preview
+@Composable
+fun Prev() {
+    OtpField(title = "test", value = "123456", elapsed = 5, period = 30)
+}
+
+@Composable
+fun OtpField(
+    title: String,
+    value: String?,
+    elapsed: Int,
+    period: Int,
+    fontFamily: FontFamily? = null,
+    copy: Boolean = false,
+) {
+    if (value.isNullOrEmpty()) return
+
+    val clipboardManager = LocalClipboardManager.current
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            )
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.padding(top = 6.dp, end = 6.dp)
+                ) {
+                    val progress by animateFloatAsState(
+                        targetValue = 1 - (elapsed.toFloat() / period.toFloat()),
+                        animationSpec = tween(500),
+                        label = ""
+                    )
+                    CircularProgressIndicator(
+                        progress = { progress },
+                    )
+                    Text(
+                        text = (period - elapsed).toString(),
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
+
+                Text(
+                    text = value,
+                    fontFamily = fontFamily,
+                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+
+        Row {
+            if (copy) {
+                IconButton(onClick = { clipboardManager.setText(AnnotatedString(value)) }) {
+                    Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = null
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Composable
 fun CipherField(
     title: String,
     value: String?,
     fontFamily: FontFamily? = null,
     hidden: Boolean = false,
+    firstComponent: @Composable () -> Unit = {},
     openUri: Boolean = false,
     uri: String? = null,
     copy: Boolean = false,
@@ -375,6 +468,9 @@ fun CipherField(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        Row {
+            firstComponent()
+        }
         Column(
             modifier = Modifier.weight(1f)
         ) {

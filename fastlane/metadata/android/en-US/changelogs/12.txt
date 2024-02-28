@@ -1,0 +1,11 @@
+* Added support for generating one-time passwords (two-factor)
+* Changed PullRefresh to Material3
+* Added dependency injector
+* Refactored room database
+* Fixed crash after adding/removing fingerprint
+* Added support for adding ciphers offline
+* Added support for changing email address
+* Improved font for displaying password
+* Added basic crash reporter
+* Fixed possibly crashes - biometrics must support BIOMETRIC_STRONG
+* Bumped dependencies

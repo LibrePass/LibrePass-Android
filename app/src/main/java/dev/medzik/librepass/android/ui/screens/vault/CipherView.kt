@@ -348,10 +348,10 @@ fun CipherViewScreen(
     ) { innerPadding ->
         LazyColumn(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
         ) {
             item {
                 when (cipher.type) {

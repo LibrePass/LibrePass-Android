@@ -15,19 +15,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutable
-import dev.medzik.android.components.rememberMutableString
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.data.CipherLoginData
-import dev.medzik.otp.OTPParameters
-import dev.medzik.otp.OTPType
 
 @Composable
 fun CipherEditFieldsLogin(
@@ -44,6 +43,14 @@ fun CipherEditFieldsLogin(
         ?.savedStateHandle
         ?.getLiveData<String>("password")?.observeForever {
             cipherData = cipherData.copy(password = it)
+        }
+    // observe totp uri from navController
+    // used to get totp uri from totp configuration screen
+    navController
+        .currentBackStackEntry
+        ?.savedStateHandle
+        ?.getLiveData<String>("totpUri")?.observeForever {
+            cipherData = cipherData.copy(twoFactor = it)
         }
     // observe for cipher from backstack
     navController
@@ -89,24 +96,23 @@ fun CipherEditFieldsLogin(
                 .padding(vertical = 4.dp),
         value = cipherData.password,
         onValueChange = { cipherData = cipherData.copy(password = it) },
-        hidden = true,
-        trailingIcon = {
-            IconButton(onClick = {
-                // save cipher data as json to navController
-                navController.currentBackStackEntry?.savedStateHandle?.set(
-                    "cipher",
-                    Gson().toJson(cipherData)
-                )
+        hidden = true
+    ) {
+        IconButton(onClick = {
+            // save cipher data as json to navController
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                "cipher",
+                Gson().toJson(cipherData)
+            )
 
-                navController.navigate(Screen.PasswordGenerator)
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Refresh,
-                    contentDescription = null
-                )
-            }
+            navController.navigate(Screen.PasswordGenerator)
+        }) {
+            Icon(
+                imageVector = Icons.Default.Refresh,
+                contentDescription = null
+            )
         }
-    )
+    }
 
     SecondaryText(
         stringResource(R.string.WebsiteDetails),
@@ -127,24 +133,23 @@ fun CipherEditFieldsLogin(
                                 this[index] = it
                             }
                     )
-            },
-            trailingIcon = {
-                IconButton(onClick = {
-                    cipherData =
-                        cipherData.copy(
-                            uris =
-                                cipherData.uris.orEmpty().toMutableList().apply {
-                                    this.removeAt(index)
-                                }
-                        )
-                }) {
-                    Icon(
-                        imageVector = Icons.Default.Delete,
-                        contentDescription = null
-                    )
-                }
             }
-        )
+        ) {
+            IconButton(onClick = {
+                cipherData =
+                    cipherData.copy(
+                        uris =
+                            cipherData.uris.orEmpty().toMutableList().apply {
+                                this.removeAt(index)
+                            }
+                    )
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = null
+                )
+            }
+        }
     }
 
     // button for adding more fields
@@ -169,32 +174,58 @@ fun CipherEditFieldsLogin(
         modifier = Modifier.padding(top = 8.dp)
     )
 
-    var totp = OTPParameters.builder()
-        .type(OTPType.TOTP)
-        .secret(OTPParameters.Secret(cipherData.twoFactor))
-        .label(OTPParameters.Label(""))
+//    val checkOtp =
+//        !cipher.loginData?.twoFactor.isNullOrEmpty() &&
+//            runCatching {
+//                TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
+//            }.isFailure
+//
+//    TextInputFieldBase(
+//        label = stringResource(R.string.AuthenticationKey),
+//        modifier =
+//            Modifier
+//                .fillMaxWidth()
+//                .padding(vertical = 4.dp),
+//        value = cipherData.twoFactor,
+//        isError = checkOtp,
+//        onValueChange = { cipherData = cipherData.copy(twoFactor = it) }
+//    )
+//
+//    if (checkOtp) {
+//        Text(
+//            text = stringResource(R.string.Error_InvalidURI),
+//            color = MaterialTheme.colorScheme.error,
+//            fontSize = 12.sp,
+//            modifier =
+//                Modifier
+//                    .padding(horizontal = 6.dp),
+//        )
+//    }
 
-    var totpSecret by rememberMutableString(cipherData.twoFactor ?: "")
-
-    TextInputFieldBase(
-        label = stringResource(R.string.TwoFactorSecret),
+    Button(
+        onClick = {
+            navController.navigate(screen = Screen.TotpConfigure)
+        },
         modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(vertical = 4.dp),
-        value = totpSecret,
-        onValueChange = {
-            totpSecret = it
+                .padding(horizontal = 60.dp)
+                .padding(top = 8.dp)
+    ) {
+        Text(stringResource(R.string.TotpConfigure))
+    }
 
-            if (it.isBlank()) {
-                cipherData = cipherData.copy(twoFactor = null)
-                return@TextInputFieldBase
-            }
-
-            totp = totp.secret(OTPParameters.Secret(totpSecret))
-            cipherData = cipherData.copy(twoFactor = totp.build().buildOTPAuthURL())
-        }
-    )
+    if (!cipher.loginData?.twoFactor.isNullOrEmpty()) {
+        Text(
+            text = stringResource(R.string.TotpWasConfigured),
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 6.dp),
+        )
+    }
 
     SecondaryText(
         stringResource(R.string.OtherDetails),

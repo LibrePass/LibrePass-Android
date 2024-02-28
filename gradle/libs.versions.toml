@@ -30,7 +30,8 @@ process-phoenix = "2.1.2"
 
 test-espresso-core = "3.5.1"
 test-junit = "1.1.5"
-
+zxing = "3.5.2"
+zxing-android = "4.3.0"
 # Plugins
 android-application = "8.2.2"
 kotlin-ksp = "1.9.22-1.0.17"
@@ -70,6 +71,8 @@ kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-androi
 librepass-client = { module = "dev.medzik.librepass:client", version.ref = "librepass-client" }
 medzik-libcrypto = { module = "dev.medzik:libcrypto", version.ref = "medzik-libcrypto" }
 process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "process-phoenix" }
+zxing = { module = "com.google.zxing:core", version.ref = "zxing"}
+zxing-android = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxing-android"}
 
 test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "test-espresso-core" }
 test-junit = { module = "androidx.test.ext:junit", version.ref = "test-junit" }

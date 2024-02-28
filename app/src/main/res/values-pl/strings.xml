@@ -99,9 +99,14 @@
     <string name="TwoFactorAuthentication">Uwierzytelnianie dwuskładnikowe</string>
     <string name="TwoFactorSecret">Sekret dwuskładnikowego logowania</string>
     <string name="TwoFactorCode">Kod dwuetapowy</string>
+    <string name="TotpKey">Klucz uwierzytelniania (TOTP)</string>
     <string name="Error_InvalidURI">Adres URI jest nieprawidłowy</string>
     <string name="CardDetails">Dane karty</string>
     <string name="BiometricKeyInvalidated">Klucz biometryczny został unieważniony przez Androida</string>
     <string name="NewEmail">Nowy adres e-mail</string>
     <string name="ChangeEmail">Zmień adres e-mail</string>
+    <string name="TotpConfigure">Skonfiguruj TOTP</string>
+    <string name="ScanQrCode">Zeskanuj kod QR</string>
+    <string name="EnterKeyManually">Wprowadź klucz manualnie</string>
+    <string name="TotpWasConfigured">TOTP został skonfigurowany</string>
 </resources>

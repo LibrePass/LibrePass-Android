@@ -60,6 +60,7 @@ import dev.medzik.librepass.android.ui.screens.vault.CipherEditScreen
 import dev.medzik.librepass.android.ui.screens.vault.CipherViewScreen
 import dev.medzik.librepass.android.ui.screens.vault.PasswordGeneratorScreen
 import dev.medzik.librepass.android.ui.screens.vault.SearchScreen
+import dev.medzik.librepass.android.ui.screens.vault.TotpConfigure
 import dev.medzik.librepass.android.ui.screens.vault.VaultScreen
 
 enum class Argument : NavArgument {
@@ -197,6 +198,10 @@ enum class Screen(
         args = arrayOf(Argument.CipherId),
         customScaffold = true,
         composable = { CipherEditScreen(it) }
+    ),
+    TotpConfigure(
+        customScaffold = true,
+        composable = { TotpConfigure(it) }
     ),
     PasswordGenerator(
         topBar = {

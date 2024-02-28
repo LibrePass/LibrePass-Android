@@ -16,7 +16,6 @@
     <string name="AddServer">Add server</string>
     <string name="TwoFactorAuthentication">Two-factor authentication</string>
     <string name="TwoFactorSecret">Two-factor secret</string>
-    <string name="TotpKey">Authentication Key (TOTP)</string>
     <string name="BiometricSetup_Button_Cancel">Cancel</string>
     <string name="BiometricSetup_Subtitle">Turn on biometric authentication</string>
     <string name="BiometricSetup_Title">Setup</string>
@@ -113,7 +112,7 @@
     <string name="InvalidToken">Invalid login token</string>
     <string name="RateLimit">Too many requests</string>
     <string name="SendEmail">Internal server error - Failed to send email</string>
-    <string name="TotpConfigure">Configure TOTP</string>
+    <string name="ConfigureOtp">Configure two-factor</string>
     <string name="ScanQrCode">Scan QR code</string>
     <string name="EnterKeyManually">Enter key manually</string>
     <string name="DeleteTotp">Delete TOTP</string>

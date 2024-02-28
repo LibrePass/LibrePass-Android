@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
@@ -40,7 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
@@ -232,9 +232,7 @@ fun CipherViewScreen(
                 )
 
                 OtpField(
-                    title = stringResource(R.string.TwoFactorCode),
                     value = totpCode.chunked(totpDigits / 2).joinToString(" "),
-                    copy = true,
                     elapsed = totpElapsed,
                     period = totpPeriod,
                 )
@@ -372,67 +370,51 @@ fun CipherViewScreen(
 
 @Composable
 fun OtpField(
-    title: String,
     value: String?,
     elapsed: Int,
-    period: Int,
-    fontFamily: FontFamily? = null,
-    copy: Boolean = false,
+    period: Int
 ) {
     if (value.isNullOrEmpty()) return
 
     val clipboardManager = LocalClipboardManager.current
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
             modifier = Modifier.weight(1f)
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-            )
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.padding(top = 6.dp, end = 6.dp)
-                ) {
-                    val progress by animateFloatAsState(
-                        targetValue = 1 - (elapsed.toFloat() / period.toFloat()),
-                        animationSpec = tween(500),
-                        label = ""
-                    )
-                    CircularProgressIndicator(
-                        progress = { progress },
-                    )
-                    Text(
-                        text = (period - elapsed).toString(),
-                        modifier = Modifier.padding(4.dp)
-                    )
-                }
-
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.padding(end = 6.dp)
+            ) {
+                val progress by animateFloatAsState(
+                    targetValue = 1 - (elapsed.toFloat() / period.toFloat()),
+                    animationSpec = tween(500),
+                    label = ""
+                )
+                CircularProgressIndicator(
+                    progress = { progress },
+                    modifier = Modifier.size(36.dp)
+                )
                 Text(
-                    text = value,
-                    fontFamily = fontFamily,
-                    fontSize = 20.sp,
-                    style = MaterialTheme.typography.bodyMedium
+                    text = (period - elapsed).toString(),
+                    modifier = Modifier.padding(2.dp)
                 )
             }
+
+            Text(
+                text = value,
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
         }
 
-        Row {
-            if (copy) {
-                IconButton(onClick = { clipboardManager.setText(AnnotatedString(value)) }) {
-                    Icon(
-                        imageVector = Icons.Default.ContentCopy,
-                        contentDescription = null
-                    )
-                }
-            }
+        IconButton(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            onClick = { clipboardManager.setText(AnnotatedString(value)) }
+        ) {
+            Icon(
+                imageVector = Icons.Default.ContentCopy,
+                contentDescription = null
+            )
         }
     }
 }

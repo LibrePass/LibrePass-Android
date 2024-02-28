@@ -366,11 +366,11 @@ fun CipherViewScreen(
 
 @Composable
 fun OtpField(
-    value: String?,
+    value: String,
     elapsed: Int,
     period: Int
 ) {
-    if (value.isNullOrEmpty()) return
+    if (value.isEmpty()) return
 
     val clipboardManager = LocalClipboardManager.current
 
@@ -380,7 +380,7 @@ fun OtpField(
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier.padding(end = 6.dp)
+                modifier = Modifier.padding(end = 8.dp)
             ) {
                 val progress by animateFloatAsState(
                     targetValue = 1 - (elapsed.toFloat() / period.toFloat()),

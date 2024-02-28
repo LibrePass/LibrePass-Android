@@ -94,12 +94,12 @@ fun CipherViewScreen(
             totpCode = TOTPGenerator.now(params)
 
             while (true) {
-                delay(TimeUnit.SECONDS.toMillis(1))
-
                 totpElapsed = calculateElapsed().toInt()
                 if (totpElapsed == 30) {
                     totpCode = TOTPGenerator.now(params)
                 }
+
+                delay(TimeUnit.SECONDS.toMillis(1))
             }
         }
     }

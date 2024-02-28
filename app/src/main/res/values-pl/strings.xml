@@ -112,4 +112,14 @@
     <string name="Digits">Cyfry</string>
     <string name="Period">Okres</string>
     <string name="Counter">Licznik</string>
+    <string name="Database">Nieznany błąd serwera bazy danych</string>
+    <string name="Duplicated">Zduplikowano</string>
+    <string name="CollectionNotFound">Nie odnaleziono kolekcji</string>
+    <string name="InvalidBody">Nieprawidłowe zapytanie API</string>
+    <string name="InvalidToken">Nieprawidłowy token logowania</string>
+    <string name="CipherNotFound">Nie odnaleziono narzędzia Cipher</string>
+    <string name="InvalidCredentials">Nieprawidłowe dane uwierzytelniające</string>
+    <string name="EmailNotVerified">Zweryfikuj swój adres e-mail</string>
+    <string name="RateLimit">Zbyt wiele zapytań</string>
+    <string name="SendEmail">Błąd zewnętrznego serwera - Nie udało się wysłać wiadomości e-mail</string>
 </resources>

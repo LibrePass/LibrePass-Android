@@ -143,7 +143,7 @@ fun OtpConfigure(
                 }
             } else {
                 var beginParams: OTPParameters? = null
-                if (cipher != null) {
+                if (cipher?.loginData?.twoFactor != null) {
                     beginParams = OTPParser.parse(cipher.loginData?.twoFactor)
                 }
 

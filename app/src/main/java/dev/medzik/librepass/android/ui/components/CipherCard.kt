@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Notes
@@ -38,7 +39,6 @@ import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
-import org.bouncycastle.asn1.x500.style.RFC4519Style.title
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -80,7 +80,7 @@ fun CipherCard(
             }
             CipherType.SecureNote -> {
                 Image(
-                    Icons.Default.Notes,
+                    Icons.AutoMirrored.Filled.Notes,
                     contentDescription = null,
                 )
             }

@@ -58,9 +58,9 @@ import dev.medzik.librepass.android.ui.screens.settings.account.SettingsAccountD
 import dev.medzik.librepass.android.ui.screens.vault.CipherAddScreen
 import dev.medzik.librepass.android.ui.screens.vault.CipherEditScreen
 import dev.medzik.librepass.android.ui.screens.vault.CipherViewScreen
+import dev.medzik.librepass.android.ui.screens.vault.OtpConfigure
 import dev.medzik.librepass.android.ui.screens.vault.PasswordGeneratorScreen
 import dev.medzik.librepass.android.ui.screens.vault.SearchScreen
-import dev.medzik.librepass.android.ui.screens.vault.TotpConfigure
 import dev.medzik.librepass.android.ui.screens.vault.VaultScreen
 
 enum class Argument : NavArgument {
@@ -201,7 +201,7 @@ enum class Screen(
     ),
     TotpConfigure(
         customScaffold = true,
-        composable = { TotpConfigure(it) }
+        composable = { OtpConfigure(it) }
     ),
     PasswordGenerator(
         topBar = {
@@ -314,7 +314,7 @@ fun LibrePassNavigation(viewModel: LibrePassViewModel = hiltViewModel()) {
         viewModel.credentialRepository.get() ?: return Screen.Welcome.getRoute()
 
         // if user secrets are not set, show unlock screen
-        if (viewModel.vault.aesKey.size == 0)
+        if (viewModel.vault.aesKey.isEmpty())
             return Screen.Unlock.getRoute()
 
         // else where the user secrets are set, show vault screen

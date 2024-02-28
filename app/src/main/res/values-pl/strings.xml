@@ -108,5 +108,10 @@
     <string name="TotpConfigure">Skonfiguruj TOTP</string>
     <string name="ScanQrCode">Zeskanuj kod QR</string>
     <string name="EnterKeyManually">Wprowadź klucz manualnie</string>
-    <string name="TotpWasConfigured">TOTP został skonfigurowany</string>
+    <string name="DeleteTotp">Usuń TOTP</string>
+    <string name="Type">Typ</string>
+    <string name="Algorithm">Algorytm</string>
+    <string name="Digits">Cyfry</string>
+    <string name="Period">Okres</string>
+    <string name="Counter">Licznik</string>
 </resources>

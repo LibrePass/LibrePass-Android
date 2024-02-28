@@ -99,7 +99,6 @@
     <string name="VaultTimeout">वॉल्ट टाइमआउट</string>
     <string name="TwoFactorAuthentication">द्वि-कारक प्रमाणीकरण</string>
     <string name="TwoFactorSecret">द्वि-कारक रहस्य</string>
-    <string name="TwoFactorCode">द्वि-कारक कोड</string>
     <string name="CipherNotFound">Cipher नहीं मिला</string>
     <string name="CollectionNotFound">संग्रह नहीं मिला</string>
     <string name="Database">अज्ञात सर्वर डाटाबेस त्रुटि</string>
@@ -110,8 +109,6 @@
     <string name="InvalidToken">अमान्य लॉगिन टोकन</string>
     <string name="RateLimit">बहुत सारे अनुरोध</string>
     <string name="SendEmail">आंतरिक सर्वर त्रुटि - ईमेल भेजने में विफल</string>
-    <string name="TotpKey">प्रमाणीकरण कुंजी (TOTP)</string>
-    <string name="TotpConfigure">TOTP को कॉन्फ़िगर करें</string>
     <string name="ScanQrCode">स्कैन QR कोड</string>
     <string name="EnterKeyManually">मैन्युअल रूप से कुंजी दर्ज करें</string>
     <string name="DeleteTotp">ToTP हटाएं</string>

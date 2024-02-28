@@ -127,4 +127,8 @@ dependencies {
     // for preview support
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.tooling.preview)
+
+    // zxing
+    implementation(libs.zxing.android) { isTransitive = false }
+    implementation(libs.zxing)
 }

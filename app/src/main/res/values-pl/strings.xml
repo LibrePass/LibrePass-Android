@@ -98,7 +98,6 @@
     <string name="optional">opcjonalnie</string>
     <string name="TwoFactorAuthentication">Uwierzytelnianie dwuskładnikowe</string>
     <string name="TwoFactorSecret">Sekret dwuskładnikowego logowania</string>
-    <string name="TwoFactorCode">Kod dwuetapowy</string>
     <string name="TotpKey">Klucz uwierzytelniania (TOTP)</string>
     <string name="Error_InvalidURI">Adres URI jest nieprawidłowy</string>
     <string name="CardDetails">Dane karty</string>

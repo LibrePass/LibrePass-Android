@@ -3,6 +3,7 @@ package dev.medzik.librepass.android.ui.components
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -102,7 +103,7 @@ fun TopBarTwoColorPreview() {
 fun TopBarBackIcon(navController: NavController) {
     IconButton(onClick = { navController.popBackStack() }) {
         Icon(
-            imageVector = Icons.Default.ArrowBack,
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = null
         )
     }

@@ -50,7 +50,7 @@ fun OtpConfigure(
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(R.string.TotpConfigure),
+                title = stringResource(R.string.ConfigureOtp),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }
@@ -108,9 +108,7 @@ fun OtpConfigure(
                                     text = stringResource(R.string.Error_InvalidURI),
                                     color = MaterialTheme.colorScheme.error,
                                     fontSize = 18.sp,
-                                    modifier =
-                                        Modifier
-                                            .padding(6.dp),
+                                    modifier = Modifier.padding(6.dp)
                                 )
                             }
                         }
@@ -149,7 +147,7 @@ fun OtpConfigure(
                     beginParams = OTPParser.parse(cipher.loginData?.twoFactor)
                 }
 
-                var totpSecret by rememberMutable(beginParams?.secret?.value?.toString() ?: "")
+                var totpSecret by rememberMutable(beginParams?.secret?.encoded?.toString() ?: "")
 
                 var digits by rememberMutable(beginParams?.digits?.value?.toString() ?: "6")
                 var type by rememberMutable(beginParams?.type ?: OTPType.TOTP)
@@ -159,7 +157,7 @@ fun OtpConfigure(
                 var counter by rememberMutable(beginParams?.counter?.value?.toString() ?: "0")
 
                 TextInputFieldBase(
-                    label = stringResource(R.string.TotpKey),
+                    label = stringResource(R.string.TwoFactorSecret),
                     modifier =
                         Modifier
                             .fillMaxWidth()
@@ -218,7 +216,7 @@ fun OtpConfigure(
                 var otpUri by rememberMutable("")
                 val otpCodeError =
                     runCatching {
-                        otpUri = calculateOtpCode(totpSecret, type, digits.toInt(), period.toInt(), counter.toLong())
+                        otpUri = generateOtpUri(totpSecret, type, digits.toInt(), period.toInt(), counter.toLong())
                     }.isSuccess
 
                 Button(
@@ -251,7 +249,7 @@ fun OtpConfigure(
     }
 }
 
-fun calculateOtpCode(
+fun generateOtpUri(
     secret: String,
     type: OTPType,
     digits: Int,

@@ -178,7 +178,7 @@ fun CipherEditFieldsLogin(
     Button(
         onClick = {
             navController.navigate(
-                screen = Screen.TotpConfigure,
+                screen = Screen.ConfigureOtp,
                 args = arrayOf(Argument.CipherId to cipher.id.toString())
             )
         },
@@ -188,7 +188,7 @@ fun CipherEditFieldsLogin(
                 .padding(horizontal = 60.dp)
                 .padding(top = 8.dp)
     ) {
-        Text(stringResource(R.string.TotpConfigure))
+        Text(stringResource(R.string.ConfigureOtp))
     }
 
     if (!cipher.loginData?.twoFactor.isNullOrEmpty()) {

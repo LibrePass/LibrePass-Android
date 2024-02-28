@@ -17,29 +17,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import dev.medzik.android.components.ComboBoxDropdown
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.Permission
 import dev.medzik.librepass.android.ui.components.QrCodeScanner
 import dev.medzik.librepass.android.ui.components.TextInputFieldBase
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
+import dev.medzik.otp.OTPParameters
 import dev.medzik.otp.OTPParser
+import dev.medzik.otp.OTPType
 import dev.medzik.otp.TOTPGenerator
 
 @Composable
-fun TotpConfigure(
+fun OtpConfigure(
     navController: NavController,
-    viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    var totpCode by rememberMutable("")
-
     Scaffold(
         topBar = {
             TopBar(
@@ -50,10 +49,10 @@ fun TotpConfigure(
     ) { innerPadding ->
         Column(
             modifier =
-                Modifier
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState())
+            Modifier
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             var qrScanning by rememberMutable(true)
 
@@ -62,9 +61,9 @@ fun TotpConfigure(
                     text = stringResource(R.string.ScanQrCode),
                     fontSize = 24.sp,
                     modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
+                    Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
                     textAlign = TextAlign.Center
                 )
 
@@ -89,7 +88,7 @@ fun TotpConfigure(
                                 totpUri = it
 
                                 if (isTotpValid) {
-                                    navController.previousBackStackEntry!!.savedStateHandle["totpUri"] = totpUri
+                                    navController.previousBackStackEntry!!.savedStateHandle["otpUri"] = totpUri
                                     navController.popBackStack()
                                 }
                             }
@@ -116,9 +115,9 @@ fun TotpConfigure(
                             fontSize = 18.sp,
                             color = MaterialTheme.colorScheme.error,
                             modifier =
-                                Modifier
-                                    .fillMaxSize()
-                                    .padding(16.dp),
+                            Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -129,53 +128,127 @@ fun TotpConfigure(
                         qrScanning = false
                     },
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 60.dp)
-                            .padding(top = 8.dp)
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 60.dp)
+                        .padding(top = 8.dp)
                 ) {
                     Text(stringResource(R.string.EnterKeyManually))
                 }
             } else {
+
+                var totpSecret by rememberMutable("")
+
+                var digits by rememberMutable("6")
+                var type by rememberMutable(OTPType.TOTP)
+                var algorithm by rememberMutable(OTPParameters.Algorithm.SHA256)
+
+                var period by rememberMutable("30")
+                var counter by rememberMutable("0")
+
                 TextInputFieldBase(
                     label = stringResource(R.string.TotpKey),
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                    value = totpCode,
-                    onValueChange = { totpCode = it }
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    value = totpSecret,
+                    onValueChange = { totpSecret = it }
                 )
+
+                ComboBoxDropdown(
+                    values = OTPType.entries.toTypedArray(),
+                    value = type,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = {
+                        Text(stringResource(R.string.Type))
+                    },
+                    onValueChange = { type = it }
+                )
+
+                ComboBoxDropdown(
+                    values = OTPParameters.Algorithm.entries.toTypedArray(),
+                    value = algorithm,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = {
+                        Text(stringResource(R.string.Algorithm))
+                    },
+                    onValueChange = { algorithm = it }
+                )
+
+                TextInputFieldBase(
+                    label = stringResource(R.string.Digits),
+                    modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    keyboardType = KeyboardType.Number,
+                    value = digits,
+                    onValueChange = { digits = it}
+                )
+
+                TextInputFieldBase(
+                    label = if (type == OTPType.TOTP) stringResource(R.string.Period) else stringResource(R.string.Counter),
+                    modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    keyboardType = KeyboardType.Number,
+                    value = (if (type == OTPType.TOTP) period else counter).toString(),
+                    onValueChange = {
+                        if (type == OTPType.TOTP)
+                            period = it
+                        else
+                            counter = it
+                    }
+                )
+
+                var otpUri by rememberMutable("")
+                val otpCodeError = runCatching {
+                    otpUri = calculateOtpCode(totpSecret,type,digits.toInt(),period.toInt(),counter.toLong())
+                }.isSuccess
 
                 Button(
                     onClick = { qrScanning = true },
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 60.dp)
-                            .padding(top = 8.dp)
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 60.dp)
+                        .padding(top = 8.dp)
                 ) {
                     Text(stringResource(R.string.ScanQrCode))
                 }
 
                 Button(
                     onClick = {
-                        // TODO: add building URI from totpCode
-
-                        // remove remember
-                        // val totpCodeValue = totpCode
-                        // navController.previousBackStackEntry!!.savedStateHandle["totpUri"] = totpCodeValue
+                        navController.previousBackStackEntry!!.savedStateHandle["otpUri"] = otpUri
                         navController.popBackStack()
                     },
+                    enabled = totpSecret.isNotEmpty() && otpCodeError,
                     modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 60.dp)
-                            .padding(top = 8.dp)
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 60.dp)
+                        .padding(top = 8.dp)
                 ) {
                     Text(stringResource(R.string.Save))
                 }
             }
         }
     }
+}
+
+fun calculateOtpCode(secret: String,type: OTPType,digits: Int,period: Int,counter: Long): String {
+    val otpBuilder = OTPParameters.builder()
+        .type(type)
+        .digits(OTPParameters.Digits.valueOf(digits))
+        .secret(OTPParameters.Secret(secret))
+        .label(OTPParameters.Label(""))
+
+    when (type) {
+        OTPType.TOTP -> otpBuilder.period(OTPParameters.Period.valueOf(period))
+        OTPType.HOTP -> otpBuilder.counter(OTPParameters.Counter(counter))
+    }
+
+    return otpBuilder.build().buildOTPAuthURL()
 }

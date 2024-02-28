@@ -117,5 +117,10 @@
     <string name="TotpConfigure">Configure TOTP</string>
     <string name="ScanQrCode">Scan QR code</string>
     <string name="EnterKeyManually">Enter key manually</string>
-    <string name="TotpWasConfigured">TOTP is already configured</string>
+    <string name="DeleteTotp">Delete TOTP</string>
+    <string name="Type">Type</string>
+    <string name="Algorithm">Algorithm</string>
+    <string name="Digits">Digits</string>
+    <string name="Period">Period</string>
+    <string name="Counter">Counter</string>
 </resources>

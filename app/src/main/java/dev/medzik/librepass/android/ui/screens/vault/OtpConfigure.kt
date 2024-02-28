@@ -151,7 +151,7 @@ fun OtpConfigure(
 
                 var digits by rememberMutable(beginParams?.digits?.value?.toString() ?: "6")
                 var type by rememberMutable(beginParams?.type ?: OTPType.TOTP)
-                var algorithm by rememberMutable(beginParams?.algorithm ?: OTPParameters.Algorithm.SHA256)
+                var algorithm by rememberMutable(beginParams?.algorithm ?: OTPParameters.Algorithm.SHA1)
 
                 var period by rememberMutable(beginParams?.period?.value?.toString() ?: "30")
                 var counter by rememberMutable(beginParams?.counter?.value?.toString() ?: "0")
@@ -216,7 +216,7 @@ fun OtpConfigure(
                 var otpUri by rememberMutable("")
                 val otpCodeError =
                     runCatching {
-                        otpUri = generateOtpUri(totpSecret, type, digits.toInt(), period.toInt(), counter.toLong())
+                        otpUri = generateOtpUri(totpSecret, type, digits.toInt(), period.toInt(), counter.toLong(), algorithm)
                     }.isSuccess
 
                 Button(
@@ -254,7 +254,8 @@ fun generateOtpUri(
     type: OTPType,
     digits: Int,
     period: Int,
-    counter: Long
+    counter: Long,
+    algorithm: OTPParameters.Algorithm
 ): String {
     val otpBuilder =
         OTPParameters.builder()
@@ -262,6 +263,7 @@ fun generateOtpUri(
             .digits(OTPParameters.Digits.valueOf(digits))
             .secret(OTPParameters.Secret(secret))
             .label(OTPParameters.Label(""))
+            .algorithm(algorithm)
 
     when (type) {
         OTPType.TOTP -> otpBuilder.period(OTPParameters.Period.valueOf(period))

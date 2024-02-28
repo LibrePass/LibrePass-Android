@@ -200,6 +200,7 @@ enum class Screen(
         composable = { CipherEditScreen(it) }
     ),
     TotpConfigure(
+        args = arrayOf(Argument.CipherId),
         customScaffold = true,
         composable = { OtpConfigure(it) }
     ),

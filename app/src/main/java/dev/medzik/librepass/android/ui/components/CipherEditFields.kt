@@ -23,6 +23,7 @@ import dev.medzik.android.components.SecondaryText
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.data.CipherLoginData
@@ -176,7 +177,10 @@ fun CipherEditFieldsLogin(
 
     Button(
         onClick = {
-            navController.navigate(screen = Screen.TotpConfigure)
+            navController.navigate(
+                screen = Screen.TotpConfigure,
+                args = arrayOf(Argument.CipherId to cipher.id.toString())
+            )
         },
         modifier =
             Modifier

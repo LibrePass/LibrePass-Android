@@ -1,5 +1,6 @@
 package dev.medzik.librepass.android.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -15,9 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import dev.medzik.android.components.SecondaryText
@@ -44,12 +43,13 @@ fun CipherEditFieldsLogin(
         ?.getLiveData<String>("password")?.observeForever {
             cipherData = cipherData.copy(password = it)
         }
-    // observe totp uri from navController
-    // used to get totp uri from totp configuration screen
+    // observe otp uri from navController
+    // used to get otp uri from otp configuration screen
     navController
         .currentBackStackEntry
         ?.savedStateHandle
-        ?.getLiveData<String>("totpUri")?.observeForever {
+        ?.getLiveData<String>("otpUri")?.observeForever {
+            Log.d("OTP_OBSERVABLE", "Received URI: $it")
             cipherData = cipherData.copy(twoFactor = it)
         }
     // observe for cipher from backstack
@@ -174,34 +174,6 @@ fun CipherEditFieldsLogin(
         modifier = Modifier.padding(top = 8.dp)
     )
 
-//    val checkOtp =
-//        !cipher.loginData?.twoFactor.isNullOrEmpty() &&
-//            runCatching {
-//                TOTPGenerator.fromURI(URI(cipher.loginData?.twoFactor)).now()
-//            }.isFailure
-//
-//    TextInputFieldBase(
-//        label = stringResource(R.string.AuthenticationKey),
-//        modifier =
-//            Modifier
-//                .fillMaxWidth()
-//                .padding(vertical = 4.dp),
-//        value = cipherData.twoFactor,
-//        isError = checkOtp,
-//        onValueChange = { cipherData = cipherData.copy(twoFactor = it) }
-//    )
-//
-//    if (checkOtp) {
-//        Text(
-//            text = stringResource(R.string.Error_InvalidURI),
-//            color = MaterialTheme.colorScheme.error,
-//            fontSize = 12.sp,
-//            modifier =
-//                Modifier
-//                    .padding(horizontal = 6.dp),
-//        )
-//    }
-
     Button(
         onClick = {
             navController.navigate(screen = Screen.TotpConfigure)
@@ -216,15 +188,16 @@ fun CipherEditFieldsLogin(
     }
 
     if (!cipher.loginData?.twoFactor.isNullOrEmpty()) {
-        Text(
-            text = stringResource(R.string.TotpWasConfigured),
-            fontSize = 14.sp,
-            textAlign = TextAlign.Center,
+        Button(
+            onClick = { cipherData = cipherData.copy(twoFactor = null) },
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 6.dp),
-        )
+                    .padding(horizontal = 60.dp)
+                    .padding(top = 8.dp)
+        ) {
+            Text(stringResource(R.string.DeleteTotp))
+        }
     }
 
     SecondaryText(

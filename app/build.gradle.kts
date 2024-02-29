@@ -112,11 +112,11 @@ dependencies {
 
     implementation(libs.commons.lang3)
 
-    // local modules
-    implementation(project(":components"))
-    implementation(project(":crypto"))
     implementation(project(":m3-pullrefresh"))
-    implementation(project(":utils"))
+
+    implementation(libs.medzik.android.components)
+    implementation(libs.medzik.android.crypto)
+    implementation(libs.medzik.android.utils)
 
     // for splash screen with material3 and dynamic color
     implementation(libs.google.material)

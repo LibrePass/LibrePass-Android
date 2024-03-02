@@ -1,0 +1,1 @@
+* Fixed crashing when biometric unlocking failed

@@ -115,9 +115,9 @@ fun VaultScreen(
                         deviceAuthentication = true
                     ),
                 onAuthenticationSucceeded = { cipher ->
-                    scope.launch(Dispatchers.IO) {
-                        val encryptedData = KeyStore.encrypt(cipher, viewModel.vault.aesKey)
+                    val encryptedData = KeyStore.encrypt(cipher, viewModel.vault.aesKey)
 
+                    scope.launch(Dispatchers.IO) {
                         viewModel.credentialRepository.update(
                             credentials.copy(
                                 biometricReSetup = false,

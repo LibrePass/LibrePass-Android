@@ -109,10 +109,11 @@ fun VaultScreen(
         if (checkIfBiometricAvailable(context)) {
             showBiometricPromptForSetup(
                 context as MainActivity,
-                KeyStore.initForEncryption(
-                    KeyAlias.BiometricAesKey,
-                    deviceAuthentication = true
-                ),
+                cipher =
+                    KeyStore.initForEncryption(
+                        KeyAlias.BiometricAesKey,
+                        deviceAuthentication = true
+                    ),
                 onAuthenticationSucceeded = { cipher ->
                     scope.launch(Dispatchers.IO) {
                         val encryptedData = KeyStore.encrypt(cipher, viewModel.vault.aesKey)
@@ -125,17 +126,15 @@ fun VaultScreen(
                             )
                         )
                     }
-
-                    navController.navigate(
-                        screen = Screen.Vault,
-                        disableBack = true
-                    )
                 },
                 onAuthenticationFailed = {
-                    navController.navigate(
-                        screen = Screen.Vault,
-                        disableBack = true
-                    )
+                    scope.launch(Dispatchers.IO) {
+                        viewModel.credentialRepository.update(
+                            credentials.copy(
+                                biometricReSetup = false
+                            )
+                        )
+                    }
                 }
             )
         } else {

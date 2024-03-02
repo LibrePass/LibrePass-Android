@@ -117,4 +117,5 @@
     <string name="Digits">अंक</string>
     <string name="Period">अवधि</string>
     <string name="Counter">काउंटर</string>
+    <string name="ConfigureOtp">द्वि-कारक कॉन्फ़िगर करें</string>
 </resources>

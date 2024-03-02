@@ -150,7 +150,11 @@ fun VaultScreen(
 
     LaunchedEffect(scope) {
         if (credentials.biometricReSetup) {
-            reSetupBiometrics()
+            try {
+                reSetupBiometrics()
+            } catch (e: Exception) {
+                e.showErrorToast(context)
+            }
         }
 
         // get local stored ciphers

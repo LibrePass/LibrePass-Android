@@ -36,6 +36,7 @@ import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
 import dev.medzik.librepass.android.utils.debugLog
 import dev.medzik.librepass.android.utils.showBiometricPromptForUnlock
+import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.utils.Cryptography.computeAesKey
 import dev.medzik.librepass.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
@@ -140,6 +141,8 @@ fun UnlockScreen(
             } catch (e: Exception) {
                 e.debugLog()
             }
+        } catch (e: Exception) {
+            e.showErrorToast(context)
         }
     }
 

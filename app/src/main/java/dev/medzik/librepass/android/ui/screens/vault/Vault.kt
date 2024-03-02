@@ -31,6 +31,7 @@ import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
+import dev.medzik.librepass.android.utils.haveNetworkConnection
 import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
@@ -169,7 +170,9 @@ fun VaultScreen(
         ciphers = viewModel.vault.sortAlphabetically()
 
         // sync remote ciphers
-        updateCiphers()
+        if (context.haveNetworkConnection()) {
+            updateCiphers()
+        }
     }
 
     val pullRefreshState = rememberPullRefreshState(refreshing, ::updateCiphers)

@@ -1,0 +1,2 @@
+* Don't run keystore encryption in coroutine
+* Don't show toast with "Network error" after app launch

@@ -1,0 +1,2 @@
+* Fixed crashing on some devices - disabled device authentication for
+* Bump AGP to 8.3.0

@@ -71,7 +71,7 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
             context as MainActivity,
             KeyStore.initForEncryption(
                 KeyAlias.BiometricAesKey,
-                deviceAuthentication = true
+                deviceAuthentication = false
             ),
             onAuthenticationSucceeded = { cipher ->
                 val encryptedData =

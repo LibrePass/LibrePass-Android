@@ -113,7 +113,7 @@ fun VaultScreen(
                 cipher =
                     KeyStore.initForEncryption(
                         KeyAlias.BiometricAesKey,
-                        deviceAuthentication = true
+                        deviceAuthentication = false
                     ),
                 onAuthenticationSucceeded = { cipher ->
                     val encryptedData = KeyStore.encrypt(cipher, viewModel.vault.aesKey)

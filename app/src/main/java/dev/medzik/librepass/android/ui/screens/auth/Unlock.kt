@@ -111,7 +111,7 @@ fun UnlockScreen(
                 KeyStore.initForDecryption(
                     alias = KeyAlias.BiometricAesKey,
                     initializationVector = Hex.decode(credentials.biometricAesKeyIV!!),
-                    deviceAuthentication = true
+                    deviceAuthentication = false
                 ),
                 onAuthenticationSucceeded = { cipher ->
                     viewModel.vault.aesKey = KeyStore.decrypt(cipher, credentials.biometricAesKey!!)

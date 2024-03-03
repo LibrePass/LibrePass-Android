@@ -115,7 +115,7 @@
     <string name="ConfigureOtp">Configure two-factor</string>
     <string name="ScanQrCode">Scan QR code</string>
     <string name="EnterKeyManually">Enter key manually</string>
-    <string name="DeleteTotp">Delete TOTP</string>
+    <string name="DeleteTotp">Delete two-factor</string>
     <string name="Type">Type</string>
     <string name="Algorithm">Algorithm</string>
     <string name="Digits">Digits</string>

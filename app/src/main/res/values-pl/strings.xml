@@ -106,7 +106,7 @@
     <string name="ConfigureOtp">Skonfiguruj 2fa</string>
     <string name="ScanQrCode">Zeskanuj kod QR</string>
     <string name="EnterKeyManually">Wprowadź klucz manualnie</string>
-    <string name="DeleteTotp">Usuń TOTP</string>
+    <string name="DeleteTotp">Usuń 2fa</string>
     <string name="Type">Typ</string>
     <string name="Algorithm">Algorytm</string>
     <string name="Digits">Cyfry</string>

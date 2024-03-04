@@ -20,7 +20,7 @@ androidx-datastore = "1.1.0-beta01"
 
 medzik-android-utils = "1.3.0"
 
-dagger = "2.50"
+dagger = "2.51"
 hilt = "1.2.0"
 
 coil-compose = "2.6.0"

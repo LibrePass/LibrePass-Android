@@ -112,10 +112,10 @@
     <string name="InvalidToken">Invalid login token</string>
     <string name="RateLimit">Too many requests</string>
     <string name="SendEmail">Internal server error - Failed to send email</string>
-    <string name="ConfigureOtp">Configure two-factor</string>
+    <string name="ConfigureTwoFactor">Configure two-factor</string>
     <string name="ScanQrCode">Scan QR code</string>
     <string name="EnterKeyManually">Enter key manually</string>
-    <string name="DeleteTotp">Delete two-factor</string>
+    <string name="DeleteTwoFactor">Delete two-factor</string>
     <string name="Type">Type</string>
     <string name="Algorithm">Algorithm</string>
     <string name="Digits">Digits</string>

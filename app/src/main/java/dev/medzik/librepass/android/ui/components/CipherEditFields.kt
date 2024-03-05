@@ -188,7 +188,7 @@ fun CipherEditFieldsLogin(
                 .padding(horizontal = 60.dp)
                 .padding(top = 8.dp)
     ) {
-        Text(stringResource(R.string.ConfigureOtp))
+        Text(stringResource(R.string.ConfigureTwoFactor))
     }
 
     if (!cipher.loginData?.twoFactor.isNullOrEmpty()) {
@@ -200,7 +200,7 @@ fun CipherEditFieldsLogin(
                     .padding(horizontal = 60.dp)
                     .padding(top = 8.dp)
         ) {
-            Text(stringResource(R.string.DeleteTotp))
+            Text(stringResource(R.string.DeleteTwoFactor))
         }
     }
 

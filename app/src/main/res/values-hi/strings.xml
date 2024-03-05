@@ -111,11 +111,11 @@
     <string name="SendEmail">आंतरिक सर्वर त्रुटि - ईमेल भेजने में विफल</string>
     <string name="ScanQrCode">स्कैन QR कोड</string>
     <string name="EnterKeyManually">मैन्युअल रूप से कुंजी दर्ज करें</string>
-    <string name="DeleteTotp">द्वि-कारक हटाएं</string>
+    <string name="DeleteTwoFactor">द्वि-कारक हटाएं</string>
     <string name="Type">प्रकार</string>
     <string name="Algorithm">एल्गोरिथ्म</string>
     <string name="Digits">अंक</string>
     <string name="Period">अवधि</string>
     <string name="Counter">काउंटर</string>
-    <string name="ConfigureOtp">द्वि-कारक कॉन्फ़िगर करें</string>
+    <string name="ConfigureTwoFactor">द्वि-कारक कॉन्फ़िगर करें</string>
 </resources>

@@ -103,10 +103,10 @@
     <string name="BiometricKeyInvalidated">Klucz biometryczny został unieważniony przez Androida</string>
     <string name="NewEmail">Nowy adres e-mail</string>
     <string name="ChangeEmail">Zmień adres e-mail</string>
-    <string name="ConfigureOtp">Skonfiguruj 2fa</string>
+    <string name="ConfigureTwoFactor">Skonfiguruj 2fa</string>
     <string name="ScanQrCode">Zeskanuj kod QR</string>
     <string name="EnterKeyManually">Wprowadź klucz manualnie</string>
-    <string name="DeleteTotp">Usuń 2fa</string>
+    <string name="DeleteTwoFactor">Usuń 2fa</string>
     <string name="Type">Typ</string>
     <string name="Algorithm">Algorytm</string>
     <string name="Digits">Cyfry</string>

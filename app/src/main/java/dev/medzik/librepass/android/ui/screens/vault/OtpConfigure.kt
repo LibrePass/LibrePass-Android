@@ -50,7 +50,7 @@ fun OtpConfigure(
     Scaffold(
         topBar = {
             TopBar(
-                title = stringResource(R.string.ConfigureOtp),
+                title = stringResource(R.string.ConfigureTwoFactor),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         }

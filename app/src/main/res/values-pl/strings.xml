@@ -68,7 +68,7 @@
     <string name="ServerAddress">Adres serwera</string>
     <string name="Server_Choice_Dialog">Wybierz serwer</string>
     <string name="Server_Choice_Dialog_AddCustom">Dodaj samodzielnie hostowany</string>
-    <string name="Server_Official">Oficialny</string>
+    <string name="Server_Official">Oficjalny</string>
     <string name="Settings">Ustawienia</string>
     <string name="Settings_Account">Konto</string>
     <string name="Settings_Appearance">Wygląd</string>

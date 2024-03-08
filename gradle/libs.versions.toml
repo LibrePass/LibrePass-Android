@@ -32,7 +32,7 @@ process-phoenix = "2.1.2"
 
 test-espresso-core = "3.5.1"
 test-junit = "1.1.5"
-zxing = "3.5.2"
+zxing = "3.5.3"
 zxing-android = "4.3.0"
 # Plugins
 android-application = "8.3.0"

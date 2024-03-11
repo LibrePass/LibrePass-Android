@@ -28,7 +28,7 @@ google-material = "1.11.0"
 kotlinx-coroutines = "1.8.0"
 librepass-client = "1.5.0"
 medzik-libcrypto = "1.2.0"
-process-phoenix = "2.1.2"
+process-phoenix = "2.2.0"
 
 test-espresso-core = "3.5.1"
 test-junit = "1.1.5"

@@ -4,7 +4,7 @@ android-sdk-target = "34"
 android-sdk-compile = "34"
 
 commons-lang3 = "3.14.0"
-compose = "1.6.2"
+compose = "1.6.3"
 compose-compiler = "1.5.10"
 compose-lifecycle-runtime = "2.7.0"
 compose-material3 = "1.2.0"

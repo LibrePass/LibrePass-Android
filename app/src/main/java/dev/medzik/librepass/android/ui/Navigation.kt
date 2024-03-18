@@ -324,6 +324,8 @@ fun LibrePassNavigation(viewModel: LibrePassViewModel = hiltViewModel()) {
         return Screen.Vault.getRoute()
     }
 
+    val transmissionDurationMills = 400
+
     NavHost(
         navController,
         startDestination = remember { getStartRoute() },
@@ -335,25 +337,25 @@ fun LibrePassNavigation(viewModel: LibrePassViewModel = hiltViewModel()) {
                 enterTransition = {
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Left,
-                        animationSpec = tween(500)
+                        animationSpec = tween(transmissionDurationMills)
                     )
                 },
                 exitTransition = {
                     slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Left,
-                        animationSpec = tween(500)
+                        animationSpec = tween(transmissionDurationMills)
                     )
                 },
                 popEnterTransition = {
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Right,
-                        animationSpec = tween(500)
+                        animationSpec = tween(transmissionDurationMills)
                     )
                 },
                 popExitTransition = {
                     slideOutOfContainer(
                         AnimatedContentTransitionScope.SlideDirection.Right,
-                        animationSpec = tween(500)
+                        animationSpec = tween(transmissionDurationMills)
                     )
                 }
             ) {

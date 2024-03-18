@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -47,8 +48,8 @@ fun CipherEditScreen(
 ) {
     val context = LocalContext.current
 
-    val cipherId = navController.getString(Argument.CipherId) ?: return
-    val oldCipher = viewModel.vault.find(cipherId) ?: return
+    val cipherId = remember { navController.getString(Argument.CipherId) } ?: return
+    val oldCipher = remember { viewModel.vault.find(cipherId) } ?: return
     var cipher by rememberMutable(oldCipher)
 
     var loading by rememberMutableBoolean()

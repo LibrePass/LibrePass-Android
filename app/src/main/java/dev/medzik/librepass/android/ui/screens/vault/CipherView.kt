@@ -69,8 +69,8 @@ fun CipherViewScreen(
     navController: NavController,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    val cipherId = navController.getString(Argument.CipherId) ?: return
-    val cipher = viewModel.vault.find(cipherId) ?: return
+    val cipherId = remember { navController.getString(Argument.CipherId) } ?: return
+    val cipher = remember { viewModel.vault.find(cipherId) } ?: return
 
     var totpCode by rememberMutable("")
     var totpElapsed by rememberMutable(0)

@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -47,10 +48,10 @@ fun CipherAddScreen(
 ) {
     val context = LocalContext.current
 
-    val cipherTypeArg = navController.getString(Argument.CipherType) ?: return
-    val cipherType = CipherType.from(cipherTypeArg.toInt())
+    val cipherTypeArg = remember { navController.getString(Argument.CipherType) } ?: return
+    val cipherType = remember { CipherType.from(cipherTypeArg.toInt()) }
 
-    val credentials = viewModel.credentialRepository.get() ?: return
+    val credentials = remember { viewModel.credentialRepository.get() } ?: return
 
     var cipher by rememberMutable(
         Cipher(

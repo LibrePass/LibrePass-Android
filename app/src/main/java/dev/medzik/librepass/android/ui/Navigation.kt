@@ -1,6 +1,8 @@
 package dev.medzik.librepass.android.ui
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
@@ -328,7 +330,33 @@ fun LibrePassNavigation(viewModel: LibrePassViewModel = hiltViewModel()) {
         modifier = Modifier.imePadding()
     ) {
         for (screen in Screen.entries) {
-            composable(screen.getRoute()) {
+            composable(
+                route = screen.getRoute(),
+                enterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(500)
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(500)
+                    )
+                },
+                popEnterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(500)
+                    )
+                },
+                popExitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(500)
+                    )
+                }
+            ) {
                 if (screen.customScaffold) {
                     screen.composable(navController)
                 } else {

@@ -79,7 +79,7 @@ jobs:
           path: apk
 
       - name: Create release
-        uses: softprops/action-gh-release@v2.0.4
+        uses: softprops/action-gh-release@v2
         if: github.event.inputs.isMock != 'mock'
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

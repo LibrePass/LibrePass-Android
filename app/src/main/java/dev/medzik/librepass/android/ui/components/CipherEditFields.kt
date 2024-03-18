@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -109,7 +109,7 @@ fun CipherEditFieldsLogin(
             navController.navigate(Screen.PasswordGenerator)
         }) {
             Icon(
-                imageVector = Icons.Default.Refresh,
+                imageVector = Icons.Default.AutoAwesome,
                 contentDescription = null
             )
         }

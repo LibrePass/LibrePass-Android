@@ -35,7 +35,7 @@ test-junit = "1.1.5"
 zxing = "3.5.3"
 zxing-android = "4.3.0"
 # Plugins
-android-application = "8.3.0"
+android-application = "8.3.1"
 kotlin-ksp = "1.9.22-1.0.18"
 kotlin-android = "1.9.22"
 

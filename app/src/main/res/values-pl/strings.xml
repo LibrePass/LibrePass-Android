@@ -14,7 +14,7 @@
     </plurals>
     <string name="Add">Dodaj</string>
     <string name="AddField">Dodaj pole</string>
-    <string name="AddNewCipher">Dodaj nowy szyft</string>
+    <string name="AddNewCipher">Dodaj nowy szyfr</string>
     <string name="AddServer">Dodaj serwer</string>
     <string name="BiometricSetup_Button_Cancel">Anuluj</string>
     <string name="BiometricSetup_Subtitle">Włącz uwierzytelnianie biometryczne</string>

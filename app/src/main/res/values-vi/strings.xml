@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="hours">
+        <item quantity="other">%d giờ</item>
+    </plurals>
+    <string name="AddNewCipher">Thêm mật mã mới</string>
+    <string name="AddServer">Thêm máy chủ</string>
+    <string name="TwoFactorSecret">Bí mật hai yếu tố</string>
+    <string name="BiometricSetup_Button_Cancel">Hủy bỏ</string>
+    <string name="BiometricSetup_Title">Thiết lập</string>
+    <string name="BiometricUnlock_Button_UsePassword">Sử dụng mật khẩu</string>
+    <string name="CardNumber">Số thẻ</string>
+    <string name="CipherType_SecureNote">Ghi chú an toàn</string>
+    <string name="Error_NetworkError">Lỗi mạng</string>
+    <string name="Error_PasswordTooShort">Mật khẩu quá ngắn</string>
+    <string name="Error_UnknownError">Lỗi không rõ</string>
+    <string name="LoginDetails">Thông tin thêm về đăng nhập</string>
+    <string name="WelcomeScreen_Title">Chào mừng đến với LibrePass</string>
+    <string name="Register">Đăng ký</string>
+    <string name="CipherType_Login">Dữ liệu đăng nhập</string>
+    <string name="Login">Đăng nhập</string>
+    <string name="Logout">Đăng xuất</string>
+    <plurals name="minutes">
+        <item quantity="other">%d phút</item>
+    </plurals>
+    <string name="Add">Thêm</string>
+    <string name="AddField">Thêm trường</string>
+    <string name="TwoFactorAuthentication">Xác thực hai yếu tố</string>
+    <string name="BiometricSetup_Subtitle">Bật xác thực sinh trắc học</string>
+    <string name="BiometricUnlock_Subtitle">Vui lòng xác thực chính bạn</string>
+    <string name="BiometricUnlock_Title">Mở khóa</string>
+    <string name="CardholderName">Tên chủ thẻ</string>
+    <string name="ChangePassword">Đổi mật khẩu</string>
+    <string name="CipherType_Card">Dữ liệu thẻ</string>
+    <string name="ConfirmNewPassword">Xác nhận mật khẩu mới</string>
+    <string name="Error_InvalidEmail">Địa chỉ e-mail không hợp lệ</string>
+    <string name="ConfirmPassword">Xác nhận mật khẩu</string>
+    <string name="Delete">Xóa bỏ</string>
+    <string name="DeleteAccount">Xóa tài khoản</string>
+    <string name="Edit">Biên tập</string>
+    <string name="Error_EncryptionError">Lỗi mã hóa/giải mã</string>
+    <string name="Error_InvalidCredentials">Thông tin không hợp lệ</string>
+    <string name="Error_InvalidPassword">Mật khẩu không đúng</string>
+    <string name="Error_PasswordsDoNotMatch">Mật khẩu không khớp</string>
+    <string name="ExpirationMonth">Tháng hết hạn</string>
+</resources>

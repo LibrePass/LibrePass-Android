@@ -52,7 +52,6 @@
     <string name="Save">Speichern</string>
     <string name="Logout">Abmelden</string>
     <string name="Delete">Löschen</string>
-    <string name="Error_NetworkError">Netzwerkfehler</string>
     <string name="NewPassword">Neues Passwort</string>
     <string name="Toast_Password_Hint_Sent">Ein Passworthinweis wurde an die E-Mail-Adresse gesendet</string>
     <string name="GetPasswordHint">Passwort-Hinweis abrufen</string>

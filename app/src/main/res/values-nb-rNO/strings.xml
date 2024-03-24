@@ -34,7 +34,6 @@
     <string name="Error_InvalidCredentials">Ugyldige identitetsdetaljer</string>
     <string name="Error_InvalidEmail">Ugyldig e-postadresse</string>
     <string name="Error_InvalidPassword">Passordet stemmer ikke</string>
-    <string name="Error_NetworkError">Nettverksfeil</string>
     <string name="Error_PasswordTooShort">Passordet er for kort</string>
     <string name="Error_PasswordsDoNotMatch">Passordfeltene samsvarer ikke</string>
     <string name="Error_UnknownError">Ukjent feil</string>

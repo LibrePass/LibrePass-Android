@@ -38,7 +38,6 @@
     <string name="Error_InvalidCredentials">Nieprawidłowe dane uwierzytelniające</string>
     <string name="Error_InvalidEmail">Nieprawidłowy adres e-mail</string>
     <string name="Error_InvalidPassword">Hasło jest nieprawidłowe</string>
-    <string name="Error_NetworkError">Błąd sieci</string>
     <string name="Error_PasswordTooShort">Hasło jest zbyt krótkie</string>
     <string name="Error_PasswordsDoNotMatch">Hasła nie są zgodne</string>
     <string name="Error_UnknownError">Nieznany błąd</string>

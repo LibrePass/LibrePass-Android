@@ -192,6 +192,19 @@ fun CipherViewScreen(
             }
         }
 
+        if (!cipherData.twoFactor.isNullOrEmpty()) {
+            SecondaryText(
+                stringResource(R.string.TwoFactorAuthentication),
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            OtpField(
+                value = totpCode.chunked(totpDigits / 2).joinToString(" "),
+                elapsed = totpElapsed,
+                period = totpPeriod,
+            )
+        }
+
         if (!cipherData.uris.isNullOrEmpty()) {
             SecondaryText(
                 stringResource(R.string.WebsiteDetails),
@@ -219,19 +232,6 @@ fun CipherViewScreen(
                 title = stringResource(R.string.Notes),
                 value = cipherData.notes,
                 copy = true
-            )
-        }
-
-        if (!cipherData.twoFactor.isNullOrEmpty()) {
-            SecondaryText(
-                stringResource(R.string.TwoFactorAuthentication),
-                modifier = Modifier.padding(top = 8.dp)
-            )
-
-            OtpField(
-                value = totpCode.chunked(totpDigits / 2).joinToString(" "),
-                elapsed = totpElapsed,
-                period = totpPeriod,
             )
         }
     }

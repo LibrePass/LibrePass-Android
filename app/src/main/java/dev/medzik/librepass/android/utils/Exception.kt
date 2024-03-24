@@ -25,9 +25,9 @@ fun Exception.showErrorToast(context: Context) {
         when (this) {
 //        // handle encrypt exception
 //        is EncryptException -> { context.getString(R.string.Error_EncryptionError) }
-            // handle client exception (network error)
+            // ignore network error
             is ClientException -> {
-                context.getString(R.string.Error_NetworkError)
+                return
             }
             // handle api exceptions
             is ApiException -> {

@@ -93,7 +93,6 @@
     <string name="PasswordGenerator_Length">طول</string>
     <string name="Save">حفظ</string>
     <string name="Logout">تسجيل خروج</string>
-    <string name="Error_NetworkError">خطأ الشبكة</string>
     <string name="NewPassword">كلمة المرور الجديدة</string>
     <string name="Toast_Password_Hint_Sent">تم إرسال تلميح كلمة المرور إلى عنوان البريد الإلكتروني</string>
     <string name="GetPasswordHint">الحصول على تلميحات كلمة المرور</string>

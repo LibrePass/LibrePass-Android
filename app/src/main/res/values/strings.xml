@@ -38,7 +38,6 @@
     <string name="Error_InvalidCredentials">Invalid credentials</string>
     <string name="Error_InvalidEmail">Invalid e-mail address</string>
     <string name="Error_InvalidPassword">Password is incorrect</string>
-    <string name="Error_NetworkError">Network error</string>
     <string name="Error_PasswordTooShort">Password is too short</string>
     <string name="Error_PasswordsDoNotMatch">Passwords don\'t match</string>
     <string name="Error_UnknownError">Unknown error</string>

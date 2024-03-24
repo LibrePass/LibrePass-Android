@@ -19,7 +19,6 @@
     <string name="Error_InvalidCredentials">अमान्य क्रेडेंशियल</string>
     <string name="Error_InvalidEmail">अमान्य ई-मेल पता</string>
     <string name="Error_InvalidPassword">पासवर्ड गलत है</string>
-    <string name="Error_NetworkError">नेटवर्क त्रुटि</string>
     <string name="Error_PasswordTooShort">पासवर्ड बहुत छोटा है</string>
     <string name="Error_PasswordsDoNotMatch">पासवर्ड मेल नहीं खाते</string>
     <string name="Error_UnknownError">अज्ञात त्रुटि</string>

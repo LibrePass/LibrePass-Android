@@ -405,7 +405,7 @@ fun OtpField(
 
         IconButton(
             modifier = Modifier.align(Alignment.CenterVertically),
-            onClick = { clipboardManager.setText(AnnotatedString(value)) }
+            onClick = { clipboardManager.setText(AnnotatedString(value.replace(" ", ""))) }
         ) {
             Icon(
                 imageVector = Icons.Default.ContentCopy,

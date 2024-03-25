@@ -33,8 +33,8 @@ zxing-android = "4.3.0"
 
 # Plugins
 android-application = "8.3.1"
-kotlin-ksp = "1.9.22-1.0.18"
-kotlin-android = "1.9.22"
+kotlin-ksp = "1.9.23-1.0.19"
+kotlin-android = "1.9.23"
 
 [libraries]
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }

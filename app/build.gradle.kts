@@ -76,50 +76,47 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.navigation)
     implementation(libs.compose.ui)
+
     implementation(libs.accompanist.drawablepainter)
     implementation(libs.accompanist.systemuicontroller)
 
-    // for biometric authentication
     implementation(libs.androidx.biometric)
 
     // used for calling `onResume` and locking vault after X minutes
     implementation(libs.compose.lifecycle.runtime)
 
-    // datastore
     implementation(libs.androidx.datastore.preferences)
-
-    // room database
-    implementation(libs.room.ktx)
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
 
     // dagger
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.dagger.hilt.compiler)
 
-    // for cipher icons in vault
     implementation(libs.coil.compose)
 
-    // API client
     implementation(libs.librepass.client)
 
     // for restarting the application, for example, after changing the theme in settings
     implementation(libs.process.phoenix)
 
-    // kotlin coroutines
     implementation(libs.kotlinx.coroutines)
 
     implementation(libs.commons.lang3)
 
     implementation(project(":m3-pullrefresh"))
 
+    // for splash screen with material3 and dynamic color
+    implementation(libs.google.material)
+
+    implementation(libs.zxing.android) { isTransitive = false }
+    implementation(libs.zxing)
+
     implementation(libs.medzik.android.components)
     implementation(libs.medzik.android.crypto)
     implementation(libs.medzik.android.utils)
-
-    // for splash screen with material3 and dynamic color
-    implementation(libs.google.material)
 
     // for testing
     debugImplementation(libs.compose.ui.test.manifest)
@@ -127,8 +124,4 @@ dependencies {
     // for preview support
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.tooling.preview)
-
-    // zxing
-    implementation(libs.zxing.android) { isTransitive = false }
-    implementation(libs.zxing)
 }

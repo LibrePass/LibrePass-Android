@@ -11,7 +11,6 @@
     <string name="BiometricUnlock_Button_UsePassword">Sử dụng mật khẩu</string>
     <string name="CardNumber">Số thẻ</string>
     <string name="CipherType_SecureNote">Ghi chú an toàn</string>
-    <string name="Error_NetworkError">Lỗi mạng</string>
     <string name="Error_PasswordTooShort">Mật khẩu quá ngắn</string>
     <string name="Error_UnknownError">Lỗi không rõ</string>
     <string name="LoginDetails">Thông tin thêm về đăng nhập</string>

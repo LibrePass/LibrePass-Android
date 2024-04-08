@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import com.google.gson.Gson
+import dev.medzik.librepass.client.utils.JsonUtils
 import dev.medzik.librepass.types.cipher.EncryptedCipher
 import java.util.UUID
 
@@ -35,11 +35,11 @@ class LocalCipher(
 class EncryptedCipherConverter {
     @TypeConverter
     fun fromEncryptedCipher(encryptedCipher: EncryptedCipher): String {
-        return encryptedCipher.toJson()
+        return JsonUtils.serialize(encryptedCipher)
     }
 
     @TypeConverter
     fun toEncryptedCipher(json: String): EncryptedCipher {
-        return Gson().fromJson(json, EncryptedCipher::class.java)
+        return JsonUtils.deserialize(json)
     }
 }

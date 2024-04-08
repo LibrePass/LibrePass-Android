@@ -39,6 +39,7 @@ import dev.medzik.librepass.client.api.CipherClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun VaultScreen(
@@ -66,34 +67,30 @@ fun VaultScreen(
 
             try {
                 val localCiphers = viewModel.cipherRepository.getAll(credentials.userId)
-                val lastSync = viewModel.credentialRepository.get()!!.lastSync
+                val lastSync = viewModel.credentialRepository.get()!!.lastSync ?: 0
+                val lastSyncDate = Date(TimeUnit.SECONDS.toMillis(lastSync))
+                val newLastSync = TimeUnit.MILLISECONDS.toSeconds(Date().time)
 
-                // send non-synchronized ciphers
-                localCiphers.filter { it.needUpload }.forEach {
-                    cipherClient.save(it.encryptedCipher)
-                    viewModel.vault.save(it.encryptedCipher, needUpload = false)
-                }
+                // filter ciphers that need upload
+                val ciphersNeededUpload = localCiphers.filter { it.needUpload }.map { it.encryptedCipher }
 
-                if (lastSync != null) {
-                    // update last sync date
-                    viewModel.credentialRepository.update(credentials.copy(lastSync = Date().time / 1000))
+                // TODO: delete ciphers using this method
 
-                    // get ciphers from API
-                    val syncResponse = cipherClient.sync(Date(lastSync * 1000))
+                val syncResponse = cipherClient.sync(lastSyncDate, ciphersNeededUpload, emptyList())
 
+                // if it is not a full sync (it isn't the first sync)
+                if (lastSync != 0L) {
+                    // synchronize the local database with the server database
                     viewModel.vault.sync(syncResponse)
                 } else {
-                    // update last sync date
-                    viewModel.credentialRepository.update(credentials.copy(lastSync = Date().time / 1000))
-
-                    // get all ciphers from API
-                    val ciphersResponse = cipherClient.getAll()
-
-                    // insert ciphers into the local database
-                    for (cipher in ciphersResponse) {
+                    // save all ciphers
+                    for (cipher in syncResponse.ciphers) {
                         viewModel.vault.save(cipher)
                     }
                 }
+
+                // update the last sync date
+                viewModel.credentialRepository.update(credentials.copy(lastSync = newLastSync))
             } catch (e: Exception) {
                 e.showErrorToast(context)
             }

@@ -1,0 +1,8 @@
+- Updated translations.
+- Bumped dependencies.
+- Changed icon for password generator.
+- Better navigation animations.
+- Fixed network error toast by ignoring network errors.
+- Fixed copying otp code, copy it to clipboard without space.
+- Moved OTP field position, now it is under password field.
+- Optimized API and changed to the new sync API to minimize network usage.

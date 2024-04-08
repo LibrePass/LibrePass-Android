@@ -22,7 +22,8 @@ coil-compose = "2.6.0"
 commons-lang3 = "3.14.0"
 google-material = "1.11.0"
 kotlinx-coroutines = "1.8.0"
-librepass-client = "1.5.0"
+librepass-client = "1.6.0"
+otp = "1.0.0"
 process-phoenix = "3.0.0"
 zxing = "3.5.3"
 zxing-android = "4.3.0"
@@ -63,6 +64,7 @@ commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "co
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 librepass-client = { module = "dev.medzik.librepass:client", version.ref = "librepass-client" }
+otp = { module = "dev.medzik:otp", version.ref = "otp" }
 process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "process-phoenix" }
 zxing = { module = "com.google.zxing:core", version.ref = "zxing"}
 zxing-android = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxing-android"}

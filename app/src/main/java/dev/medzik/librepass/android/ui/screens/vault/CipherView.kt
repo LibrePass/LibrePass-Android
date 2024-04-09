@@ -113,10 +113,19 @@ fun CipherViewScreen(
             value = cipherData.name
         )
 
-        if (!cipherData.username.isNullOrEmpty() || !cipherData.password.isNullOrEmpty()) {
+        if (!cipherData.email.isNullOrEmpty() ||
+            !cipherData.username.isNullOrEmpty() ||
+            !cipherData.password.isNullOrEmpty()
+        ) {
             SecondaryText(
                 stringResource(R.string.LoginDetails),
                 modifier = Modifier.padding(top = 8.dp)
+            )
+
+            CipherField(
+                title = stringResource(R.string.Email),
+                value = cipherData.email,
+                copy = true
             )
 
             CipherField(

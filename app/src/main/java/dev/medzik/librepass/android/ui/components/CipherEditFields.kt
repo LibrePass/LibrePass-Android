@@ -80,6 +80,16 @@ fun CipherEditFieldsLogin(
     )
 
     TextInputFieldBase(
+        label = stringResource(R.string.Email),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+        value = cipherData.email,
+        onValueChange = { cipherData = cipherData.copy(email = it) }
+    )
+
+    TextInputFieldBase(
         label = stringResource(R.string.Username),
         modifier =
             Modifier

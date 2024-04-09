@@ -15,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -101,7 +100,12 @@ fun CipherCard(
         when (cipher.type) {
             CipherType.Login -> {
                 title = cipher.loginData!!.name
-                subtitle = cipher.loginData!!.username
+
+                if (!cipher.loginData!!.email.isNullOrEmpty()) {
+                    subtitle = cipher.loginData!!.email
+                } else if (!cipher.loginData!!.username.isNullOrEmpty()) {
+                    subtitle = cipher.loginData!!.username
+                }
             }
             CipherType.SecureNote -> {
                 title = cipher.secureNoteData!!.title

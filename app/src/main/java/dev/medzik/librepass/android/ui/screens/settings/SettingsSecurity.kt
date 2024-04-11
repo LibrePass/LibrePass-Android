@@ -69,16 +69,15 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
 
         showBiometricPromptForSetup(
             context as MainActivity,
-            KeyStore.initForEncryption(
+            cipher = KeyStore.initForEncryption(
                 KeyAlias.BiometricAesKey,
                 deviceAuthentication = false
             ),
             onAuthenticationSucceeded = { cipher ->
-                val encryptedData =
-                    KeyStore.encrypt(
-                        cipher = cipher,
-                        clearBytes = viewModel.vault.aesKey
-                    )
+                val encryptedData = KeyStore.encrypt(
+                    cipher = cipher,
+                    clearBytes = viewModel.vault.aesKey
+                )
 
                 biometricEnabled = true
 
@@ -99,40 +98,16 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
     fun getVaultTimeoutTranslation(value: VaultTimeoutValues): String {
         return when (value) {
             VaultTimeoutValues.INSTANT -> stringResource(R.string.Timeout_Instant)
-            VaultTimeoutValues.ONE_MINUTE ->
-                pluralStringResource(
-                    R.plurals.minutes,
-                    1,
-                    1
-                )
 
-            VaultTimeoutValues.FIVE_MINUTES ->
-                pluralStringResource(
-                    R.plurals.minutes,
-                    5,
-                    5
-                )
+            VaultTimeoutValues.ONE_MINUTE -> pluralStringResource(R.plurals.minutes, 1, 1)
 
-            VaultTimeoutValues.FIFTEEN_MINUTES ->
-                pluralStringResource(
-                    R.plurals.minutes,
-                    15,
-                    15
-                )
+            VaultTimeoutValues.FIVE_MINUTES -> pluralStringResource(R.plurals.minutes, 5, 5)
 
-            VaultTimeoutValues.THIRTY_MINUTES ->
-                pluralStringResource(
-                    R.plurals.minutes,
-                    30,
-                    30
-                )
+            VaultTimeoutValues.FIFTEEN_MINUTES -> pluralStringResource(R.plurals.minutes, 15, 15)
 
-            VaultTimeoutValues.ONE_HOUR ->
-                pluralStringResource(
-                    R.plurals.hours,
-                    1,
-                    1
-                )
+            VaultTimeoutValues.THIRTY_MINUTES -> pluralStringResource(R.plurals.minutes, 30, 30)
+
+            VaultTimeoutValues.ONE_HOUR -> pluralStringResource(R.plurals.hours, 1, 1)
 
             VaultTimeoutValues.NEVER -> stringResource(R.string.Timeout_Never)
         }
@@ -150,12 +125,11 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
     PropertyPreference(
         title = stringResource(R.string.VaultTimeout),
         icon = { Icon(Icons.Default.Timer, contentDescription = null) },
-        currentValue =
-            getVaultTimeoutTranslation(
-                VaultTimeoutValues.fromSeconds(
-                    vaultTimeout
-                )
-            ),
+        currentValue = getVaultTimeoutTranslation(
+            VaultTimeoutValues.fromSeconds(
+                vaultTimeout
+            )
+        ),
         onClick = { timerDialogState.show() },
     )
 
@@ -170,10 +144,9 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
     ) {
         Text(
             text = getVaultTimeoutTranslation(it),
-            modifier =
-                Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
+            modifier = Modifier
+                .padding(vertical = 12.dp)
+                .fillMaxWidth()
         )
     }
 }

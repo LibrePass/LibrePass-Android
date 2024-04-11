@@ -19,20 +19,21 @@ fun Permission(
 ) {
     val ctx = LocalContext.current
 
-    // check initial state of permission, it may be already granted
+    // check the initial state of permission, it may be already granted
     var grantState by rememberMutableBoolean(
         ContextCompat.checkSelfPermission(
             ctx,
             permission
         ) == PackageManager.PERMISSION_GRANTED
     )
+
     if (grantState) {
         onGranted()
     } else {
-        val launcher =
-            rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) {
-                grantState = it
-            }
+        val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) {
+            grantState = it
+        }
+
         onDenied { SideEffect { launcher.launch(permission) } }
     }
 }

@@ -171,10 +171,7 @@ fun CipherViewScreen(
                                     Text(
                                         text = parser.format(passwords[i].lastUsed),
                                         style = MaterialTheme.typography.titleSmall,
-                                        color =
-                                            MaterialTheme.colorScheme.onSurface.copy(
-                                                alpha = 0.6f
-                                            )
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                                     )
 
                                     Text(
@@ -332,12 +329,11 @@ fun CipherViewScreen(
     Scaffold(
         topBar = {
             TopBar(
-                title =
-                    when (cipher.type) {
-                        CipherType.Login -> cipher.loginData!!.name
-                        CipherType.SecureNote -> cipher.secureNoteData!!.title
-                        CipherType.Card -> cipher.cardData!!.cardholderName
-                    }.shorten(SHORTEN_NAME_LENGTH),
+                title = when (cipher.type) {
+                    CipherType.Login -> cipher.loginData!!.name
+                    CipherType.SecureNote -> cipher.secureNoteData!!.title
+                    CipherType.Card -> cipher.cardData!!.cardholderName
+                }.shorten(SHORTEN_NAME_LENGTH),
                 navigationIcon = { TopBarBackIcon(navController) }
             )
         },

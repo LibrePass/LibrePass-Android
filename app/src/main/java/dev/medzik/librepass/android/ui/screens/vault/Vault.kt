@@ -55,11 +55,10 @@ fun VaultScreen(
 
     val credentials = viewModel.credentialRepository.get() ?: return
 
-    val cipherClient =
-        CipherClient(
-            apiKey = credentials.apiKey,
-            apiUrl = credentials.apiUrl ?: Server.PRODUCTION
-        )
+    val cipherClient = CipherClient(
+        apiKey = credentials.apiKey,
+        apiUrl = credentials.apiUrl ?: Server.PRODUCTION
+    )
 
     fun updateCiphers() {
         scope.launch(Dispatchers.IO) {
@@ -107,11 +106,10 @@ fun VaultScreen(
         if (checkIfBiometricAvailable(context)) {
             showBiometricPromptForSetup(
                 context as MainActivity,
-                cipher =
-                    KeyStore.initForEncryption(
-                        KeyAlias.BiometricAesKey,
-                        deviceAuthentication = false
-                    ),
+                cipher = KeyStore.initForEncryption(
+                    KeyAlias.BiometricAesKey,
+                    deviceAuthentication = false
+                ),
                 onAuthenticationSucceeded = { cipher ->
                     val encryptedData = KeyStore.encrypt(cipher, viewModel.vault.aesKey)
 
@@ -176,10 +174,9 @@ fun VaultScreen(
 
     Box {
         LazyColumn(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .pullRefresh(pullRefreshState)
+            modifier = Modifier
+                .fillMaxSize()
+                .pullRefresh(pullRefreshState)
         ) {
             items(ciphers.size) { index ->
                 CipherCard(

@@ -66,10 +66,9 @@ fun CipherEditFieldsLogin(
 
     TextInputFieldBase(
         label = stringResource(R.string.Name),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.name,
         onValueChange = { cipherData = cipherData.copy(name = it) }
     )
@@ -81,30 +80,27 @@ fun CipherEditFieldsLogin(
 
     TextInputFieldBase(
         label = stringResource(R.string.Email),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.email,
         onValueChange = { cipherData = cipherData.copy(email = it) }
     )
 
     TextInputFieldBase(
         label = stringResource(R.string.Username),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.username,
         onValueChange = { cipherData = cipherData.copy(username = it) }
     )
 
     TextInputFieldBase(
         label = stringResource(R.string.Password),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.password,
         onValueChange = { cipherData = cipherData.copy(password = it) },
         hidden = true
@@ -137,24 +133,22 @@ fun CipherEditFieldsLogin(
             modifier = Modifier.fillMaxWidth(),
             value = uri,
             onValueChange = {
-                cipherData =
-                    cipherData.copy(
-                        uris =
-                            cipherData.uris.orEmpty().toMutableList().apply {
-                                this[index] = it
-                            }
-                    )
+                cipherData = cipherData.copy(
+                    uris = cipherData.uris.orEmpty().toMutableList().apply {
+                        this[index] = it
+                    }
+                )
             }
         ) {
-            IconButton(onClick = {
-                cipherData =
-                    cipherData.copy(
-                        uris =
-                            cipherData.uris.orEmpty().toMutableList().apply {
-                                this.removeAt(index)
-                            }
+            IconButton(
+                onClick = {
+                    cipherData = cipherData.copy(
+                        uris = cipherData.uris.orEmpty().toMutableList().apply {
+                            this.removeAt(index)
+                        }
                     )
-            }) {
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
                     contentDescription = null
@@ -166,16 +160,14 @@ fun CipherEditFieldsLogin(
     // button for adding more fields
     Button(
         onClick = {
-            cipherData =
-                cipherData.copy(
-                    uris = cipherData.uris.orEmpty() + ""
-                )
+            cipherData = cipherData.copy(
+                uris = cipherData.uris.orEmpty() + ""
+            )
         },
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 60.dp)
-                .padding(top = 8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 60.dp)
+            .padding(top = 8.dp)
     ) {
         Text(stringResource(R.string.AddField))
     }
@@ -192,11 +184,10 @@ fun CipherEditFieldsLogin(
                 args = arrayOf(Argument.CipherId to cipher.id.toString())
             )
         },
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 60.dp)
-                .padding(top = 8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 60.dp)
+            .padding(top = 8.dp)
     ) {
         Text(stringResource(R.string.ConfigureTwoFactor))
     }
@@ -204,11 +195,10 @@ fun CipherEditFieldsLogin(
     if (!cipher.loginData?.twoFactor.isNullOrEmpty()) {
         Button(
             onClick = { cipherData = cipherData.copy(twoFactor = null) },
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 60.dp)
-                    .padding(top = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 60.dp)
+                .padding(top = 8.dp)
         ) {
             Text(stringResource(R.string.DeleteTwoFactor))
         }
@@ -239,10 +229,9 @@ fun CipherEditFieldsSecureNote(
 
     TextInputFieldBase(
         label = stringResource(R.string.Title),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.title,
         onValueChange = { cipherData = cipherData.copy(title = it) }
     )
@@ -267,20 +256,18 @@ fun CipherEditFieldsCard(
 
     TextInputFieldBase(
         label = stringResource(R.string.Name),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.name,
         onValueChange = { cipherData = cipherData.copy(name = it) }
     )
 
     TextInputFieldBase(
         label = stringResource(R.string.CardholderName),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.cardholderName,
         onValueChange = { cipherData = cipherData.copy(cardholderName = it) }
     )
@@ -288,10 +275,9 @@ fun CipherEditFieldsCard(
     TextInputFieldBase(
         label = stringResource(R.string.CardNumber),
         keyboardType = KeyboardType.Number,
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.number,
         onValueChange = {
             if (!it.all { char -> char.isDigit() })
@@ -304,10 +290,9 @@ fun CipherEditFieldsCard(
     TextInputFieldBase(
         label = stringResource(R.string.ExpirationMonth),
         keyboardType = KeyboardType.Number,
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.expMonth,
         onValueChange = {
             if (it.isEmpty()) {
@@ -325,10 +310,9 @@ fun CipherEditFieldsCard(
     TextInputFieldBase(
         label = stringResource(R.string.ExpirationYear),
         keyboardType = KeyboardType.Number,
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.expYear,
         onValueChange = {
             if (it.isEmpty()) {
@@ -345,10 +329,9 @@ fun CipherEditFieldsCard(
     TextInputFieldBase(
         label = stringResource(R.string.SecurityCode),
         keyboardType = KeyboardType.Number,
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         value = cipherData.code,
         onValueChange = {
             if (!it.all { char -> char.isDigit() })

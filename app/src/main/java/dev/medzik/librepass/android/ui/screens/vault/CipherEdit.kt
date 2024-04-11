@@ -98,10 +98,12 @@ fun CipherEditScreen(
                             }.isSuccess
                     )
             }
+
             CipherType.SecureNote -> {
                 cipher.secureNoteData!!.title.isNotEmpty() &&
                     cipher.secureNoteData!!.note.isNotEmpty()
             }
+
             CipherType.Card -> {
                 cipher.cardData!!.name.isNotEmpty() &&
                     cipher.cardData!!.cardholderName.isNotEmpty() &&
@@ -119,11 +121,10 @@ fun CipherEditScreen(
         }
     ) { innerPadding ->
         Column(
-            modifier =
-                Modifier
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState())
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             @Composable
             fun button(): @Composable (cipher: Cipher) -> Unit {
@@ -153,12 +154,14 @@ fun CipherEditScreen(
                         button()
                     )
                 }
+
                 CipherType.SecureNote -> {
                     CipherEditFieldsSecureNote(
                         cipher,
                         button()
                     )
                 }
+
                 CipherType.Card -> {
                     CipherEditFieldsCard(
                         cipher,

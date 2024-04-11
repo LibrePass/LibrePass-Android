@@ -19,14 +19,13 @@ fun CipherTypeDialog(
 ) {
     @Composable
     fun getTranslated(type: CipherType): String {
-        val id =
+        return stringResource(
             when (type) {
                 CipherType.Login -> R.string.CipherType_Login
                 CipherType.SecureNote -> R.string.CipherType_SecureNote
                 CipherType.Card -> R.string.CipherType_Card
             }
-
-        return stringResource(id)
+        )
     }
 
     PickerDialog(
@@ -37,10 +36,9 @@ fun CipherTypeDialog(
     ) {
         Text(
             text = getTranslated(it),
-            modifier =
-                Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
+            modifier = Modifier
+                .padding(vertical = 12.dp)
+                .fillMaxWidth()
         )
     }
 }

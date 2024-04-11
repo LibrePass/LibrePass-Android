@@ -83,11 +83,10 @@ fun SettingsAppearanceScreen() {
             )
 
             Text(
-                modifier =
-                    Modifier
-                        .padding(start = 12.dp)
-                        .fillMaxWidth(),
-                text = getThemeTranslation(it)
+                text = getThemeTranslation(it),
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .fillMaxWidth()
             )
         }
     }

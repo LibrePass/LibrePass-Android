@@ -44,17 +44,13 @@ fun SettingsAccountChangeEmailScreen(
 
     val scope = rememberCoroutineScope()
 
-    val userClient =
-        UserClient(
-            email = credentials.email,
-            apiKey = credentials.apiKey,
-            apiUrl = credentials.apiUrl ?: Server.PRODUCTION
-        )
+    val userClient = UserClient(
+        email = credentials.email,
+        apiKey = credentials.apiKey,
+        apiUrl = credentials.apiUrl ?: Server.PRODUCTION
+    )
 
-    fun changeEmail(
-        newEmail: String,
-        password: String
-    ) {
+    fun changeEmail(newEmail: String, password: String) {
         loading = true
 
         // TODO: show error "invalid password"
@@ -105,10 +101,9 @@ fun SettingsAccountChangeEmailScreen(
         loading = loading,
         onClick = { changeEmail(newEmail, password) },
         enabled = newEmail.isNotEmpty() && newEmail.contains('@') && password.isNotEmpty(),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 40.dp, vertical = 8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp, vertical = 8.dp)
     ) {
         Text(stringResource(R.string.ChangeEmail))
     }

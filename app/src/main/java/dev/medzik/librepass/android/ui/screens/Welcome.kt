@@ -35,10 +35,9 @@ fun WelcomeScreen(navController: NavController) {
         topBar = { TopBarTwoColor("Libre", "Pass") }
     ) { innerPadding ->
         Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -55,22 +54,20 @@ fun WelcomeScreen(navController: NavController) {
 
             Button(
                 onClick = { navController.navigate(Screen.Register) },
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 90.dp)
-                        .padding(top = 20.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 90.dp)
+                    .padding(top = 20.dp)
             ) {
                 Text(stringResource(R.string.Register))
             }
 
             OutlinedButton(
                 onClick = { navController.navigate(Screen.Login) },
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 90.dp)
-                        .padding(top = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 90.dp)
+                    .padding(top = 8.dp)
             ) {
                 Text(stringResource(R.string.Login))
             }

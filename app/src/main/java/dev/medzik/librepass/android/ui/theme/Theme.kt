@@ -107,11 +107,10 @@ fun LibrePassTheme(
         }
 
     if (blackTheme) {
-        colorScheme =
-            colorScheme.copy(
-                surface = Color.Black,
-                background = Color.Black
-            )
+        colorScheme = colorScheme.copy(
+            surface = Color.Black,
+            background = Color.Black
+        )
     }
 
     val systemUiController = rememberSystemUiController()

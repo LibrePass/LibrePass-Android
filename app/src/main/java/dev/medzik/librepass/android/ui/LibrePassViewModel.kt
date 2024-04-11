@@ -8,10 +8,8 @@ import dev.medzik.librepass.android.utils.Vault
 import javax.inject.Inject
 
 @HiltViewModel
-class LibrePassViewModel
-    @Inject
-    constructor(
-        val cipherRepository: CipherDao,
-        val credentialRepository: CredentialsDao,
-        val vault: Vault
-    ) : ViewModel()
+class LibrePassViewModel @Inject constructor(
+    val cipherRepository: CipherDao,
+    val credentialRepository: CredentialsDao,
+    val vault: Vault
+) : ViewModel()

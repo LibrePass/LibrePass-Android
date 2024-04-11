@@ -50,10 +50,7 @@ fun RegisterScreen(navController: NavController) {
     var server by rememberMutableString(Server.PRODUCTION)
 
     // Register user with given credentials and navigate to log in screen.
-    fun submit(
-        email: String,
-        password: String
-    ) {
+    fun submit(email: String, password: String) {
         val authClient = AuthClient(apiUrl = server)
 
         // disable button
@@ -133,10 +130,9 @@ fun RegisterScreen(navController: NavController) {
     }
 
     Row(
-        modifier =
-            Modifier
-                .padding(vertical = 8.dp)
-                .clickable { serverChoiceDialog.show() }
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .clickable { serverChoiceDialog.show() }
     ) {
         Text(
             text = stringResource(R.string.ServerAddress) + ": ",
@@ -155,18 +151,16 @@ fun RegisterScreen(navController: NavController) {
         loading = loading,
         onClick = { submit(email, password) },
         enabled = email.contains("@") && password.length >= 8,
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 40.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp)
     ) {
         Text(stringResource(R.string.Register))
     }
 
-    var servers =
-        listOf(Server.PRODUCTION)
-            .plus(context.readKey(StoreKey.CustomServers))
-            .plus("custom_server")
+    var servers = listOf(Server.PRODUCTION)
+        .plus(context.readKey(StoreKey.CustomServers))
+        .plus("custom_server")
 
     if (BuildConfig.DEBUG) servers = servers.plus(Server.TEST)
 
@@ -182,21 +176,17 @@ fun RegisterScreen(navController: NavController) {
             }
         }
     ) {
-        val text =
-            when (it) {
+        Text(
+            text = when (it) {
                 "custom_server" -> {
                     stringResource(R.string.Server_Choice_Dialog_AddCustom)
                 }
 
                 else -> getServerName(it)
-            }
-
-        Text(
-            text = text,
-            modifier =
-                Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
+            },
+            modifier = Modifier
+                .padding(vertical = 12.dp)
+                .fillMaxWidth()
         )
     }
 }

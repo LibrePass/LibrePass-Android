@@ -56,11 +56,10 @@ fun OtpConfigure(
         }
     ) { innerPadding ->
         Column(
-            modifier =
-                Modifier
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState())
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             var qrScanning by rememberMutable(true)
 
@@ -68,10 +67,9 @@ fun OtpConfigure(
                 Text(
                     text = stringResource(R.string.ScanQrCode),
                     fontSize = 24.sp,
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
                     textAlign = TextAlign.Center
                 )
 
@@ -120,10 +118,9 @@ fun OtpConfigure(
                             text = "No permissions to use camera.",
                             fontSize = 18.sp,
                             color = MaterialTheme.colorScheme.error,
-                            modifier =
-                                Modifier
-                                    .fillMaxSize()
-                                    .padding(16.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -133,11 +130,10 @@ fun OtpConfigure(
                     onClick = {
                         qrScanning = false
                     },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 60.dp)
-                            .padding(top = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 60.dp)
+                        .padding(top = 8.dp)
                 ) {
                     Text(stringResource(R.string.EnterKeyManually))
                 }
@@ -158,10 +154,9 @@ fun OtpConfigure(
 
                 TextInputFieldBase(
                     label = stringResource(R.string.TwoFactorSecret),
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
                     value = totpSecret,
                     onValueChange = { totpSecret = it }
                 )
@@ -188,10 +183,9 @@ fun OtpConfigure(
 
                 TextInputFieldBase(
                     label = stringResource(R.string.Digits),
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
                     keyboardType = KeyboardType.Number,
                     value = digits,
                     onValueChange = { digits = it }
@@ -199,10 +193,9 @@ fun OtpConfigure(
 
                 TextInputFieldBase(
                     label = if (type == OTPType.TOTP) stringResource(R.string.Period) else stringResource(R.string.Counter),
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 4.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
                     keyboardType = KeyboardType.Number,
                     value = (if (type == OTPType.TOTP) period else counter).toString(),
                     onValueChange = {
@@ -221,11 +214,10 @@ fun OtpConfigure(
 
                 Button(
                     onClick = { qrScanning = true },
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 60.dp)
-                            .padding(top = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 60.dp)
+                        .padding(top = 8.dp)
                 ) {
                     Text(stringResource(R.string.ScanQrCode))
                 }
@@ -236,11 +228,10 @@ fun OtpConfigure(
                         navController.popBackStack()
                     },
                     enabled = totpSecret.isNotEmpty() && otpCodeError,
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 60.dp)
-                            .padding(top = 8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 60.dp)
+                        .padding(top = 8.dp)
                 ) {
                     Text(stringResource(R.string.Save))
                 }
@@ -249,7 +240,7 @@ fun OtpConfigure(
     }
 }
 
-fun generateOtpUri(
+private fun generateOtpUri(
     secret: String,
     type: OTPType,
     digits: Int,
@@ -257,13 +248,12 @@ fun generateOtpUri(
     counter: Long,
     algorithm: OTPParameters.Algorithm
 ): String {
-    val otpBuilder =
-        OTPParameters.builder()
-            .type(type)
-            .digits(OTPParameters.Digits.valueOf(digits))
-            .secret(OTPParameters.Secret(secret))
-            .label(OTPParameters.Label(""))
-            .algorithm(algorithm)
+    val otpBuilder = OTPParameters.builder()
+        .type(type)
+        .digits(OTPParameters.Digits.valueOf(digits))
+        .secret(OTPParameters.Secret(secret))
+        .label(OTPParameters.Label(""))
+        .algorithm(algorithm)
 
     when (type) {
         OTPType.TOTP -> otpBuilder.period(OTPParameters.Period.valueOf(period))

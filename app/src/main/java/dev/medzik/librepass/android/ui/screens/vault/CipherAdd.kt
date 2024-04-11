@@ -88,10 +88,12 @@ fun CipherAddScreen(
             CipherType.Login -> {
                 cipher.loginData!!.name.isNotEmpty()
             }
+
             CipherType.SecureNote -> {
                 cipher.secureNoteData!!.title.isNotEmpty() &&
                     cipher.secureNoteData!!.note.isNotEmpty()
             }
+
             CipherType.Card -> {
                 cipher.cardData!!.name.isNotEmpty() &&
                     cipher.cardData!!.cardholderName.isNotEmpty() &&
@@ -109,11 +111,10 @@ fun CipherAddScreen(
         }
     ) { innerPadding ->
         Column(
-            modifier =
-                Modifier
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState())
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             @Composable
             fun button(): @Composable (cipher: Cipher) -> Unit {
@@ -124,11 +125,10 @@ fun CipherAddScreen(
                         loading = loading,
                         onClick = { submit() },
                         enabled = buttonEnabled(),
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(top = 16.dp)
-                                .padding(horizontal = 40.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
+                            .padding(horizontal = 40.dp)
                     ) {
                         Text(stringResource(R.string.Add))
                     }
@@ -143,12 +143,14 @@ fun CipherAddScreen(
                         button()
                     )
                 }
+
                 CipherType.SecureNote -> {
                     CipherEditFieldsSecureNote(
                         cipher,
                         button()
                     )
                 }
+
                 CipherType.Card -> {
                     CipherEditFieldsCard(
                         cipher,

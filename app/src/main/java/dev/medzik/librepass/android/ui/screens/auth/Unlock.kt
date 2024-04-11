@@ -67,18 +67,17 @@ fun UnlockScreen(
                 loading = true
 
                 // compute base password hash
-                val passwordHash =
-                    computePasswordHash(
-                        password = password,
-                        email = credentials.email,
-                        argon2Function =
-                            Argon2(
-                                32,
-                                credentials.parallelism,
-                                credentials.memory,
-                                credentials.iterations
-                            )
+                val passwordHash = computePasswordHash(
+                    password = password,
+                    email = credentials.email,
+                    argon2Function =
+                    Argon2(
+                        32,
+                        credentials.parallelism,
+                        credentials.memory,
+                        credentials.iterations
                     )
+                )
 
                 val publicKey = X25519.publicFromPrivate(passwordHash.hash)
 
@@ -147,7 +146,8 @@ fun UnlockScreen(
     }
 
     LaunchedEffect(scope) {
-        if (credentials.biometricAesKey != null && checkIfBiometricAvailable(context)) showBiometric()
+        if (credentials.biometricAesKey != null && checkIfBiometricAvailable(context))
+            showBiometric()
     }
 
     TextInputField(
@@ -162,11 +162,10 @@ fun UnlockScreen(
         loading = loading,
         onClick = { onUnlock(password) },
         enabled = password.isNotEmpty(),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-                .padding(horizontal = 80.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+            .padding(horizontal = 80.dp)
     ) {
         Text(stringResource(R.string.Unlock))
     }
@@ -174,11 +173,10 @@ fun UnlockScreen(
     if (credentials.biometricAesKey != null && checkIfBiometricAvailable(context)) {
         OutlinedButton(
             onClick = { showBiometric() },
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-                    .padding(horizontal = 80.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .padding(horizontal = 80.dp)
         ) {
             Text(stringResource(R.string.UseBiometric))
         }

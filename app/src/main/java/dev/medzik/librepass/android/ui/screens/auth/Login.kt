@@ -54,10 +54,7 @@ fun LoginScreen(
     var password by rememberMutableString()
     var server by rememberMutableString(Server.PRODUCTION)
 
-    fun submit(
-        email: String,
-        password: String
-    ) {
+    fun submit(email: String, password: String) {
         val authClient = AuthClient(apiUrl = server)
 
         if (email.isEmpty() || password.isEmpty())
@@ -122,27 +119,26 @@ fun LoginScreen(
         text = stringResource(R.string.GetPasswordHint),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.primary,
-        modifier =
-            Modifier
-                .padding(vertical = 8.dp)
-                .clickable {
-                    val authClient = AuthClient(apiUrl = server)
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .clickable {
+                val authClient = AuthClient(apiUrl = server)
 
-                    if (email.isEmpty()) {
-                        context.showToast(context.getString(R.string.Toast_Enter_Email))
-                        return@clickable
-                    }
+                if (email.isEmpty()) {
+                    context.showToast(context.getString(R.string.Toast_Enter_Email))
+                    return@clickable
+                }
 
-                    scope.launch(Dispatchers.IO) {
-                        try {
-                            authClient.requestPasswordHint(email)
+                scope.launch(Dispatchers.IO) {
+                    try {
+                        authClient.requestPasswordHint(email)
 
-                            context.showToast(context.getString(R.string.Toast_Password_Hint_Sent))
-                        } catch (e: Exception) {
-                            e.showErrorToast(context)
-                        }
+                        context.showToast(context.getString(R.string.Toast_Password_Hint_Sent))
+                    } catch (e: Exception) {
+                        e.showErrorToast(context)
                     }
                 }
+            }
     )
 
     TextInputField(
@@ -171,10 +167,9 @@ fun LoginScreen(
     }
 
     Row(
-        modifier =
-            Modifier
-                .padding(vertical = 8.dp)
-                .clickable { serverChoiceDialog.show() }
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .clickable { serverChoiceDialog.show() }
     ) {
         Text(
             text = stringResource(R.string.ServerAddress) + ": ",
@@ -193,18 +188,16 @@ fun LoginScreen(
         loading = loading,
         onClick = { submit(email, password) },
         enabled = email.isNotEmpty() && password.isNotEmpty(),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 40.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp)
     ) {
         Text(stringResource(R.string.Login))
     }
 
-    var servers =
-        listOf(Server.PRODUCTION)
-            .plus(context.readKey(StoreKey.CustomServers))
-            .plus("custom_server")
+    var servers = listOf(Server.PRODUCTION)
+        .plus(context.readKey(StoreKey.CustomServers))
+        .plus("custom_server")
 
     if (BuildConfig.DEBUG) servers = servers.plus(Server.TEST)
 
@@ -220,21 +213,17 @@ fun LoginScreen(
             }
         }
     ) {
-        val text =
-            when (it) {
+        Text(
+            text = when (it) {
                 "custom_server" -> {
                     stringResource(R.string.Server_Choice_Dialog_AddCustom)
                 }
 
                 else -> getServerName(it)
-            }
-
-        Text(
-            text = text,
-            modifier =
-                Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
+            },
+            modifier = Modifier
+                .padding(vertical = 12.dp)
+                .fillMaxWidth()
         )
     }
 }

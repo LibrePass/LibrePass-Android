@@ -77,12 +77,14 @@ fun CipherCard(
                     )
                 }
             }
+
             CipherType.SecureNote -> {
                 Image(
                     Icons.AutoMirrored.Filled.Notes,
                     contentDescription = null,
                 )
             }
+
             CipherType.Card -> {
                 Image(
                     Icons.Default.CreditCard,
@@ -107,9 +109,11 @@ fun CipherCard(
                     subtitle = cipher.loginData!!.username
                 }
             }
+
             CipherType.SecureNote -> {
                 title = cipher.secureNoteData!!.title
             }
+
             CipherType.Card -> {
                 title = cipher.cardData!!.name
                 subtitle = "•••• " + cipher.cardData!!.number.takeLast(4)
@@ -131,30 +135,26 @@ fun CipherCard(
     }
 
     Card(
-        modifier =
-            Modifier
-                .padding(vertical = 8.dp)
+        modifier = Modifier.padding(vertical = 8.dp)
     ) {
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .combinedClickable(
-                        onClick = { onClick(cipher) },
-                        onLongClick = { showMoreOptions() }
-                    )
-                    .heightIn(min = 64.dp)
-                    .padding(horizontal = 24.dp, vertical = 4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .combinedClickable(
+                    onClick = { onClick(cipher) },
+                    onLongClick = { showMoreOptions() }
+                )
+                .heightIn(min = 64.dp)
+                .padding(horizontal = 24.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             CipherIcon()
 
             Column(
-                modifier =
-                    Modifier
-                        .padding(start = 16.dp)
-                        .fillMaxSize()
-                        .weight(1f),
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxSize()
+                    .weight(1f),
                 verticalArrangement = Arrangement.Center
             ) {
                 CipherText()
@@ -185,13 +185,12 @@ fun CipherActionsDialog(
 ) {
     PickerDialog(
         state,
-        null,
-        items =
-            listOf(
-                R.string.View,
-                R.string.Edit,
-                R.string.Delete
-            ),
+        title = null,
+        items = listOf(
+            R.string.View,
+            R.string.Edit,
+            R.string.Delete
+        ),
         onSelected = {
             when (it) {
                 R.string.View -> {
@@ -205,10 +204,9 @@ fun CipherActionsDialog(
     ) {
         Text(
             text = stringResource(it),
-            modifier =
-                Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxWidth()
+            modifier = Modifier
+                .padding(vertical = 12.dp)
+                .fillMaxWidth()
         )
     }
 }

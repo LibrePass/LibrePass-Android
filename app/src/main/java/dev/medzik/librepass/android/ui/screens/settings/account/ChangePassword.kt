@@ -46,18 +46,13 @@ fun SettingsAccountChangePasswordScreen(
 
     val scope = rememberCoroutineScope()
 
-    val userClient =
-        UserClient(
-            email = credentials.email,
-            apiKey = credentials.apiKey,
-            apiUrl = credentials.apiUrl ?: Server.PRODUCTION
-        )
+    val userClient = UserClient(
+        email = credentials.email,
+        apiKey = credentials.apiKey,
+        apiUrl = credentials.apiUrl ?: Server.PRODUCTION
+    )
 
-    fun changePassword(
-        oldPassword: String,
-        newPassword: String,
-        newPasswordHint: String
-    ) {
+    fun changePassword(oldPassword: String, newPassword: String, newPasswordHint: String) {
         loading = true
 
         scope.launch(Dispatchers.IO) {
@@ -124,10 +119,9 @@ fun SettingsAccountChangePasswordScreen(
         loading = loading,
         onClick = { changePassword(oldPassword, newPassword, newPasswordHint) },
         enabled = oldPassword.isNotEmpty() && newPassword.isNotEmpty() && newPasswordConfirm == newPassword,
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 40.dp, vertical = 8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp, vertical = 8.dp)
     ) {
         Text(stringResource(R.string.ChangePassword))
     }

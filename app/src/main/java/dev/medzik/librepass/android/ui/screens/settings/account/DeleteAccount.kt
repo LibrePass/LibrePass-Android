@@ -42,12 +42,11 @@ fun SettingsAccountDeleteAccountScreen(
     var password by rememberMutableString()
     val scope = rememberCoroutineScope()
 
-    val userClient =
-        UserClient(
-            email = credentials.email,
-            apiKey = credentials.apiKey,
-            apiUrl = credentials.apiUrl ?: Server.PRODUCTION
-        )
+    val userClient = UserClient(
+        email = credentials.email,
+        apiKey = credentials.apiKey,
+        apiUrl = credentials.apiUrl ?: Server.PRODUCTION
+    )
 
     fun deleteAccount(password: String) {
         loading = true
@@ -88,10 +87,9 @@ fun SettingsAccountDeleteAccountScreen(
         loading = loading,
         onClick = { deleteAccount(password) },
         enabled = password.isNotEmpty(),
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 40.dp, vertical = 8.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 40.dp, vertical = 8.dp)
     ) {
         Text(stringResource(R.string.DeleteAccount))
     }

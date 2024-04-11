@@ -35,19 +35,16 @@ fun TextInputField(
     var supportingText: @Composable (() -> Unit)? = null
 
     if (errorMessage != null) {
-        supportingText =
-            if (isError) {
-                {
-                    Text(
-                        text = errorMessage,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            } else {
-                {
-                    Text(text = "")
-                }
+        supportingText = if (isError) {
+            {
+                Text(
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error
+                )
             }
+        } else {
+            { Text(text = "") }
+        }
     }
 
     if (emptySupportingText) {
@@ -61,20 +58,22 @@ fun TextInputField(
         maxLines = 1,
         singleLine = true,
         visualTransformation = (
-            if (hidden && hiddenState.value)
+            if (hidden && hiddenState.value) {
                 PasswordVisualTransformation()
-            else
+            } else {
                 VisualTransformation.None
+            }
         ),
         trailingIcon = {
             if (hidden) {
                 IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                     Icon(
                         imageVector = (
-                            if (hiddenState.value)
+                            if (hiddenState.value) {
                                 Icons.Filled.Visibility
-                            else
+                            } else {
                                 Icons.Filled.VisibilityOff
+                            }
                         ),
                         contentDescription = null
                     )
@@ -83,10 +82,9 @@ fun TextInputField(
         },
         supportingText = supportingText,
         isError = isError,
-        keyboardOptions =
-            KeyboardOptions(
-                keyboardType = keyboardType
-            ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType
+),
         modifier = Modifier.fillMaxWidth()
     )
 }
@@ -112,10 +110,11 @@ fun TextInputFieldBase(
         label = { Text(label) },
         singleLine = singleLine,
         visualTransformation = (
-            if (hidden && hiddenState.value)
+            if (hidden && hiddenState.value) {
                 PasswordVisualTransformation()
-            else
+            } else {
                 VisualTransformation.None
+            }
         ),
         trailingIcon = {
             Row {
@@ -123,10 +122,11 @@ fun TextInputFieldBase(
                     IconButton(onClick = { hiddenState.value = !hiddenState.value }) {
                         Icon(
                             imageVector = (
-                                if (hiddenState.value)
+                                if (hiddenState.value) {
                                     Icons.Filled.Visibility
-                                else
+                                } else {
                                     Icons.Filled.VisibilityOff
+                                }
                             ),
                             contentDescription = null
                         )
@@ -136,10 +136,9 @@ fun TextInputFieldBase(
                 trailingIcon()
             }
         },
-        keyboardOptions =
-            KeyboardOptions(
-                keyboardType = keyboardType
-            ),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType
+        ),
         modifier = modifier
     )
 }

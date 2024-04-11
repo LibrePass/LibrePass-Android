@@ -53,17 +53,15 @@ fun SearchScreen(
                                 contentDescription = null
                             )
                         },
-                        colors =
-                            TextFieldDefaults.colors(
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent
-                            ),
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .heightIn(min = 56.dp)
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 56.dp)
                     )
                 },
                 navigationIcon = { TopBarBackIcon(navController) }
@@ -71,27 +69,27 @@ fun SearchScreen(
         }
     ) { innerPadding ->
         LazyColumn(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
         ) {
-            val filteredCiphers =
-                ciphers.filter {
-                    when (it.type) {
-                        CipherType.Login -> {
-                            it.loginData!!.name.lowercase().contains(searchText) ||
+            val filteredCiphers = ciphers.filter {
+                when (it.type) {
+                    CipherType.Login -> {
+                        it.loginData!!.name.lowercase().contains(searchText) ||
                                 it.loginData!!.username?.lowercase()?.contains(searchText) ?: false
-                        }
-                        CipherType.SecureNote -> {
-                            it.secureNoteData!!.title.lowercase().contains(searchText)
-                        }
-                        CipherType.Card -> {
-                            it.cardData!!.cardholderName.lowercase().contains(searchText)
-                        }
+                    }
+
+                    CipherType.SecureNote -> {
+                        it.secureNoteData!!.title.lowercase().contains(searchText)
+                    }
+
+                    CipherType.Card -> {
+                        it.cardData!!.cardholderName.lowercase().contains(searchText)
                     }
                 }
+            }
 
             for (cipher in filteredCiphers) {
                 item {

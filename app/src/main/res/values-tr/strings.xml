@@ -94,7 +94,7 @@
     <string name="View">Görüntüle</string>
     <string name="WebsiteAddress">Web sitesi adresi</string>
     <string name="WebsiteDetails">Web sitesi</string>
-    <string name="WelcomeScreen_Title">LibrePass'a Hoş Geldiniz</string>
+    <string name="WelcomeScreen_Title">LibrePass\'a Hoş Geldiniz</string>
     <string name="optional">İsteğe bağlı</string>
     <string name="Error_InvalidURI">URI adresi geçersiz</string>
     <string name="CardDetails">Kart bilgileri</string>

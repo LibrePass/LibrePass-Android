@@ -3,7 +3,7 @@ android-sdk-min = "24"
 android-sdk-target = "34"
 android-sdk-compile = "34"
 
-compose = "1.6.5"
+compose = "1.6.6"
 compose-compiler = "1.5.11"
 compose-lifecycle-runtime = "2.7.0"
 compose-material3 = "1.2.1"

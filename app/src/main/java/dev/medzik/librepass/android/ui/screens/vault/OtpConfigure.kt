@@ -35,7 +35,6 @@ import dev.medzik.librepass.android.ui.components.TextInputFieldBase
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.otp.OTPParameters
-import dev.medzik.otp.OTPParser
 import dev.medzik.otp.OTPType
 import dev.medzik.otp.TOTPGenerator
 
@@ -86,7 +85,7 @@ fun OtpConfigure(
 
                                 isTotpValid =
                                     runCatching {
-                                        TOTPGenerator.now(OTPParser.parse(it))
+                                        TOTPGenerator.fromUrl(it)
                                     }.isSuccess
 
                                 Log.i("TOTP_QR", "Valid: $isTotpValid")
@@ -140,7 +139,7 @@ fun OtpConfigure(
             } else {
                 var beginParams: OTPParameters? = null
                 if (cipher?.loginData?.twoFactor != null) {
-                    beginParams = OTPParser.parse(cipher.loginData?.twoFactor)
+                    beginParams = OTPParameters.parseUrl(cipher.loginData?.twoFactor)
                 }
 
                 var totpSecret by rememberMutable(beginParams?.secret?.encoded?.toString() ?: "")
@@ -252,7 +251,6 @@ private fun generateOtpUri(
         .type(type)
         .digits(OTPParameters.Digits.valueOf(digits))
         .secret(OTPParameters.Secret(secret))
-        .label(OTPParameters.Label(""))
         .algorithm(algorithm)
 
     when (type) {
@@ -260,5 +258,5 @@ private fun generateOtpUri(
         OTPType.HOTP -> otpBuilder.counter(OTPParameters.Counter(counter))
     }
 
-    return otpBuilder.build().buildOTPAuthURL()
+    return otpBuilder.build().encodeToUrl()
 }

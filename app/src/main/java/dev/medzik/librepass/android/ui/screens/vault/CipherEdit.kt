@@ -35,7 +35,7 @@ import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.librepass.types.cipher.data.PasswordHistory
-import dev.medzik.otp.OTPParser
+import dev.medzik.otp.OTPParameters
 import dev.medzik.otp.TOTPGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -93,7 +93,7 @@ fun CipherEditScreen(
                     (
                         cipher.loginData!!.twoFactor.isNullOrBlank() ||
                             runCatching {
-                                val params = OTPParser.parse(cipher.loginData?.twoFactor)
+                                val params = OTPParameters.parseUrl(cipher.loginData?.twoFactor)
                                 TOTPGenerator.now(params)
                             }.isSuccess
                     )

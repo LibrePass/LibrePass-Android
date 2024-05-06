@@ -57,7 +57,7 @@ import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.types.cipher.CipherType
-import dev.medzik.otp.OTPParser
+import dev.medzik.otp.OTPParameters
 import dev.medzik.otp.TOTPGenerator
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
@@ -86,7 +86,7 @@ fun CipherViewScreen(
         }
 
         if (cipher.type == CipherType.Login && !cipher.loginData?.twoFactor.isNullOrEmpty()) {
-            val params = OTPParser.parse(cipher.loginData?.twoFactor)
+            val params = OTPParameters.parseUrl(cipher.loginData?.twoFactor)
             totpCode = TOTPGenerator.now(params)
 
             totpPeriod = params.period.value

@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.BaseDialog
-import dev.medzik.android.components.SecondaryText
+import dev.medzik.android.components.GroupTitle
 import dev.medzik.android.components.getString
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
@@ -117,7 +117,7 @@ fun CipherViewScreen(
             !cipherData.username.isNullOrEmpty() ||
             !cipherData.password.isNullOrEmpty()
         ) {
-            SecondaryText(
+            GroupTitle(
                 stringResource(R.string.LoginDetails),
                 modifier = Modifier.padding(top = 8.dp)
             )
@@ -199,7 +199,7 @@ fun CipherViewScreen(
         }
 
         if (!cipherData.twoFactor.isNullOrEmpty()) {
-            SecondaryText(
+            GroupTitle(
                 stringResource(R.string.TwoFactorAuthentication),
                 modifier = Modifier.padding(top = 8.dp)
             )
@@ -212,7 +212,7 @@ fun CipherViewScreen(
         }
 
         if (!cipherData.uris.isNullOrEmpty()) {
-            SecondaryText(
+            GroupTitle(
                 stringResource(R.string.WebsiteDetails),
                 modifier = Modifier.padding(top = 8.dp)
             )
@@ -229,7 +229,7 @@ fun CipherViewScreen(
         }
 
         if (!cipherData.notes.isNullOrEmpty()) {
-            SecondaryText(
+            GroupTitle(
                 stringResource(R.string.OtherDetails),
                 modifier = Modifier.padding(top = 8.dp)
             )
@@ -269,7 +269,7 @@ fun CipherViewScreen(
             copy = true
         )
 
-        SecondaryText(
+        GroupTitle(
             stringResource(R.string.CardDetails),
             modifier = Modifier.padding(top = 8.dp)
         )
@@ -313,7 +313,7 @@ fun CipherViewScreen(
         }
 
         if (!cipherData.notes.isNullOrEmpty()) {
-            SecondaryText(
+            GroupTitle(
                 stringResource(R.string.OtherDetails),
                 modifier = Modifier.padding(top = 8.dp)
             )

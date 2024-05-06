@@ -28,7 +28,7 @@ process-phoenix = "3.0.0"
 zxing = "3.5.3"
 zxing-android = "4.3.0"
 
-medzik-android-utils = "1.3.0"
+medzik-android-utils = "1.4.0"
 
 # Plugins
 android-application = "8.4.0"

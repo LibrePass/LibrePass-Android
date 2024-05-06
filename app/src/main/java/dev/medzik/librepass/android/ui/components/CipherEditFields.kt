@@ -19,7 +19,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
-import dev.medzik.android.components.SecondaryText
+import dev.medzik.android.components.GroupTitle
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.librepass.android.R
@@ -73,7 +73,7 @@ fun CipherEditFieldsLogin(
         onValueChange = { cipherData = cipherData.copy(name = it) }
     )
 
-    SecondaryText(
+    GroupTitle(
         stringResource(R.string.LoginDetails),
         modifier = Modifier.padding(top = 8.dp)
     )
@@ -121,7 +121,7 @@ fun CipherEditFieldsLogin(
         }
     }
 
-    SecondaryText(
+    GroupTitle(
         stringResource(R.string.WebsiteDetails),
         modifier = Modifier.padding(top = 8.dp)
     )
@@ -172,7 +172,7 @@ fun CipherEditFieldsLogin(
         Text(stringResource(R.string.AddField))
     }
 
-    SecondaryText(
+    GroupTitle(
         stringResource(R.string.TwoFactorAuthentication),
         modifier = Modifier.padding(top = 8.dp)
     )
@@ -204,7 +204,7 @@ fun CipherEditFieldsLogin(
         }
     }
 
-    SecondaryText(
+    GroupTitle(
         stringResource(R.string.OtherDetails),
         modifier = Modifier.padding(top = 8.dp)
     )
@@ -341,7 +341,7 @@ fun CipherEditFieldsCard(
         }
     )
 
-    SecondaryText(
+    GroupTitle(
         stringResource(R.string.OtherDetails),
         modifier = Modifier.padding(top = 8.dp)
     )

@@ -193,10 +193,7 @@ fun CipherActionsDialog(
         ),
         onSelected = {
             when (it) {
-                R.string.View -> {
-                    onClick()
-                }
-
+                R.string.View -> onClick()
                 R.string.Edit -> onEdit()
                 R.string.Delete -> onDelete()
             }

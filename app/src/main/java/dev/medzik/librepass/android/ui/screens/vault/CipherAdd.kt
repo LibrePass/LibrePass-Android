@@ -58,9 +58,15 @@ fun CipherAddScreen(
             id = UUID.randomUUID(),
             owner = credentials.userId,
             type = cipherType,
-            loginData = if (cipherType == CipherType.Login) CipherLoginData(name = "") else null,
-            cardData = if (cipherType == CipherType.Card) CipherCardData(name = "", cardholderName = "", number = "") else null,
-            secureNoteData = if (cipherType == CipherType.SecureNote) CipherSecureNoteData(title = "", note = "") else null
+            loginData = if (cipherType == CipherType.Login) {
+                CipherLoginData(name = "")
+            } else null,
+            cardData = if (cipherType == CipherType.Card) {
+                CipherCardData(name = "", cardholderName = "", number = "")
+            } else null,
+            secureNoteData = if (cipherType == CipherType.SecureNote) {
+                CipherSecureNoteData(title = "", note = "")
+            } else null
         )
     )
 

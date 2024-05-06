@@ -20,7 +20,7 @@ hilt = "1.2.0"
 
 coil-compose = "2.6.0"
 commons-lang3 = "3.14.0"
-google-material = "1.11.0"
+google-material = "1.12.0"
 kotlinx-coroutines = "1.8.0"
 librepass-client = "1.6.0"
 otp = "1.0.0"

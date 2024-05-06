@@ -1,9 +1,9 @@
 package dev.medzik.librepass.android.utils
 
 import android.content.Context
-import dev.medzik.android.crypto.DataStore.deleteEncrypted
-import dev.medzik.android.crypto.DataStore.readEncrypted
-import dev.medzik.android.crypto.DataStore.writeEncrypted
+import dev.medzik.android.crypto.EncryptedDataStore.deleteEncryptedKey
+import dev.medzik.android.crypto.EncryptedDataStore.readEncryptedKey
+import dev.medzik.android.crypto.EncryptedDataStore.writeEncryptedKey
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.librepass.android.data.CipherDao
 import dev.medzik.librepass.android.data.LocalCipher
@@ -97,7 +97,7 @@ class Vault(
         val expired = handleExpiration(context)
         if (!expired) {
             runOnIOThread {
-                aesKey = context.dataStore.readEncrypted(
+                aesKey = context.dataStore.readEncryptedKey(
                     KeyAlias.DataStoreEncrypted,
                     AES_KEY_STORE_KEY
                 ) ?: byteArrayOf()
@@ -111,7 +111,7 @@ class Vault(
             deleteSecrets(context)
         } else {
             runOnIOThread {
-                context.dataStore.writeEncrypted(
+                context.dataStore.writeEncryptedKey(
                     KeyAlias.DataStoreEncrypted,
                     AES_KEY_STORE_KEY,
                     aesKey
@@ -149,7 +149,7 @@ class Vault(
         aesKey = byteArrayOf()
 
         runOnIOThread {
-            context.dataStore.deleteEncrypted(AES_KEY_STORE_KEY)
+            context.dataStore.deleteEncryptedKey(AES_KEY_STORE_KEY)
         }
     }
 }

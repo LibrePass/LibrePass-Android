@@ -96,4 +96,25 @@
     <string name="BiometricKeyInvalidated">Die biometrische Autorisierung wurde von Android ungültig gemacht</string>
     <string name="NewEmail">Neue E-Mail-Adresse</string>
     <string name="ChangeEmail">E-Mail-Adresse ändern</string>
+    <string name="EnterKeyManually">Geheimnis manuell eingeben</string>
+    <string name="Algorithm">Algorithmus</string>
+    <string name="Digits">Ziffern</string>
+    <string name="Period">Zeitraum</string>
+    <string name="Counter">Zähler</string>
+    <string name="ScanQrCode">QR-Code scannen</string>
+    <string name="Type">Art</string>
+    <string name="ConfigureTwoFactor">Konfigurieren Sie die Zwei-Faktor-Funktion</string>
+    <string name="DeleteTwoFactor">Zweiten Faktor löschen</string>
+    <string name="TwoFactorAuthentication">Zwei-Faktor-Authentifizierung</string>
+    <string name="TwoFactorSecret">Zwei-Faktor Geheimnis</string>
+    <string name="RateLimit">Zu viele Anfragen</string>
+    <string name="SendEmail">Interner Serverfehler - E-Mail kann nicht gesendet werden</string>
+    <string name="Duplicated">Dupliziert</string>
+    <string name="Database">Unbekannter Server-Datenbankfehler</string>
+    <string name="CipherNotFound">Cipher nicht gefunden</string>
+    <string name="CollectionNotFound">Ordner nicht gefunden</string>
+    <string name="EmailNotVerified">Bitte verifizieren Sie Ihre E-Mail-Adresse</string>
+    <string name="InvalidBody">Ungültige API-Anfrage</string>
+    <string name="InvalidCredentials">Ungültige Zugangsdaten</string>
+    <string name="InvalidToken">Ungültiges Login-Token</string>
 </resources>

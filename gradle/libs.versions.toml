@@ -32,8 +32,8 @@ medzik-android-utils = "1.4.0"
 
 # Plugins
 android-application = "8.4.0"
-kotlin-ksp = "1.9.23-1.0.20"
-kotlin-android = "1.9.23"
+kotlin-ksp = "1.9.24-1.0.20"
+kotlin-android = "1.9.24"
 
 [libraries]
 compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "compose-compiler" }

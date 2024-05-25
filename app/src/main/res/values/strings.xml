@@ -68,7 +68,6 @@
     <string name="Server_Choice_Dialog">Choose a server</string>
     <string name="Server_Choice_Dialog_AddCustom">Add self-hosted</string>
     <string name="Server_Official">Official</string>
-    <string name="Server_Testing" translatable="false">Testing</string>
     <string name="Settings">Settings</string>
     <string name="Settings_Account">Account</string>
     <string name="Settings_Appearance">Appearance</string>

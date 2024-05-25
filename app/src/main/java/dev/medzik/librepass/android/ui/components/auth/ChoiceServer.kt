@@ -33,11 +33,6 @@ fun ChoiceServer(navController: NavController, server: MutableState<String>) {
             Server.PRODUCTION -> {
                 stringResource(R.string.Server_Official)
             }
-
-            Server.TEST -> {
-                stringResource(R.string.Server_Testing)
-            }
-
             else -> server
         }
     }
@@ -60,11 +55,9 @@ fun ChoiceServer(navController: NavController, server: MutableState<String>) {
         )
     }
     
-    var servers = listOf(Server.PRODUCTION)
+    val servers = listOf(Server.PRODUCTION)
         .plus(LocalContext.current.readKey(StoreKey.CustomServers))
         .plus("custom_server")
-
-    if (BuildConfig.DEBUG) servers = servers.plus(Server.TEST)
 
     PickerDialog(
         state = serverChoiceDialog,
@@ -80,10 +73,7 @@ fun ChoiceServer(navController: NavController, server: MutableState<String>) {
     ) {
         Text(
             text = when (it) {
-                "custom_server" -> {
-                    stringResource(R.string.Server_Choice_Dialog_AddCustom)
-                }
-
+                "custom_server" -> { stringResource(R.string.Server_Choice_Dialog_AddCustom) }
                 else -> getServerName(it)
             },
             modifier = Modifier

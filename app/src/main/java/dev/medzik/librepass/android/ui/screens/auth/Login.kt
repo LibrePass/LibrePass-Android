@@ -61,11 +61,10 @@ fun LoginScreen(
             try {
                 val preLogin = authClient.preLogin(email)
 
-                val credentials =
-                    authClient.login(
-                        email = email,
-                        password = password
-                    )
+                val credentials = authClient.login(
+                    email = email,
+                    password = password
+                )
 
                 // save credentials
                 val credentialsDb = Credentials(
@@ -78,7 +77,7 @@ fun LoginScreen(
                     memory = preLogin.memory,
                     iterations = preLogin.iterations,
                     parallelism = preLogin.parallelism
-                    )
+                )
                 viewModel.credentialRepository.insert(credentialsDb)
 
                 viewModel.vault.aesKey = credentials.aesKey.fromHex()

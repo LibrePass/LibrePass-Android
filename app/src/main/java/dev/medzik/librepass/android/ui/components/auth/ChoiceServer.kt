@@ -16,7 +16,6 @@ import androidx.navigation.NavController
 import dev.medzik.android.components.PickerDialog
 import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
-import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.utils.SecretStore.readKey

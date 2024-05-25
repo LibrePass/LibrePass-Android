@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.gson.JsonSyntaxException
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
@@ -35,7 +36,16 @@ fun AddCustomServerScreen(navController: NavController) {
         loading = true
 
         runOnIOThread {
-            if (!checkApiConnection(server)) {
+            // TODO: Delete try when released new version of LibrePass client library
+            try {
+                if (!checkApiConnection(server)) {
+                    context.showToast(R.string.Tost_NoServerConnection)
+
+                    loading = false
+
+                    return@runOnIOThread
+                }
+            } catch (e: JsonSyntaxException) {
                 context.showToast(R.string.Tost_NoServerConnection)
 
                 loading = false

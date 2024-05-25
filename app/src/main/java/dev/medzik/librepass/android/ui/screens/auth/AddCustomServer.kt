@@ -14,6 +14,8 @@ import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.utils.runOnIOThread
+import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.components.TextInputField
@@ -29,19 +31,23 @@ fun AddCustomServerScreen(navController: NavController) {
     var loading by rememberMutableBoolean()
     var server by rememberMutableString()
 
-    fun submit(server: String) {
+    fun submit() {
         loading = true
 
-        if (!checkApiConnection(server)) {
-            context.showToast(R.string.Tost_NoServerConnection)
-            return
+        runOnIOThread {
+            if (!checkApiConnection(server)) {
+                context.showToast(R.string.Tost_NoServerConnection)
+
+                loading = false
+
+                return@runOnIOThread
+            }
+
+            val servers = context.readKey(StoreKey.CustomServers)
+            context.writeKey(StoreKey.CustomServers, servers.plus(server))
+
+            runOnUiThread { navController.popBackStack() }
         }
-
-        val servers = context.readKey(StoreKey.CustomServers)
-        context.writeKey(StoreKey.CustomServers, servers.plus(server))
-        navController.popBackStack()
-
-        loading = false
     }
 
     TextInputField(
@@ -52,7 +58,7 @@ fun AddCustomServerScreen(navController: NavController) {
 
     LoadingButton(
         loading = loading,
-        onClick = { submit(server) },
+        onClick = { submit() },
         enabled = server.isNotEmpty(),
         modifier = Modifier
             .fillMaxWidth()

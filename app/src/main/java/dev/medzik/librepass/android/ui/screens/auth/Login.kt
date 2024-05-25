@@ -1,7 +1,6 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -18,21 +17,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
-import dev.medzik.android.components.PickerDialog
 import dev.medzik.android.components.navigate
-import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
-import dev.medzik.librepass.android.BuildConfig
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
-import dev.medzik.librepass.android.utils.SecretStore.readKey
-import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
@@ -52,10 +47,10 @@ fun LoginScreen(
     var loading by rememberMutableBoolean()
     var email by rememberMutableString()
     var password by rememberMutableString()
-    var server by rememberMutableString(Server.PRODUCTION)
+    val server = rememberMutableString(Server.PRODUCTION)
 
     fun submit(email: String, password: String) {
-        val authClient = AuthClient(apiUrl = server)
+        val authClient = AuthClient(apiUrl = server.value)
 
         if (email.isEmpty() || password.isEmpty())
             return
@@ -73,17 +68,16 @@ fun LoginScreen(
                     )
 
                 // save credentials
-                val credentialsDb =
-                    Credentials(
-                        userId = credentials.userId,
-                        email = email,
-                        apiUrl = if (server == Server.PRODUCTION) null else server,
-                        apiKey = credentials.apiKey,
-                        publicKey = credentials.publicKey,
-                        // Argon2id parameters
-                        memory = preLogin.memory,
-                        iterations = preLogin.iterations,
-                        parallelism = preLogin.parallelism
+                val credentialsDb = Credentials(
+                    userId = credentials.userId,
+                    email = email,
+                    apiUrl = if (server.value == Server.PRODUCTION) null else server.value,
+                    apiKey = credentials.apiKey,
+                    publicKey = credentials.publicKey,
+                    // Argon2id parameters
+                    memory = preLogin.memory,
+                    iterations = preLogin.iterations,
+                    parallelism = preLogin.parallelism
                     )
                 viewModel.credentialRepository.insert(credentialsDb)
 
@@ -115,30 +109,32 @@ fun LoginScreen(
         keyboardType = KeyboardType.Email
     )
 
+    fun requestPasswordHint() {
+        val authClient = AuthClient(apiUrl = server.value)
+
+        if (email.isEmpty()) {
+            context.showToast(context.getString(R.string.Toast_Enter_Email))
+            return
+        }
+
+        scope.launch(Dispatchers.IO) {
+            try {
+                authClient.requestPasswordHint(email)
+
+                context.showToast(context.getString(R.string.Toast_Password_Hint_Sent))
+            } catch (e: Exception) {
+                e.showErrorToast(context)
+            }
+        }
+    }
+
     Text(
         text = stringResource(R.string.GetPasswordHint),
         style = MaterialTheme.typography.bodyMedium,
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .padding(vertical = 8.dp)
-            .clickable {
-                val authClient = AuthClient(apiUrl = server)
-
-                if (email.isEmpty()) {
-                    context.showToast(context.getString(R.string.Toast_Enter_Email))
-                    return@clickable
-                }
-
-                scope.launch(Dispatchers.IO) {
-                    try {
-                        authClient.requestPasswordHint(email)
-
-                        context.showToast(context.getString(R.string.Toast_Password_Hint_Sent))
-                    } catch (e: Exception) {
-                        e.showErrorToast(context)
-                    }
-                }
-            }
+            .clickable { requestPasswordHint() }
     )
 
     TextInputField(
@@ -149,40 +145,7 @@ fun LoginScreen(
         keyboardType = KeyboardType.Password
     )
 
-    val serverChoiceDialog = rememberDialogState()
-
-    @Composable
-    fun getServerName(server: String): String {
-        return when (server) {
-            Server.PRODUCTION -> {
-                stringResource(R.string.Server_Official)
-            }
-
-            Server.TEST -> {
-                stringResource(R.string.Server_Testing)
-            }
-
-            else -> server
-        }
-    }
-
-    Row(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .clickable { serverChoiceDialog.show() }
-    ) {
-        Text(
-            text = stringResource(R.string.ServerAddress) + ": ",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-        )
-
-        Text(
-            text = getServerName(server),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary
-        )
-    }
+    ChoiceServer(navController, server)
 
     LoadingButton(
         loading = loading,
@@ -193,37 +156,5 @@ fun LoginScreen(
             .padding(horizontal = 40.dp)
     ) {
         Text(stringResource(R.string.Login))
-    }
-
-    var servers = listOf(Server.PRODUCTION)
-        .plus(context.readKey(StoreKey.CustomServers))
-        .plus("custom_server")
-
-    if (BuildConfig.DEBUG) servers = servers.plus(Server.TEST)
-
-    PickerDialog(
-        state = serverChoiceDialog,
-        title = stringResource(R.string.ServerAddress),
-        items = servers,
-        onSelected = {
-            if (it == "custom_server") {
-                navController.navigate(Screen.AddCustomServer)
-            } else {
-                server = it
-            }
-        }
-    ) {
-        Text(
-            text = when (it) {
-                "custom_server" -> {
-                    stringResource(R.string.Server_Choice_Dialog_AddCustom)
-                }
-
-                else -> getServerName(it)
-            },
-            modifier = Modifier
-                .padding(vertical = 12.dp)
-                .fillMaxWidth()
-        )
     }
 }

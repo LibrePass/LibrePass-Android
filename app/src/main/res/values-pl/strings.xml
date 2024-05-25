@@ -84,6 +84,7 @@
     <string name="Toast_Enter_Email">Wprowadź swój adres e-mail</string>
     <string name="Toast_Password_Hint_Sent">Podpowiedź dotycząca hasła została wysłana na adres e-mail</string>
     <string name="Toast_PleaseVerifyYourEmail">Zweryfikuj swój adres e-mail</string>
+    <string name="Tost_NoServerConnection">Brak połączenia z serwerem</string>
     <string name="Unlock">Odblokuj</string>
     <string name="UnlockWithBiometrics">Odblokowanie za pomocą danych biometrycznych</string>
     <string name="UseBiometric">Użyj biometrii</string>

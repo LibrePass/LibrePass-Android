@@ -14,11 +14,13 @@ import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.client.api.checkApiConnection
 
 @Composable
 fun AddCustomServerScreen(navController: NavController) {
@@ -30,7 +32,10 @@ fun AddCustomServerScreen(navController: NavController) {
     fun submit(server: String) {
         loading = true
 
-        // TODO: ping server to check connection
+        if (!checkApiConnection(server)) {
+            context.showToast(R.string.Tost_NoServerConnection)
+            return
+        }
 
         val servers = context.readKey(StoreKey.CustomServers)
         context.writeKey(StoreKey.CustomServers, servers.plus(server))

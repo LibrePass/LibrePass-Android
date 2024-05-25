@@ -117,4 +117,5 @@
     <string name="Digits">Rakamlar</string>
     <string name="Period">Dönem</string>
     <string name="Counter">Sayaç</string>
+    <string name="Tost_NoServerConnection">Sunucu ile bağlantı yok</string>
 </resources>

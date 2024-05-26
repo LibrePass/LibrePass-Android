@@ -17,6 +17,7 @@ import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.Vault
+import dev.medzik.librepass.android.utils.popUpToDestination
 import org.apache.commons.lang3.exception.ExceptionUtils
 import javax.inject.Inject
 
@@ -88,7 +89,9 @@ class MainActivity : FragmentActivity() {
         if (expired) {
             navController.navigate(
                 Unlock
-            )
+            ) {
+                popUpToDestination(navController)
+            }
         }
     }
 }

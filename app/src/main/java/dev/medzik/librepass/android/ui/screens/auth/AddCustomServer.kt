@@ -24,6 +24,10 @@ import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.client.api.checkApiConnection
+import kotlinx.serialization.Serializable
+
+@Serializable
+object AddCustomServer
 
 @Composable
 fun AddCustomServerScreen(navController: NavController) {

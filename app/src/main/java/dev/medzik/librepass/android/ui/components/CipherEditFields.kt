@@ -20,11 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
 import dev.medzik.android.components.GroupTitle
-import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.Argument
-import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.screens.vault.OtpConfigure
+import dev.medzik.librepass.android.ui.screens.vault.PasswordGenerator
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.data.CipherLoginData
 
@@ -112,7 +111,7 @@ fun CipherEditFieldsLogin(
                 Gson().toJson(cipherData)
             )
 
-            navController.navigate(Screen.PasswordGenerator)
+            navController.navigate(PasswordGenerator)
         }) {
             Icon(
                 imageVector = Icons.Default.AutoAwesome,
@@ -180,8 +179,9 @@ fun CipherEditFieldsLogin(
     Button(
         onClick = {
             navController.navigate(
-                screen = Screen.ConfigureOtp,
-                args = arrayOf(Argument.CipherId to cipher.id.toString())
+                OtpConfigure(
+                    cipher.id.toString()
+                )
             )
         },
         modifier = Modifier

@@ -41,6 +41,7 @@
     <string name="Error_PasswordTooShort">Hasło jest zbyt krótkie</string>
     <string name="Error_PasswordsDoNotMatch">Hasła nie są zgodne</string>
     <string name="Error_UnknownError">Nieznany błąd</string>
+    <string name="Error_NoInternetConnection">Brak połączenia z internetem</string>
     <string name="ExpirationMonth">Miesiąc ważności</string>
     <string name="ExpirationYear">Rok ważności</string>
     <string name="GetPasswordHint">Uzyskaj podpowiedź do hasła</string>

@@ -41,6 +41,7 @@
     <string name="Error_PasswordTooShort">Password is too short</string>
     <string name="Error_PasswordsDoNotMatch">Passwords don\'t match</string>
     <string name="Error_UnknownError">Unknown error</string>
+    <string name="Error_NoInternetConnection">No internet connection</string>
     <string name="ExpirationMonth">Expiration month</string>
     <string name="ExpirationYear">Expiration year</string>
     <string name="GetPasswordHint">Get password hint</string>

@@ -27,6 +27,7 @@ import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
 import dev.medzik.librepass.android.ui.screens.vault.Vault
+import dev.medzik.librepass.android.utils.haveNetworkConnection
 import dev.medzik.librepass.android.utils.popUpToDestination
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
@@ -54,6 +55,11 @@ fun LoginScreen(
     val server = rememberMutableString(Server.PRODUCTION)
 
     fun submit(email: String, password: String) {
+        if (!context.haveNetworkConnection()) {
+            context.showToast(R.string.Error_NoInternetConnection)
+            return
+        }
+
         val authClient = AuthClient(apiUrl = server.value)
 
         if (email.isEmpty() || password.isEmpty())

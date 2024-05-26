@@ -37,6 +37,7 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
+import kotlinx.serialization.Serializable
 import java.util.Random
 
 enum class PasswordType(val literals: String) {
@@ -45,6 +46,9 @@ enum class PasswordType(val literals: String) {
     UPPERCASE("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
     SYMBOLS("!@#\$%^&*()_+-=[]{}\\|;:'\",.<>/?")
 }
+
+@Serializable
+object PasswordGenerator
 
 @Composable
 fun PasswordGeneratorScreen(navController: NavController) {

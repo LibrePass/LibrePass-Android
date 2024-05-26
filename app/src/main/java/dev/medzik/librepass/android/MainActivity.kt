@@ -8,11 +8,10 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dagger.hilt.android.AndroidEntryPoint
-import dev.medzik.android.components.navigate
 import dev.medzik.android.utils.openEmailApplication
 import dev.medzik.librepass.android.data.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
-import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.screens.auth.Unlock
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
@@ -88,8 +87,7 @@ class MainActivity : FragmentActivity() {
         val expired = vault.handleExpiration(this)
         if (expired) {
             navController.navigate(
-                screen = Screen.Unlock,
-                disableBack = true
+                Unlock
             )
         }
     }

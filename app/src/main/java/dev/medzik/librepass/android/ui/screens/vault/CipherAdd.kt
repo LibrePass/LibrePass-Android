@@ -1,5 +1,6 @@
 package dev.medzik.librepass.android.ui.screens.vault
 
+import android.os.Parcelable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -7,11 +8,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -19,18 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
-import dev.medzik.android.components.getString
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.LibrePassViewModel
-import dev.medzik.librepass.android.ui.components.CipherEditFieldsCard
-import dev.medzik.librepass.android.ui.components.CipherEditFieldsLogin
-import dev.medzik.librepass.android.ui.components.CipherEditFieldsSecureNote
-import dev.medzik.librepass.android.ui.components.TopBar
-import dev.medzik.librepass.android.ui.components.TopBarBackIcon
+import dev.medzik.librepass.android.ui.components.*
+import dev.medzik.librepass.android.utils.parceler.CipherTypeParceler
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -39,17 +31,23 @@ import dev.medzik.librepass.types.cipher.data.CipherLoginData
 import dev.medzik.librepass.types.cipher.data.CipherSecureNoteData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.UUID
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.TypeParceler
+import kotlinx.serialization.Serializable
+import java.util.*
+
+@Parcelize
+@TypeParceler<CipherType, CipherTypeParceler>()
+@Serializable
+data class CipherAdd(val cipherType: CipherType): Parcelable
 
 @Composable
 fun CipherAddScreen(
     navController: NavController,
+    args: CipherAdd,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-
-    val cipherTypeArg = remember { navController.getString(Argument.CipherType) } ?: return
-    val cipherType = remember { CipherType.from(cipherTypeArg.toInt()) }
 
     val credentials = remember { viewModel.credentialRepository.get() } ?: return
 
@@ -57,14 +55,14 @@ fun CipherAddScreen(
         Cipher(
             id = UUID.randomUUID(),
             owner = credentials.userId,
-            type = cipherType,
-            loginData = if (cipherType == CipherType.Login) {
+            type = args.cipherType,
+            loginData = if (args.cipherType == CipherType.Login) {
                 CipherLoginData(name = "")
             } else null,
-            cardData = if (cipherType == CipherType.Card) {
+            cardData = if (args.cipherType == CipherType.Card) {
                 CipherCardData(name = "", cardholderName = "", number = "")
             } else null,
-            secureNoteData = if (cipherType == CipherType.SecureNote) {
+            secureNoteData = if (args.cipherType == CipherType.SecureNote) {
                 CipherSecureNoteData(title = "", note = "")
             } else null
         )

@@ -1,45 +1,48 @@
 package dev.medzik.librepass.android.ui.screens.vault
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.*
 import androidx.compose.material3.pullrefresh.PullRefreshIndicator
 import androidx.compose.material3.pullrefresh.pullRefresh
 import androidx.compose.material3.pullrefresh.rememberPullRefreshState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.navigate
+import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.librepass.android.MainActivity
-import dev.medzik.librepass.android.ui.Argument
+import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
-import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.CipherCard
-import dev.medzik.librepass.android.utils.KeyAlias
-import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
-import dev.medzik.librepass.android.utils.haveNetworkConnection
-import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
-import dev.medzik.librepass.android.utils.showErrorToast
+import dev.medzik.librepass.android.ui.components.CipherTypeDialog
+import dev.medzik.librepass.android.ui.components.TopBar
+import dev.medzik.librepass.android.ui.screens.settings.Settings
+import dev.medzik.librepass.android.utils.*
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Date
+import kotlinx.serialization.Serializable
+import java.util.*
 import java.util.concurrent.TimeUnit
+
+@Serializable
+object Vault
 
 @Composable
 fun VaultScreen(
@@ -183,14 +186,16 @@ fun VaultScreen(
                     cipher = ciphers[index],
                     onClick = { cipher ->
                         navController.navigate(
-                            screen = Screen.CipherView,
-                            args = arrayOf(Argument.CipherId to cipher.id.toString())
+                            CipherView(
+                                cipher.id.toString()
+                            )
                         )
                     },
                     onEdit = { cipher ->
                         navController.navigate(
-                            screen = Screen.CipherEdit,
-                            args = arrayOf(Argument.CipherId to cipher.id.toString())
+                            CipherEdit(
+                                cipher.id.toString()
+                            )
                         )
                     },
                     onDelete = { cipher ->
@@ -221,4 +226,72 @@ fun VaultScreen(
             modifier = Modifier.align(Alignment.TopCenter)
         )
     }
+}
+
+@Composable
+fun VaultScreenTopBar(navController: NavController) {
+    TopBar(
+        title = stringResource(R.string.Vault),
+        actions = {
+            val context = LocalContext.current
+            var expanded by rememberMutableBoolean()
+            IconButton(onClick = { navController.navigate(Search) }) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null
+                )
+            }
+
+            IconButton(onClick = { expanded = !expanded }) {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = null
+                )
+            }
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.Settings)) },
+                    onClick = {
+                        expanded = false
+                        navController.navigate(Settings)
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.LockVault)) },
+                    onClick = {
+                        (context as MainActivity).vault.deleteSecrets(context)
+
+                        // close application
+                        (context as Activity).finish()
+                    }
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun VaultScreenFloatingActionButton(navController: NavController) {
+    val dialogState = rememberDialogState()
+
+    FloatingActionButton(
+        onClick = { dialogState.show() }
+    ) {
+        Icon(Icons.Default.Add, contentDescription = null)
+    }
+
+    CipherTypeDialog(
+        dialogState,
+        onSelected = { cipherType ->
+            navController.navigate(
+                CipherAdd(
+                    cipherType
+                )
+            )
+        }
+    )
 }

@@ -10,9 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import dev.medzik.android.components.PreferenceEntry
-import dev.medzik.android.components.navigate
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.Screen
+import kotlinx.serialization.Serializable
+
+@Serializable
+object Settings
 
 @Composable
 fun SettingsScreen(navController: NavController) {
@@ -20,19 +22,19 @@ fun SettingsScreen(navController: NavController) {
         PreferenceEntry(
             icon = { Icon(Icons.Default.ColorLens, contentDescription = null) },
             title = stringResource(R.string.Settings_Appearance),
-            onClick = { navController.navigate(Screen.SettingsAppearance) }
+            onClick = { navController.navigate(SettingsAppearance) }
         )
 
         PreferenceEntry(
             icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
             title = stringResource(R.string.Settings_Security),
-            onClick = { navController.navigate(Screen.SettingsSecurity) }
+            onClick = { navController.navigate(SettingsSecurity) }
         )
 
         PreferenceEntry(
             icon = { Icon(Icons.Default.ManageAccounts, contentDescription = null) },
             title = stringResource(R.string.Settings_Account),
-            onClick = { navController.navigate(Screen.SettingsAccount) }
+            onClick = { navController.navigate(SettingsAccount) }
         )
     }
 }

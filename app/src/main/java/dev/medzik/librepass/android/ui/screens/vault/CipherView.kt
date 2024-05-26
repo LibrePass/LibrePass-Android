@@ -2,34 +2,13 @@ package dev.medzik.librepass.android.ui.screens.vault
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
-import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -43,15 +22,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.BaseDialog
 import dev.medzik.android.components.GroupTitle
-import dev.medzik.android.components.getString
-import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.LibrePassViewModel
-import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
@@ -60,17 +35,21 @@ import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.otp.OTPParameters
 import dev.medzik.otp.TOTPGenerator
 import kotlinx.coroutines.delay
+import kotlinx.serialization.Serializable
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 import java.util.concurrent.TimeUnit
+
+@Serializable
+data class CipherView(val cipherId: String)
 
 @Composable
 fun CipherViewScreen(
     navController: NavController,
+    args: CipherView,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    val cipherId = remember { navController.getString(Argument.CipherId) } ?: return
-    val cipher = remember { viewModel.vault.find(cipherId) } ?: return
+    val cipher = remember { viewModel.vault.find(args.cipherId) } ?: return
 
     var totpCode by rememberMutable("")
     var totpElapsed by rememberMutable(0)
@@ -340,8 +319,9 @@ fun CipherViewScreen(
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 navController.navigate(
-                    screen = Screen.CipherEdit,
-                    args = arrayOf(Argument.CipherId to cipherId)
+                    CipherEdit(
+                        args.cipherId
+                    )
                 )
             }) {
                 Icon(

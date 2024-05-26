@@ -14,10 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.components.PickerDialog
-import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.Screen
+import dev.medzik.librepass.android.ui.screens.auth.AddCustomServer
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.client.Server
@@ -64,7 +63,7 @@ fun ChoiceServer(navController: NavController, server: MutableState<String>) {
         items = servers,
         onSelected = {
             if (it == "custom_server") {
-                navController.navigate(Screen.AddCustomServer)
+                navController.navigate(AddCustomServer)
             } else {
                 server.value = it
             }

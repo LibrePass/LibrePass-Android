@@ -21,6 +21,7 @@ import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
+import dev.medzik.librepass.android.utils.popUpToDestination
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
@@ -61,7 +62,9 @@ fun RegisterScreen(navController: NavController) {
 
                     navController.navigate(
                         Login
-                    )
+                    ) {
+                        popUpToDestination(navController)
+                    }
                 }
             } catch (e: Exception) {
                 loading = false

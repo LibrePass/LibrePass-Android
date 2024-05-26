@@ -65,8 +65,7 @@ fun UnlockScreen(
                 val passwordHash = computePasswordHash(
                     password = password,
                     email = credentials.email,
-                    argon2Function =
-                    Argon2(
+                    argon2Function = Argon2(
                         32,
                         credentials.parallelism,
                         credentials.memory,
@@ -86,7 +85,9 @@ fun UnlockScreen(
                     runOnUiThread {
                         navController.navigate(
                             Vault
-                        )
+                        ) {
+                            popUpToDestination(navController)
+                        }
                     }
                 }
             } catch (e: Exception) {
@@ -111,7 +112,9 @@ fun UnlockScreen(
 
                     navController.navigate(
                         Vault
-                    )
+                    ) {
+                        popUpToDestination(navController)
+                    }
                 },
                 onAuthenticationFailed = { }
             )

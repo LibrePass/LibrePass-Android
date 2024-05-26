@@ -14,21 +14,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
-import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.TextInputField
-import dev.medzik.librepass.android.ui.screens.Welcome
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.UserClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -63,22 +59,7 @@ fun SettingsAccountChangePasswordScreen(
             try {
                 userClient.changePassword(oldPassword, newPassword, newPasswordHint)
 
-                runBlocking {
-                    viewModel.credentialRepository.drop()
-                    viewModel.cipherRepository.drop(credentials.userId)
-                    context
-                }
-
-                runOnUiThread {
-                    navController.navigate(
-                        Welcome
-                    ) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = false
-                            inclusive = true
-                        }
-                    }
-                }
+                navigateToWelcomeAndLogout(viewModel, navController, credentials.userId)
             } catch (e: Exception) {
                 e.showErrorToast(context)
 

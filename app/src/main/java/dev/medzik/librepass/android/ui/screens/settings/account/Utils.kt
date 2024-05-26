@@ -1,10 +1,10 @@
 package dev.medzik.librepass.android.ui.screens.settings.account
 
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.screens.Welcome
+import dev.medzik.librepass.android.utils.popUpToDestination
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -22,10 +22,7 @@ fun navigateToWelcomeAndLogout(
         navController.navigate(
             Welcome
         ) {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = false
-                inclusive = true
-            }
+            popUpToDestination(navController)
         }
     }
 }

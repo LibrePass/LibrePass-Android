@@ -21,6 +21,7 @@ import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
+import dev.medzik.librepass.android.utils.haveNetworkConnection
 import dev.medzik.librepass.android.utils.popUpToDestination
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
@@ -47,6 +48,11 @@ fun RegisterScreen(navController: NavController) {
 
     // Register user with given credentials and navigate to log in screen.
     fun submit(email: String, password: String) {
+        if (!context.haveNetworkConnection()) {
+            context.showToast(R.string.Error_NoInternetConnection)
+            return
+        }
+
         val authClient = AuthClient(apiUrl = server.value)
 
         // disable button

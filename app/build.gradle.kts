@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -118,6 +120,8 @@ dependencies {
     implementation(libs.medzik.android.components)
     implementation(libs.medzik.android.crypto)
     implementation(libs.medzik.android.utils)
+
+    implementation(libs.kotlinx.serialization.json)
 
     // for testing
     debugImplementation(libs.compose.ui.test.manifest)

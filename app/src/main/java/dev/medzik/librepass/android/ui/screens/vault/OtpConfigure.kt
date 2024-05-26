@@ -24,27 +24,25 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.ComboBoxDropdown
-import dev.medzik.android.components.getString
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.Argument
 import dev.medzik.librepass.android.ui.LibrePassViewModel
-import dev.medzik.librepass.android.ui.components.Permission
-import dev.medzik.librepass.android.ui.components.QrCodeScanner
-import dev.medzik.librepass.android.ui.components.TextInputFieldBase
-import dev.medzik.librepass.android.ui.components.TopBar
-import dev.medzik.librepass.android.ui.components.TopBarBackIcon
+import dev.medzik.librepass.android.ui.components.*
 import dev.medzik.otp.OTPParameters
 import dev.medzik.otp.OTPType
 import dev.medzik.otp.TOTPGenerator
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class OtpConfigure(val cipherId: String)
 
 @Composable
-fun OtpConfigure(
+fun OtpConfigureScreen(
     navController: NavController,
+    args: OtpConfigure,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    val cipherId = navController.getString(Argument.CipherId)
-    val cipher = cipherId?.let { viewModel.vault.find(it) }
+    val cipher = viewModel.vault.find(args.cipherId)
 
     Scaffold(
         topBar = {

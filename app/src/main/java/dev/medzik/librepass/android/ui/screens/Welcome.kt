@@ -1,12 +1,7 @@
 package dev.medzik.librepass.android.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -19,10 +14,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.drawablepainter.DrawablePainter
-import dev.medzik.android.components.navigate
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TopBarTwoColor
+import dev.medzik.librepass.android.ui.screens.auth.Login
+import dev.medzik.librepass.android.ui.screens.auth.Register
+import kotlinx.serialization.Serializable
+
+@Serializable
+object Welcome
 
 @Composable
 fun WelcomeScreen(navController: NavController) {
@@ -53,7 +52,7 @@ fun WelcomeScreen(navController: NavController) {
             )
 
             Button(
-                onClick = { navController.navigate(Screen.Register) },
+                onClick = { navController.navigate(Register) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 90.dp)
@@ -63,7 +62,7 @@ fun WelcomeScreen(navController: NavController) {
             }
 
             OutlinedButton(
-                onClick = { navController.navigate(Screen.Login) },
+                onClick = { navController.navigate(Login) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 90.dp)

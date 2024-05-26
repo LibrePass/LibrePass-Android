@@ -14,13 +14,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
-import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
 import dev.medzik.librepass.android.utils.showErrorToast
@@ -28,6 +26,10 @@ import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+
+@Serializable
+object Register
 
 @Composable
 fun RegisterScreen(navController: NavController) {
@@ -58,8 +60,7 @@ fun RegisterScreen(navController: NavController) {
                     context.showToast(R.string.Toast_PleaseVerifyYourEmail)
 
                     navController.navigate(
-                        screen = Screen.Login,
-                        disableBack = true
+                        Login
                     )
                 }
             } catch (e: Exception) {

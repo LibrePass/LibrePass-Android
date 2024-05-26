@@ -37,6 +37,10 @@ import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
 import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+
+@Serializable
+object SettingsSecurity
 
 @Composable
 fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {

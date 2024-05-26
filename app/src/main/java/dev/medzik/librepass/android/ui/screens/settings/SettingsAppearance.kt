@@ -26,6 +26,10 @@ import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
+import kotlinx.serialization.Serializable
+
+@Serializable
+object SettingsAppearance
 
 @Composable
 fun SettingsAppearanceScreen() {

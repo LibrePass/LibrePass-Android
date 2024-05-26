@@ -7,7 +7,7 @@ compose = "1.6.7"
 compose-compiler = "1.5.14"
 compose-lifecycle-runtime = "2.8.0"
 compose-material3 = "1.2.1"
-compose-navigation = "2.7.7"
+compose-navigation = "2.8.0-beta01"
 
 accompanist = "0.34.0"
 
@@ -30,10 +30,12 @@ zxing-android = "4.3.0"
 
 medzik-android-utils = "1.4.0"
 
+kotlin-serialization = "1.6.3"
+
 # Plugins
 android-application = "8.2.0"
 kotlin-ksp = "1.9.24-1.0.20"
-kotlin-android = "1.9.24"
+kotlin = "1.9.24"
 
 [libraries]
 compose-compiler = { group = "androidx.compose.compiler", name = "compiler", version.ref = "compose-compiler" }
@@ -73,9 +75,13 @@ medzik-android-crypto = { module = "dev.medzik.android:crypto", version.ref = "m
 medzik-android-components = { module = "dev.medzik.android:components", version.ref = "medzik-android-utils" }
 medzik-android-utils = { module = "dev.medzik.android:utils", version.ref = "medzik-android-utils" }
 
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }
 android-library = { id = "com.android.library", version.ref = "android-application" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin-ksp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }

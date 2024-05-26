@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.LoadingButton
-import dev.medzik.android.components.navigate
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.utils.runOnUiThread
@@ -25,15 +24,19 @@ import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.data.Credentials
 import dev.medzik.librepass.android.ui.LibrePassViewModel
-import dev.medzik.librepass.android.ui.Screen
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
+import dev.medzik.librepass.android.ui.screens.vault.Vault
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
 import dev.medzik.librepass.utils.fromHex
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
+
+@Serializable
+object Login
 
 @Composable
 fun LoginScreen(
@@ -90,8 +93,7 @@ fun LoginScreen(
 
                 runOnUiThread {
                     navController.navigate(
-                        screen = Screen.Vault,
-                        disableBack = true
+                        Vault
                     )
                 }
             } catch (e: Exception) {

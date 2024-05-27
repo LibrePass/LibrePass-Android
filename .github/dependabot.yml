@@ -16,5 +16,4 @@ updates:
       kotlin:
         patterns:
           - "com.google.devtools.ksp"
-          - "androidx.compose.compiler*"
           - "org.jetbrains.kotlin.android"

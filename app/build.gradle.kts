@@ -103,6 +103,7 @@ dependencies {
     implementation(libs.process.phoenix)
 
     implementation(libs.kotlinx.coroutines)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.commons.lang3)
 
@@ -117,8 +118,6 @@ dependencies {
     implementation(libs.medzik.android.components)
     implementation(libs.medzik.android.crypto)
     implementation(libs.medzik.android.utils)
-
-    implementation(libs.kotlinx.serialization.json)
 
     // for testing
     debugImplementation(libs.compose.ui.test.manifest)

@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.utils
+package dev.medzik.librepass.android.common
 
 import android.content.Context
 import android.net.ConnectivityManager

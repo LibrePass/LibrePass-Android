@@ -27,6 +27,7 @@ import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.common.haveNetworkConnection
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.android.ui.components.CipherTypeDialog

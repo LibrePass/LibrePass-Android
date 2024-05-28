@@ -17,4 +17,5 @@ dependencyResolutionManagement {
 rootProject.name = "LibrePass"
 include(":app")
 
+include(":common")
 include(":m3-pullrefresh")

@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.data
+package dev.medzik.librepass.android.database
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase

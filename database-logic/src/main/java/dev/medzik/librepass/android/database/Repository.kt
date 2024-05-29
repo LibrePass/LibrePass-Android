@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.data
+package dev.medzik.librepass.android.database
 
 import android.content.Context
 
@@ -7,7 +7,7 @@ import android.content.Context
  */
 interface RepositoryInterface {
     val credentials: CredentialsDao
-    val cipher: CipherDao
+    val cipher: LocalCipherDao
 }
 
 /**
@@ -15,7 +15,7 @@ interface RepositoryInterface {
  */
 class Repository(context: Context) : RepositoryInterface {
     // get database instance
-    private val database = LibrePassDatabaseProvider.getInstance(context)
+    private val database = DatabaseProvider.getInstance(context)
 
     override val credentials = database.credentialsDao()
     override val cipher = database.cipherDao()

@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.data
+package dev.medzik.librepass.android.database
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -12,7 +12,7 @@ import androidx.room.Update
 interface CredentialsDao {
     /**
      * Insert credentials into the database.
-     * @param credentials The credentials to be inserted.
+     * @param credentials the credentials to be inserted
      */
     @Insert
     suspend fun insert(credentials: Credentials)
@@ -26,7 +26,7 @@ interface CredentialsDao {
 
     /**
      * Update credentials in the database.
-     * @param credentials The updated credentials.
+     * @param credentials the updated credentials
      */
     @Update
     suspend fun update(credentials: Credentials)

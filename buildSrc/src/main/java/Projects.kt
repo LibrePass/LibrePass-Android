@@ -3,6 +3,7 @@ import org.gradle.kotlin.dsl.project
 
 class Projects(dh: DependencyHandler) {
     val common = dh.project(":common")
+    val database = dh.project(":database-logic")
 
     val material3PullRefresh = dh.project(":m3-pullrefresh")
 }

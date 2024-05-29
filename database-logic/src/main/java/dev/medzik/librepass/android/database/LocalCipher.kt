@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.data
+package dev.medzik.librepass.android.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -6,12 +6,8 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import dev.medzik.librepass.client.utils.JsonUtils
 import dev.medzik.librepass.types.cipher.EncryptedCipher
-import java.util.UUID
+import java.util.*
 
-/**
- * LocalCipher is a table that stores encrypted ciphers.
- * It is such as a cache to avoid pointlessly downloading the same data from the server and working offline.
- */
 @Entity
 class LocalCipher(
     @PrimaryKey

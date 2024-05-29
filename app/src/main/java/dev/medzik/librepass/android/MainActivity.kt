@@ -9,7 +9,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.medzik.android.utils.openEmailApplication
-import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.common.popUpToDestination
+import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.screens.auth.Unlock
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
@@ -17,7 +18,6 @@ import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.Vault
-import dev.medzik.librepass.android.utils.popUpToDestination
 import org.apache.commons.lang3.exception.ExceptionUtils
 import javax.inject.Inject
 

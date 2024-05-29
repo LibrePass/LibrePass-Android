@@ -22,7 +22,7 @@ import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.*
-import dev.medzik.librepass.android.utils.parceler.CipherTypeParceler
+import dev.medzik.librepass.android.common.parceler.CipherTypeParceler
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType

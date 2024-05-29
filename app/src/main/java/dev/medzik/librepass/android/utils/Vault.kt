@@ -5,8 +5,8 @@ import dev.medzik.android.crypto.EncryptedDataStore.deleteEncryptedKey
 import dev.medzik.android.crypto.EncryptedDataStore.readEncryptedKey
 import dev.medzik.android.crypto.EncryptedDataStore.writeEncryptedKey
 import dev.medzik.android.utils.runOnIOThread
-import dev.medzik.librepass.android.data.CipherDao
-import dev.medzik.librepass.android.data.LocalCipher
+import dev.medzik.librepass.android.database.LocalCipher
+import dev.medzik.librepass.android.database.LocalCipherDao
 import dev.medzik.librepass.android.utils.SecretStore.AES_KEY_STORE_KEY
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
@@ -14,10 +14,10 @@ import dev.medzik.librepass.types.api.SyncResponse
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.librepass.types.cipher.EncryptedCipher
-import java.util.UUID
+import java.util.*
 
 class Vault(
-    private val cipherRepository: CipherDao
+    private val cipherRepository: LocalCipherDao
 ) {
     var aesKey: ByteArray = byteArrayOf()
     val ciphers = mutableListOf<Cipher>()

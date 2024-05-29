@@ -85,9 +85,8 @@ dependencies {
     implementation(libs.compose.lifecycle.runtime)
 
     implementation(libs.androidx.datastore.preferences)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.androidx.room.compiler)
+
+    implementation(projects.database)
 
     // dagger
     implementation(libs.dagger.hilt)

@@ -1,17 +1,13 @@
-package dev.medzik.librepass.android.data
+package dev.medzik.librepass.android.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
-import java.util.UUID
+import androidx.room.*
+import java.util.*
 
 /**
  * Data access object for [LocalCipher].
  */
 @Dao
-interface CipherDao {
+interface LocalCipherDao {
     /**
      * Get a cipher by id.
      * @param id cipher identifier

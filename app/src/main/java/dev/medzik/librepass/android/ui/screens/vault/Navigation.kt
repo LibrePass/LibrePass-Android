@@ -7,7 +7,7 @@ import androidx.navigation.toRoute
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.DefaultScaffold
 import dev.medzik.librepass.android.ui.TopBarWithBack
-import dev.medzik.librepass.android.utils.navtype.CipherTypeType
+import dev.medzik.librepass.android.common.navtype.CipherTypeType
 import dev.medzik.librepass.types.cipher.CipherType
 import kotlin.reflect.typeOf
 

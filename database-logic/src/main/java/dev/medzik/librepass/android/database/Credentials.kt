@@ -1,8 +1,8 @@
-package dev.medzik.librepass.android.data
+package dev.medzik.librepass.android.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.UUID
+import java.util.*
 
 @Entity
 data class Credentials(

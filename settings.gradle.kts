@@ -18,4 +18,5 @@ rootProject.name = "LibrePass"
 include(":app")
 
 include(":common")
+include(":database-logic")
 include(":m3-pullrefresh")

@@ -1,7 +1,7 @@
 package dev.medzik.librepass.android
 
 import android.content.Context
-import dev.medzik.librepass.android.data.Repository
+import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.utils.SecretStore.readKey
 import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.android.utils.StoreKey

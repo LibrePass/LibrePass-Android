@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.utils.navtype
+package dev.medzik.librepass.android.common.navtype
 
 import android.os.Bundle
 import androidx.navigation.NavType

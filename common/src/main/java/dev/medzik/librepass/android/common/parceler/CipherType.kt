@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.utils.parceler
+package dev.medzik.librepass.android.common.parceler
 
 import android.os.Parcel
 import dev.medzik.librepass.types.cipher.CipherType

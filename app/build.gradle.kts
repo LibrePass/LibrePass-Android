@@ -77,7 +77,6 @@ dependencies {
     implementation(libs.compose.ui)
 
     implementation(libs.accompanist.drawablepainter)
-    implementation(libs.accompanist.systemuicontroller)
 
     implementation(libs.androidx.biometric)
 

@@ -7,13 +7,15 @@ import dev.medzik.android.crypto.EncryptedDataStore.writeEncryptedKey
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.librepass.android.database.LocalCipher
 import dev.medzik.librepass.android.database.LocalCipherDao
+import dev.medzik.librepass.android.database.datastore.VaultTimeoutValue
+import dev.medzik.librepass.android.database.datastore.readVaultTimeout
+import dev.medzik.librepass.android.database.datastore.writeVaultTimeout
 import dev.medzik.librepass.android.utils.SecretStore.AES_KEY_STORE_KEY
-import dev.medzik.librepass.android.utils.SecretStore.readKey
-import dev.medzik.librepass.android.utils.SecretStore.writeKey
 import dev.medzik.librepass.types.api.SyncResponse
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.librepass.types.cipher.EncryptedCipher
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 class Vault(
@@ -106,8 +108,9 @@ class Vault(
     }
 
     fun saveVaultExpiration(context: Context) {
-        val vaultTimeout = context.readKey(StoreKey.VaultTimeout)
-        if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds) {
+        val vaultTimeout = runBlocking { readVaultTimeout(context) }
+
+        if (vaultTimeout.timeout == VaultTimeoutValue.INSTANT) {
             deleteSecrets(context)
         } else {
             runOnIOThread {
@@ -118,25 +121,22 @@ class Vault(
                 )
             }
 
-            if (vaultTimeout != VaultTimeoutValues.INSTANT.seconds &&
-                vaultTimeout != VaultTimeoutValues.NEVER.seconds
-            ) {
+            if (vaultTimeout.timeout != VaultTimeoutValue.NEVER) {
                 val currentTime = System.currentTimeMillis()
-                val newExpiresTime = currentTime + (vaultTimeout * 1000)
-                context.writeKey(StoreKey.VaultExpiresAt, newExpiresTime)
+                val newExpiresTime = currentTime + (vaultTimeout.timeout.minutes * 60 * 1000)
+                runOnIOThread { writeVaultTimeout(context, vaultTimeout.copy(expires = newExpiresTime)) }
             }
         }
     }
 
     fun handleExpiration(context: Context): Boolean {
-        val vaultTimeout = context.readKey(StoreKey.VaultTimeout)
-        val expiresTime = context.readKey(StoreKey.VaultExpiresAt)
+        val vaultTimeout = runBlocking { readVaultTimeout(context) }
         val currentTime = System.currentTimeMillis()
 
-        if (vaultTimeout == VaultTimeoutValues.NEVER.seconds)
+        if (vaultTimeout.timeout == VaultTimeoutValue.NEVER)
             return false
 
-        if (vaultTimeout == VaultTimeoutValues.INSTANT.seconds || currentTime > expiresTime) {
+        if (vaultTimeout.timeout == VaultTimeoutValue.INSTANT || currentTime > vaultTimeout.expires) {
             deleteSecrets(context)
 
             return true

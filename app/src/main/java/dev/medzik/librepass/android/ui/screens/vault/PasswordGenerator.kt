@@ -10,17 +10,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,13 +25,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import dev.medzik.android.components.SwitcherPreference
+import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.utils.SecretStore.readKey
-import dev.medzik.librepass.android.utils.SecretStore.writeKey
-import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.android.database.datastore.PasswordGeneratorPreference
+import dev.medzik.librepass.android.database.datastore.readPasswordGeneratorPreference
+import dev.medzik.librepass.android.database.datastore.writePasswordGeneratorPreference
 import kotlinx.serialization.Serializable
-import java.util.Random
+import java.util.*
 
 enum class PasswordType(val literals: String) {
     NUMERIC("1234567890"),
@@ -57,35 +52,34 @@ fun PasswordGeneratorScreen(navController: NavController) {
 
     var generatedPassword by rememberMutableString()
 
-    // generator options
-    var passwordLength by remember { mutableIntStateOf(context.readKey(StoreKey.PasswordLength)) }
-    var withCapitalLetters by remember { mutableStateOf(context.readKey(StoreKey.PasswordCapitalize)) }
-    var withNumbers by remember { mutableStateOf(context.readKey(StoreKey.PasswordIncludeNumbers)) }
-    var withSymbols by remember { mutableStateOf(context.readKey(StoreKey.PasswordIncludeSymbols)) }
+    var passwordGeneratorPreference by rememberMutable(PasswordGeneratorPreference())
+    LaunchedEffect(Unit) {
+        passwordGeneratorPreference = readPasswordGeneratorPreference(context)
+    }
 
     fun generatePassword(): String {
         var letters = PasswordType.LOWERCASE.literals
 
-        if (withCapitalLetters) {
+        if (passwordGeneratorPreference.capitalize) {
             letters += PasswordType.UPPERCASE.literals
         }
 
-        if (withNumbers) {
+        if (passwordGeneratorPreference.includeNumbers) {
             letters += PasswordType.NUMERIC.literals
         }
 
-        if (withSymbols) {
+        if (passwordGeneratorPreference.includeSymbols) {
             letters += PasswordType.SYMBOLS.literals
         }
 
-        return (1..passwordLength)
+        return (1..passwordGeneratorPreference.length)
             .map { Random().nextInt(letters.length) }
             .map(letters::get)
             .joinToString("")
     }
 
     // regenerate on options change
-    LaunchedEffect(passwordLength, withCapitalLetters, withNumbers, withSymbols) {
+    LaunchedEffect(passwordGeneratorPreference) {
         generatedPassword = generatePassword()
     }
 
@@ -126,7 +120,7 @@ fun PasswordGeneratorScreen(navController: NavController) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedTextField(
-            value = passwordLength.toString(),
+            value = passwordGeneratorPreference.length.toString(),
             modifier = Modifier
                 .weight(1f)
                 .padding(end = 8.dp),
@@ -135,8 +129,8 @@ fun PasswordGeneratorScreen(navController: NavController) {
             onValueChange = {
                 try {
                     if (it.length in 1..3 && it.toInt() <= 256) {
-                        passwordLength = it.toInt()
-                        context.writeKey(StoreKey.PasswordLength, it.toInt())
+                        passwordGeneratorPreference = passwordGeneratorPreference.copy(length = it.toInt())
+                        runOnIOThread { writePasswordGeneratorPreference(context, passwordGeneratorPreference) }
                     }
                 } catch (e: NumberFormatException) {
                     // ignore, just do not update input value
@@ -147,9 +141,11 @@ fun PasswordGeneratorScreen(navController: NavController) {
         // - and + buttons
         IconButton(
             onClick = {
-                if (passwordLength > 1) {
-                    passwordLength--
-                    context.writeKey(StoreKey.PasswordLength, passwordLength)
+                if (passwordGeneratorPreference.length > 1) {
+                    passwordGeneratorPreference = passwordGeneratorPreference.copy(
+                        length = passwordGeneratorPreference.length - 1
+                    )
+                    runOnIOThread { writePasswordGeneratorPreference(context, passwordGeneratorPreference) }
                 }
             }
         ) {
@@ -160,9 +156,11 @@ fun PasswordGeneratorScreen(navController: NavController) {
         }
         IconButton(
             onClick = {
-                if (passwordLength < 256) {
-                    passwordLength++
-                    context.writeKey(StoreKey.PasswordLength, passwordLength)
+                if (passwordGeneratorPreference.length < 256) {
+                    passwordGeneratorPreference = passwordGeneratorPreference.copy(
+                        length = passwordGeneratorPreference.length + 1
+                    )
+                    runOnIOThread { writePasswordGeneratorPreference(context, passwordGeneratorPreference) }
                 }
             }
         ) {
@@ -176,36 +174,34 @@ fun PasswordGeneratorScreen(navController: NavController) {
     // Capital letters switch
     SwitcherPreference(
         title = stringResource(R.string.PasswordGenerator_CapitalLetters),
-        checked = withCapitalLetters,
+        checked = passwordGeneratorPreference.capitalize,
         onCheckedChange = {
-            withCapitalLetters = it
-            context.writeKey(StoreKey.PasswordCapitalize, it)
+            passwordGeneratorPreference = passwordGeneratorPreference.copy(capitalize = it)
+            runOnIOThread { writePasswordGeneratorPreference(context, passwordGeneratorPreference) }
         }
     )
 
     // Numeric switch
     SwitcherPreference(
         title = stringResource(R.string.PasswordGenerator_Numbers),
-        checked = withNumbers,
+        checked = passwordGeneratorPreference.includeNumbers,
         onCheckedChange = {
-            withNumbers = it
-            context.writeKey(StoreKey.PasswordIncludeNumbers, it)
+            passwordGeneratorPreference = passwordGeneratorPreference.copy(includeNumbers = it)
+            runOnIOThread { writePasswordGeneratorPreference(context, passwordGeneratorPreference) }
         }
     )
 
     // Symbols switch
     SwitcherPreference(
         title = stringResource(R.string.PasswordGenerator_Symbols),
-        checked = withSymbols,
+        checked = passwordGeneratorPreference.includeSymbols,
         onCheckedChange = {
-            withSymbols = it
-            context.writeKey(StoreKey.PasswordIncludeSymbols, it)
+            passwordGeneratorPreference = passwordGeneratorPreference.copy(includeSymbols = it)
+            runOnIOThread { writePasswordGeneratorPreference(context, passwordGeneratorPreference) }
         }
     )
 
-    // Submit button
     Button(
-        // center horizontally
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 90.dp)

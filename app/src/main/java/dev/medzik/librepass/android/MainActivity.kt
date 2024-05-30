@@ -14,9 +14,6 @@ import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.screens.auth.Unlock
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
-import dev.medzik.librepass.android.utils.SecretStore.readKey
-import dev.medzik.librepass.android.utils.StoreKey
-import dev.medzik.librepass.android.utils.ThemeValues
 import dev.medzik.librepass.android.utils.Vault
 import org.apache.commons.lang3.exception.ExceptionUtils
 import javax.inject.Inject
@@ -53,18 +50,10 @@ class MainActivity : FragmentActivity() {
         // merge application data when application updated
         Migrations.update(this, repository)
 
-        // get app theme settings
-        val dynamicColor = readKey(StoreKey.DynamicColor)
-        val theme = readKey(StoreKey.Theme)
-        val autoTheme = theme == ThemeValues.SYSTEM.ordinal
-        val darkTheme = theme == ThemeValues.DARK.ordinal
-        val blackTheme = theme == ThemeValues.BLACK.ordinal
-
         setContent {
             LibrePassTheme(
-                darkTheme = blackTheme || darkTheme || (autoTheme && isSystemInDarkTheme()),
-                blackTheme = blackTheme,
-                dynamicColor = dynamicColor
+                darkTheme = isSystemInDarkTheme(),
+                dynamicColor = true
             ) {
                 LibrePassNavigation()
             }

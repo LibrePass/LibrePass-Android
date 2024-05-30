@@ -39,5 +39,6 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     ksp(libs.dagger.hilt.compiler)
 
+    implementation(libs.medzik.android.crypto)
     implementation(libs.librepass.client)
 }

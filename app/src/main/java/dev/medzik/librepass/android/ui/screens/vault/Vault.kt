@@ -11,12 +11,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
-import androidx.compose.material3.pullrefresh.PullRefreshIndicator
-import androidx.compose.material3.pullrefresh.pullRefresh
-import androidx.compose.material3.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,7 +33,10 @@ import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.android.ui.components.CipherTypeDialog
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.screens.settings.Settings
-import dev.medzik.librepass.android.utils.*
+import dev.medzik.librepass.android.utils.KeyAlias
+import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
+import dev.medzik.librepass.android.utils.showBiometricPromptForSetup
+import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.CipherClient
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +48,7 @@ import java.util.concurrent.TimeUnit
 @Serializable
 object Vault
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VaultScreen(
     navController: NavController,
@@ -54,7 +58,8 @@ fun VaultScreen(
 
     val scope = rememberCoroutineScope()
 
-    var refreshing by rememberMutableBoolean()
+    val pullToRefreshState = rememberPullToRefreshState()
+
     var ciphers by remember { mutableStateOf(viewModel.vault.sortAlphabetically()) }
 
     val credentials = viewModel.credentialRepository.get() ?: return
@@ -64,45 +69,39 @@ fun VaultScreen(
         apiUrl = credentials.apiUrl ?: Server.PRODUCTION
     )
 
-    fun updateCiphers() {
-        scope.launch(Dispatchers.IO) {
-            refreshing = true
+    suspend fun updateCiphers() {
+        try {
+            val localCiphers = viewModel.cipherRepository.getAll(credentials.userId)
+            val lastSync = viewModel.credentialRepository.get()!!.lastSync ?: 0
+            val lastSyncDate = Date(TimeUnit.SECONDS.toMillis(lastSync))
+            val newLastSync = TimeUnit.MILLISECONDS.toSeconds(Date().time)
 
-            try {
-                val localCiphers = viewModel.cipherRepository.getAll(credentials.userId)
-                val lastSync = viewModel.credentialRepository.get()!!.lastSync ?: 0
-                val lastSyncDate = Date(TimeUnit.SECONDS.toMillis(lastSync))
-                val newLastSync = TimeUnit.MILLISECONDS.toSeconds(Date().time)
+            // filter ciphers that need upload
+            val ciphersNeededUpload = localCiphers.filter { it.needUpload }.map { it.encryptedCipher }
 
-                // filter ciphers that need upload
-                val ciphersNeededUpload = localCiphers.filter { it.needUpload }.map { it.encryptedCipher }
+            // TODO: delete ciphers using this method
 
-                // TODO: delete ciphers using this method
+            val syncResponse = cipherClient.sync(lastSyncDate, ciphersNeededUpload, emptyList())
 
-                val syncResponse = cipherClient.sync(lastSyncDate, ciphersNeededUpload, emptyList())
-
-                // if it is not a full sync (it isn't the first sync)
-                if (lastSync != 0L) {
-                    // synchronize the local database with the server database
-                    viewModel.vault.sync(syncResponse)
-                } else {
-                    // save all ciphers
-                    for (cipher in syncResponse.ciphers) {
-                        viewModel.vault.save(cipher)
-                    }
+            // if it is not a full sync (it isn't the first sync)
+            if (lastSync != 0L) {
+                // synchronize the local database with the server database
+                viewModel.vault.sync(syncResponse)
+            } else {
+                // save all ciphers
+                for (cipher in syncResponse.ciphers) {
+                    viewModel.vault.save(cipher)
                 }
-
-                // update the last sync date
-                viewModel.credentialRepository.update(credentials.copy(lastSync = newLastSync))
-            } catch (e: Exception) {
-                e.showErrorToast(context)
             }
 
-            // sort ciphers and update UI
-            ciphers = viewModel.vault.sortAlphabetically()
-
-            refreshing = false
+            // update the last sync date
+            viewModel.credentialRepository.update(credentials.copy(lastSync = newLastSync))
+        } catch (e: Exception) {
+            e.showErrorToast(context)
         }
+
+        // sort ciphers and update UI
+        ciphers = viewModel.vault.sortAlphabetically()
     }
 
     fun reSetupBiometrics() {
@@ -149,6 +148,8 @@ fun VaultScreen(
     }
 
     LaunchedEffect(scope) {
+        pullToRefreshState.startRefresh()
+
         if (credentials.biometricReSetup) {
             try {
                 reSetupBiometrics()
@@ -170,17 +171,29 @@ fun VaultScreen(
 
         // sync remote ciphers
         if (context.haveNetworkConnection()) {
-            updateCiphers()
+            scope.launch(Dispatchers.IO) {
+                updateCiphers()
+                pullToRefreshState.endRefresh()
+            }
+        } else {
+            pullToRefreshState.endRefresh()
         }
     }
 
-    val pullRefreshState = rememberPullRefreshState(refreshing, ::updateCiphers)
+    if (pullToRefreshState.isRefreshing) {
+        LaunchedEffect(Unit) {
+            scope.launch(Dispatchers.IO) {
+                updateCiphers()
+                pullToRefreshState.endRefresh()
+            }
+        }
+    }
 
     Box {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .pullRefresh(pullRefreshState)
+                .nestedScroll(connection = pullToRefreshState.nestedScrollConnection)
         ) {
             items(ciphers.size) { index ->
                 CipherCard(
@@ -221,10 +234,9 @@ fun VaultScreen(
             }
         }
 
-        PullRefreshIndicator(
-            refreshing,
-            state = pullRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter)
+        PullToRefreshContainer(
+            modifier = Modifier.align(alignment = Alignment.TopCenter),
+            state = pullToRefreshState,
         )
     }
 }

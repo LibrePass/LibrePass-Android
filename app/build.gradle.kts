@@ -106,7 +106,6 @@ dependencies {
 
     implementation(libs.commons.lang3)
 
-    implementation(projects.material3.pullrefresh)
     implementation(projects.common)
 
     // for splash screen with material3 and dynamic color

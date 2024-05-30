@@ -2,34 +2,33 @@ package dev.medzik.librepass.android
 
 import android.content.Context
 import dev.medzik.librepass.android.database.Repository
-import dev.medzik.librepass.android.utils.SecretStore.readKey
-import dev.medzik.librepass.android.utils.SecretStore.writeKey
-import dev.medzik.librepass.android.utils.StoreKey
+import dev.medzik.librepass.android.database.datastore.AppVersion
+import dev.medzik.librepass.android.database.datastore.readAppVersion
+import dev.medzik.librepass.android.database.datastore.writeAppVersion
 import kotlinx.coroutines.runBlocking
 
-object Migrations {
-    fun update(
+object MigrationsManager {
+    fun run(
         context: Context,
         repository: Repository
     ) {
         if (repository.credentials.get() == null) {
-            context.writeKey(StoreKey.AppVersionCode, BuildConfig.VERSION_CODE)
+            runBlocking { writeAppVersion(context, AppVersion(BuildConfig.VERSION_CODE)) }
             return
         }
 
-        val lastVersionCode = context.readKey(StoreKey.AppVersionCode)
-        var versionCode = lastVersionCode
+        val appVersion = readAppVersion(context)
+        var versionCode = appVersion.lastVersionLaunched
 
         while (versionCode < BuildConfig.VERSION_CODE) {
             when (versionCode) {
-                -1 -> disableBiometric(repository)
-                11 -> disableBiometric(repository)
+                0 -> disableBiometric(repository)
             }
 
             versionCode++
         }
 
-        context.writeKey(StoreKey.AppVersionCode, versionCode)
+        runBlocking { writeAppVersion(context, AppVersion(versionCode)) }
     }
 
     private fun disableBiometric(repository: Repository) {

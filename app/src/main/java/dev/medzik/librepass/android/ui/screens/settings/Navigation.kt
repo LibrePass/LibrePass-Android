@@ -18,15 +18,6 @@ fun NavGraphBuilder.settingsNavigation(navController: NavController) {
         }
     }
 
-    composable<SettingsAppearance> {
-        DefaultScaffold(
-            topBar = { TopBarWithBack(title = R.string.Settings_Appearance, navController) },
-            horizontalPadding = false
-        ) {
-            SettingsAppearanceScreen()
-        }
-    }
-
     composable<SettingsSecurity> {
         DefaultScaffold(
             topBar = { TopBarWithBack(title = R.string.Settings_Security, navController) },

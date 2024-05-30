@@ -15,8 +15,10 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "LibrePass"
-include(":app")
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+include(":app")
 include(":common")
 include(":database-logic")
-include(":m3-pullrefresh")
+include(":material3:pullrefresh")

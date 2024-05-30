@@ -44,11 +44,10 @@ class MainActivity : FragmentActivity() {
             finish()
         }
 
+        MigrationsManager.run(this, repository)
+
         // retrieves aes key to decrypt vault if key is valid
         vault.getVaultSecrets(this)
-
-        // merge application data when application updated
-        Migrations.update(this, repository)
 
         setContent {
             LibrePassTheme(

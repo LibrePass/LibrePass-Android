@@ -1,21 +1,16 @@
 package dev.medzik.librepass.android.utils
 
 import android.content.Context
-import dev.medzik.android.crypto.EncryptedDataStore.deleteEncryptedKey
-import dev.medzik.android.crypto.EncryptedDataStore.readEncryptedKey
-import dev.medzik.android.crypto.EncryptedDataStore.writeEncryptedKey
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.librepass.android.database.LocalCipher
 import dev.medzik.librepass.android.database.LocalCipherDao
-import dev.medzik.librepass.android.database.datastore.VaultTimeoutValue
-import dev.medzik.librepass.android.database.datastore.readVaultTimeout
-import dev.medzik.librepass.android.database.datastore.writeVaultTimeout
-import dev.medzik.librepass.android.utils.SecretStore.AES_KEY_STORE_KEY
+import dev.medzik.librepass.android.database.datastore.*
 import dev.medzik.librepass.types.api.SyncResponse
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
 import dev.medzik.librepass.types.cipher.EncryptedCipher
 import kotlinx.coroutines.runBlocking
+import org.apache.commons.codec.binary.Hex
 import java.util.*
 
 class Vault(
@@ -99,10 +94,7 @@ class Vault(
         val expired = handleExpiration(context)
         if (!expired) {
             runOnIOThread {
-                aesKey = context.dataStore.readEncryptedKey(
-                    KeyAlias.DataStoreEncrypted,
-                    AES_KEY_STORE_KEY
-                ) ?: byteArrayOf()
+                aesKey = Hex.decodeHex(readSecretsStore(context).aesKey)
             }
         }
     }
@@ -114,11 +106,7 @@ class Vault(
             deleteSecrets(context)
         } else {
             runOnIOThread {
-                context.dataStore.writeEncryptedKey(
-                    KeyAlias.DataStoreEncrypted,
-                    AES_KEY_STORE_KEY,
-                    aesKey
-                )
+                writeSecretsStore(context, SecretsStore(Hex.encodeHexString(aesKey)))
             }
 
             if (vaultTimeout.timeout != VaultTimeoutValue.NEVER) {
@@ -148,8 +136,6 @@ class Vault(
     fun deleteSecrets(context: Context) {
         aesKey = byteArrayOf()
 
-        runOnIOThread {
-            context.dataStore.deleteEncryptedKey(AES_KEY_STORE_KEY)
-        }
+        runOnIOThread { deleteSecretsStore(context) }
     }
 }

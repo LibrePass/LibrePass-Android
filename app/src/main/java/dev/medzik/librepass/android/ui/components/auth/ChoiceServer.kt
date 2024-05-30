@@ -16,10 +16,11 @@ import androidx.navigation.NavController
 import dev.medzik.android.components.PickerDialog
 import dev.medzik.android.components.rememberDialogState
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.database.datastore.CustomServers
+import dev.medzik.librepass.android.database.datastore.readCustomServers
 import dev.medzik.librepass.android.ui.screens.auth.AddCustomServer
-import dev.medzik.librepass.android.utils.SecretStore.readKey
-import dev.medzik.librepass.android.utils.StoreKey
 import dev.medzik.librepass.client.Server
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ChoiceServer(navController: NavController, server: MutableState<String>) {
@@ -52,28 +53,32 @@ fun ChoiceServer(navController: NavController, server: MutableState<String>) {
             color = MaterialTheme.colorScheme.primary
         )
     }
-    
-    val servers = listOf(Server.PRODUCTION)
-        .plus(LocalContext.current.readKey(StoreKey.CustomServers))
-        .plus("custom_server")
+
+    val context = LocalContext.current
+
+    val servers = listOf(
+        CustomServers(
+            name = stringResource(R.string.Server_Official),
+            address = Server.PRODUCTION
+        )
+    )
+        .plus(runBlocking { readCustomServers(context) })
+        .plus(CustomServers(stringResource(R.string.Server_Choice_Dialog_AddCustom), "custom_server"))
 
     PickerDialog(
         state = serverChoiceDialog,
         title = stringResource(R.string.ServerAddress),
         items = servers,
         onSelected = {
-            if (it == "custom_server") {
+            if (it.address == "custom_server") {
                 navController.navigate(AddCustomServer)
             } else {
-                server.value = it
+                server.value = it.address
             }
         }
     ) {
         Text(
-            text = when (it) {
-                "custom_server" -> { stringResource(R.string.Server_Choice_Dialog_AddCustom) }
-                else -> getServerName(it)
-            },
+            text = it.name,
             modifier = Modifier
                 .padding(vertical = 12.dp)
                 .fillMaxWidth()

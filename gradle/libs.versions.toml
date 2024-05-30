@@ -30,6 +30,7 @@ zxing-android = "4.3.0"
 [libraries]
 accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanist" }
 androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "androidx-biometric" }
+androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidx-datastore" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidx-room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidx-room" }
@@ -56,8 +57,8 @@ medzik-android-crypto = { module = "dev.medzik.android:crypto", version.ref = "m
 medzik-android-utils = { module = "dev.medzik.android:utils", version.ref = "medzik-android-utils" }
 otp = { module = "dev.medzik:otp", version.ref = "otp" }
 process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "process-phoenix" }
-zxing = { module = "com.google.zxing:core", version.ref = "zxing"}
-zxing-android = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxing-android"}
+zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
+zxing-android = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxing-android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -83,8 +83,6 @@ dependencies {
     // used for calling `onResume` and locking vault after X minutes
     implementation(libs.compose.lifecycle.runtime)
 
-    implementation(libs.androidx.datastore.preferences)
-
     implementation(projects.databaseLogic)
 
     // dagger

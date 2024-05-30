@@ -86,7 +86,7 @@ dependencies {
 
     implementation(libs.androidx.datastore.preferences)
 
-    implementation(projects.database)
+    implementation(projects.databaseLogic)
 
     // dagger
     implementation(libs.dagger.hilt)
@@ -106,7 +106,7 @@ dependencies {
 
     implementation(libs.commons.lang3)
 
-    implementation(projects.material3PullRefresh)
+    implementation(projects.material3.pullrefresh)
     implementation(projects.common)
 
     // for splash screen with material3 and dynamic color

@@ -87,7 +87,7 @@
     <string name="Vault">خزنة</string>
     <string name="View">منظر</string>
     <string name="OtherDetails">تفاصيل أخرى</string>
-    <string name="optional">اختياري</string>
+    <string name="Optional">اختياري</string>
     <string name="WebsiteDetails">موقع إلكتروني</string>
     <string name="Notes">ملحوظات</string>
     <string name="PasswordGenerator_Length">طول</string>
@@ -96,7 +96,6 @@
     <string name="NewPassword">كلمة المرور الجديدة</string>
     <string name="Toast_Password_Hint_Sent">تم إرسال تلميح كلمة المرور إلى عنوان البريد الإلكتروني</string>
     <string name="GetPasswordHint">الحصول على تلميحات كلمة المرور</string>
-    <string name="UseBiometric">استخدم المقاييس الحيوية</string>
     <string name="Error_InvalidPassword">كلمة المرور غير صحيحة</string>
     <string name="PasswordGenerator_Symbols">الرمز</string>
 </resources>

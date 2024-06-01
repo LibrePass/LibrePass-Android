@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -14,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.components.ui.LoadingButton
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
@@ -28,7 +32,11 @@ import dev.medzik.librepass.android.common.popUpToDestination
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.ui.screens.vault.Vault
-import dev.medzik.librepass.android.utils.*
+import dev.medzik.librepass.android.utils.KeyAlias
+import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
+import dev.medzik.librepass.android.utils.debugLog
+import dev.medzik.librepass.android.utils.showBiometricPromptForUnlock
+import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.utils.Cryptography.computeAesKey
 import dev.medzik.librepass.utils.Cryptography.computePasswordHash
 import kotlinx.coroutines.Dispatchers
@@ -124,7 +132,7 @@ fun UnlockScreen(
             context.showToast(R.string.BiometricKeyInvalidated)
 
             try {
-                KeyStore.deleteKey(KeyAlias.BiometricAesKey.name)
+                KeyStore.deleteKey(KeyAlias.BiometricAesKey)
                 runBlocking {
                     viewModel.credentialRepository.update(
                         credentials.copy(

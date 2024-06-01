@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import dev.medzik.android.components.DialogState
-import dev.medzik.android.components.PickerDialog
+import dev.medzik.android.components.ui.DialogState
+import dev.medzik.android.components.ui.PickerDialog
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.types.cipher.CipherType
 

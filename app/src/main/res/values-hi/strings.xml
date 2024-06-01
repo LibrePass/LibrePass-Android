@@ -73,7 +73,6 @@
     <string name="AddServer">सर्वर जोड़े</string>
     <string name="BiometricSetup_Title">सेटअप</string>
     <string name="OldPassword">पुराना पासवर्ड</string>
-    <string name="UseBiometric">बायोमेट्रिक का प्रयोग करें</string>
     <string name="AddField">क्षेत्र जोड़ें</string>
     <string name="BiometricSetup_Button_Cancel">रद्द करें</string>
     <string name="Password">पासवर्ड</string>
@@ -86,7 +85,7 @@
     <string name="WebsiteDetails">वेबसाइट</string>
     <string name="WebsiteAddress">वेबसाइट पता</string>
     <string name="Timeout_Instant">तुरंत</string>
-    <string name="optional">वैकल्पिक</string>
+    <string name="Optional">वैकल्पिक</string>
     <string name="CardDetails">कार्ड विवरण</string>
     <string name="NewEmail">नया ई-मेल पता</string>
     <string name="ChangeEmail">ई-मेल पता बदलें</string>

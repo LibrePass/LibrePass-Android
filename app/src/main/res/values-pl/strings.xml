@@ -60,7 +60,7 @@
     <string name="PasswordGenerator_Length">Długość</string>
     <string name="PasswordGenerator_Numbers">Liczby</string>
     <string name="PasswordGenerator_Symbols">Symbole</string>
-    <string name="PasswordHint">Podpowiedź do hasła</string>
+    <string name="PasswordHint">Podpowiedź dotycząca hasła</string>
     <string name="Register">Zarejestruj się</string>
     <string name="Save">Zapisz</string>
     <string name="SecurityCode">Kod bezpieczeństwa</string>
@@ -88,7 +88,6 @@
     <string name="Tost_NoServerConnection">Brak połączenia z serwerem</string>
     <string name="Unlock">Odblokuj</string>
     <string name="UnlockWithBiometrics">Odblokowanie za pomocą danych biometrycznych</string>
-    <string name="UseBiometric">Użyj biometrii</string>
     <string name="Username">Nazwa użytkownika</string>
     <string name="Vault">Sejf</string>
     <string name="VaultTimeout">Limit czasu sejfu</string>
@@ -96,7 +95,7 @@
     <string name="WebsiteAddress">Adres strony</string>
     <string name="WebsiteDetails">Strona internetowa</string>
     <string name="WelcomeScreen_Title">Witaj w LibrePass</string>
-    <string name="optional">opcjonalnie</string>
+    <string name="Optional">Opcjonalnie</string>
     <string name="TwoFactorAuthentication">Uwierzytelnianie dwuetapowe</string>
     <string name="TwoFactorSecret">Sekret dwuetapowego logowania</string>
     <string name="Error_InvalidURI">Adres URI jest nieprawidłowy</string>

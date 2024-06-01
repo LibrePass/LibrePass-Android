@@ -82,7 +82,6 @@
     <string name="Toast_PleaseVerifyYourEmail">Bekreft din e-postadresse</string>
     <string name="Unlock">Lås opp</string>
     <string name="UnlockWithBiometrics">Lås opp med biometri</string>
-    <string name="UseBiometric">Bruk biometri</string>
     <string name="Username">Brukernavn</string>
     <string name="Vault">Hvelv</string>
     <string name="VaultTimeout">Tidsavbrudd for hvelv</string>
@@ -90,5 +89,5 @@
     <string name="WebsiteAddress">Nettadresse</string>
     <string name="WebsiteDetails">Nettside</string>
     <string name="WelcomeScreen_Title">Velkommen til LibrePass</string>
-    <string name="optional">valgfritt</string>
+    <string name="Optional">Valgfritt</string>
 </resources>

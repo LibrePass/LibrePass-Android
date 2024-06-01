@@ -3,6 +3,10 @@ package dev.medzik.librepass.android.ui.screens.auth
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,9 +20,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import dev.medzik.android.components.TextFieldValue
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.components.ui.LoadingButton
+import dev.medzik.android.components.ui.textfield.AnimatedTextField
+import dev.medzik.android.components.ui.textfield.PasswordAnimatedTextField
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
@@ -26,7 +33,6 @@ import dev.medzik.librepass.android.common.haveNetworkConnection
 import dev.medzik.librepass.android.common.popUpToDestination
 import dev.medzik.librepass.android.database.Credentials
 import dev.medzik.librepass.android.ui.LibrePassViewModel
-import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
 import dev.medzik.librepass.android.ui.screens.vault.Vault
 import dev.medzik.librepass.android.utils.showErrorToast
@@ -50,8 +56,8 @@ fun LoginScreen(
     val scope = rememberCoroutineScope()
 
     var loading by rememberMutableBoolean()
-    var email by rememberMutableString()
-    var password by rememberMutableString()
+    val email = rememberMutableString()
+    val password = rememberMutableString()
     val server = rememberMutableString(Server.PRODUCTION)
 
     fun submit(email: String, password: String) {
@@ -112,24 +118,31 @@ fun LoginScreen(
         }
     }
 
-    TextInputField(
+    AnimatedTextField(
         label = stringResource(R.string.Email),
-        value = email,
-        onValueChange = { email = it },
-        keyboardType = KeyboardType.Email
+        value = TextFieldValue.fromMutableState(email),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email
+        ),
+        leading = {
+            Icon(
+                Icons.Default.Email,
+                contentDescription = null
+            )
+        }
     )
 
     fun requestPasswordHint() {
         val authClient = AuthClient(apiUrl = server.value)
 
-        if (email.isEmpty()) {
+        if (email.value.isEmpty()) {
             context.showToast(context.getString(R.string.Toast_Enter_Email))
             return
         }
 
         scope.launch(Dispatchers.IO) {
             try {
-                authClient.requestPasswordHint(email)
+                authClient.requestPasswordHint(email.value)
 
                 context.showToast(context.getString(R.string.Toast_Password_Hint_Sent))
             } catch (e: Exception) {
@@ -147,20 +160,20 @@ fun LoginScreen(
             .clickable { requestPasswordHint() }
     )
 
-    TextInputField(
+    PasswordAnimatedTextField(
         label = stringResource(R.string.Password),
-        value = password,
-        onValueChange = { password = it },
-        hidden = true,
-        keyboardType = KeyboardType.Password
+        value = TextFieldValue.fromMutableState(password),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email
+        )
     )
 
     ChoiceServer(navController, server)
 
     LoadingButton(
         loading = loading,
-        onClick = { submit(email, password) },
-        enabled = email.isNotEmpty() && password.isNotEmpty(),
+        onClick = { submit(email.value, password.value) },
+        enabled = email.value.isNotEmpty() && password.value.isNotEmpty(),
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 40.dp)

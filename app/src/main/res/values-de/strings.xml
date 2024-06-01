@@ -46,7 +46,7 @@
     <string name="Password">Passwort</string>
     <string name="Vault">Tresor</string>
     <string name="View">Anzeigen</string>
-    <string name="optional">optional</string>
+    <string name="Optional">Optional</string>
     <string name="Notes">Notizen</string>
     <string name="PasswordGenerator_Length">Länge</string>
     <string name="Save">Speichern</string>
@@ -55,7 +55,6 @@
     <string name="NewPassword">Neues Passwort</string>
     <string name="Toast_Password_Hint_Sent">Ein Passworthinweis wurde an die E-Mail-Adresse gesendet</string>
     <string name="GetPasswordHint">Passwort-Hinweis abrufen</string>
-    <string name="UseBiometric">Biometrie verwenden</string>
     <string name="Error_InvalidCredentials">Ungültige Anmeldeinformationen</string>
     <string name="Error_InvalidPassword">Passwort ist inkorrekt</string>
     <plurals name="hours">

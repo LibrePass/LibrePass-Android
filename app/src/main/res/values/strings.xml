@@ -88,7 +88,6 @@
     <string name="Tost_NoServerConnection">No connection with the server</string>
     <string name="Unlock">Unlock</string>
     <string name="UnlockWithBiometrics">Unlock with biometrics</string>
-    <string name="UseBiometric">Use biometric</string>
     <string name="Username">Username</string>
     <string name="Vault">Vault</string>
     <string name="VaultTimeout">Vault timeout</string>
@@ -96,7 +95,7 @@
     <string name="WebsiteAddress">Website address</string>
     <string name="WebsiteDetails">Website</string>
     <string name="WelcomeScreen_Title">Welcome to LibrePass</string>
-    <string name="optional">optional</string>
+    <string name="Optional">optional</string>
     <string name="Error_InvalidURI">URI address is invalid</string>
     <string name="CardDetails">Card details</string>
     <string name="BiometricKeyInvalidated">Biometric key has been invalidated by Android</string>

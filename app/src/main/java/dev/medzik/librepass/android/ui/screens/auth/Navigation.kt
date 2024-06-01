@@ -1,11 +1,13 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.DefaultScaffold
 import dev.medzik.librepass.android.ui.TopBarWithBack
+import dev.medzik.librepass.android.ui.components.TopBar
 
 fun NavGraphBuilder.authNavigation(navController: NavController) {
     composable<Register> {
@@ -26,7 +28,7 @@ fun NavGraphBuilder.authNavigation(navController: NavController) {
 
     composable<Unlock> {
         DefaultScaffold(
-            topBar = { TopBarWithBack(title = R.string.Unlock, navController) }
+            topBar = { TopBar(title = stringResource(R.string.Unlock)) }
         ) {
             UnlockScreen(navController)
         }

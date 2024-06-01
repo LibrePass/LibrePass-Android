@@ -19,8 +19,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
-import dev.medzik.android.components.GroupTitle
 import dev.medzik.android.components.rememberMutable
+import dev.medzik.android.components.ui.GroupTitle
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.screens.vault.OtpConfigure
 import dev.medzik.librepass.android.ui.screens.vault.PasswordGenerator

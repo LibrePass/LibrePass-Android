@@ -10,7 +10,11 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,16 +28,16 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import dev.medzik.android.components.SwitcherPreference
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.components.ui.SwitcherPreference
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.database.datastore.PasswordGeneratorPreference
 import dev.medzik.librepass.android.database.datastore.readPasswordGeneratorPreference
 import dev.medzik.librepass.android.database.datastore.writePasswordGeneratorPreference
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.Random
 
 enum class PasswordType(val literals: String) {
     NUMERIC("1234567890"),

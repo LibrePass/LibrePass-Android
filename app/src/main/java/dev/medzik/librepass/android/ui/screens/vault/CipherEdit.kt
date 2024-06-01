@@ -7,20 +7,28 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableBoolean
+import dev.medzik.android.components.ui.LoadingButton
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
-import dev.medzik.librepass.android.ui.components.*
+import dev.medzik.librepass.android.ui.components.CipherEditFieldsCard
+import dev.medzik.librepass.android.ui.components.CipherEditFieldsLogin
+import dev.medzik.librepass.android.ui.components.CipherEditFieldsSecureNote
+import dev.medzik.librepass.android.ui.components.TopBar
+import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -30,7 +38,7 @@ import dev.medzik.otp.TOTPGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.Date
 
 @Serializable
 data class CipherEdit(val cipherId: String)

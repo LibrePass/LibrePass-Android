@@ -95,9 +95,6 @@ dependencies {
     implementation(libs.librepass.client)
     implementation(libs.otp)
 
-    // for restarting the application, for example, after changing the theme in settings
-    implementation(libs.process.phoenix)
-
     implementation(libs.kotlinx.coroutines)
     implementation(libs.kotlinx.serialization.json)
 

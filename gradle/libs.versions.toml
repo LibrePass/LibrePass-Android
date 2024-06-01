@@ -23,7 +23,6 @@ kotlinx-serialization = "1.6.3"
 librepass-client = "1.6.2"
 medzik-android-utils = "1.5.1"
 otp = "1.0.1"
-process-phoenix = "3.0.0"
 zxing = "3.5.3"
 zxing-android = "4.3.0"
 
@@ -55,7 +54,6 @@ medzik-android-components = { module = "dev.medzik.android:components", version.
 medzik-android-crypto = { module = "dev.medzik.android:crypto", version.ref = "medzik-android-utils" }
 medzik-android-utils = { module = "dev.medzik.android:utils", version.ref = "medzik-android-utils" }
 otp = { module = "dev.medzik:otp", version.ref = "otp" }
-process-phoenix = { module = "com.jakewharton:process-phoenix", version.ref = "process-phoenix" }
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
 zxing-android = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxing-android" }
 

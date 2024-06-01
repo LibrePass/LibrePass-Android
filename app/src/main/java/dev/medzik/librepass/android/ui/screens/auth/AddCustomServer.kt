@@ -12,9 +12,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.JsonSyntaxException
-import dev.medzik.android.components.LoadingButton
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableBoolean
+import dev.medzik.android.components.ui.LoadingButton
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast

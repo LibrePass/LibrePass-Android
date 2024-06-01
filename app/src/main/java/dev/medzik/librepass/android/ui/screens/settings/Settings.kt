@@ -8,7 +8,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import dev.medzik.android.components.PreferenceEntry
+import dev.medzik.android.components.ui.PreferenceEntry
 import dev.medzik.librepass.android.R
 import kotlinx.serialization.Serializable
 

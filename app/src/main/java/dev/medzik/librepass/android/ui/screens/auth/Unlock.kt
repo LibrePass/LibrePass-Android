@@ -1,26 +1,37 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
 import android.security.keystore.KeyPermanentlyInvalidatedException
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Fingerprint
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import dev.medzik.android.components.TextFieldValue
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.components.ui.LoadingButton
+import dev.medzik.android.components.ui.textfield.PasswordAnimatedTextField
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
@@ -30,7 +41,6 @@ import dev.medzik.libcrypto.X25519
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.popUpToDestination
 import dev.medzik.librepass.android.ui.LibrePassViewModel
-import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.ui.screens.vault.Vault
 import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
@@ -58,7 +68,7 @@ fun UnlockScreen(
     val scope = rememberCoroutineScope()
 
     var loading by rememberMutableBoolean()
-    var password by rememberMutableString()
+    val password = rememberMutableString()
 
     val credentials = viewModel.credentialRepository.get() ?: return
 
@@ -155,35 +165,42 @@ fun UnlockScreen(
             showBiometric()
     }
 
-    TextInputField(
+    PasswordAnimatedTextField(
         label = stringResource(R.string.Password),
-        value = password,
-        onValueChange = { password = it },
-        hidden = true,
-        keyboardType = KeyboardType.Password
+        value = TextFieldValue.fromMutableState(password)
     )
 
     LoadingButton(
         loading = loading,
-        onClick = { onUnlock(password) },
-        enabled = password.isNotEmpty(),
+        onClick = { onUnlock(password.value) },
+        enabled = password.value.isNotEmpty(),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp)
+            .padding(top = 16.dp)
             .padding(horizontal = 80.dp)
     ) {
         Text(stringResource(R.string.Unlock))
     }
 
     if (credentials.biometricAesKey != null && checkIfBiometricAvailable(context)) {
-        OutlinedButton(
-            onClick = { showBiometric() },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-                .padding(horizontal = 80.dp)
+        Column(
+            modifier = Modifier.fillMaxWidth().fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(stringResource(R.string.UseBiometric))
+            Spacer(Modifier)
+
+            ElevatedButton(
+                onClick = { showBiometric() },
+                modifier = Modifier.padding(bottom = 42.dp),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Fingerprint,
+                    contentDescription = null,
+                    modifier = Modifier.size(32.dp)
+                )
+            }
         }
     }
 }

@@ -1,7 +1,14 @@
 package dev.medzik.librepass.android.ui.screens.auth
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,15 +20,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import dev.medzik.android.components.TextFieldValue
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.components.ui.LoadingButton
+import dev.medzik.android.components.ui.textfield.AnimatedTextField
+import dev.medzik.android.components.ui.textfield.PasswordAnimatedTextField
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.haveNetworkConnection
 import dev.medzik.librepass.android.common.popUpToDestination
-import dev.medzik.librepass.android.ui.components.TextInputField
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
@@ -40,14 +49,14 @@ fun RegisterScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     var loading by rememberMutableBoolean()
-    var email by rememberMutableString()
-    var password by rememberMutableString()
-    var configPassword by rememberMutableString()
-    var passwordHint by rememberMutableString()
+    val email = rememberMutableString()
+    val password = rememberMutableString()
+    val confirmPassword = rememberMutableString()
+    val passwordHint = rememberMutableString()
     val server = rememberMutableString(Server.PRODUCTION)
 
     // Register user with given credentials and navigate to log in screen.
-    fun submit(email: String, password: String) {
+    fun submit(email: String, password: String, passwordHint: String?) {
         if (!context.haveNetworkConnection()) {
             context.showToast(R.string.Error_NoInternetConnection)
             return
@@ -79,48 +88,77 @@ fun RegisterScreen(navController: NavController) {
         }
     }
 
-    TextInputField(
-        label = stringResource(R.string.Email),
-        value = email,
-        onValueChange = { email = it },
-        isError = email.isNotEmpty() && !email.contains("@"),
-        errorMessage = stringResource(R.string.Error_InvalidEmail),
-        keyboardType = KeyboardType.Email
-    )
+    Column(
+        verticalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        AnimatedTextField(
+            label = stringResource(R.string.Email),
+            value = TextFieldValue.fromMutableState(email),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email
+            ),
+            leading = {
+                Icon(
+                    Icons.Default.Email,
+                    contentDescription = null
+                )
+            }
+        )
 
-    TextInputField(
-        label = stringResource(R.string.Password),
-        value = password,
-        onValueChange = { password = it },
-        hidden = true,
-        isError = password.isNotEmpty() && password.length < 8,
-        errorMessage = stringResource(R.string.Error_PasswordTooShort),
-        keyboardType = KeyboardType.Password
-    )
+        PasswordAnimatedTextField(
+            label = stringResource(R.string.Password),
+            value = TextFieldValue.fromMutableState(
+                state = password,
+                error = if (password.value.isNotEmpty() && password.value.length < 8) {
+                    stringResource(R.string.Error_PasswordTooShort)
+                } else null
+            ),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email
+            )
+        )
 
-    TextInputField(
-        label = stringResource(R.string.ConfirmPassword),
-        value = configPassword,
-        onValueChange = { configPassword = it },
-        hidden = true,
-        isError = configPassword.isNotEmpty() && configPassword != password,
-        errorMessage = stringResource(R.string.Error_PasswordsDoNotMatch),
-        keyboardType = KeyboardType.Password
-    )
+        PasswordAnimatedTextField(
+            label = stringResource(R.string.ConfirmPassword),
+            value = TextFieldValue.fromMutableState(
+                state = confirmPassword,
+                error = if (confirmPassword.value.isNotEmpty() && password.value != confirmPassword.value) {
+                    stringResource(R.string.Error_PasswordsDoNotMatch)
+                } else null
+            ),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Email
+            )
+        )
 
-    TextInputField(
-        label = "${stringResource(R.string.PasswordHint)} (${stringResource(R.string.optional)})",
-        value = passwordHint,
-        onValueChange = { passwordHint = it },
-        keyboardType = KeyboardType.Text
-    )
+        AnimatedTextField(
+            label = stringResource(R.string.PasswordHint),
+            value = TextFieldValue.fromMutableState(
+                passwordHint,
+                valueLabel = TextFieldValue.ValueLabel(
+                    type = TextFieldValue.ValueLabel.Type.INFO,
+                    text = stringResource(R.string.Optional)
+                )
+            ),
+            leading = {
+                Icon(
+                    Icons.Default.QuestionMark,
+                    contentDescription = null
+                )
+            }
+        )
+    }
 
     ChoiceServer(navController, server)
 
+    val isError = !email.value.contains("@") ||
+            password.value.length < 8 ||
+            confirmPassword.value != password.value
+
     LoadingButton(
         loading = loading,
-        onClick = { submit(email, password) },
-        enabled = email.contains("@") && password.length >= 8,
+        onClick = { submit(email.value, password.value, passwordHint.value) },
+        enabled = !isError,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 40.dp)

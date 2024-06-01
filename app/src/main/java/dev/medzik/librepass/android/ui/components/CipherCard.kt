@@ -28,9 +28,9 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import dev.medzik.android.components.DialogState
-import dev.medzik.android.components.PickerDialog
-import dev.medzik.android.components.rememberDialogState
+import dev.medzik.android.components.ui.DialogState
+import dev.medzik.android.components.ui.PickerDialog
+import dev.medzik.android.components.ui.rememberDialogState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.SHORTEN_USERNAME_LENGTH

@@ -5,18 +5,22 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.Web
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -27,24 +31,31 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import dev.medzik.android.components.TextFieldValue
+import dev.medzik.android.components.colorizePasswordTransformation
+import dev.medzik.android.components.icons.VisibilityIcon
 import dev.medzik.android.components.rememberMutable
+import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.ui.BaseDialog
 import dev.medzik.android.components.ui.GroupTitle
 import dev.medzik.android.components.ui.rememberDialogState
+import dev.medzik.android.components.ui.textfield.AnimatedTextField
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
@@ -77,7 +88,7 @@ fun CipherViewScreen(
     var totpDigits by rememberMutable(6)
     var totpPeriod by rememberMutable(0)
 
-    LaunchedEffect(totpElapsed) {
+    LaunchedEffect(Unit) {
         fun calculateElapsed(): Long {
             val unixSeconds = System.currentTimeMillis() / 1000
             val counter = TimeUnit.SECONDS.toMillis(unixSeconds) / TimeUnit.SECONDS.toMillis(totpPeriod.toLong())
@@ -110,7 +121,8 @@ fun CipherViewScreen(
 
         CipherField(
             title = stringResource(R.string.Name),
-            value = cipherData.name
+            value = cipherData.name,
+            icon = Icons.Default.AccountCircle
         )
 
         if (!cipherData.email.isNullOrEmpty() ||
@@ -125,13 +137,15 @@ fun CipherViewScreen(
             CipherField(
                 title = stringResource(R.string.Email),
                 value = cipherData.email,
-                copy = true
+                copy = true,
+                icon = Icons.Default.Email
             )
 
             CipherField(
                 title = stringResource(R.string.Username),
                 value = cipherData.username,
-                copy = true
+                copy = true,
+                icon = Icons.Default.Badge
             )
 
             val passwordHistoryDialog = rememberDialogState()
@@ -139,9 +153,9 @@ fun CipherViewScreen(
             CipherField(
                 title = stringResource(R.string.Password),
                 value = cipherData.password,
-                fontFamily = FontFamily.Monospace,
                 copy = true,
                 hidden = true,
+                icon = Icons.Default.Password,
                 customIcon = {
                     if (cipherData.passwordHistory != null) {
                         IconButton(onClick = { passwordHistoryDialog.show() }) {
@@ -158,13 +172,16 @@ fun CipherViewScreen(
                 val clipboardManager = LocalClipboardManager.current
                 val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-                val passwords =
-                    (cipherData.passwordHistory ?: return@BaseDialog).asReversed()
+                val passwords = (cipherData.passwordHistory ?: return@BaseDialog).asReversed()
 
-                LazyColumn(modifier = Modifier.padding(horizontal = 24.dp)) {
+                LazyColumn(
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                ) {
                     for (i in passwords.indices) {
                         item {
-                            Row(modifier = Modifier.padding(vertical = 4.dp)) {
+                            Row(
+                                modifier = Modifier.padding(vertical = 4.dp)
+                            ) {
                                 Column(
                                     modifier = Modifier.weight(1f)
                                 ) {
@@ -204,10 +221,32 @@ fun CipherViewScreen(
                 modifier = Modifier.padding(top = 8.dp)
             )
 
-            OtpField(
+            CipherField(
+                title = null,
                 value = totpCode.chunked(totpDigits / 2).joinToString(" "),
-                elapsed = totpElapsed,
-                period = totpPeriod,
+                copy = true,
+                copyValue = totpCode,
+                leading = {
+                    Box(
+                        contentAlignment = Alignment.Center
+                    ) {
+                        val progress by animateFloatAsState(
+                            targetValue = 1 - (totpElapsed.toFloat() / totpPeriod.toFloat()),
+                            animationSpec = tween(500),
+                            label = ""
+                        )
+
+                        CircularProgressIndicator(
+                            progress = { progress },
+                            modifier = Modifier.size(36.dp)
+                        )
+
+                        Text(
+                            text = (totpPeriod - totpElapsed).toString(),
+                            modifier = Modifier.padding(2.dp)
+                        )
+                    }
+                }
             )
         }
 
@@ -223,7 +262,8 @@ fun CipherViewScreen(
                     value = it,
                     openUri = true,
                     uri = it,
-                    copy = true
+                    copy = true,
+                    icon = Icons.Default.Web
                 )
             }
         }
@@ -237,7 +277,8 @@ fun CipherViewScreen(
             CipherField(
                 title = stringResource(R.string.Notes),
                 value = cipherData.notes,
-                copy = true
+                copy = true,
+                icon = Icons.AutoMirrored.Filled.Notes
             )
         }
     }
@@ -255,7 +296,8 @@ fun CipherViewScreen(
         CipherField(
             title = stringResource(R.string.Notes),
             value = cipherData.note,
-            copy = true
+            copy = true,
+            icon = Icons.AutoMirrored.Filled.Notes
         )
     }
 
@@ -353,11 +395,10 @@ fun CipherViewScreen(
         }
     ) { innerPadding ->
         LazyColumn(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 16.dp)
         ) {
             item {
                 when (cipher.type) {
@@ -371,66 +412,16 @@ fun CipherViewScreen(
 }
 
 @Composable
-fun OtpField(
-    value: String,
-    elapsed: Int,
-    period: Int
-) {
-    if (value.isEmpty()) return
-
-    val clipboardManager = LocalClipboardManager.current
-
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Row(
-            modifier = Modifier.weight(1f)
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.padding(end = 8.dp)
-            ) {
-                val progress by animateFloatAsState(
-                    targetValue = 1 - (elapsed.toFloat() / period.toFloat()),
-                    animationSpec = tween(500),
-                    label = ""
-                )
-                CircularProgressIndicator(
-                    progress = { progress },
-                    modifier = Modifier.size(36.dp)
-                )
-                Text(
-                    text = (period - elapsed).toString(),
-                    modifier = Modifier.padding(2.dp)
-                )
-            }
-
-            Text(
-                text = value,
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
-        }
-
-        IconButton(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            onClick = { clipboardManager.setText(AnnotatedString(value.replace(" ", ""))) }
-        ) {
-            Icon(
-                imageVector = Icons.Default.ContentCopy,
-                contentDescription = null
-            )
-        }
-    }
-}
-
-@Composable
 fun CipherField(
-    title: String,
+    title: String?,
     value: String?,
-    fontFamily: FontFamily? = null,
     hidden: Boolean = false,
-    firstComponent: @Composable () -> Unit = {},
     openUri: Boolean = false,
     uri: String? = null,
     copy: Boolean = false,
+    copyValue: String? = value,
+    icon: ImageVector? = null,
+    leading: @Composable RowScope.() -> Unit = {},
     customIcon: (@Composable () -> Unit)? = null
 ) {
     if (value.isNullOrEmpty()) return
@@ -439,63 +430,58 @@ fun CipherField(
     val uriHandler = LocalUriHandler.current
     val clipboardManager = LocalClipboardManager.current
 
-    var hiddenState by remember { mutableStateOf(hidden) }
+    var visibility by rememberMutableBoolean()
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row {
-            firstComponent()
-        }
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-            )
-
-            if (hiddenState) {
-                Text(
-                    text = "•".repeat(value.length),
-                    fontFamily = fontFamily,
-                    style = MaterialTheme.typography.bodyMedium
-                )
+    AnimatedTextField(
+        modifier = Modifier.padding(vertical = 10.dp),
+        value = TextFieldValue(
+            value = value,
+//            editable = false
+        ),
+        label = title,
+        readOnly = true,
+        visualTransformation = if (hidden) {
+            if (visibility) {
+                colorizePasswordTransformation()
             } else {
-                Text(
-                    text = value,
-                    fontFamily = fontFamily,
-                    style = MaterialTheme.typography.bodyMedium
+                PasswordVisualTransformation()
+            }
+        } else VisualTransformation.None,
+        leading = {
+            leading()
+
+            if (icon != null) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null
                 )
             }
-        }
-
-        Row {
-            if (customIcon != null) customIcon()
+        },
+        trailing = {
+            if (customIcon != null) {
+                customIcon()
+            }
 
             if (hidden) {
-                IconButton(onClick = { hiddenState = !hiddenState }) {
-                    Icon(
-                        imageVector = if (hiddenState) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                        contentDescription = null
-                    )
+                IconButton(onClick = { visibility = !visibility }) {
+                    VisibilityIcon(visibility = visibility)
                 }
             }
 
             if (openUri) {
-                IconButton(onClick = {
-                    try {
-                        var address = uri!!
-                        if (!address.contains("http(s)?://".toRegex()))
-                            address = "https://$uri"
+                IconButton(
+                    onClick = {
+                        try {
+                            var address = uri!!
+                            if (!address.contains("http(s)?://".toRegex()))
+                                address = "https://$uri"
 
-                        uriHandler.openUri(address)
-                    } catch (e: Exception) {
-                        context.showToast("No application found for URI: $uri")
+                            uriHandler.openUri(address)
+                        } catch (e: Exception) {
+                            context.showToast("No application found for URI: $uri")
+                        }
                     }
-                }) {
+                ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.OpenInNew,
                         contentDescription = null
@@ -504,7 +490,7 @@ fun CipherField(
             }
 
             if (copy) {
-                IconButton(onClick = { clipboardManager.setText(AnnotatedString(value)) }) {
+                IconButton(onClick = { clipboardManager.setText(AnnotatedString(copyValue!!)) }) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
                         contentDescription = null
@@ -512,5 +498,5 @@ fun CipherField(
                 }
             }
         }
-    }
+    )
 }

@@ -78,7 +78,7 @@ dependencies {
 
     implementation(libs.accompanist.drawablepainter)
 
-    implementation(libs.androidx.biometric)
+    implementation(libs.androidx.biometric.ktx)
 
     // used for calling `onResume` and locking vault after X minutes
     implementation(libs.compose.lifecycle.runtime)

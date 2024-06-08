@@ -39,6 +39,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import java.util.Date
+import java.util.UUID
 
 @Serializable
 data class CipherEdit(val cipherId: String)
@@ -51,7 +52,7 @@ fun CipherEditScreen(
 ) {
     val context = LocalContext.current
 
-    val oldCipher = remember { viewModel.vault.find(args.cipherId) } ?: return
+    val oldCipher = remember { viewModel.vault.find(UUID.fromString(args.cipherId)) } ?: return
     var cipher by rememberMutable(oldCipher)
 
     var loading by rememberMutableBoolean()

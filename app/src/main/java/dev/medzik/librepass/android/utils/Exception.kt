@@ -8,6 +8,7 @@ import dev.medzik.librepass.android.R
 import dev.medzik.librepass.client.errors.ApiException
 import dev.medzik.librepass.client.errors.ClientException
 import dev.medzik.librepass.errors.ServerError
+import kotlinx.coroutines.CancellationException
 
 /** Log exception if debugging is enabled. */
 fun Exception.debugLog() {
@@ -18,26 +19,28 @@ fun Exception.debugLog() {
 
 /** Handle exceptions. Show toast with an error message. */
 fun Exception.showErrorToast(context: Context) {
+    // ignore when job was cancelled (e.g. when left composable)
+    if (this is CancellationException) return
+
     // log exception trace if debugging is enabled
     debugLog()
 
-    val message =
-        when (this) {
+    val message = when (this) {
 //        // handle encrypt exception
 //        is EncryptException -> { context.getString(R.string.Error_EncryptionError) }
-            // ignore network error
-            is ClientException -> {
-                return
-            }
-            // handle api exceptions
-            is ApiException -> {
-                getTranslatedErrorMessage(context)
-            }
-            // handle other exceptions
-            else -> {
-                context.getString(R.string.Error_UnknownError)
-            }
+        // ignore network error
+        is ClientException -> {
+            return
         }
+        // handle api exceptions
+        is ApiException -> {
+            getTranslatedErrorMessage(context)
+        }
+        // handle other exceptions
+        else -> {
+            context.getString(R.string.Error_UnknownError)
+        }
+    }
 
     runOnUiThread { context.showToast(message) }
 }

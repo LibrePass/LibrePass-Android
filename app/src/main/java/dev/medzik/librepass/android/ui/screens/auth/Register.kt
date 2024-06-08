@@ -30,7 +30,7 @@ import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.haveNetworkConnection
-import dev.medzik.librepass.android.common.popUpToDestination
+import dev.medzik.librepass.android.common.popUpToStartDestination
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.client.Server
@@ -75,10 +75,8 @@ fun RegisterScreen(navController: NavController) {
                 runOnUiThread {
                     context.showToast(R.string.Toast_PleaseVerifyYourEmail)
 
-                    navController.navigate(
-                        Login
-                    ) {
-                        popUpToDestination(navController)
+                    navController.navigate(Login) {
+                        popUpToStartDestination(navController)
                     }
                 }
             } catch (e: Exception) {

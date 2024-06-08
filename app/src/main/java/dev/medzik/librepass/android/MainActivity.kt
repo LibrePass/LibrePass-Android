@@ -75,10 +75,8 @@ class MainActivity : FragmentActivity() {
 
         val expired = vault.handleExpiration(this)
         if (expired) {
-            navController.navigate(
-                Unlock
-            ) {
-                popUpToDestination(navController)
+            navController.navigate(Unlock) {
+                popUpToDestination(Unlock)
             }
         }
     }

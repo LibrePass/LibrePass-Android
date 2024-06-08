@@ -102,10 +102,8 @@ fun UnlockScreen(
                 // run only if loading is true (if no error occurred)
                 if (loading) {
                     runOnUiThread {
-                        navController.navigate(
-                            Vault
-                        ) {
-                            popUpToDestination(navController)
+                        navController.navigate(Vault) {
+                            popUpToDestination(Vault)
                         }
                     }
                 }
@@ -129,10 +127,8 @@ fun UnlockScreen(
                 onAuthenticationSucceeded = { cipher ->
                     viewModel.vault.aesKey = KeyStore.decrypt(cipher, credentials.biometricAesKey!!)
 
-                    navController.navigate(
-                        Vault
-                    ) {
-                        popUpToDestination(navController)
+                    navController.navigate(Vault) {
+                        popUpToDestination(Vault)
                     }
                 },
                 onAuthenticationFailed = { }

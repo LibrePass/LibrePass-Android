@@ -30,7 +30,7 @@ import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.haveNetworkConnection
-import dev.medzik.librepass.android.common.popUpToDestination
+import dev.medzik.librepass.android.common.popUpToStartDestination
 import dev.medzik.librepass.android.database.Credentials
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
@@ -105,10 +105,8 @@ fun LoginScreen(
                 )
 
                 runOnUiThread {
-                    navController.navigate(
-                        Vault
-                    ) {
-                        popUpToDestination(navController)
+                    navController.navigate(Vault) {
+                        popUpToStartDestination(navController)
                     }
                 }
             } catch (e: Exception) {

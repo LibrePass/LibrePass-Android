@@ -9,12 +9,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.medzik.android.utils.openEmailApplication
+import dev.medzik.librepass.android.common.VaultCache
 import dev.medzik.librepass.android.common.popUpToDestination
 import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.screens.auth.Unlock
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
-import dev.medzik.librepass.android.utils.Vault
 import org.apache.commons.lang3.exception.ExceptionUtils
 import javax.inject.Inject
 
@@ -24,7 +24,7 @@ class MainActivity : FragmentActivity() {
     lateinit var repository: Repository
 
     @Inject
-    lateinit var vault: Vault
+    lateinit var vault: VaultCache
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,8 +46,8 @@ class MainActivity : FragmentActivity() {
 
         MigrationsManager.run(this, repository)
 
-        // retrieves aes key to decrypt vault if key is valid
-        vault.getVaultSecrets(this)
+        // retrieves aes key for vault decryption if key is valid
+        vault.getSecretsIfNotExpired(this)
 
         setContent {
             LibrePassTheme(

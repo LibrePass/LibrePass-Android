@@ -10,10 +10,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -42,7 +54,7 @@ import dev.medzik.librepass.client.api.CipherClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 @Serializable
@@ -55,14 +67,12 @@ fun VaultScreen(
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-
     val scope = rememberCoroutineScope()
 
     val pullToRefreshState = rememberPullToRefreshState()
 
-    var ciphers by remember { mutableStateOf(viewModel.vault.sortAlphabetically()) }
-
-    val credentials = viewModel.credentialRepository.get() ?: return
+    var ciphers by remember { mutableStateOf(viewModel.vault.getSortedCiphers()) }
+    val credentials = remember { viewModel.credentialRepository.get() } ?: return
 
     val cipherClient = CipherClient(
         apiKey = credentials.apiKey,
@@ -101,7 +111,7 @@ fun VaultScreen(
         }
 
         // sort ciphers and update UI
-        ciphers = viewModel.vault.sortAlphabetically()
+        ciphers = viewModel.vault.getSortedCiphers()
     }
 
     fun reSetupBiometrics() {
@@ -163,11 +173,11 @@ fun VaultScreen(
 
         // decrypt database if needed
         if (viewModel.vault.ciphers.isEmpty()) {
-            viewModel.vault.decryptDatabase(dbCiphers)
+            viewModel.vault.decrypt(dbCiphers)
         }
 
         // sort ciphers and update UI
-        ciphers = viewModel.vault.sortAlphabetically()
+        ciphers = viewModel.vault.getSortedCiphers()
 
         // sync remote ciphers
         if (context.haveNetworkConnection()) {

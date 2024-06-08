@@ -70,6 +70,7 @@ import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 @Serializable
@@ -81,7 +82,7 @@ fun CipherViewScreen(
     args: CipherView,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    val cipher = remember { viewModel.vault.find(args.cipherId) } ?: return
+    val cipher = remember { viewModel.vault.find(UUID.fromString(args.cipherId)) } ?: return
 
     var totpCode by rememberMutable("")
     var totpElapsed by rememberMutable(0)

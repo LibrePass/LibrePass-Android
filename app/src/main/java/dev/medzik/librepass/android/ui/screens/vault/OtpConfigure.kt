@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -36,6 +37,7 @@ import dev.medzik.otp.OTPParameters
 import dev.medzik.otp.OTPType
 import dev.medzik.otp.TOTPGenerator
 import kotlinx.serialization.Serializable
+import java.util.UUID
 
 @Serializable
 data class OtpConfigure(val cipherId: String)
@@ -46,7 +48,7 @@ fun OtpConfigureScreen(
     args: OtpConfigure,
     viewModel: LibrePassViewModel = hiltViewModel()
 ) {
-    val cipher = viewModel.vault.find(args.cipherId)
+    val cipher = remember { viewModel.vault.find(UUID.fromString(args.cipherId)) } ?: return
 
     Scaffold(
         topBar = {
@@ -140,7 +142,7 @@ fun OtpConfigureScreen(
                 }
             } else {
                 var beginParams: OTPParameters? = null
-                if (cipher?.loginData?.twoFactor != null) {
+                if (cipher.loginData?.twoFactor != null) {
                     beginParams = OTPParameters.parseUrl(cipher.loginData?.twoFactor)
                 }
 

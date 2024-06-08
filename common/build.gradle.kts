@@ -28,10 +28,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.compose.material.icons)
-    implementation(libs.compose.material3)
     implementation(libs.compose.navigation)
-    implementation(libs.compose.ui)
     implementation(libs.medzik.android.crypto)
     implementation(libs.medzik.android.utils)
 

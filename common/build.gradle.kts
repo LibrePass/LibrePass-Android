@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.parcelize)
 }
 
@@ -23,7 +23,6 @@ android {
     }
 
     buildFeatures {
-        compose = true
         buildConfig = false
     }
 }
@@ -33,5 +32,14 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.compose.navigation)
     implementation(libs.compose.ui)
+    implementation(libs.medzik.android.crypto)
+    implementation(libs.medzik.android.utils)
+
     implementation(libs.librepass.client)
+
+    implementation(libs.dagger.hilt)
+    implementation(libs.hilt.navigation.compose)
+    ksp(libs.dagger.hilt.compiler)
+
+    implementation(projects.databaseLogic)
 }

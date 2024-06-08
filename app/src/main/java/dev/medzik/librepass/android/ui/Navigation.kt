@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.librepass.android.MainActivity
+import dev.medzik.librepass.android.common.NavigationAnimations
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.ui.screens.Welcome

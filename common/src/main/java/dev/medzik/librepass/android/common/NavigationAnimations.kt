@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.ui
+package dev.medzik.librepass.android.common
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition

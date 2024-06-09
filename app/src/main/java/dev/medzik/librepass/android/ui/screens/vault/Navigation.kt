@@ -4,10 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.DefaultScaffold
-import dev.medzik.librepass.android.ui.TopBarWithBack
 import dev.medzik.librepass.android.common.navtype.CipherTypeType
+import dev.medzik.librepass.android.ui.DefaultScaffold
 import dev.medzik.librepass.types.cipher.CipherType
 import kotlin.reflect.typeOf
 
@@ -45,14 +43,6 @@ fun NavGraphBuilder.vaultNavigation(navController: NavController) {
         val args = it.toRoute<OtpConfigure>()
 
         OtpConfigureScreen(navController, args)
-    }
-
-    composable<PasswordGenerator> {
-        DefaultScaffold(
-            topBar = { TopBarWithBack(R.string.PasswordGenerator, navController) }
-        ) {
-            PasswordGeneratorScreen(navController)
-        }
     }
 
     composable<Search> {

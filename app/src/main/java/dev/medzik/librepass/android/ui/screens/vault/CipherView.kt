@@ -437,10 +437,9 @@ fun CipherField(
         modifier = Modifier.padding(vertical = 10.dp),
         value = TextFieldValue(
             value = value,
-//            editable = false
+            editable = false
         ),
         label = title,
-        readOnly = true,
         visualTransformation = if (hidden) {
             if (visibility) {
                 colorizePasswordTransformation()

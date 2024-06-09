@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Timer
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,9 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dev.medzik.android.components.rememberMutable
+import dev.medzik.android.components.ui.IconBox
 import dev.medzik.android.components.ui.PickerDialog
-import dev.medzik.android.components.ui.PropertyPreference
-import dev.medzik.android.components.ui.SwitcherPreference
+import dev.medzik.android.components.ui.preference.PropertyPreference
+import dev.medzik.android.components.ui.preference.SwitcherPreference
 import dev.medzik.android.components.ui.rememberDialogState
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.android.utils.runOnIOThread
@@ -120,7 +120,7 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
     if (checkIfBiometricAvailable(context)) {
         SwitcherPreference(
             title = stringResource(R.string.UnlockWithBiometrics),
-            icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
+            leading = { IconBox(Icons.Default.Fingerprint) },
             checked = biometricEnabled,
             onCheckedChange = { biometricHandler() }
         )
@@ -128,7 +128,7 @@ fun SettingsSecurityScreen(viewModel: LibrePassViewModel = hiltViewModel()) {
 
     PropertyPreference(
         title = stringResource(R.string.VaultTimeout),
-        icon = { Icon(Icons.Default.Timer, contentDescription = null) },
+        leading = { IconBox(Icons.Default.Timer) },
         currentValue = getVaultTimeoutTranslation(vaultTimeout.timeout),
         onClick = { timerDialogState.show() },
     )

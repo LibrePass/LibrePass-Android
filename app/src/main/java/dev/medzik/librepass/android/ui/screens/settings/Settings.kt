@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.ManageAccounts
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import dev.medzik.android.components.ui.PreferenceEntry
+import dev.medzik.android.components.ui.IconBox
+import dev.medzik.android.components.ui.preference.BasicPreference
 import dev.medzik.librepass.android.R
 import kotlinx.serialization.Serializable
 
@@ -18,14 +18,14 @@ object Settings
 @Composable
 fun SettingsScreen(navController: NavController) {
     Column {
-        PreferenceEntry(
-            icon = { Icon(Icons.Default.Fingerprint, contentDescription = null) },
+        BasicPreference(
             title = stringResource(R.string.Settings_Security),
+            leading = { IconBox(Icons.Default.Fingerprint) },
             onClick = { navController.navigate(SettingsSecurity) }
         )
 
-        PreferenceEntry(
-            icon = { Icon(Icons.Default.ManageAccounts, contentDescription = null) },
+        BasicPreference(
+            leading = { IconBox(Icons.Default.ManageAccounts) },
             title = stringResource(R.string.Settings_Account),
             onClick = { navController.navigate(SettingsAccount) }
         )

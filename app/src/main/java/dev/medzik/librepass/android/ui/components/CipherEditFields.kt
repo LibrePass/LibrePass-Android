@@ -39,7 +39,8 @@ import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableString
 import dev.medzik.android.components.ui.BaseBottomSheet
 import dev.medzik.android.components.ui.GroupTitle
-import dev.medzik.android.components.ui.SwitcherPreference
+import dev.medzik.android.components.ui.IconBox
+import dev.medzik.android.components.ui.preference.SwitcherPreference
 import dev.medzik.android.components.ui.rememberBottomSheetState
 import dev.medzik.android.components.ui.textfield.AnimatedTextField
 import dev.medzik.android.utils.runOnIOThread
@@ -185,9 +186,8 @@ fun CipherEditFieldsLogin(
             modifier = Modifier.padding(horizontal = 8.dp),
             value = TextFieldValue(
                 value = generatedPassword,
-//                    editable = false
+                editable = false
             ),
-            readOnly = true,
             visualTransformation = colorizePasswordTransformation(),
             trailing = {
                 Row {
@@ -270,7 +270,6 @@ fun CipherEditFieldsLogin(
             }
         )
 
-        // Capital letters switch
         SwitcherPreference(
             title = stringResource(R.string.PasswordGenerator_CapitalLetters),
             checked = passwordGeneratorPreference.capitalize,
@@ -278,15 +277,11 @@ fun CipherEditFieldsLogin(
                 passwordGeneratorPreference = passwordGeneratorPreference.copy(capitalize = it)
                 runOnIOThread { writePasswordGeneratorPreference(context, passwordGeneratorPreference) }
             },
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Title,
-                    contentDescription = null
-                )
+            leading = {
+                IconBox(Icons.Default.Title)
             }
         )
 
-        // Numeric switch
         SwitcherPreference(
             title = stringResource(R.string.PasswordGenerator_Numbers),
             checked = passwordGeneratorPreference.includeNumbers,
@@ -294,15 +289,11 @@ fun CipherEditFieldsLogin(
                 passwordGeneratorPreference = passwordGeneratorPreference.copy(includeNumbers = it)
                 runOnIOThread { writePasswordGeneratorPreference(context, passwordGeneratorPreference) }
             },
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Numbers,
-                    contentDescription = null
-                )
+            leading = {
+                IconBox(Icons.Default.Numbers)
             }
         )
 
-        // Symbols switch
         SwitcherPreference(
             title = stringResource(R.string.PasswordGenerator_Symbols),
             checked = passwordGeneratorPreference.includeSymbols,
@@ -310,11 +301,8 @@ fun CipherEditFieldsLogin(
                 passwordGeneratorPreference = passwordGeneratorPreference.copy(includeSymbols = it)
                 runOnIOThread { writePasswordGeneratorPreference(context, passwordGeneratorPreference) }
             },
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.EuroSymbol,
-                    contentDescription = null
-                )
+            leading = {
+                IconBox(Icons.Default.EuroSymbol)
             }
         )
 

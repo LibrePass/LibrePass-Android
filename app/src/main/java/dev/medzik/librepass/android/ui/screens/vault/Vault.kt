@@ -237,6 +237,7 @@ fun VaultScreen(
                 )
             }
 
+            // Prevent covering fields with floating action button
             item {
                 Spacer(
                     modifier = Modifier.size(72.dp)

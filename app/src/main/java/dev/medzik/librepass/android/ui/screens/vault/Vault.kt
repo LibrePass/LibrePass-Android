@@ -39,8 +39,8 @@ import dev.medzik.android.components.ui.rememberDialogState
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.common.haveNetworkConnection
-import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.android.ui.components.CipherTypeDialog
 import dev.medzik.librepass.android.ui.components.TopBar

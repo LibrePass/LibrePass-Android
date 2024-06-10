@@ -13,7 +13,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import dev.medzik.android.components.ui.IconBox
 import dev.medzik.android.components.ui.preference.BasicPreference
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.LibrePassViewModel
+import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.ui.screens.Welcome
 import dev.medzik.librepass.android.ui.screens.settings.account.SettingsAccountChangeEmail
 import dev.medzik.librepass.android.ui.screens.settings.account.SettingsAccountChangePassword

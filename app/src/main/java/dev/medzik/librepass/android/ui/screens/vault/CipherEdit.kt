@@ -24,7 +24,7 @@ import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.ui.LoadingButton
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.LibrePassViewModel
+import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsCard
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsLogin
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsSecureNote

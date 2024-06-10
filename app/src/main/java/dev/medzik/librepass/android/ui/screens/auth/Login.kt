@@ -29,10 +29,10 @@ import dev.medzik.android.components.ui.textfield.PasswordAnimatedTextField
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.common.haveNetworkConnection
 import dev.medzik.librepass.android.common.popUpToStartDestination
 import dev.medzik.librepass.android.database.Credentials
-import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.auth.ChoiceServer
 import dev.medzik.librepass.android.ui.screens.vault.Vault
 import dev.medzik.librepass.android.utils.showErrorToast

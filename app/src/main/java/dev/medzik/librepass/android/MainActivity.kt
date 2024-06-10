@@ -15,7 +15,6 @@ import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation
 import dev.medzik.librepass.android.ui.screens.auth.Unlock
 import dev.medzik.librepass.android.ui.theme.LibrePassTheme
-import org.apache.commons.lang3.exception.ExceptionUtils
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -38,7 +37,7 @@ class MainActivity : FragmentActivity() {
             openEmailApplication(
                 email = "contact@librepass.org",
                 subject = "[Bug] [Android]: ",
-                body = "<A few words about the error>\n\n\n---- Stack trace for debugging ----\n\n${ExceptionUtils.getStackTrace(e)}"
+                body = "<A few words about the error>\n\n\n---- Stack trace for debugging ----\n\n${Log.getStackTraceString(e)}"
             )
 
             finish()

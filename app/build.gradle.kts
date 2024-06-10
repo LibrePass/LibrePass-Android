@@ -101,8 +101,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines)
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(libs.commons.lang3)
-
     implementation(projects.common)
 
     // for splash screen with material3 and dynamic color

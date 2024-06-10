@@ -60,7 +60,7 @@ import dev.medzik.android.components.ui.rememberDialogState
 import dev.medzik.android.components.ui.textfield.AnimatedTextField
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.LibrePassViewModel
+import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.TopBar
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.shorten

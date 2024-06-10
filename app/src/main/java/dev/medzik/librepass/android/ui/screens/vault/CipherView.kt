@@ -50,6 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.TextFieldValue
 import dev.medzik.android.components.colorizePasswordTransformation
+import dev.medzik.android.components.icons.TopAppBarBackIcon
 import dev.medzik.android.components.icons.VisibilityIcon
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableBoolean
@@ -61,7 +62,6 @@ import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.TopBar
-import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.utils.SHORTEN_NAME_LENGTH
 import dev.medzik.librepass.android.utils.shorten
 import dev.medzik.librepass.types.cipher.CipherType
@@ -378,7 +378,7 @@ fun CipherViewScreen(
                     CipherType.SecureNote -> cipher.secureNoteData!!.title
                     CipherType.Card -> cipher.cardData!!.cardholderName
                 }.shorten(SHORTEN_NAME_LENGTH),
-                navigationIcon = { TopBarBackIcon(navController) }
+                navigationIcon = { TopAppBarBackIcon(navController) }
             )
         },
         floatingActionButton = {

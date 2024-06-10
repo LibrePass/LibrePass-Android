@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.Permission
+import dev.medzik.android.components.icons.TopAppBarBackIcon
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.ui.ComboBoxDropdown
 import dev.medzik.librepass.android.R
@@ -32,7 +33,6 @@ import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.QrCodeScanner
 import dev.medzik.librepass.android.ui.components.TextInputFieldBase
 import dev.medzik.librepass.android.ui.components.TopBar
-import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.otp.OTPParameters
 import dev.medzik.otp.OTPType
 import dev.medzik.otp.TOTPGenerator
@@ -54,7 +54,7 @@ fun OtpConfigureScreen(
         topBar = {
             TopBar(
                 title = stringResource(R.string.ConfigureTwoFactor),
-                navigationIcon = { TopBarBackIcon(navController) }
+                navigationIcon = { TopAppBarBackIcon(navController) }
             )
         }
     ) { innerPadding ->

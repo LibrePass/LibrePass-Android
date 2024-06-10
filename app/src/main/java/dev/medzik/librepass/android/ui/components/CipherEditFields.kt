@@ -7,14 +7,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Badge
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.EuroSymbol
 import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Title
+import androidx.compose.material.icons.filled.Web
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,6 +47,7 @@ import dev.medzik.android.components.ui.IconBox
 import dev.medzik.android.components.ui.preference.SwitcherPreference
 import dev.medzik.android.components.ui.rememberBottomSheetState
 import dev.medzik.android.components.ui.textfield.AnimatedTextField
+import dev.medzik.android.components.ui.textfield.PasswordAnimatedTextField
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.database.datastore.PasswordGeneratorPreference
@@ -91,13 +96,16 @@ fun CipherEditFieldsLogin(
             cipherData = newCipherData.copy(password = currentPassword)
         }
 
-    TextInputFieldBase(
+    AnimatedTextField(
+        modifier = Modifier.padding(vertical = 10.dp),
         label = stringResource(R.string.Name),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        value = cipherData.name,
-        onValueChange = { cipherData = cipherData.copy(name = it) }
+        value = TextFieldValue(
+            value = cipherData.name,
+            onChange = { cipherData = cipherData.copy(name = it) }
+        ),
+        leading = {
+            IconBox(Icons.Default.AccountCircle)
+        }
     )
 
     GroupTitle(
@@ -105,44 +113,47 @@ fun CipherEditFieldsLogin(
         modifier = Modifier.padding(top = 8.dp)
     )
 
-    TextInputFieldBase(
+    AnimatedTextField(
+        modifier = Modifier.padding(vertical = 10.dp),
         label = stringResource(R.string.Email),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        value = cipherData.email,
-        onValueChange = { cipherData = cipherData.copy(email = it) }
+        value = TextFieldValue(
+            value = cipherData.email ?: "",
+            onChange = { cipherData = cipherData.copy(email = it) }
+        ),
+        leading = {
+            IconBox(Icons.Default.Email)
+        }
     )
 
-    TextInputFieldBase(
+    AnimatedTextField(
+        modifier = Modifier.padding(vertical = 10.dp),
         label = stringResource(R.string.Username),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        value = cipherData.username,
-        onValueChange = { cipherData = cipherData.copy(username = it) }
+        value = TextFieldValue(
+            value = cipherData.username ?: "",
+            onChange = { cipherData = cipherData.copy(username = it) }
+        ),
+        leading = {
+            IconBox(Icons.Default.Badge)
+        }
     )
 
     val passwordGeneratorSheetState = rememberBottomSheetState()
 
-    TextInputFieldBase(
+    PasswordAnimatedTextField(
+        modifier = Modifier.padding(vertical = 10.dp),
         label = stringResource(R.string.Password),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        value = cipherData.password,
-        onValueChange = { cipherData = cipherData.copy(password = it) },
-        hidden = true
-    ) {
-        IconButton(
-            onClick = { passwordGeneratorSheetState.show() }
-        ) {
-            Icon(
-                imageVector = Icons.Default.AutoAwesome,
-                contentDescription = null
-            )
+        value = TextFieldValue(
+            value = cipherData.username ?: "",
+            onChange = { cipherData = cipherData.copy(username = it) }
+        ),
+        trailing = {
+            IconButton(
+                onClick = { passwordGeneratorSheetState.show() }
+            ) {
+                IconBox(Icons.Default.AutoAwesome)
+            }
         }
-    }
+    )
 
     @Composable
     fun PasswordGeneratorSheetContent(onSubmit: (String) -> Unit) {
@@ -336,33 +347,36 @@ fun CipherEditFieldsLogin(
 
     // show field for each uri
     cipherData.uris?.forEachIndexed { index, uri ->
-        TextInputFieldBase(
+        AnimatedTextField(
+            modifier = Modifier.padding(vertical = 10.dp),
             label = stringResource(R.string.WebsiteAddress) + " ${index + 1}",
-            modifier = Modifier.fillMaxWidth(),
-            value = uri,
-            onValueChange = {
-                cipherData = cipherData.copy(
-                    uris = cipherData.uris.orEmpty().toMutableList().apply {
-                        this[index] = it
-                    }
-                )
-            }
-        ) {
-            IconButton(
-                onClick = {
+            value = TextFieldValue(
+                value = uri,
+                onChange = {
                     cipherData = cipherData.copy(
                         uris = cipherData.uris.orEmpty().toMutableList().apply {
-                            this.removeAt(index)
+                            this[index] = it
                         }
                     )
                 }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = null
-                )
+            ),
+            leading = {
+                IconBox(Icons.Default.Web)
+            },
+            trailing = {
+                IconButton(
+                    onClick = {
+                        cipherData = cipherData.copy(
+                            uris = cipherData.uris.orEmpty().toMutableList().apply {
+                                this.removeAt(index)
+                            }
+                        )
+                    }
+                ) {
+                    IconBox(Icons.Default.Delete)
+                }
             }
-        }
+        )
     }
 
     // button for adding more fields
@@ -418,12 +432,16 @@ fun CipherEditFieldsLogin(
         modifier = Modifier.padding(top = 8.dp)
     )
 
-    TextInputFieldBase(
+    AnimatedTextField(
+        modifier = Modifier.padding(vertical = 10.dp),
         label = stringResource(R.string.Notes),
-        modifier = Modifier.fillMaxWidth(),
-        singleLine = false,
-        value = cipherData.notes,
-        onValueChange = { cipherData = cipherData.copy(notes = it) }
+        value = TextFieldValue(
+            value = cipherData.notes ?: "",
+            onChange = { cipherData = cipherData.copy(notes = it) }
+        ),
+        leading = {
+            IconBox(Icons.Default.Badge)
+        }
     )
 
     button(cipher.copy(loginData = cipherData))
@@ -440,7 +458,7 @@ fun CipherEditFieldsSecureNote(
         label = stringResource(R.string.Title),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 10.dp),
         value = cipherData.title,
         onValueChange = { cipherData = cipherData.copy(title = it) }
     )
@@ -467,7 +485,7 @@ fun CipherEditFieldsCard(
         label = stringResource(R.string.Name),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 10.dp),
         value = cipherData.name,
         onValueChange = { cipherData = cipherData.copy(name = it) }
     )
@@ -476,7 +494,7 @@ fun CipherEditFieldsCard(
         label = stringResource(R.string.CardholderName),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 10.dp),
         value = cipherData.cardholderName,
         onValueChange = { cipherData = cipherData.copy(cardholderName = it) }
     )
@@ -486,7 +504,7 @@ fun CipherEditFieldsCard(
         keyboardType = KeyboardType.Number,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 10.dp),
         value = cipherData.number,
         onValueChange = {
             if (!it.all { char -> char.isDigit() })
@@ -501,7 +519,7 @@ fun CipherEditFieldsCard(
         keyboardType = KeyboardType.Number,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 10.dp),
         value = cipherData.expMonth,
         onValueChange = {
             if (it.isEmpty()) {
@@ -521,7 +539,7 @@ fun CipherEditFieldsCard(
         keyboardType = KeyboardType.Number,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 10.dp),
         value = cipherData.expYear,
         onValueChange = {
             if (it.isEmpty()) {
@@ -540,7 +558,7 @@ fun CipherEditFieldsCard(
         keyboardType = KeyboardType.Number,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 10.dp),
         value = cipherData.code,
         onValueChange = {
             if (!it.all { char -> char.isDigit() })

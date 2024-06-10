@@ -14,8 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.drawablepainter.DrawablePainter
+import dev.medzik.android.components.ui.TopAppBarMultiColor
 import dev.medzik.librepass.android.R
-import dev.medzik.librepass.android.ui.components.TopBarTwoColor
 import dev.medzik.librepass.android.ui.screens.auth.Login
 import dev.medzik.librepass.android.ui.screens.auth.Register
 import kotlinx.serialization.Serializable
@@ -31,7 +31,7 @@ fun WelcomeScreen(navController: NavController) {
     val icon = context.packageManager.getApplicationIcon(context.packageName)
 
     Scaffold(
-        topBar = { TopBarTwoColor("Libre", "Pass") }
+        topBar = { TopAppBarMultiColor(firstText = "Libre", secondText = "Pass") }
     ) { innerPadding ->
         Column(
             modifier = Modifier

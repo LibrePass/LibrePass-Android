@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dev.medzik.android.components.icons.TopAppBarBackIcon
 import dev.medzik.android.components.rememberMutableString
-import dev.medzik.librepass.android.ui.LibrePassViewModel
+import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.types.cipher.CipherType
 import kotlinx.serialization.Serializable

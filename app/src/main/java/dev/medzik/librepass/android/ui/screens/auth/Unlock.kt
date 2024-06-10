@@ -39,8 +39,8 @@ import dev.medzik.libcrypto.Argon2
 import dev.medzik.libcrypto.Hex
 import dev.medzik.libcrypto.X25519
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.common.popUpToDestination
-import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.ui.screens.vault.Vault
 import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable

@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import dev.medzik.android.components.icons.TopAppBarBackIcon
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.rememberMutableBoolean
 import dev.medzik.android.components.ui.LoadingButton
@@ -30,7 +31,6 @@ import dev.medzik.librepass.android.ui.components.CipherEditFieldsCard
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsLogin
 import dev.medzik.librepass.android.ui.components.CipherEditFieldsSecureNote
 import dev.medzik.librepass.android.ui.components.TopBar
-import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.utils.showErrorToast
 import dev.medzik.librepass.types.cipher.Cipher
 import dev.medzik.librepass.types.cipher.CipherType
@@ -118,7 +118,7 @@ fun CipherAddScreen(
         topBar = {
             TopBar(
                 title = stringResource(R.string.AddNewCipher),
-                navigationIcon = { TopBarBackIcon(navController) }
+                navigationIcon = { TopAppBarBackIcon(navController) }
             )
         }
     ) { innerPadding ->

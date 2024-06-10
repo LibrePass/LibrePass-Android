@@ -22,10 +22,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dev.medzik.android.components.icons.TopAppBarBackIcon
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.common.NavigationAnimations
 import dev.medzik.librepass.android.ui.components.TopBar
-import dev.medzik.librepass.android.ui.components.TopBarBackIcon
 import dev.medzik.librepass.android.ui.screens.Welcome
 import dev.medzik.librepass.android.ui.screens.WelcomeScreen
 import dev.medzik.librepass.android.ui.screens.auth.Unlock
@@ -123,6 +123,6 @@ fun DefaultScaffold(
 fun TopBarWithBack(@StringRes title: Int, navController: NavController) {
     TopBar(
         title = stringResource(title),
-        navigationIcon = { TopBarBackIcon(navController) }
+        navigationIcon = { TopAppBarBackIcon(navController) }
     )
 }

@@ -28,10 +28,10 @@ import dev.medzik.android.crypto.KeyStore
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.database.datastore.VaultTimeoutValue
 import dev.medzik.librepass.android.database.datastore.readVaultTimeout
 import dev.medzik.librepass.android.database.datastore.writeVaultTimeout
-import dev.medzik.librepass.android.ui.LibrePassViewModel
 import dev.medzik.librepass.android.utils.KeyAlias
 import dev.medzik.librepass.android.utils.checkIfBiometricAvailable
 import dev.medzik.librepass.android.utils.showBiometricPromptForSetup

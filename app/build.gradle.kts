@@ -71,6 +71,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
+
     implementation(libs.compose.material.icons)
     implementation(libs.compose.material3)
     implementation(libs.compose.navigation)

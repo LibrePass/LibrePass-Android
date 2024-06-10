@@ -24,11 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import dev.medzik.android.components.Permission
 import dev.medzik.android.components.rememberMutable
 import dev.medzik.android.components.ui.ComboBoxDropdown
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.LibrePassViewModel
-import dev.medzik.librepass.android.ui.components.Permission
 import dev.medzik.librepass.android.ui.components.QrCodeScanner
 import dev.medzik.librepass.android.ui.components.TextInputFieldBase
 import dev.medzik.librepass.android.ui.components.TopBar

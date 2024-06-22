@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.medzik.android.utils.openEmailApplication
-import dev.medzik.librepass.android.common.VaultCache
+import dev.medzik.librepass.android.business.VaultCache
 import dev.medzik.librepass.android.common.popUpToDestination
 import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.ui.LibrePassNavigation

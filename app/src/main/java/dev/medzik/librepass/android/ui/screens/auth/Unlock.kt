@@ -27,11 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.TextFieldValue
-import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.android.components.rememberMutableString
-import dev.medzik.android.components.ui.LoadingButton
-import dev.medzik.android.components.ui.textfield.PasswordAnimatedTextField
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.LoadingButton
+import dev.medzik.android.compose.ui.textfield.PasswordAnimatedTextField
+import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
@@ -67,8 +66,8 @@ fun UnlockScreen(
 
     val scope = rememberCoroutineScope()
 
-    var loading by rememberMutableBoolean()
-    val password = rememberMutableString()
+    var loading by rememberMutable(false)
+    val password = rememberMutable("")
 
     val credentials = viewModel.credentialRepository.get() ?: return
 

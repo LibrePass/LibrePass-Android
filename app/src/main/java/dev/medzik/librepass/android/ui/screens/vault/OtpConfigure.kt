@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.Permission
-import dev.medzik.android.components.icons.TopAppBarBackIcon
-import dev.medzik.android.components.rememberMutable
-import dev.medzik.android.components.ui.ComboBoxDropdown
+import dev.medzik.android.compose.Permission
+import dev.medzik.android.compose.icons.TopAppBarBackIcon
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.ComboBoxDropdown
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.QrCodeScanner
@@ -210,10 +210,9 @@ fun OtpConfigureScreen(
                 )
 
                 var otpUri by rememberMutable("")
-                val otpCodeError =
-                    runCatching {
-                        otpUri = generateOtpUri(totpSecret, type, digits.toInt(), period.toInt(), counter.toLong(), algorithm)
-                    }.isSuccess
+                val otpCodeError = runCatching {
+                    otpUri = generateOtpUri(totpSecret, type, digits.toInt(), period.toInt(), counter.toLong(), algorithm)
+                }.isSuccess
 
                 Button(
                     onClick = { qrScanning = true },

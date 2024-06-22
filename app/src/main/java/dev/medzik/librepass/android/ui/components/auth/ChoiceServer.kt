@@ -13,8 +13,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import dev.medzik.android.components.ui.PickerDialog
-import dev.medzik.android.components.ui.rememberDialogState
+import dev.medzik.android.compose.ui.dialog.PickerDialog
+import dev.medzik.android.compose.ui.dialog.rememberDialogState
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.database.datastore.CustomServers
 import dev.medzik.librepass.android.database.datastore.readCustomServers

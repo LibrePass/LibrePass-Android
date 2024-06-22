@@ -19,10 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.icons.TopAppBarBackIcon
-import dev.medzik.android.components.rememberMutable
-import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.android.components.ui.LoadingButton
+import dev.medzik.android.compose.icons.TopAppBarBackIcon
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.LoadingButton
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.LibrePassViewModel
@@ -57,6 +56,7 @@ fun CipherAddScreen(
 ) {
     val context = LocalContext.current
 
+    val scope = rememberCoroutineScope()
     val credentials = remember { viewModel.credentialRepository.get() } ?: return
 
     var cipher by rememberMutable(
@@ -76,8 +76,7 @@ fun CipherAddScreen(
         )
     )
 
-    var loading by rememberMutableBoolean()
-    val scope = rememberCoroutineScope()
+    var loading by rememberMutable(false)
 
     fun submit() {
         loading = true

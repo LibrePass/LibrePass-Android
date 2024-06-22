@@ -22,7 +22,7 @@ kotlin-ksp = "2.0.0-1.0.22"
 kotlinx-coroutines = "1.8.1"
 kotlinx-serialization = "1.7.0"
 librepass-client = "1.6.2"
-medzik-android-utils = "1.5.2"
+medzik-android-utils = "1.6.1"
 otp = "1.0.1"
 zxing = "3.5.3"
 zxing-android = "4.3.0"
@@ -52,7 +52,7 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 librepass-client = { module = "dev.medzik.librepass:client", version.ref = "librepass-client" }
-medzik-android-components = { module = "dev.medzik.android:components", version.ref = "medzik-android-utils" }
+medzik-android-compose = { module = "dev.medzik.android:compose", version.ref = "medzik-android-utils" }
 medzik-android-crypto = { module = "dev.medzik.android:crypto", version.ref = "medzik-android-utils" }
 medzik-android-utils = { module = "dev.medzik.android:utils", version.ref = "medzik-android-utils" }
 otp = { module = "dev.medzik:otp", version.ref = "otp" }

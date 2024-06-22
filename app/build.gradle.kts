@@ -109,7 +109,7 @@ dependencies {
     implementation(libs.zxing.android) { isTransitive = false }
     implementation(libs.zxing)
 
-    implementation(libs.medzik.android.components)
+    implementation(libs.medzik.android.compose)
     implementation(libs.medzik.android.crypto)
     implementation(libs.medzik.android.utils)
 

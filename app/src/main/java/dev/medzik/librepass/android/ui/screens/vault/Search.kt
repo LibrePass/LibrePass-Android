@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.icons.TopAppBarBackIcon
-import dev.medzik.android.components.rememberMutableString
+import dev.medzik.android.compose.icons.TopAppBarBackIcon
+import dev.medzik.android.compose.rememberMutable
 import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.ui.components.CipherCard
 import dev.medzik.librepass.types.cipher.CipherType
@@ -40,7 +40,7 @@ fun SearchScreen(
 ) {
     val ciphers = remember { viewModel.vault.getSortedCiphers() }
 
-    var searchText by rememberMutableString()
+    var searchText by rememberMutable("")
 
     Scaffold(
         topBar = {

@@ -14,9 +14,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.android.components.rememberMutableString
-import dev.medzik.android.components.ui.LoadingButton
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.LoadingButton
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.LibrePassViewModel
@@ -40,11 +39,11 @@ fun SettingsAccountChangePasswordScreen(
     val context = LocalContext.current
     val credentials = viewModel.credentialRepository.get() ?: return
 
-    var oldPassword by rememberMutableString()
-    var newPassword by rememberMutableString()
-    var newPasswordConfirm by rememberMutableString()
-    var newPasswordHint by rememberMutableString()
-    var loading by rememberMutableBoolean()
+    var oldPassword by rememberMutable("")
+    var newPassword by rememberMutable("")
+    var newPasswordConfirm by rememberMutable("")
+    var newPasswordHint by rememberMutable("")
+    var loading by rememberMutable(false)
 
     val scope = rememberCoroutineScope()
 

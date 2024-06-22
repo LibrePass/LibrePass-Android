@@ -39,6 +39,7 @@ import dev.medzik.android.compose.ui.dialog.rememberDialogState
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
+import dev.medzik.librepass.android.business.syncCiphers
 import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.common.haveNetworkConnection
 import dev.medzik.librepass.android.ui.components.CipherCard
@@ -54,8 +55,6 @@ import dev.medzik.librepass.client.api.CipherClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import java.util.Date
-import java.util.concurrent.TimeUnit
 
 @Serializable
 object Vault
@@ -78,41 +77,6 @@ fun VaultScreen(
         apiKey = credentials.apiKey,
         apiUrl = credentials.apiUrl ?: Server.PRODUCTION
     )
-
-    suspend fun updateCiphers() {
-        try {
-            val localCiphers = viewModel.cipherRepository.getAll(credentials.userId)
-            val lastSync = viewModel.credentialRepository.get()!!.lastSync ?: 0
-            val lastSyncDate = Date(TimeUnit.SECONDS.toMillis(lastSync))
-            val newLastSync = TimeUnit.MILLISECONDS.toSeconds(Date().time)
-
-            // filter ciphers that need upload
-            val ciphersNeededUpload = localCiphers.filter { it.needUpload }.map { it.encryptedCipher }
-
-            // TODO: delete ciphers using this method
-
-            val syncResponse = cipherClient.sync(lastSyncDate, ciphersNeededUpload, emptyList())
-
-            // if it is not a full sync (it isn't the first sync)
-            if (lastSync != 0L) {
-                // synchronize the local database with the server database
-                viewModel.vault.sync(syncResponse)
-            } else {
-                // save all ciphers
-                for (cipher in syncResponse.ciphers) {
-                    viewModel.vault.save(cipher)
-                }
-            }
-
-            // update the last sync date
-            viewModel.credentialRepository.update(credentials.copy(lastSync = newLastSync))
-        } catch (e: Exception) {
-            e.showErrorToast(context)
-        }
-
-        // sort ciphers and update UI
-        ciphers = viewModel.vault.getSortedCiphers()
-    }
 
     fun reSetupBiometrics() {
         // enable biometric authentication if possible
@@ -182,8 +146,21 @@ fun VaultScreen(
         // sync remote ciphers
         if (context.haveNetworkConnection()) {
             scope.launch(Dispatchers.IO) {
-                updateCiphers()
-                pullToRefreshState.endRefresh()
+                try {
+                    syncCiphers(
+                        context,
+                        credentials,
+                        client = cipherClient,
+                        vault = viewModel.vault
+                    )
+
+                    // sort ciphers and update UI
+                    ciphers = viewModel.vault.getSortedCiphers()
+                } catch (e: Exception) {
+                    e.showErrorToast(context)
+                } finally {
+                    pullToRefreshState.endRefresh()
+                }
             }
         } else {
             pullToRefreshState.endRefresh()
@@ -193,8 +170,18 @@ fun VaultScreen(
     if (pullToRefreshState.isRefreshing) {
         LaunchedEffect(Unit) {
             scope.launch(Dispatchers.IO) {
-                updateCiphers()
-                pullToRefreshState.endRefresh()
+                try {
+                    syncCiphers(
+                        context,
+                        credentials,
+                        client = cipherClient,
+                        vault = viewModel.vault
+                    )
+                } catch (e: Exception) {
+                    e.showErrorToast(context)
+                } finally {
+                    pullToRefreshState.endRefresh()
+                }
             }
         }
     }

@@ -102,6 +102,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(projects.common)
+    implementation(projects.businessLogic)
 
     // for splash screen with material3 and dynamic color
     implementation(libs.google.material)

@@ -1,4 +1,4 @@
-package dev.medzik.librepass.android.common
+package dev.medzik.librepass.android.business
 
 import android.content.Context
 import dev.medzik.android.utils.runOnIOThread

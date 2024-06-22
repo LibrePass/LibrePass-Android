@@ -20,11 +20,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.JsonSyntaxException
-import dev.medzik.android.components.TextFieldValue
-import dev.medzik.android.components.rememberMutable
-import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.android.components.ui.LoadingButton
-import dev.medzik.android.components.ui.textfield.AnimatedTextField
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.LoadingButton
+import dev.medzik.android.compose.ui.textfield.AnimatedTextField
+import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
@@ -42,7 +41,7 @@ object AddCustomServer
 fun AddCustomServerScreen(navController: NavController) {
     val context = LocalContext.current
 
-    var loading by rememberMutableBoolean()
+    var loading by rememberMutable(false)
     var server by rememberMutable(CustomServers("", "https://"))
 
     fun submit() {

@@ -1,7 +1,12 @@
 package dev.medzik.librepass.android.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -14,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.drawablepainter.DrawablePainter
-import dev.medzik.android.components.ui.TopAppBarMultiColor
+import dev.medzik.android.compose.ui.TopAppBarMultiColor
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.ui.screens.auth.Login
 import dev.medzik.librepass.android.ui.screens.auth.Register

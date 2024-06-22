@@ -14,9 +14,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.android.components.rememberMutableString
-import dev.medzik.android.components.ui.LoadingButton
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.LoadingButton
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.LibrePassViewModel
@@ -40,8 +39,8 @@ fun SettingsAccountDeleteAccountScreen(
     val context = LocalContext.current
     val credentials = viewModel.credentialRepository.get() ?: return
 
-    var loading by rememberMutableBoolean()
-    var password by rememberMutableString()
+    var loading by rememberMutable(false)
+    var password by rememberMutable("")
     val scope = rememberCoroutineScope()
 
     val userClient = UserClient(

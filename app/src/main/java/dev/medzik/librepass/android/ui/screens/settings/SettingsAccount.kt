@@ -10,8 +10,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import dev.medzik.android.components.ui.IconBox
-import dev.medzik.android.components.ui.preference.BasicPreference
+import dev.medzik.android.compose.ui.IconBox
+import dev.medzik.android.compose.ui.preference.BasicPreference
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.LibrePassViewModel
 import dev.medzik.librepass.android.ui.screens.Welcome

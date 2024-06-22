@@ -48,16 +48,15 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.TextFieldValue
-import dev.medzik.android.components.colorizePasswordTransformation
-import dev.medzik.android.components.icons.TopAppBarBackIcon
-import dev.medzik.android.components.icons.VisibilityIcon
-import dev.medzik.android.components.rememberMutable
-import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.android.components.ui.BaseDialog
-import dev.medzik.android.components.ui.GroupTitle
-import dev.medzik.android.components.ui.rememberDialogState
-import dev.medzik.android.components.ui.textfield.AnimatedTextField
+import dev.medzik.android.compose.colorizePasswordTransformation
+import dev.medzik.android.compose.icons.TopAppBarBackIcon
+import dev.medzik.android.compose.icons.VisibilityIcon
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.GroupTitle
+import dev.medzik.android.compose.ui.dialog.BaseDialog
+import dev.medzik.android.compose.ui.dialog.rememberDialogState
+import dev.medzik.android.compose.ui.textfield.AnimatedTextField
+import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.common.LibrePassViewModel
@@ -170,7 +169,9 @@ fun CipherViewScreen(
                 }
             )
 
-            BaseDialog(state = passwordHistoryDialog) {
+            BaseDialog(
+                state = passwordHistoryDialog
+            ) {
                 val clipboardManager = LocalClipboardManager.current
                 val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -439,7 +440,7 @@ fun CipherField(
     val uriHandler = LocalUriHandler.current
     val clipboardManager = LocalClipboardManager.current
 
-    var visibility by rememberMutableBoolean()
+    var visibility by rememberMutable(false)
 
     AnimatedTextField(
         modifier = Modifier.padding(vertical = 10.dp),

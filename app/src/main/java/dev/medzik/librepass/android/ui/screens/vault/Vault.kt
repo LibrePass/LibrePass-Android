@@ -34,8 +34,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.android.components.ui.rememberDialogState
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.dialog.rememberDialogState
 import dev.medzik.android.crypto.KeyStore
 import dev.medzik.librepass.android.MainActivity
 import dev.medzik.librepass.android.R
@@ -258,7 +258,7 @@ fun VaultScreenTopBar(navController: NavController) {
         title = stringResource(R.string.Vault),
         actions = {
             val context = LocalContext.current
-            var expanded by rememberMutableBoolean()
+            var expanded by rememberMutable(false)
             IconButton(onClick = { navController.navigate(Search) }) {
                 Icon(
                     imageVector = Icons.Default.Search,

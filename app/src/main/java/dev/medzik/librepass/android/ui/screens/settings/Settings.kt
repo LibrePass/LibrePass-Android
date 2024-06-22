@@ -7,8 +7,8 @@ import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
-import dev.medzik.android.components.ui.IconBox
-import dev.medzik.android.components.ui.preference.BasicPreference
+import dev.medzik.android.compose.ui.IconBox
+import dev.medzik.android.compose.ui.preference.BasicPreference
 import dev.medzik.librepass.android.R
 import kotlinx.serialization.Serializable
 
@@ -19,14 +19,16 @@ object Settings
 fun SettingsScreen(navController: NavController) {
     Column {
         BasicPreference(
-            title = stringResource(R.string.Settings_Security),
             leading = { IconBox(Icons.Default.Fingerprint) },
+            title = stringResource(R.string.Settings_Security),
+            subtitle = stringResource(R.string.Settings_Security_Subtitle),
             onClick = { navController.navigate(SettingsSecurity) }
         )
 
         BasicPreference(
             leading = { IconBox(Icons.Default.ManageAccounts) },
             title = stringResource(R.string.Settings_Account),
+            subtitle = stringResource(R.string.Settings_Account_Subtitle),
             onClick = { navController.navigate(SettingsAccount) }
         )
     }

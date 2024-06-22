@@ -20,12 +20,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import dev.medzik.android.components.TextFieldValue
-import dev.medzik.android.components.rememberMutableBoolean
-import dev.medzik.android.components.rememberMutableString
-import dev.medzik.android.components.ui.LoadingButton
-import dev.medzik.android.components.ui.textfield.AnimatedTextField
-import dev.medzik.android.components.ui.textfield.PasswordAnimatedTextField
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.LoadingButton
+import dev.medzik.android.compose.ui.textfield.AnimatedTextField
+import dev.medzik.android.compose.ui.textfield.PasswordAnimatedTextField
+import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.runOnUiThread
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.R
@@ -55,10 +54,10 @@ fun LoginScreen(
 
     val scope = rememberCoroutineScope()
 
-    var loading by rememberMutableBoolean()
-    val email = rememberMutableString()
-    val password = rememberMutableString()
-    val server = rememberMutableString(Server.PRODUCTION)
+    var loading by rememberMutable(false)
+    val email = rememberMutable("")
+    val password = rememberMutable("")
+    val server = rememberMutable(Server.PRODUCTION)
 
     fun submit(email: String, password: String) {
         if (!context.haveNetworkConnection()) {

@@ -71,8 +71,10 @@
     <string name="Server_Official">Official</string>
     <string name="Settings">Settings</string>
     <string name="Settings_Account">Account</string>
+    <string name="Settings_Account_Subtitle">Manage your account</string>
     <string name="Settings_Appearance">Appearance</string>
     <string name="Settings_Security">Security</string>
+    <string name="Settings_Security_Subtitle">Manage application security options</string>
     <string name="Submit">Submit</string>
     <string name="Theme">Theme</string>
     <string name="Theme_Black">Black</string>

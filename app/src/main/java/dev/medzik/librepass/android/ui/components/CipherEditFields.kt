@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.material.icons.filled.Web
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -37,17 +38,16 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.gson.Gson
-import dev.medzik.android.components.TextFieldValue
-import dev.medzik.android.components.colorizePasswordTransformation
-import dev.medzik.android.components.rememberMutable
-import dev.medzik.android.components.rememberMutableString
-import dev.medzik.android.components.ui.BaseBottomSheet
-import dev.medzik.android.components.ui.GroupTitle
-import dev.medzik.android.components.ui.IconBox
-import dev.medzik.android.components.ui.preference.SwitcherPreference
-import dev.medzik.android.components.ui.rememberBottomSheetState
-import dev.medzik.android.components.ui.textfield.AnimatedTextField
-import dev.medzik.android.components.ui.textfield.PasswordAnimatedTextField
+import dev.medzik.android.compose.colorizePasswordTransformation
+import dev.medzik.android.compose.rememberMutable
+import dev.medzik.android.compose.ui.GroupTitle
+import dev.medzik.android.compose.ui.IconBox
+import dev.medzik.android.compose.ui.bottomsheet.BaseBottomSheet
+import dev.medzik.android.compose.ui.bottomsheet.rememberBottomSheetState
+import dev.medzik.android.compose.ui.preference.SwitcherPreference
+import dev.medzik.android.compose.ui.textfield.AnimatedTextField
+import dev.medzik.android.compose.ui.textfield.PasswordAnimatedTextField
+import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.librepass.android.R
 import dev.medzik.librepass.android.database.datastore.PasswordGeneratorPreference
@@ -66,6 +66,7 @@ enum class PasswordType(val literals: String) {
     SYMBOLS("!@#\$%^&*()_+-=[]{}\\|;:'\",.<>/?")
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CipherEditFieldsLogin(
     navController: NavController,
@@ -160,7 +161,7 @@ fun CipherEditFieldsLogin(
         val context = LocalContext.current
         val clipboardManager = LocalClipboardManager.current
 
-        var generatedPassword by rememberMutableString()
+        var generatedPassword by rememberMutable("")
 
         var passwordGeneratorPreference by rememberMutable(PasswordGeneratorPreference())
         LaunchedEffect(Unit) {
@@ -328,7 +329,12 @@ fun CipherEditFieldsLogin(
         }
     }
 
-    BaseBottomSheet(state = passwordGeneratorSheetState) {
+    BaseBottomSheet(
+        state = passwordGeneratorSheetState,
+        onDismiss = {
+            scope.launch { passwordGeneratorSheetState.hide() }
+        }
+    ) {
         PasswordGeneratorSheetContent(
             onSubmit = {
                 cipherData = cipherData.copy(password = it)

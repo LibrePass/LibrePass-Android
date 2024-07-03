@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Email">E-mail</string>
+    <string name="Password">Password</string>
+    <string name="Login">Login</string>
+    <string name="NoInternetConnection">No internet connection</string>
+    <string name="Official">Official</string>
+    <string name="ServerAddress">Server address</string>
+    <string name="SelectServer">Select server</string>
+    <string name="AddCustomServer">Add custom server</string>
+    <string name="Name">Name</string>
+    <string name="EnterEmail">Enter your e-mail address</string>
+    <string name="PasswordHintWasSent">A password hint was sent to the e-mail address</string>
+    <string name="Add">Add</string>
+    <string name="NoServerConnection">No connection with the server</string>
+    <string name="ForgotPassword">Forgot password?</string>
+    <string name="ForgotPassword_Info">LibrePass utilizes robust encryption to safeguard your data, rendering password recovery impossible. Instead, you can request a password hint that you set during registration.</string>
+    <string name="GetPasswordHint">Get password hint</string>
+    <string name="Signup">Sign up</string>
+    <string name="Welcome_FirstCardTitle">Welcome in LibrePass</string>
+    <string name="Welcome_FirstCardSubtitle">Take control of your passwords with LibrePass</string>
+    <string name="Welcome_PasswordGeneratorCardTitle">Password Generator</string>
+    <string name="Welcome_PasswordGeneratorSubtitle">Generate robust, secure passwords effortlessly to increase your security</string>
+    <string name="Welcome_SyncCardTitle">Cross-device Sync</string>
+    <string name="Welcome_SyncCardSubtitle">Passwords are seamlessly synchronized across all devices</string>
+    <string name="PasswordHint">Password hint</string>
+    <string name="PasswordHintLabel">We recommend setting a password hint to help if you forget your password</string>
+    <string name="PasswordLabel_WontBeRecover">Remember your password because there won\'t be any way to recover it</string>
+    <string name="RetypePassword">Re-type password</string>
+</resources>

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.androidx.room)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.serialization)
@@ -37,4 +38,8 @@ dependencies {
 
     implementation(libs.medzik.android.crypto)
     implementation(libs.librepass.client)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }

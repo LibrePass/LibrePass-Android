@@ -4,21 +4,13 @@ import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.common.haveNetworkConnection
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
-import javax.inject.Inject
 
-@HiltViewModel
-class SignupViewModel @Inject constructor(
-    @ApplicationContext
-    private val context: Context
-) : ViewModel() {
+class SignupViewModel : ViewModel() {
     val email = mutableStateOf("")
     val password = mutableStateOf("")
     val retypePassword = mutableStateOf("")

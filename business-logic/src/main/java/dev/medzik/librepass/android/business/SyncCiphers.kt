@@ -2,7 +2,7 @@ package dev.medzik.librepass.android.business
 
 import android.content.Context
 import dev.medzik.librepass.android.database.Credentials
-import dev.medzik.librepass.android.database.injection.RoomModule
+import dev.medzik.librepass.android.database.injection.DatabaseProvider
 import dev.medzik.librepass.client.api.CipherClient
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -15,7 +15,7 @@ suspend fun syncCiphers(
 ) {
     val currentTimeSeconds = TimeUnit.MILLISECONDS.toSeconds(Date().time)
 
-    val repository = RoomModule.providesRepository(context)
+    val repository = DatabaseProvider.providesRepository(context)
 
     val localCiphers = repository.cipher.getAll(credentials.userId)
 

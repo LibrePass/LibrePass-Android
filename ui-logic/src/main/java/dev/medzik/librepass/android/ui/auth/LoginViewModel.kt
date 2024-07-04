@@ -34,7 +34,7 @@ class LoginViewModel : ViewModel() {
             )
 
             val repository = DatabaseProvider.provideRepository(context)
-            val vaultCache = VaultCacheModule.providesVault(repository)
+            val vaultCache = VaultCacheModule.provideVaultCache(repository)
 
             val credentialsDbEntry = Credentials(
                 userId = credentials.userId,

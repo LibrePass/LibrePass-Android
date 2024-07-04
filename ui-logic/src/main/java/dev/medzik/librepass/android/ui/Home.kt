@@ -14,7 +14,7 @@ object Home
 @Composable
 fun HomeScreen(navController: NavController) {
     val context = LocalContext.current
-    val repository = DatabaseProvider.providesRepository(context)
+    val repository = DatabaseProvider.provideRepository(context)
     val credentials = repository.credentials.get()
 
     if (credentials != null) {

@@ -14,7 +14,7 @@ import javax.inject.Singleton
 object DatabaseProvider {
     @Singleton
     @Provides
-    fun providesRepository(@ApplicationContext context: Context): Repository {
+    fun provideRepository(@ApplicationContext context: Context): Repository {
         return Repository(context)
     }
 }

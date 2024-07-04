@@ -20,6 +20,10 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# Keep orginal names of a classes, function etc.
+# For better logs in an error reports.
+-dontobfuscate
+
 # ERROR: R8: Missing class lombok.NonNull
 -dontwarn lombok.**
 

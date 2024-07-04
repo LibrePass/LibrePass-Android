@@ -75,7 +75,7 @@ fun ChoiceServer(server: MutableState<String>) {
     var servers by rememberMutable(emptyList<CustomServer>())
 
     LaunchedEffect(Unit) {
-        val repository = DatabaseProvider.providesRepository(context)
+        val repository = DatabaseProvider.provideRepository(context)
 
         val customServers = repository.customServer.getAll()
 
@@ -142,7 +142,7 @@ fun AddServerSheetContent(
 
     val scope = rememberCoroutineScope()
 
-    val repository = DatabaseProvider.providesRepository(context)
+    val repository = DatabaseProvider.provideRepository(context)
 
     var customServer by rememberMutable(
         CustomServer(

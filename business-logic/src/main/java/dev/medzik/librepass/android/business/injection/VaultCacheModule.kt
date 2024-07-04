@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.medzik.librepass.android.business.VaultCache
 import dev.medzik.librepass.android.database.LocalCipherDao
+import dev.medzik.librepass.android.database.Repository
 import javax.inject.Singleton
 
 @Module
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 object VaultCacheModule {
     @Singleton
     @Provides
-    fun providesVault(cipherRepository: LocalCipherDao): VaultCache {
-        return VaultCache(cipherRepository)
+    fun providesVault(repository: Repository): VaultCache {
+        return VaultCache(repository)
     }
 }

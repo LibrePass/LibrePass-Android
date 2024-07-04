@@ -15,7 +15,7 @@ suspend fun syncCiphers(
 ) {
     val currentTimeSeconds = TimeUnit.MILLISECONDS.toSeconds(Date().time)
 
-    val repository = DatabaseProvider.providesRepository(context)
+    val repository = DatabaseProvider.provideRepository(context)
 
     val localCiphers = repository.cipher.getAll(credentials.userId)
 

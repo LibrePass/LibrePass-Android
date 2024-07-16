@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import dev.medzik.android.compose.rememberMutable
 import dev.medzik.android.compose.theme.spacing
 import dev.medzik.android.compose.ui.IconBox
@@ -39,7 +40,6 @@ import dev.medzik.android.compose.ui.textfield.AnimatedTextField
 import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.database.CustomServer
-import dev.medzik.librepass.android.database.injection.DatabaseProvider
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.checkApiConnection
@@ -48,7 +48,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChoiceServer(server: MutableState<String>) {
+fun ChoiceServer(
+    server: MutableState<String>,
+    viewModel: ChoiceServerViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
@@ -75,9 +78,7 @@ fun ChoiceServer(server: MutableState<String>) {
     var servers by rememberMutable(emptyList<CustomServer>())
 
     LaunchedEffect(Unit) {
-        val repository = DatabaseProvider.provideRepository(context)
-
-        val customServers = repository.customServer.getAll()
+        val customServers = viewModel.getCustomServers()
 
         servers = listOf(
             CustomServer(
@@ -128,21 +129,21 @@ fun ChoiceServer(server: MutableState<String>) {
     ) {
         AddServerSheetContent(
             addServerSheet,
-            server
+            server,
+            viewModel
         )
     }
 }
 
 @Composable
-fun AddServerSheetContent(
+private fun AddServerSheetContent(
     sheetState: BottomSheetState,
-    server: MutableState<String>
+    server: MutableState<String>,
+    viewModel: ChoiceServerViewModel
 ) {
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
-
-    val repository = DatabaseProvider.provideRepository(context)
 
     var customServer by rememberMutable(
         CustomServer(
@@ -200,7 +201,7 @@ fun AddServerSheetContent(
                             return@launch
                         }
 
-                        repository.customServer.insert(customServer)
+                        viewModel.insertCustomServer(customServer)
 
                         server.value = customServer.address
 

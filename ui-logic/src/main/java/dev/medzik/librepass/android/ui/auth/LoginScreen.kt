@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.android.compose.icons.TopAppBarBackIcon
+import dev.medzik.android.compose.theme.spacing
 import dev.medzik.android.compose.ui.LoadingButton
 import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.librepass.android.business.injection.VaultCacheModule
@@ -85,7 +86,7 @@ fun LoginScreen(
                 ) {
                     LoadingButton(
                         modifier = Modifier
-                            .padding(vertical = 12.dp)
+                            .padding(horizontal = MaterialTheme.spacing.horizontalPadding)
                             .height(50.dp)
                             .fillMaxWidth(0.85f),
                         onClick = { viewModel.login() },

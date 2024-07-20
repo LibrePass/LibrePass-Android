@@ -75,7 +75,7 @@ fun ChoiceServer(
         }
     }
 
-    var servers by rememberMutable(emptyList<CustomServer>())
+    var servers by rememberMutable { emptyList<CustomServer>() }
 
     LaunchedEffect(Unit) {
         val customServers = viewModel.getCustomServers()
@@ -145,12 +145,12 @@ private fun AddServerSheetContent(
 
     val scope = rememberCoroutineScope()
 
-    var customServer by rememberMutable(
+    var customServer by rememberMutable {
         CustomServer(
             name = "",
             address = "https://"
         )
-    )
+    }
 
     Column(
         modifier = Modifier.padding(horizontal = 8.dp),
@@ -187,7 +187,7 @@ private fun AddServerSheetContent(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            var loading by rememberMutable(false)
+            var loading by rememberMutable { false }
 
             LoadingButton(
                 loading = loading,

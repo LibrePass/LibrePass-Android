@@ -27,7 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.android.compose.icons.TopAppBarBackIcon
-import dev.medzik.android.compose.theme.regularHorizontalPadding
+import dev.medzik.android.compose.theme.spacing
 import dev.medzik.android.compose.ui.IconBox
 import dev.medzik.android.compose.ui.LoadingButton
 import dev.medzik.android.compose.ui.textfield.AnimatedTextField
@@ -67,7 +67,7 @@ fun SignupScreen(
         ) {
             item {
                 Column(
-                    modifier = Modifier.regularHorizontalPadding(),
+                    modifier = Modifier.padding(horizontal = MaterialTheme.spacing.horizontalPadding),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     EmailTextField(

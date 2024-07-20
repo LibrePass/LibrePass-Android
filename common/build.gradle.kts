@@ -25,8 +25,10 @@ android {
 
 dependencies {
     implementation(libs.compose.navigation)
+    implementation(libs.kotlinx.coroutines)
     implementation(libs.medzik.android.crypto)
     implementation(libs.medzik.android.utils)
+    implementation(libs.medzik.common.kotlin)
 
     implementation(libs.librepass.client)
 

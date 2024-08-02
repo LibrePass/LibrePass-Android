@@ -37,5 +37,4 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
 
     implementation(projects.databaseLogic)
-    implementation(projects.businessLogic)
 }

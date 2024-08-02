@@ -6,21 +6,18 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.medzik.android.utils.showToast
-import dev.medzik.librepass.android.business.VaultCache
 import dev.medzik.librepass.android.common.haveNetworkConnection
 import dev.medzik.librepass.android.database.Credentials
 import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
-import dev.medzik.librepass.utils.fromHex
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val repository: Repository,
-    private val vaultCache: VaultCache
+    private val repository: Repository
 ) : ViewModel() {
     var email = mutableStateOf("")
     var password = mutableStateOf("")
@@ -54,7 +51,7 @@ class LoginViewModel @Inject constructor(
             )
             repository.credentials.insert(credentialsDbEntry)
 
-            vaultCache.aesKey = credentials.aesKey.fromHex()
+//            vaultCache.aesKey = credentials.aesKey.fromHex()
         } catch (e: Exception) {
             // TODO
         }

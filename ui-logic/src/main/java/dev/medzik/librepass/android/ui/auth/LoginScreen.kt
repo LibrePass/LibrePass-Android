@@ -27,7 +27,6 @@ import dev.medzik.android.compose.icons.TopAppBarBackIcon
 import dev.medzik.android.compose.theme.spacing
 import dev.medzik.android.compose.ui.LoadingButton
 import dev.medzik.android.compose.ui.textfield.TextFieldValue
-import dev.medzik.librepass.android.business.injection.VaultCacheModule
 import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.ui.R
 import kotlinx.serialization.Serializable
@@ -133,8 +132,7 @@ fun LoginScreenPreview() {
             navController = rememberNavController(),
             viewModel = LoginViewModel(
                 context = context,
-                repository = repository,
-                vaultCache = VaultCacheModule.provideVaultCache(repository)
+                repository = repository
             )
         )
     }

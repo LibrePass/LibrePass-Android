@@ -2,7 +2,7 @@ package dev.medzik.librepass.android.ui
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.medzik.librepass.android.database.Credentials
+import dev.medzik.librepass.android.database.tables.Credentials
 import dev.medzik.librepass.android.database.Repository
 import javax.inject.Inject
 

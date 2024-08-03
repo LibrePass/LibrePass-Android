@@ -41,7 +41,7 @@ import dev.medzik.android.compose.theme.spacing
 import dev.medzik.android.compose.ui.IconBox
 import dev.medzik.android.compose.ui.bottomsheet.rememberBottomSheetState
 import dev.medzik.common.extensions.truncate
-import dev.medzik.librepass.android.database.Credentials
+import dev.medzik.librepass.android.database.tables.Credentials
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.api.CipherClient
 import dev.medzik.librepass.types.cipher.Cipher

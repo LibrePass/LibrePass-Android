@@ -28,3 +28,12 @@ It will be also available in Google Play Store soon.
 - Native performance
 - Various settings options
 - And more with incoming updates!
+
+## 📝 Translations
+
+> [!WARNING]  
+> The application is currently under reconstruction and translations are temporarily blocked due to a major change in the code.
+
+<a href="https://hosted.weblate.org/projects/librepass/#languages">
+    <img src="https://hosted.weblate.org/widgets/librepass/-/287x66-black.png" alt="Translation status" />
+</a>

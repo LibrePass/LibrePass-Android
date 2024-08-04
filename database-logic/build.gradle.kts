@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -28,11 +27,6 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
-
-//    implementation(libs.kotlinx.serialization.json)
-//    implementation(libs.androidx.datastore)
-//    implementation("dev.medzik.android:datastore-annotations:1.0.0")
-//    ksp("dev.medzik.android:datastore-annotations-processor:1.0.0")
 
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.navigation.compose)

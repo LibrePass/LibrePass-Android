@@ -49,7 +49,10 @@ object Signup
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignupScreen(navController: NavController) {
+fun SignupScreen(
+    navController: NavController,
+    viewModel: SignupViewModel = hiltViewModel()
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -62,7 +65,7 @@ fun SignupScreen(navController: NavController) {
             )
         }
     ) { innerPadding ->
-        SignupScreenContent(navController, innerPadding)
+        SignupScreenContent(navController, innerPadding, viewModel)
     }
 }
 
@@ -70,7 +73,7 @@ fun SignupScreen(navController: NavController) {
 fun SignupScreenContent(
     navController: NavController,
     innerPadding: PaddingValues,
-    viewModel: SignupViewModel = hiltViewModel()
+    viewModel: SignupViewModel
 ) {
     val context = LocalContext.current
 
@@ -164,6 +167,9 @@ fun SignupScreenContent(
 @Composable
 fun SignupPreview() {
     MaterialTheme {
-        SignupScreen(rememberNavController())
+        SignupScreen(
+            navController = rememberNavController(),
+            viewModel = SignupViewModel(LocalContext.current)
+        )
     }
 }

@@ -3,6 +3,9 @@ package dev.medzik.librepass.android.database
 import androidx.room.*
 import java.util.*
 
+/**
+ * Data access object for [LocalCipher].
+ */
 @Dao
 interface LocalCipherDao {
     /**

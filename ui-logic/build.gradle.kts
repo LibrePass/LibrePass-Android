@@ -49,7 +49,6 @@ dependencies {
     implementation(libs.medzik.android.compose)
     implementation(libs.medzik.android.crypto)
     implementation(libs.medzik.android.utils)
-    implementation(libs.medzik.common.kotlin)
 
     implementation(libs.librepass.client)
 
@@ -59,6 +58,7 @@ dependencies {
 
     implementation(projects.common)
     implementation(projects.databaseLogic)
+    implementation(projects.businessLogic)
 
     // for testing
     debugImplementation(libs.compose.ui.test.manifest)

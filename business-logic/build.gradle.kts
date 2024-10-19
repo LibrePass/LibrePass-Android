@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.medzik.librepass.android.common"
+    namespace = "dev.medzik.librepass.android.business"
     compileSdk = libs.versions.android.sdk.compile.get().toInt()
 
     defaultConfig {
@@ -24,18 +24,13 @@ android {
 }
 
 dependencies {
-    implementation(libs.compose.navigation)
-    implementation(libs.kotlinx.coroutines)
+    implementation(libs.librepass.client)
     implementation(libs.medzik.android.crypto)
     implementation(libs.medzik.android.utils)
-    implementation(libs.medzik.common.kotlin)
-
-    implementation(libs.librepass.client)
 
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.dagger.hilt.compiler)
 
     implementation(projects.databaseLogic)
-    implementation(projects.businessLogic)
 }

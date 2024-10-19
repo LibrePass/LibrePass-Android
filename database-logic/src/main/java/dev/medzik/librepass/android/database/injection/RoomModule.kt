@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DatabaseProvider {
+object RoomModule {
     @Singleton
     @Provides
     fun providesRepository(

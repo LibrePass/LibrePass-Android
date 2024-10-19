@@ -27,5 +27,4 @@
     <string name="PasswordHintLabel">Zalecamy ustawienie podpowiedzi hasła, aby pomóc w przypadku zapomnienia hasła</string>
     <string name="PasswordLabel_WontBeRecover">Zapamiętaj swoje hasło, ponieważ nie będzie możliwości jego odzyskania</string>
     <string name="RetypePassword">Wpisz hasło ponownie</string>
-    <string name="Vault">Sejf</string>
 </resources>

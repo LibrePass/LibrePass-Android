@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.compose.compiler)
 }
 
@@ -69,14 +71,53 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
+
+    implementation(libs.compose.material.icons)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.ui)
+
+    implementation(libs.accompanist.drawablepainter)
+
+    implementation(libs.androidx.biometric.ktx)
+
+    // used for calling `onResume` and locking vault after X minutes
+    implementation(libs.compose.lifecycle.runtime)
+
+    implementation(projects.databaseLogic)
+
     // dagger
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.dagger.hilt.compiler)
 
-    implementation(projects.uiLogic)
-    implementation(projects.databaseLogic)
+    implementation(libs.coil.compose)
+
+    implementation(libs.librepass.client)
+    implementation(libs.otp)
+
+    implementation(libs.kotlinx.coroutines)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(projects.common)
+    implementation(projects.businessLogic)
 
     // for splash screen with material3 and dynamic color
     implementation(libs.google.material)
+
+    implementation(libs.zxing.android) { isTransitive = false }
+    implementation(libs.zxing)
+
+    implementation(libs.medzik.android.compose)
+    implementation(libs.medzik.android.crypto)
+    implementation(libs.medzik.android.utils)
+
+    // for testing
+    debugImplementation(libs.compose.ui.test.manifest)
+
+    // for preview support
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
 }

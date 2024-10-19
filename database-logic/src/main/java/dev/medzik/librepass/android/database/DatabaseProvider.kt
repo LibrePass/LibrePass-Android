@@ -1,14 +1,19 @@
 package dev.medzik.librepass.android.database
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Room
 
+/**
+ * Database provider singleton class.
+ */
 object DatabaseProvider {
     private var database: LibrePassDatabase? = null
 
     /**
-     * Get database instance. If the database is not initialized, it will be initialize.
+     * Get database instance. If database is not initialized, it will be initialize.
+     *
+     * @param context application context
+     * @return Database instance.
      */
     fun getInstance(context: Context): LibrePassDatabase {
         if (database == null) {

@@ -1,13 +1,16 @@
 package dev.medzik.librepass.android.ui.auth
 
 import android.content.Context
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.business.injection.VaultCacheModule
 import dev.medzik.librepass.android.common.haveNetworkConnection
 import dev.medzik.librepass.android.database.Credentials
-import dev.medzik.librepass.android.database.injection.DatabaseProvider
+import dev.medzik.librepass.android.database.injection.RoomModule
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.AuthClient
@@ -33,7 +36,7 @@ class LoginViewModel : ViewModel() {
                 password = password.value
             )
 
-            val repository = DatabaseProvider.providesRepository(context)
+            val repository = RoomModule.providesRepository(context)
             val vaultCache = VaultCacheModule.providesVault(repository.cipher)
 
             val credentialsDbEntry = Credentials(

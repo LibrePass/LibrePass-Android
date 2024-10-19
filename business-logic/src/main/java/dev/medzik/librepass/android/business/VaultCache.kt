@@ -4,6 +4,7 @@ import android.content.Context
 import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.database.LocalCipher
+import dev.medzik.librepass.android.database.LocalCipherDao
 import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.database.datastore.SecretsStore
 import dev.medzik.librepass.android.database.datastore.VaultTimeoutValue

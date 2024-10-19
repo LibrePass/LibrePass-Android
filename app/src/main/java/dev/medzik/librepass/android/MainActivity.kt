@@ -30,6 +30,8 @@ class MainActivity : FragmentActivity() {
             finish()
         }
 
+        MigrationsManager.run(this, repository)
+
         // retrieves aes key for vault decryption if key is valid
 //        vault.getSecretsIfNotExpired(this)
 

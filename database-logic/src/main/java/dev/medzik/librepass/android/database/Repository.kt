@@ -1,9 +1,6 @@
 package dev.medzik.librepass.android.database
 
 import android.content.Context
-import dev.medzik.librepass.android.database.tables.CredentialsDao
-import dev.medzik.librepass.android.database.tables.CustomServerDao
-import dev.medzik.librepass.android.database.tables.LocalCipherDao
 
 /**
  * Repository interface provides database DAOs.

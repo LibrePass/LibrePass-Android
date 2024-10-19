@@ -39,7 +39,7 @@ import dev.medzik.android.compose.ui.bottomsheet.rememberBottomSheetState
 import dev.medzik.android.compose.ui.textfield.AnimatedTextField
 import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.showToast
-import dev.medzik.librepass.android.database.tables.CustomServer
+import dev.medzik.librepass.android.database.CustomServer
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.checkApiConnection

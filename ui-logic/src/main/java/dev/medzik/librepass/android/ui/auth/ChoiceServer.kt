@@ -39,7 +39,7 @@ import dev.medzik.android.compose.ui.textfield.AnimatedTextField
 import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.database.CustomServer
-import dev.medzik.librepass.android.database.injection.DatabaseProvider
+import dev.medzik.librepass.android.database.injection.RoomModule
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.checkApiConnection
@@ -75,7 +75,7 @@ fun ChoiceServer(server: MutableState<String>) {
     var servers by rememberMutable(emptyList<CustomServer>())
 
     LaunchedEffect(Unit) {
-        val repository = DatabaseProvider.providesRepository(context)
+        val repository = RoomModule.providesRepository(context)
 
         val customServers = repository.customServer.getAll()
 
@@ -142,7 +142,7 @@ fun AddServerSheetContent(
 
     val scope = rememberCoroutineScope()
 
-    val repository = DatabaseProvider.providesRepository(context)
+    val repository = RoomModule.providesRepository(context)
 
     var customServer by rememberMutable(
         CustomServer(

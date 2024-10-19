@@ -27,5 +27,4 @@
     <string name="PasswordHintLabel">We recommend setting a password hint to help if you forget your password</string>
     <string name="PasswordLabel_WontBeRecover">Remember your password because there won\'t be any way to recover it</string>
     <string name="RetypePassword">Re-type password</string>
-    <string name="Vault">Vault</string>
 </resources>

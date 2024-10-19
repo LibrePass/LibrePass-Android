@@ -5,6 +5,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 
+/**
+ * Data access object for [Credentials].
+ */
 @Dao
 interface CredentialsDao {
     /**

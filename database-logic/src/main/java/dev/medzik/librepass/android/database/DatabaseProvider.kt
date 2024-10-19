@@ -1,6 +1,7 @@
 package dev.medzik.librepass.android.database
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Room
 
 object DatabaseProvider {

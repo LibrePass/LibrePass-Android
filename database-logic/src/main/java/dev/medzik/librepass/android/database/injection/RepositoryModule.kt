@@ -7,7 +7,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.medzik.librepass.android.database.Repository
-import dev.medzik.librepass.android.database.RepositoryImpl
 import javax.inject.Singleton
 
 @Module
@@ -16,6 +15,6 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideRepository(@ApplicationContext context: Context): Repository {
-        return RepositoryImpl(context)
+        return Repository(context)
     }
 }

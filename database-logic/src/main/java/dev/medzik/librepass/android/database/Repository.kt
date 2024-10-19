@@ -5,7 +5,7 @@ import android.content.Context
 /**
  * Repository interface provides database DAOs.
  */
-interface Repository {
+interface RepositoryInterface {
     val credentials: CredentialsDao
     val cipher: LocalCipherDao
     val customServer: CustomServerDao
@@ -14,7 +14,7 @@ interface Repository {
 /**
  * Repository class provides access to the database.
  */
-class RepositoryImpl(context: Context) : Repository {
+class Repository(context: Context) : RepositoryInterface {
     // get database instance
     private val database = DatabaseProvider.getInstance(context)
 

@@ -1,5 +1,8 @@
 # LibrePass Android
 
+> [!WARNING]  
+> Deprecated
+
 LibrePass represents an innovative cloud-based password manager known for its user-friendly 
 simplicity and performance.
 It functions not only as a tool for generating secure passwords 
@@ -30,9 +33,6 @@ It will be also available in Google Play Store soon.
 - And more with incoming updates!
 
 ## 📝 Translations
-
-> [!WARNING]  
-> The application is currently under reconstruction and translations are temporarily blocked due to a major change in the code.
 
 <a href="https://hosted.weblate.org/projects/librepass/#languages">
     <img src="https://hosted.weblate.org/widgets/librepass/-/287x66-black.png" alt="Translation status" />

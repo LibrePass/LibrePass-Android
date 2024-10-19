@@ -1,17 +1,8 @@
-package dev.medzik.librepass.android.database.tables
+package dev.medzik.librepass.android.database
 
 import androidx.room.Dao
-import androidx.room.Entity
 import androidx.room.Insert
-import androidx.room.PrimaryKey
 import androidx.room.Query
-
-@Entity
-data class CustomServer(
-    val name: String,
-    @PrimaryKey
-    val address: String
-)
 
 @Dao
 interface CustomServerDao {

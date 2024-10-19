@@ -5,7 +5,6 @@ import dev.medzik.android.utils.runOnIOThread
 import dev.medzik.libcrypto.Hex
 import dev.medzik.librepass.android.database.LocalCipher
 import dev.medzik.librepass.android.database.LocalCipherDao
-import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.database.datastore.SecretsStore
 import dev.medzik.librepass.android.database.datastore.VaultTimeoutValue
 import dev.medzik.librepass.android.database.datastore.deleteSecretsStore
@@ -20,7 +19,7 @@ import dev.medzik.librepass.types.cipher.EncryptedCipher
 import kotlinx.coroutines.runBlocking
 import java.util.UUID
 
-class VaultCache(private val repository: Repository) {
+class VaultCache(private val cipherRepository: LocalCipherDao) {
     var aesKey: ByteArray = byteArrayOf()
     val ciphers = mutableListOf<Cipher>()
 
@@ -76,7 +75,7 @@ class VaultCache(private val repository: Repository) {
         ciphers.removeIf { it.id == cipher.id }
         ciphers.add(cipher)
 
-        repository.cipher.insert(
+        cipherRepository.insert(
             LocalCipher(
                 encryptedCipher = encryptedCipher ?: EncryptedCipher(cipher, aesKey),
                 needUpload = needUpload
@@ -86,7 +85,7 @@ class VaultCache(private val repository: Repository) {
 
     fun delete(id: UUID) {
         ciphers.removeIf { it.id == id }
-        repository.cipher.delete(id)
+        cipherRepository.delete(id)
     }
 
     fun getSortedCiphers(): List<Cipher> {

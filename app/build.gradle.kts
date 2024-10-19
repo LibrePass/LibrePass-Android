@@ -16,8 +16,8 @@ android {
         applicationId = "dev.medzik.librepass.android"
         minSdk = libs.versions.android.sdk.min.get().toInt()
         targetSdk = libs.versions.android.sdk.target.get().toInt()
-        versionCode = 17
-        versionName = "1.3.0"
+        versionCode = 18
+        versionName = "1.3.1"
 
         vectorDrawables {
             useSupportLibrary = true

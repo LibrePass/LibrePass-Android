@@ -37,7 +37,6 @@ dependencies {
     implementation(libs.accompanist.drawablepainter)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.compose.coil)
     implementation(libs.compose.lifecycle.runtime)
     implementation(libs.compose.material.icons)
     implementation(libs.compose.material3)

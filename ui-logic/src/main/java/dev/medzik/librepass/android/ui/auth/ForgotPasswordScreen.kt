@@ -26,10 +26,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import dev.medzik.android.compose.icons.TopAppBarBackIcon
 import dev.medzik.android.compose.theme.infoContainer
-import dev.medzik.android.compose.theme.spacing
 import dev.medzik.android.compose.ui.LoadingButton
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.Server
+import dev.medzik.librepass.client.api.AuthClient
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -74,7 +74,7 @@ fun ForgotPasswordScreenContent(
     Column(
         modifier = Modifier
             .padding(innerPadding)
-            .padding(horizontal = MaterialTheme.spacing.horizontalPadding)
+            .padding(horizontal = 12.dp)
             .fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {

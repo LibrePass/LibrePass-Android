@@ -33,8 +33,8 @@ class LoginViewModel : ViewModel() {
                 password = password.value
             )
 
-            val repository = DatabaseProvider.provideRepository(context)
-            val vaultCache = VaultCacheModule.providesVault(repository)
+            val repository = DatabaseProvider.providesRepository(context)
+            val vaultCache = VaultCacheModule.providesVault(repository.cipher)
 
             val credentialsDbEntry = Credentials(
                 userId = credentials.userId,

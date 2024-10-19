@@ -1,7 +1,6 @@
 [versions]
 accompanist = "0.34.0"
 agp = "8.5.0"
-android-screenshot = "0.0.1-alpha02"
 android-sdk-compile = "34"
 android-sdk-min = "24"
 android-sdk-target = "34"
@@ -12,9 +11,9 @@ androidx-datastore = "1.1.1"
 androidx-room = "2.6.1"
 coil-compose = "2.6.0"
 compose = "1.6.8"
-compose-lifecycle-runtime = "2.8.3"
+compose-lifecycle-runtime = "2.8.2"
 compose-material3 = "1.2.1"
-compose-navigation = "2.8.0-beta04"
+compose-navigation = "2.8.0-beta03"
 dagger = "2.51.1"
 google-material = "1.12.0"
 hilt = "1.2.0"
@@ -23,7 +22,7 @@ kotlin-ksp = "2.0.0-1.0.22"
 kotlinx-coroutines = "1.8.1"
 kotlinx-serialization = "1.7.0"
 librepass-client = "1.6.2"
-medzik-android-utils = "1.7.1"
+medzik-android-utils = "1.6.1"
 otp = "1.0.1"
 zxing = "3.5.3"
 zxing-android = "4.3.0"
@@ -63,8 +62,6 @@ zxing-android = { module = "com.journeyapps:zxing-android-embedded", version.ref
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
-android-screenshot = { id = "com.android.compose.screenshot", version.ref = "android-screenshot"}
-androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "dagger" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

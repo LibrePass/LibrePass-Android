@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.common.haveNetworkConnection
-import dev.medzik.librepass.android.database.tables.Credentials
+import dev.medzik.librepass.android.database.Credentials
 import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.Server

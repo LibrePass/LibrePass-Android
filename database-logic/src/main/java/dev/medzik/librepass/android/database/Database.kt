@@ -3,12 +3,6 @@ package dev.medzik.librepass.android.database
 import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import dev.medzik.librepass.android.database.tables.Credentials
-import dev.medzik.librepass.android.database.tables.CredentialsDao
-import dev.medzik.librepass.android.database.tables.CustomServer
-import dev.medzik.librepass.android.database.tables.CustomServerDao
-import dev.medzik.librepass.android.database.tables.LocalCipher
-import dev.medzik.librepass.android.database.tables.LocalCipherDao
 
 @Database(
     version = 3,

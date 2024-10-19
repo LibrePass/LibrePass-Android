@@ -118,4 +118,6 @@
     <string name="ConfigureTwoFactor">द्वि-कारक कॉन्फ़िगर करें</string>
     <string name="Error_NoInternetConnection">कोई इंटरनेट कनेक्शन नहीं</string>
     <string name="Tost_NoServerConnection">सर्वर से कोई कनेक्शन नहीं</string>
+    <string name="Settings_Account_Subtitle">अपना खाता प्रबंधित करें</string>
+    <string name="Settings_Security_Subtitle">एप्लिकेशन सुरक्षा विकल्प प्रबंधित करें</string>
 </resources>

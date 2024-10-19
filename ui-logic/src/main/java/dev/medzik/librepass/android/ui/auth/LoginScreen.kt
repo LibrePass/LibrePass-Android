@@ -27,7 +27,7 @@ import dev.medzik.android.compose.icons.TopAppBarBackIcon
 import dev.medzik.android.compose.theme.spacing
 import dev.medzik.android.compose.ui.LoadingButton
 import dev.medzik.android.compose.ui.textfield.TextFieldValue
-import dev.medzik.librepass.android.database.RepositoryImpl
+import dev.medzik.librepass.android.database.Repository
 import dev.medzik.librepass.android.ui.R
 import kotlinx.serialization.Serializable
 
@@ -125,7 +125,7 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     val context = LocalContext.current
-    val repository = RepositoryImpl(LocalContext.current)
+    val repository = Repository(LocalContext.current)
 
     MaterialTheme {
         LoginScreen(

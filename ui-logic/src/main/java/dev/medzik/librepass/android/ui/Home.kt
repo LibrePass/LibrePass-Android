@@ -1,8 +1,9 @@
 package dev.medzik.librepass.android.ui
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
+import dev.medzik.librepass.android.database.injection.DatabaseProvider
 import dev.medzik.librepass.android.ui.vault.VaultHome
 import dev.medzik.librepass.android.ui.vault.VaultHomeScreen
 import kotlinx.serialization.Serializable
@@ -11,11 +12,10 @@ import kotlinx.serialization.Serializable
 object Home
 
 @Composable
-fun HomeScreen(
-    navController: NavController,
-    viewModel: HomeScreenViewModel = hiltViewModel()
-) {
-    val credentials = viewModel.getCredentials()
+fun HomeScreen(navController: NavController) {
+    val context = LocalContext.current
+    val repository = DatabaseProvider.provideRepository(context)
+    val credentials = repository.credentials.get()
 
     if (credentials != null) {
         val args = VaultHome(

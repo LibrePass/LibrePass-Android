@@ -29,15 +29,14 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
 
-//    implementation(libs.kotlinx.serialization.json)
-//    implementation(libs.androidx.datastore)
-//    implementation("dev.medzik.android:datastore-annotations:1.0.0")
-//    ksp("dev.medzik.android:datastore-annotations-processor:1.0.0")
+    implementation(libs.androidx.datastore)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.dagger.hilt)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.dagger.hilt.compiler)
 
+    implementation(libs.medzik.android.crypto)
     implementation(libs.librepass.client)
 }
 

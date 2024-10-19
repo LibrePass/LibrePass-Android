@@ -27,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import dev.medzik.android.compose.rememberMutable
 import dev.medzik.android.compose.theme.spacing
 import dev.medzik.android.compose.ui.IconBox
@@ -40,6 +39,7 @@ import dev.medzik.android.compose.ui.textfield.AnimatedTextField
 import dev.medzik.android.compose.ui.textfield.TextFieldValue
 import dev.medzik.android.utils.showToast
 import dev.medzik.librepass.android.database.CustomServer
+import dev.medzik.librepass.android.database.injection.DatabaseProvider
 import dev.medzik.librepass.android.ui.R
 import dev.medzik.librepass.client.Server
 import dev.medzik.librepass.client.api.checkApiConnection
@@ -48,10 +48,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChoiceServer(
-    server: MutableState<String>,
-    viewModel: ChoiceServerViewModel = hiltViewModel()
-) {
+fun ChoiceServer(server: MutableState<String>) {
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
@@ -78,7 +75,9 @@ fun ChoiceServer(
     var servers by rememberMutable(emptyList<CustomServer>())
 
     LaunchedEffect(Unit) {
-        val customServers = viewModel.getCustomServers()
+        val repository = DatabaseProvider.provideRepository(context)
+
+        val customServers = repository.customServer.getAll()
 
         servers = listOf(
             CustomServer(
@@ -129,21 +128,21 @@ fun ChoiceServer(
     ) {
         AddServerSheetContent(
             addServerSheet,
-            server,
-            viewModel
+            server
         )
     }
 }
 
 @Composable
-private fun AddServerSheetContent(
+fun AddServerSheetContent(
     sheetState: BottomSheetState,
-    server: MutableState<String>,
-    viewModel: ChoiceServerViewModel
+    server: MutableState<String>
 ) {
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
+
+    val repository = DatabaseProvider.provideRepository(context)
 
     var customServer by rememberMutable(
         CustomServer(
@@ -201,7 +200,7 @@ private fun AddServerSheetContent(
                             return@launch
                         }
 
-                        viewModel.insertCustomServer(customServer)
+                        repository.customServer.insert(customServer)
 
                         server.value = customServer.address
 

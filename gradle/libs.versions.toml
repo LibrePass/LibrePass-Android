@@ -1,6 +1,6 @@
 [versions]
 accompanist = "0.34.0"
-agp = "8.5.1"
+agp = "8.5.0"
 android-screenshot = "0.0.1-alpha02"
 android-sdk-compile = "34"
 android-sdk-min = "24"

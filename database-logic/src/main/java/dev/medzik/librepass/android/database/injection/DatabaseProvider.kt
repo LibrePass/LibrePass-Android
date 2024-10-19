@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
+object DatabaseProvider {
     @Singleton
     @Provides
     fun provideRepository(@ApplicationContext context: Context): Repository {

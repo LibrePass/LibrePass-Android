@@ -118,4 +118,6 @@
     <string name="Counter">Sayaç</string>
     <string name="Tost_NoServerConnection">Sunucu ile bağlantı yok</string>
     <string name="Error_NoInternetConnection">İnternet bağlantısı yok</string>
+    <string name="Settings_Security_Subtitle">Uygulama güvenlik seçeneklerini yönetin</string>
+    <string name="Settings_Account_Subtitle">Hesabınızı yönetin</string>
 </resources>
